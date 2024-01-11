@@ -6,6 +6,8 @@ import { HomeComponent } from './home/home.component';
 import { HomeSliderComponent } from './home-slider/home-slider.component';
 import { SearchLocationComponent } from './search-location/search-location.component';
 import { TranslateModule } from '@ngx-translate/core';
+import { RestaurantCardComponent } from 'src/app/shared/component-shared/restaurant-card/restaurant-card.component';
+import { ListRestaurantComponent } from 'src/app/shared/component-shared/list-restaurant/list-restaurant.component';
 
 
 @NgModule({
@@ -17,7 +19,9 @@ import { TranslateModule } from '@ngx-translate/core';
     CommonModule,
     HomePageRoutingModule,
     HomeSliderComponent,
-    TranslateModule
+    TranslateModule,
+    RestaurantCardComponent,
+    ListRestaurantComponent
   ]
 })
 export class HomePageModule { }

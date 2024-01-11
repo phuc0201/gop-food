@@ -3,6 +3,12 @@ module.exports = {
   content: ["./src/**/*.{html,js}"],
   theme: {
     extend: {
+      boxShadow: {
+        '1x': '0px 5px 15px 0px rgba(0,0,0,0.15)',
+        '2x': '10px 10px 20px #A6ABBD',
+        '3x': '20px 20px 40px #A6ABBD',
+        '4x': '30px 30px 60px #A6ABBD',
+      },
       colors: {
         'primary': '#00b14f',
         'white': '#fff',
@@ -17,6 +23,14 @@ module.exports = {
         'grey1': '#676767',
         'orange1': '#ff7903',
       }
+    },
+    screens: {
+      'xs': '376px',
+      'sm': '576px',
+      'md': '768px',
+      'lg': '992px',
+      'xl': '1200px',
+      '2xl': '1600px',
     },
   },
   plugins: [],
