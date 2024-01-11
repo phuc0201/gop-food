@@ -7,6 +7,14 @@
 			}
 		}
 	},
+	"PAGES": {
+		"HOME_PAGE": {
+			"SEARCH_LOCATION": {
+				"NHAP_DIA_CHI": "Type your location",
+				"TIM_KIEM": "Search"
+			}
+		}
+	},
 	"SHARED": {
 		"COMPONENT_SHARED": {
 			"DRAWER": {

@@ -5,6 +5,7 @@ import { HomePageRoutingModule } from './home-page-routing.module';
 import { HomeComponent } from './home/home.component';
 import { HomeSliderComponent } from './home-slider/home-slider.component';
 import { SearchLocationComponent } from './search-location/search-location.component';
+import { TranslateModule } from '@ngx-translate/core';
 
 
 @NgModule({
@@ -15,7 +16,8 @@ import { SearchLocationComponent } from './search-location/search-location.compo
   imports: [
     CommonModule,
     HomePageRoutingModule,
-    HomeSliderComponent
+    HomeSliderComponent,
+    TranslateModule
   ]
 })
 export class HomePageModule { }

@@ -7,6 +7,14 @@
 			}
 		}
 	},
+	"PAGES": {
+		"HOME_PAGE": {
+			"SEARCH_LOCATION": {
+				"NHAP_DIA_CHI": "Nhập dịa chỉ của bạn",
+				"TIM_KIEM": "Tìm kiếm"
+			}
+		}
+	},
 	"SHARED": {
 		"COMPONENT_SHARED": {
 			"DRAWER": {
