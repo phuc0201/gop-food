@@ -10,12 +10,12 @@ import { SearchLocationComponent } from './search-location/search-location.compo
 @NgModule({
   declarations: [
     HomeComponent,
-    HomeSliderComponent,
     SearchLocationComponent
   ],
   imports: [
     CommonModule,
-    HomePageRoutingModule
+    HomePageRoutingModule,
+    HomeSliderComponent
   ]
 })
 export class HomePageModule { }
