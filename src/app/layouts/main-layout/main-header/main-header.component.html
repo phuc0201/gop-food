@@ -1,0 +1,38 @@
+<div appScroll id="header" class="w-full py-3 md:py-5 sticky md:fixed top-0 left-0 z-10">
+  <div class="sectionContainer flex justify-between items-center">
+    <a routerLink="/" class="logo md:text-3xl text-xl font-medium text-white cursor-pointer">GoPFood</a>
+    <div class="flex items-center gap-3 md:h-10 h-7">
+      <!-- <div
+        class="p-3 gap-2 group rounded hidden md:flex justify-center items-center bg-white border border-solid border-gray-200 cursor-pointer ">
+        <img src="assets/img/icons/icon-cart-black.svg" class="w-4 h-4">
+      </div> -->
+      <div class="relative h-10 bg-primary rounded hidden md:flex justify-center items-center cursor-pointer"
+        (click)="openDrawer = true">
+        <div
+          class="absolute -top-2 -left-2 w-5 h-5 rounded-[50%] bg-white border border-primary border-solid flex justify-center items-center">
+          <span class="font-medium text-primary">1</span>
+        </div>
+        <div class="px-3 gap-2 group flex justify-center items-center cursor-pointer ">
+          <img src="assets/img/icons/icon-cart-white.svg" class="w-4 h-4">
+          <span class="font-medium text-white">{{ money.toLocaleString('vi', {style : 'currency', currency : 'VND'})
+            }}</span>
+        </div>
+      </div>
+      <div class="h-full">
+        <!-- <a [routerLink]="['profile']" class="md:w-10 w-7 h-full flex items-center">
+          <img src="" alt="avatar" onerror="this.src='assets/img/avatars/user.png'" class="w-full h-full">
+        </a> -->
+        <a [routerLink]="['auth', 'login']"
+          class="h-full flex items-center bg-white rounded border border-solid border-gray-200">
+          <div class="text-grey1 font-medium text-[12px] text-center px-3">{{ langData + 'DANG_NHAP' | translate }}
+          </div>
+        </a>
+      </div>
+      <nz-select [(ngModel)]="currLang" class="" nzSize="large" (ngModelChange)="switchLanguage()">
+        <nz-option nzValue="vi" nzLabel="Việt Nam"></nz-option>
+        <nz-option nzValue="en" nzLabel="English"></nz-option>
+      </nz-select>
+    </div>
+  </div>
+</div>
+<!-- <app-drawer [(opened)]="openDrawer"></app-drawer> -->

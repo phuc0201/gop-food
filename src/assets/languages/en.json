@@ -1,0 +1,10 @@
+{
+	"LAYOUTS": {
+		"MAIN_LAYOUT": {
+			"HEADER": {
+				"DANG_KY": "Sign up",
+				"DANG_NHAP": "Login"
+			}
+		}
+	}
+}

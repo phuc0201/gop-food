@@ -1,0 +1,10 @@
+{
+	"LAYOUTS": {
+		"MAIN_LAYOUT": {
+			"HEADER": {
+				"DANG_KY": "Đăng ký",
+				"DANG_NHAP": "Đăng nhập"
+			}
+		}
+	}
+}
