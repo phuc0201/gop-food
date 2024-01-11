@@ -65,6 +65,55 @@
                     </folder_node>
                 </children>
             </folder_node>
+            <folder_node>
+                <name>SHARED</name>
+                <children>
+                    <folder_node>
+                        <name>COMPONENT_SHARED</name>
+                        <children>
+                            <folder_node>
+                                <name>DRAWER</name>
+                                <children>
+                                    <concept_node>
+                                        <name>BAT_DAU_MUA_HANG</name>
+                                        <definition_loaded>false</definition_loaded>
+                                        <description/>
+                                        <comment/>
+                                        <default_text/>
+                                        <translations>
+                                            <translation>
+                                                <language>en-US</language>
+                                                <approved>false</approved>
+                                            </translation>
+                                            <translation>
+                                                <language>vi-VN</language>
+                                                <approved>false</approved>
+                                            </translation>
+                                        </translations>
+                                    </concept_node>
+                                    <concept_node>
+                                        <name>THEM_VAO_GIO_HANG</name>
+                                        <definition_loaded>false</definition_loaded>
+                                        <description/>
+                                        <comment/>
+                                        <default_text/>
+                                        <translations>
+                                            <translation>
+                                                <language>en-US</language>
+                                                <approved>false</approved>
+                                            </translation>
+                                            <translation>
+                                                <language>vi-VN</language>
+                                                <approved>false</approved>
+                                            </translation>
+                                        </translations>
+                                    </concept_node>
+                                </children>
+                            </folder_node>
+                        </children>
+                    </folder_node>
+                </children>
+            </folder_node>
         </children>
     </folder_node>
     <isTemplateProject>false</isTemplateProject>

@@ -8,6 +8,7 @@ import { TranslateModule } from '@ngx-translate/core';
 import { NzButtonModule } from 'ng-zorro-antd/button';
 import { NzSelectModule } from 'ng-zorro-antd/select';
 import { FormsModule } from '@angular/forms';
+import { DrawerComponent } from 'src/app/shared/component-shared/drawer/drawer.component';
 
 @NgModule({
   declarations: [
@@ -21,7 +22,8 @@ import { FormsModule } from '@angular/forms';
     TranslateModule,
     NzButtonModule,
     NzSelectModule,
-    FormsModule
+    FormsModule,
+    DrawerComponent
   ]
 })
 export class MainLayoutModule { }

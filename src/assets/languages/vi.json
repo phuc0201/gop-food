@@ -6,5 +6,13 @@
 				"DANG_NHAP": "Đăng nhập"
 			}
 		}
+	},
+	"SHARED": {
+		"COMPONENT_SHARED": {
+			"DRAWER": {
+				"BAT_DAU_MUA_HANG": "Bắt đầu mua hàng",
+				"THEM_VAO_GIO_HANG": "Thêm sản phẩm vào giỏ hàng và đặt hàng  tại đây"
+			}
+		}
 	}
 }

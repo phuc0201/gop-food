@@ -1,0 +1,11 @@
+<nz-drawer [nzClosable]="false" [nzVisible]="opened" nzPlacement="right" (nzOnClose)="close()" [nzClosable]="true">
+  <ng-container *nzDrawerContent>
+    <div class="w-full h-full flex justify-center items-center">
+      <div class="w-full h-full flex flex-col items-center justify-center">
+        <img src="assets/img/icons/ilus-basket-empty.svg">
+        <h1>{{ langData + 'BAT_DAU_MUA_HANG' | translate }}</h1>
+        <span class="text-grey1">{{ langData + 'THEM_VAO_GIO_HANG' | translate}}</span>
+      </div>
+    </div>
+  </ng-container>
+</nz-drawer>

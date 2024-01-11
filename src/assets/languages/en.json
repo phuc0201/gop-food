@@ -6,5 +6,13 @@
 				"DANG_NHAP": "Login"
 			}
 		}
+	},
+	"SHARED": {
+		"COMPONENT_SHARED": {
+			"DRAWER": {
+				"BAT_DAU_MUA_HANG": "Start grabbing food",
+				"THEM_VAO_GIO_HANG": "Add items to your basket and place order here"
+			}
+		}
 	}
 }
