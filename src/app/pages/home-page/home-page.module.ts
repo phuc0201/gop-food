@@ -8,12 +8,13 @@ import { SearchLocationComponent } from './search-location/search-location.compo
 import { TranslateModule } from '@ngx-translate/core';
 import { RestaurantCardComponent } from 'src/app/shared/component-shared/restaurant-card/restaurant-card.component';
 import { ListRestaurantComponent } from 'src/app/shared/component-shared/list-restaurant/list-restaurant.component';
+import { CuisinesSliderComponent } from './cuisines-slider/cuisines-slider.component';
 
 
 @NgModule({
   declarations: [
     HomeComponent,
-    SearchLocationComponent
+    SearchLocationComponent,
   ],
   imports: [
     CommonModule,
@@ -21,7 +22,8 @@ import { ListRestaurantComponent } from 'src/app/shared/component-shared/list-re
     HomeSliderComponent,
     TranslateModule,
     RestaurantCardComponent,
-    ListRestaurantComponent
+    ListRestaurantComponent,
+    CuisinesSliderComponent
   ]
 })
 export class HomePageModule { }

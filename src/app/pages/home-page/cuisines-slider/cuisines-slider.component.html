@@ -1,0 +1,16 @@
+<div class="relative">
+  <swiper-container init="false" #cuisinesSlider class="cusines-slider w-full flex items-center mb-6">
+    <swiper-slide *ngIf="!listCuisine.length"
+      class="w-full h-full flex items-center aspect-video rounded-lg overflow-hidden">
+      <img src="assets/img/banners/banner-1.jpg" class="w-full h-auto object-cover">
+    </swiper-slide>
+    <swiper-slide *ngFor="let cusine of listCuisine" class="w-full h-full flex items-center object-cover">
+      <a href="#" class="flex flex-col items-center relative">
+        <div class="flex items-center justify-center max-h-40 overflow-hidden aspect-video rounded-lg">
+          <img [src]="cusine.image" onerror="this.src='assets/img/banners/banner-1.jpg'"
+            class="w-full h-auto object-cover">
+        </div>
+      </a>
+    </swiper-slide>
+  </swiper-container>
+</div>
