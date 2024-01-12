@@ -3,6 +3,6 @@
     <img src="assets/img/banners/banner-1.jpg" class="w-full h-auto">
   </swiper-slide>
   <swiper-slide *ngFor="let banner of listBannerSrc" class="w-full h-full flex items-center">
-    <img [src]="banner" onerror="this.src='assets/img/banners/banner-1.jpg'">
+    <img [src]="banner" onerror="this.src='assets/img/banners/banner-1.jpg'" class="w-full h-auto object-cover">
   </swiper-slide>
 </swiper-container>
