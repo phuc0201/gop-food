@@ -59,12 +59,7 @@ export class CuisinesSliderComponent implements AfterViewInit {
   swiperParams = {
     slidesPerView: 1,
     Infinity: true,
-    speed: 5000,
     spaceBetween: 10,
-    autoplay: {
-      delay: 0,
-      pauseOnMouseEnter: true,
-    },
     breakpoints: {
       992: {
         slidesPerView: 5,
