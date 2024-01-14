@@ -1,0 +1,15 @@
+<swiper-container init="false" #promoSlider [pagination]="{ type:'bullets', clickable: true }"
+  class=" w-full flex items-center md:mb-6 sm:mb-3 mb-1 sm:h-44 md:h-40 h-40">
+  <swiper-slide *ngFor="let promo of listPromo" class="w-full h-full flex">
+    <div class="w-full">
+      <div class="flex w-full border border-solid border-gray-300 p-3 rounded gap-3 items-center">
+        <div class="w-24 aspect-square bg-green2 p-2 rounded">
+          <img src="assets/img/promo/online-shopping.png" class="w-full h-full object-cover">
+        </div>
+        <div class="line-clamp-3 md:text-base text-xs">
+          {{ promo.name }}
+        </div>
+      </div>
+    </div>
+  </swiper-slide>
+</swiper-container>

@@ -1,5 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { AfterViewInit, CUSTOM_ELEMENTS_SCHEMA, Component, ElementRef, ViewChild } from '@angular/core';
+import { RouterModule } from '@angular/router';
 import { register } from 'swiper/element/bundle';
 register();
 
@@ -10,6 +11,7 @@ export interface ICategory {
 
 const plugins = [
   CommonModule,
+  RouterModule
 ];
 
 @Component({

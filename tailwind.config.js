@@ -3,6 +3,19 @@ module.exports = {
   content: ["./src/**/*.{html,js}"],
   theme: {
     extend: {
+      animation: {
+        "slide-right": "slide-right .7s ease-out 0.7s infinite both"
+      },
+      keyframes: {
+        "slide-right": {
+          "0%": {
+            transform: "translateX(0)"
+          },
+          to: {
+            transform: "translateX(5px)"
+          }
+        }
+      },
       boxShadow: {
         '1x': '0px 5px 15px 0px rgba(0,0,0,0.15)',
         '2x': '0px 18px 1px -15px rgba(255,255,255,0.5)',

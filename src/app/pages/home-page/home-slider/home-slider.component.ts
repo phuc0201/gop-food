@@ -17,7 +17,7 @@ const plugins = [
 })
 export class HomeSliderComponent implements AfterViewInit {
   @ViewChild('swiper') swiperEl!: ElementRef;
-  @Input() listBannerId: string[] = [];
+  // @Input() listBannerId: string[] = [];
   listBannerSrc: string[] = [
     'assets/img/banners/banner-1.jpg',
     'assets/img/banners/banner-2.jpg',
