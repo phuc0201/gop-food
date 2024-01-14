@@ -57,7 +57,7 @@ export class CuisinesSliderComponent implements AfterViewInit {
     },
   ];
   swiperParams = {
-    slidesPerView: 2,
+    slidesPerView: 1,
     Infinity: true,
     speed: 5000,
     spaceBetween: 10,
@@ -70,9 +70,13 @@ export class CuisinesSliderComponent implements AfterViewInit {
         slidesPerView: 5,
         spaceBetween: 20,
       },
-      567: {
+      480: {
         slidesPerView: 4,
-        spaceBetween: 20,
+        spaceBetween: 10,
+      },
+      320: {
+        slidesPerView: 3,
+        spaceBetween: 10,
       },
     },
     loop: true,
