@@ -24,17 +24,19 @@ export class PromoSliderComponent implements AfterViewInit, OnInit {
   swiperParams = {
     slidesPerView: 1,
     spaceBetween: 10,
-    loop: true,
     navigation: true,
     breakpoints: {
       992: {
         slidesPerView: 4,
+        slidesPerGroup: 4
       },
       768: {
         slidesPerView: 3,
+        slidesPerGroup: 3
       },
       576: {
         slidesPerView: 2,
+        slidesPerGroup: 2
       }
     },
     on: {
@@ -42,7 +44,7 @@ export class PromoSliderComponent implements AfterViewInit, OnInit {
       slideChange: () => { },
       activeIndexChange: () => { },
     },
-    injectStyles: [':host .swiper-button-next svg, :host .swiper-button-prev svg { display: none; }'],
+    injectStyles: [':host .swiper-button-next svg, :host .swiper-button-prev svg { display: none; } :host .swiper-pagination-bullet-active {  background-color: #00b14f !important; }'],
   };
 
   ngAfterViewInit(): void {
