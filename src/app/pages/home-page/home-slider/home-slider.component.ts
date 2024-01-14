@@ -27,7 +27,7 @@ export class HomeSliderComponent implements AfterViewInit {
   swiperParams = {
     slidesPerView: 1,
     centeredSlides: true,
-    speed: 500,
+    speed: 3000,
     autoplay: {
       delay: 3000,
       pauseOnMouseEnter: true,
