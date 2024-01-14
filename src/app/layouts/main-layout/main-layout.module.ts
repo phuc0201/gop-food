@@ -10,6 +10,7 @@ import { NzSelectModule } from 'ng-zorro-antd/select';
 import { FormsModule } from '@angular/forms';
 import { DrawerComponent } from 'src/app/shared/component-shared/drawer/drawer.component';
 import { ScrollDirective } from 'src/app/core/directives/scroll.directive';
+import { NzGridModule } from 'ng-zorro-antd/grid';
 
 @NgModule({
   declarations: [
@@ -25,7 +26,8 @@ import { ScrollDirective } from 'src/app/core/directives/scroll.directive';
     NzSelectModule,
     FormsModule,
     DrawerComponent,
-    ScrollDirective
+    ScrollDirective,
+    NzGridModule
   ]
 })
 export class MainLayoutModule { }
