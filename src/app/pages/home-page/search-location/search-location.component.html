@@ -5,12 +5,30 @@
       <span class="font-bold md:text-xl text-sm">Good Evening</span>
       <div class="md:text-4xl text-2xl font-bold">Where should we deliver your food today?</div>
     </div>
-    <div class="relative">
-      <div
-        class="searchBox flex items-center w-full py-3 px-5 border border-solid border-gray-300 rounded mb-3 focus-within:border-primary">
-        <i class="fa-solid fa-location-dot text-red text-lg basis-auto"></i>
-        <input type="text" [placeholder]="langData + 'NHAP_DIA_CHI' | translate" class="outline-none px-3 grow max-w-full min-w-0">
-        <i class="fa-solid fa-location-crosshairs text-primary text-lg cursor-pointer basis-auto"></i>
+    <div>
+      <div class="relative group">
+        <!-- <div
+          class="searchBox flex items-center w-full py-3 px-5 border border-solid border-gray-300 rounded mb-3 focus-within:border-primary">
+          <i class="fa-solid fa-location-dot text-red text-lg basis-auto"></i>
+          <input type="text" [placeholder]="langData + 'NHAP_DIA_CHI' | translate"
+            class="outline-none px-3 grow max-w-full min-w-0">
+          <i class="fa-solid fa-location-crosshairs text-primary text-lg cursor-pointer basis-auto"></i>
+        </div> -->
+        <form class="search-form relative mb-3">
+          <i
+            class="fa-solid fa-compass text-lg cursor-pointer basis-auto text-red absolute top-[50%] -translate-y-[50%]  left-3 "></i>
+          <input type="text" [placeholder]="langData + 'NHAP_DIA_CHI' | translate" [formControl]="control"
+            [matAutocomplete]="auto"
+            class="outline-none py-3 border border-gray-400 rounded border-solid grow max-w-full min-w-0 px-10 w-full">
+          <mat-autocomplete #auto="matAutocomplete" class="!absolute !bg-white">
+            <mat-option *ngFor="let address of filteredAddress | async" [value]="address"
+              class="!bg-white hover:!bg-green2">
+              {{address}}
+            </mat-option>
+          </mat-autocomplete>
+          <i
+            class="fa-solid fa-location-crosshairs text-primary text-lg cursor-pointer basis-auto absolute right-3 top-[50%] -translate-y-[50%]"></i>
+        </form>
       </div>
       <button class="w-full h-12 bg-primary text-white text-lg font-medium rounded-lg">{{ langData + 'TIM_KIEM' |
         translate }}</button>
