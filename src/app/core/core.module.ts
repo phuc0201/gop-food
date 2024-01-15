@@ -1,15 +1,16 @@
-import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { NgModule } from '@angular/core';
+
 import { ScrollDirective } from './directives/scroll.directive';
 
 
 
 @NgModule({
   declarations: [
-    ScrollDirective
   ],
   imports: [
-    CommonModule
+    CommonModule,
+    ScrollDirective,
   ]
 })
 export class CoreModule { }

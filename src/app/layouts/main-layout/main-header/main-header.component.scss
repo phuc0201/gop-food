@@ -2,13 +2,16 @@
   @apply md:bg-[linear-gradient(180deg,rgba(0,0,0,0.4),transparent)] transition-[background-color] duration-[0.3s] ease-[ease] shadow-[0_3px_6px_rgba(28,28,28,0.1)] md:shadow-none;
 }
 
-#header.scrolled {
+#header.toggle {
+  position: sticky;
+}
+#header.scrolled, #header.toggle {
   background-color: white;
   background-image: none;
   box-shadow: 0 3px 6px rgba(28, 28, 28, 0.1) !important;
 }
 
-#header.scrolled .logo {
+#header.scrolled .logo, #header.toggle .logo {
   @apply text-primary;
 }
 #header .logo {
