@@ -24,11 +24,13 @@
     </div>
   </div>
 </div>
-<nz-drawer #drawer [appResponsiveDrawer] = 'drawer' [nzClosable]="false" [nzVisible]="openFilter" (nzOnClose)="openFilter = false"
-  [nzClosable]="true">
-  <ng-container *nzDrawerContent>
-    <div class="w-full h-full flex justify-center items-center">
-
-    </div>
-  </ng-container>
-</nz-drawer>
+<div class="cuisine-drawer-filter">
+  <nz-drawer #drawer [appResponsiveDrawer]='drawer' [nzClosable]="false" [nzVisible]="openFilter"
+    (nzOnClose)="openFilter = false" [nzClosable]="true">
+    <ng-container *nzDrawerContent>
+      <div class="w-full h-full flex flex-col items-center">
+        <div *ngFor="let item of [1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1]">1</div>
+      </div>
+    </ng-container>
+  </nz-drawer>
+</div>
