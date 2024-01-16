@@ -4,7 +4,8 @@ module.exports = {
   theme: {
     extend: {
       animation: {
-        "slide-right": "slide-right .7s ease-out 0.7s infinite both"
+        "slide-right": "slide-right .7s ease-out 0.7s infinite both",
+        "shadow-drop-center": "shadow-drop-center 0.4s cubic-bezier(0.250, 0.460, 0.450, 0.940)   both"
       },
       keyframes: {
         "slide-right": {
@@ -14,12 +15,21 @@ module.exports = {
           to: {
             transform: "translateX(5px)"
           }
+        },
+        "shadow-drop-center": {
+          "0%": {
+            "box-shadow": "0 0 0 0 transparent"
+          },
+          to: {
+            "box-shadow": "0 0 20px 0 rgba(0, 177, 79, .35)"
+          }
         }
+
       },
       boxShadow: {
         '1x': '0px 5px 15px 0px rgba(0,0,0,0.15)',
         '2x': '0px 18px 1px -15px rgba(255,255,255,0.5)',
-        '3x': '20px 20px 40px #A6ABBD',
+        '3x': 'rgba(0, 0, 0, 0.16) 0px 10px 36px 0px, rgba(0, 0, 0, 0.06) 0px 0px 0px 1px;',
         '4x': '30px 30px 60px #A6ABBD',
       },
       colors: {
