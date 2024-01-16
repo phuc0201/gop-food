@@ -1,23 +1,27 @@
 import { CommonModule } from '@angular/common';
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { Component, EventEmitter, Input, Output, ViewChild } from '@angular/core';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
-import { NzDrawerModule } from 'ng-zorro-antd/drawer';
+import { NzDrawerComponent, NzDrawerModule } from 'ng-zorro-antd/drawer';
+import { ResponsiveDrawerDirective } from 'src/app/core/directives/responsive-drawer.directive';
+
 const plugins = [
   CommonModule,
   NzDrawerModule,
-  TranslateModule
+  TranslateModule,
+  ResponsiveDrawerDirective
 ];
 @Component({
-  selector: 'app-drawer',
-  templateUrl: './drawer.component.html',
-  styleUrls: ['./drawer.component.scss'],
+  selector: 'app-drawer-cart',
+  templateUrl: './drawer-cart.component.html',
+  styleUrls: ['./drawer-cart.component.scss'],
   standalone: true,
   imports: plugins,
 })
-export class DrawerComponent {
+export class DrawerCartComponent {
   @Input() opened: boolean = false;
   @Output() openedChange = new EventEmitter<boolean>();
   langData: string = 'SHARED.COMPONENT_SHARED.DRAWER.';
+  @ViewChild('cartDrawer') drawer!: NzDrawerComponent;
   open(): void {
     this.opened = true;
   }

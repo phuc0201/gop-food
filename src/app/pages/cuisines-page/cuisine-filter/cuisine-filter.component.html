@@ -13,26 +13,22 @@
       </mat-autocomplete>
     </form>
   </div>
-  <div class="items-center w-full md:gap-6 md:flex hidden py-2">
+  <div class="items-center w-full md:gap-6 flex py-2">
     <div>
       <div
-        class="px-3 py-1 border border-solid border-gray-300 rounded-lg cursor-pointer hover:border-primary outline-4 hover:outline outline-[rgba(0,177,79,.1)] hover:text-primary">
-        Đánh giá</div>
-    </div>
-    <div>
-      <div
-        class="px-3 py-1 border border-solid border-gray-300 rounded-lg cursor-pointer hover:border-primary outline-4 hover:outline outline-[rgba(0,177,79,.1)] hover:text-primary">
-        Ưu đãi</div>
-    </div>
-    <div>
-      <div
-        class="px-3 py-1 border border-solid border-gray-300 rounded-lg cursor-pointer hover:border-primary outline-4 hover:outline outline-[rgba(0,177,79,.1)] hover:text-primary">
-        Thời gian</div>
-    </div>
-    <div>
-      <div
-        class="px-3 py-1 border border-solid border-gray-300 rounded-lg cursor-pointer hover:border-primary outline-4 hover:outline outline-[rgba(0,177,79,.1)] hover:text-primary">
-        Ẩm thực</div>
+        class="px-3 py-1 border border-solid border-gray-300 rounded-lg cursor-pointer hover:border-primary outline-4 hover:outline outline-[rgba(0,177,79,.1)] hover:text-primary flex items-center gap-2"
+        (click)="openDrawer()">
+        <mat-icon>tune</mat-icon>
+        Filter
+      </div>
     </div>
   </div>
 </div>
+<nz-drawer #drawer [appResponsiveDrawer] = 'drawer' [nzClosable]="false" [nzVisible]="openFilter" (nzOnClose)="openFilter = false"
+  [nzClosable]="true">
+  <ng-container *nzDrawerContent>
+    <div class="w-full h-full flex justify-center items-center">
+
+    </div>
+  </ng-container>
+</nz-drawer>

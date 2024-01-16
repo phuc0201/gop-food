@@ -1,4 +1,5 @@
-<div appScroll id="header" class="w-full py-3 md:py-5  top-0 left-0 z-50 md:fixed sticky" [class.toggle]="headerNonFixed">
+<div appScroll id="header" class="w-full py-3 md:py-5  top-0 left-0 z-50 md:fixed sticky"
+  [class.toggle]="headerNonFixed">
   <div class="sectionContainer flex justify-between items-center flex-wrap">
     <a routerLink="/" class="logo md:text-3xl text-xl font-medium text-white cursor-pointer">GoPFood</a>
     <div class="flex items-center md:gap-3 gap-1 md:h-10 h-7">
@@ -35,4 +36,4 @@
     </div>
   </div>
 </div>
-<app-drawer [(opened)]="openDrawer"></app-drawer>
+<app-drawer-cart [(opened)]="openDrawer"></app-drawer-cart>

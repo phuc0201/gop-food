@@ -2,11 +2,14 @@ import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
+import { MatIconModule } from '@angular/material/icon';
 import { RouterModule, Routes } from '@angular/router';
 import { TranslateModule } from '@ngx-translate/core';
+import { NzDrawerModule } from 'ng-zorro-antd/drawer';
+import { ResponsiveDrawerDirective } from 'src/app/core/directives/responsive-drawer.directive';
 import { ListRestaurantComponent } from 'src/app/shared/component-shared/list-restaurant/list-restaurant.component';
-import { CuisinesComponent } from './cuisines/cuisines.component';
 import { CuisineFilterComponent } from './cuisine-filter/cuisine-filter.component';
+import { CuisinesComponent } from './cuisines/cuisines.component';
 
 
 const routes: Routes = [
@@ -23,11 +26,14 @@ const routes: Routes = [
   ],
   imports: [
     CommonModule,
+    ResponsiveDrawerDirective,
     ListRestaurantComponent,
     MatAutocompleteModule,
+    MatIconModule,
     TranslateModule,
     FormsModule,
     ReactiveFormsModule,
+    NzDrawerModule,
     RouterModule.forChild(routes)
   ]
 })

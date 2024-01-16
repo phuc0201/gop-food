@@ -7,7 +7,7 @@ import { NzButtonModule } from 'ng-zorro-antd/button';
 import { NzGridModule } from 'ng-zorro-antd/grid';
 import { NzSelectModule } from 'ng-zorro-antd/select';
 import { ScrollDirective } from 'src/app/core/directives/scroll.directive';
-import { DrawerComponent } from 'src/app/shared/component-shared/drawer/drawer.component';
+import { DrawerCartComponent } from 'src/app/shared/component-shared/drawer-cart/drawer-cart.component';
 import { MainFooterComponent } from './main-footer/main-footer.component';
 import { MainHeaderComponent } from './main-header/main-header.component';
 import { MainLayoutComponent } from './main-layout/main-layout.component';
@@ -25,7 +25,7 @@ import { MainLayoutComponent } from './main-layout/main-layout.component';
     NzButtonModule,
     NzSelectModule,
     FormsModule,
-    DrawerComponent,
+    DrawerCartComponent,
     ScrollDirective,
     NzGridModule
   ]

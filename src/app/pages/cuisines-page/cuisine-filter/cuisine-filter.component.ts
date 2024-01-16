@@ -1,6 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { TranslateService } from '@ngx-translate/core';
+import { NzDrawerComponent, NzDrawerPlacement } from 'ng-zorro-antd/drawer';
 import { Observable, map, startWith } from 'rxjs';
 
 @Component({
@@ -8,12 +9,15 @@ import { Observable, map, startWith } from 'rxjs';
   templateUrl: './cuisine-filter.component.html',
   styleUrls: ['./cuisine-filter.component.scss']
 })
-export class CuisineFilterComponent implements OnInit{
+export class CuisineFilterComponent implements OnInit {
   langData: string = 'PAGES.HOME_PAGE.SEARCH_LOCATION.';
   listResult: string[] = [];
+  openFilter: boolean = false;
+  drawerPlacement: NzDrawerPlacement = 'right';
   control = new FormControl('');
   address: string[] = ['Champs-Élysées', 'Lombard Street', 'Abbey Road', 'Fifth Avenue'];
   filteredAddress?: Observable<string[]>;
+  @ViewChild('drawer') drawer!: NzDrawerComponent;
 
   search(value: string): void {
     console.log('search: ' + value);
@@ -27,6 +31,14 @@ export class CuisineFilterComponent implements OnInit{
 
   _normalizeValue(value: string): string {
     return value.toLowerCase().replace(/\s/g, '');
+  }
+
+  openDrawer(): void {
+    if (window.innerWidth < 768) {
+      this.drawerPlacement = 'bottom';
+    }
+    else this.drawerPlacement = 'right';
+    this.openFilter = true;
   }
 
   ngOnInit(): void {
