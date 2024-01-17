@@ -1,3 +1,10 @@
 ::ng-deep .ant-drawer-bottom.ant-drawer-open .ant-drawer-content-wrapper {
   height: 80vh !important;
 }
+::ng-deep .ant-slider-track {
+  @apply bg-primary opacity-60
+}
+
+::ng-deep .ant-slider-handle, ::ng-deep .ant-slider-handle:focus {
+  @apply border-primary
+}
