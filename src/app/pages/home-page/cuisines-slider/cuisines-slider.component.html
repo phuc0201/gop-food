@@ -1,17 +1,24 @@
 <div class="relative">
-  <swiper-container init="false" #cuisinesSlider class="cusines-slider w-full flex items-center md:mb-6 sm:mb-3 mb-1">
+  <swiper-container init="false" #cuisinesSlider [pagination]="{ type:'bullets', clickable: true }"
+    class="cusines-slider w-full flex items-center md:mb-6 sm:mb-3 mb-1">
     <swiper-slide *ngIf="!listCuisine.length"
       class="w-full h-full flex items-center aspect-video rounded-lg overflow-hidden">
       <img src="assets/img/banners/banner-1.jpg" class="w-full h-auto object-cover">
     </swiper-slide>
-    <swiper-slide *ngFor="let cusine of listCuisine" class="w-full h-full flex items-center object-cover">
-      <a [routerLink]="['cuisines']" routerLinkActive="router-link-active"  class="flex flex-col items-center justify-center relative w-full">
-        <div
-          class="flex items-center justify-center max-h-40 overflow-hidden sm:aspect-video aspect-square sm:rounded-lg rounded-[50%] sm:w-auto w-24 ">
-          <img [src]="cusine.image" onerror="this.src='assets/img/banners/banner-1.jpg'"
-            class="w-full sm:h-auto h-full object-cover">
-        </div>
-      </a>
+    <swiper-slide *ngFor="let cusine of listCuisine" class="w-full h-full flex items-center justify-center object-cover">
+      <div class="pb-8">
+        <a [routerLink]="['cuisines']" routerLinkActive="router-link-active"
+          class="flex flex-col items-center justify-center relative w-full">
+          <div class="flex items-center flex-col">
+            <div
+              class="flex items-center justify-center max-h-40 overflow-hidden sm:aspect-video aspect-square sm:rounded-lg rounded-[50%] sm:w-auto w-24 bg-gray-200">
+              <img [src]="cusine.image" onerror="this.src='assets/img/banners/banner-1.jpg'"
+                class="w-full sm:h-auto h-full object-cover">
+            </div>
+            <span class="text-black font-medium text-base mt-2 uppercase">{{ cusine.name }}</span>
+          </div>
+        </a>
+      </div>
     </swiper-slide>
   </swiper-container>
 </div>

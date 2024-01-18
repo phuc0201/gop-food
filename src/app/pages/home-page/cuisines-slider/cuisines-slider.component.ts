@@ -83,9 +83,7 @@ export class CuisinesSliderComponent implements AfterViewInit {
       slideChange: () => { },
       activeIndexChange: () => { },
     },
-    injectStyles: [
-      ':host .swiper-button-next svg, :host .swiper-button-prev svg { width: 15px; color:#676767 }'
-    ],
+    injectStyles: [':host .swiper-button-next svg, :host .swiper-button-prev svg { display: none; } :host .swiper-pagination-bullet-active {  background-color: #00b14f !important; width:20px; border-radius:5px }'],
   };
   ngAfterViewInit(): void {
     Object.assign(this.swiperEl.nativeElement, this.swiperParams);

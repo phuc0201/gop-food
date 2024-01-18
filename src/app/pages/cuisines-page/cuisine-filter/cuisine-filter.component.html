@@ -29,7 +29,7 @@
     [nzVisible]="openFilter" (nzOnClose)="openFilter = false">
     <ng-container *nzDrawerContent>
       <div class="w-full h-full flex flex-col justify-between">
-        <div>
+        <div class="flex flex-col gap-5 text-gray-600">
           <div class="text-base font-medium">Ẩm thực</div>
           <div class="text-base font-medium">
             <span>Đánh giá</span>
@@ -38,8 +38,11 @@
             </div>
           </div>
           <div class="text-base font-medium">Khuyến mãi</div>
-          <div class="text-base font-medium">Thời gian: {{ cuisineFilter.duration[0] + 'm - ' + cuisineFilter.duration[1] + 'm' }}</div>
-          <nz-slider nzRange [(ngModel)]="cuisineFilter.duration" nzMax="60"></nz-slider>
+          <div>
+            <div class="text-base font-medium">Thời gian: {{ cuisineFilter.duration[0] + 'm - ' +
+              cuisineFilter.duration[1] + 'm' }}</div>
+            <nz-slider nzRange [(ngModel)]="cuisineFilter.duration" nzMax="60"></nz-slider>
+          </div>
         </div>
         <div>
           <button
