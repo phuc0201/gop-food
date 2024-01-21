@@ -1,0 +1,13 @@
+.responsive.restaurant-card {
+  @apply md:flex-col flex-row md:gap-0 gap-3;
+}
+.responsive .restaurant-banner {
+  @apply md:aspect-video aspect-square w-24 md:w-auto;
+}
+.restaurant-banner {
+  @apply aspect-video;
+}
+
+.restaurant-card {
+  @apply flex-col;
+}

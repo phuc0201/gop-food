@@ -2,7 +2,7 @@ import { CommonModule } from '@angular/common';
 import { Component, EventEmitter, Input, Output, ViewChild } from '@angular/core';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { NzDrawerComponent, NzDrawerModule } from 'ng-zorro-antd/drawer';
-import { ResponsiveDrawerDirective } from 'src/app/core/directives/responsive-drawer.directive';
+import { ResponsiveDrawerDirective } from 'src/app/shared/widget/directives/responsive-drawer.directive';
 
 const plugins = [
   CommonModule,

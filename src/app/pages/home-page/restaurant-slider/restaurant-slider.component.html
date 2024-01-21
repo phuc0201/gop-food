@@ -1,0 +1,11 @@
+<div>
+  <swiper-container init="false" #restaurantSlider class="cusines-slider w-full flex items-center md:mb-6 sm:mb-3 mb-1">
+    <swiper-slide *ngIf="!listRestaurant"
+      class="w-full h-full flex items-center aspect-video rounded-lg overflow-hidden">
+      <img src="assets/img/banners/banner-1.jpg" class="w-full h-auto object-cover">
+    </swiper-slide>
+    <swiper-slide *ngFor="let res of listRestaurant">
+      <app-restaurant-card></app-restaurant-card>
+    </swiper-slide>
+  </swiper-container>
+</div>

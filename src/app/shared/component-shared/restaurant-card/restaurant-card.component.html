@@ -1,15 +1,17 @@
-<a class="text-black hover:text-black">
-  <div class="restaurant-card rounded-xl cursor-pointer group mb-8 md:flex-col flex md:gap-0 gap-3">
+<a [routerLink]="['/restaurant']" class="text-black hover:text-black">
+  <div class="restaurant-card rounded-xl cursor-pointer group mb-8 flex gap-0" [class.responsive]="!isHome">
     <div class="mb-3 relative">
       <div
-        class="restaurant-banner bg-gray-200 flex justify-center items-center md:aspect-video aspect-square overflow-hidden rounded-xl w-24 md:w-auto">
+        class="restaurant-banner bg-gray-200 flex justify-center items-center overflow-hidden rounded-xl w-auto">
         <img src="" onerror="this.src='assets/img/foods/food-default.webp'"
           class="max-w-full origin-center transition-all duration-500 group-hover:scale-110 md:h-auto object-cover w-full h-full">
       </div>
       <div
         class="restaurant-promo absolute top-3 -left-1 w-fit px-1 bg-primary text-center text-white font-medium text-xs">
         Promo
-        <div class="absolute top-0 left-full -translate-x-1 h-full w-2 border-solid border-r-transparent border-8 border-primary"></div>
+        <div
+          class="absolute top-0 left-full -translate-x-1 h-full w-2 border-solid border-r-transparent border-8 border-primary">
+        </div>
         <div
           class="absolute top-full left-0 border border-x-[3px] border-y-4 border-b-transparent border-l-0 border-solid border-[#008c3f] border-t-0">
         </div>

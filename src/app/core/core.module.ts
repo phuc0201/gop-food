@@ -1,8 +1,8 @@
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 
-import { ResponsiveDrawerDirective } from './directives/responsive-drawer.directive';
-import { ScrollDirective } from './directives/scroll.directive';
+import { ResponsiveDrawerDirective } from '../shared/widget/directives/responsive-drawer.directive';
+import { ScrollDirective } from '../shared/widget/directives/scroll.directive';
 
 
 

@@ -29,7 +29,7 @@ export class HomeSliderComponent implements AfterViewInit {
     centeredSlides: true,
     speed: 3000,
     autoplay: {
-      delay: 3000,
+      delay: 10000,
       pauseOnMouseEnter: true,
     },
     loop: true,

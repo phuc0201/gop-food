@@ -11,8 +11,9 @@ import { RestaurantCardComponent } from 'src/app/shared/component-shared/restaur
 import { CuisinesSliderComponent } from './cuisines-slider/cuisines-slider.component';
 import { HomeSliderComponent } from './home-slider/home-slider.component';
 import { HomeComponent } from './home/home.component';
-import { SearchLocationComponent } from './search-location/search-location.component';
 import { PromoSliderComponent } from './promo-slider/promo-slider.component';
+import { RestaurantSliderComponent } from './restaurant-slider/restaurant-slider.component';
+import { SearchLocationComponent } from './search-location/search-location.component';
 
 const routes: Routes = [
   {
@@ -36,6 +37,7 @@ const routes: Routes = [
     ListRestaurantComponent,
     CuisinesSliderComponent,
     PromoSliderComponent,
+    RestaurantSliderComponent,
     MatAutocompleteModule,
     FormsModule,
     ReactiveFormsModule,

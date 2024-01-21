@@ -1,8 +1,10 @@
 import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
+import { Router, RouterModule } from '@angular/router';
 
 const plugins = [
-  CommonModule
+  CommonModule,
+  RouterModule
 ];
 @Component({
   selector: 'app-restaurant-card',
@@ -12,5 +14,10 @@ const plugins = [
   imports: plugins
 })
 export class RestaurantCardComponent {
-
+  isHome: boolean = false;
+  constructor(
+    private route: Router
+  ) {
+    this.isHome = this.route.url == '/' ? true : false;
+  }
 }

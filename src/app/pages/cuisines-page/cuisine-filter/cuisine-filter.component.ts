@@ -19,7 +19,7 @@ export interface ICuisineFilter {
 export class CuisineFilterComponent implements OnInit {
   langData: string = 'PAGES.HOME_PAGE.SEARCH_LOCATION.';
   listResult: string[] = [];
-  openFilter: boolean = true;
+  openFilter: boolean = false;
   drawerPlacement: NzDrawerPlacement = 'right';
   control = new FormControl('');
   address: string[] = ['Champs-Élysées', 'Lombard Street', 'Abbey Road', 'Fifth Avenue'];
@@ -27,7 +27,7 @@ export class CuisineFilterComponent implements OnInit {
   cuisineFilter: ICuisineFilter = {
     rate: 1,
     promo: '',
-    duration: [10,30],
+    duration: [10, 30],
     cuisines: []
   };
   @ViewChild('drawer') drawer!: NzDrawerComponent;
