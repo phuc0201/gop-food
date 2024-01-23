@@ -11,11 +11,11 @@
           class="flex flex-col items-center justify-center relative w-full">
           <div class="flex items-center flex-col">
             <div
-              class="flex items-center justify-center max-h-40 overflow-hidden sm:aspect-video aspect-square sm:rounded-lg rounded-[50%] sm:w-auto w-24 bg-gray-200">
+              class="flex items-center justify-center max-h-40 overflow-hidden sm:aspect-video aspect-square sm:rounded-lg rounded-[50%] sm:w-auto xs:w-24 w-16 bg-gray-200">
               <img [src]="cusine.image" onerror="this.src='assets/img/banners/banner-1.jpg'"
                 class="w-full sm:h-auto h-full object-cover">
             </div>
-            <span class="text-black font-medium text-base mt-2 uppercase">{{ cusine.name }}</span>
+            <span class="text-black font-medium xs:text-base text-xs mt-2 uppercase">{{ cusine.name }}</span>
           </div>
         </a>
       </div>
