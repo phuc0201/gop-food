@@ -17,6 +17,7 @@ import { OurServicesComponent } from './our-services/our-services.component';
 import { PromoSliderComponent } from './promo-slider/promo-slider.component';
 import { RestaurantSliderComponent } from './restaurant-slider/restaurant-slider.component';
 import { SearchLocationComponent } from './search-location/search-location.component';
+import { OurMenuComponent } from './our-menu/our-menu.component';
 
 const routes: Routes = [
   {
@@ -33,6 +34,7 @@ const routes: Routes = [
     SearchLocationComponent,
     NewAndEventsComponent,
     OurServicesComponent,
+    OurMenuComponent,
   ],
   imports: [
     CommonModule,
