@@ -1,19 +1,21 @@
 <div>
   <div class="font-bold mb-10 text-xl sm:text-2xl md:text-3xl w-full text-center">New and events</div>
 
-  <div nz-row nzGutter="20" class="cursor-pointer lg:gap-0 gap-5">
-    <div nz-col nzSpan="24" nzLg="12" class="group">
-      <a href="#" class="text-grey hover:text-grey">
-        <div class="rounded-lg overflow-hidden">
-          <div class="w-full aspect-video overflow-hidden">
+  <div nz-row nzGutter="20">
+    <div nz-col nzSpan="24" nzLg="8" nzSm="12" *ngFor="let item of [1,2,3]" class="mb-5">
+      <a href="#" class="text-grey hover:text-grey cursor-pointer ">
+        <div class="relative group rounded-lg overflow-hidden new-events-card">
+          <div class="w-full aspect-[9/7] overflow-hidden z-0">
             <img src="assets/img/foods/food-default.webp"
-              class="object-cover group-hover:scale-105 transition-all duration-300 w-full h-full">
+              class="object-cover group-hover:scale-110 transition-all ease-in duration-500 w-full h-full">
           </div>
           <div
-            class="new-events-card md:p-8 p-5 border-solid border border-t-0 border-gray-300 rounded-b-lg flex flex-col gap-2">
-            <div>Uncategorized / September 7, 2020 / Post by admin</div>
-            <h2 class="font-bold">10 Reasons To Do A Digital Detox Challenge</h2>
-            <div class="line-clamp-2">
+            class="new-events-card__text-wrapper transition-all duration-[1.5s]  absolute text-white group-hover:bg-black group-hover:bg-opacity-55 left-0 bottom-0 md:p-8 p-5 flex flex-col z-10 ">
+            <h2 class="font-bold text-white mb-0">10 Reasons To Do A Digital Detox Challenge
+            </h2>
+            <div class="text-xs mb-2">Septembe r 7, 2020</div>
+            <div
+              class="new-events-details line-clamp-2 max-h-0 group-hover:max-h-72 opacity-0 group-hover:opacity-100 duration-[1.5s] transition-all">
               Ac haca ullamcorper donec ante habi tasse donec imperdiet eturpis varius per a augue magna hac. Nec hac et
               vestibulum duis a tincidunt per a aptent interdum purus feugiat a id aliquet erat himenaeos nunc torquent
               euismod adipiscing adipiscing dui gravida justo.
@@ -21,54 +23,6 @@
           </div>
         </div>
       </a>
-    </div>
-
-    <div nz-col nzSpan="24" nzLg="12">
-      <div nz-row class="">
-        <a href="#" class="text-grey hover:text-grey">
-          <div class="rounded-lg overflow-hidden">
-            <div class="w-full aspect-video overflow-hidden">
-              <img src="assets/img/foods/food-default.webp"
-                class="object-cover group-hover:scale-105 transition-all duration-300 w-full h-full">
-            </div>
-            <div
-              class="new-events-card md:p-8 p-5 border-solid border border-t-0 border-gray-300 rounded-b-lg flex flex-col gap-2">
-              <div>Uncategorized / September 7, 2020 / Post by admin</div>
-              <h2 class="font-bold">10 Reasons To Do A Digital Detox Challenge</h2>
-              <div class="line-clamp-2">
-                Ac haca ullamcorper donec ante habi tasse donec imperdiet eturpis varius per a augue magna hac. Nec hac
-                et
-                vestibulum duis a tincidunt per a aptent interdum purus feugiat a id aliquet erat himenaeos nunc
-                torquent
-                euismod adipiscing adipiscing dui gravida justo.
-              </div>
-            </div>
-          </div>
-        </a>
-        <!-- <div nz-col nzSpan="24" *ngFor="let item of [1,2,3]">
-          <a href="#" class="text-grey hover:text-grey">
-            <div class="rounded-lg overflow-hidden flex lg:flex-row flex-col">
-              <div class="w-full aspect-video lg:min-w-56 lg:w-56 overflow-hidden">
-                <img src="assets/img/foods/food-default.webp"
-                  class="object-cover group-hover:scale-105 transition-all duration-300 w-full h-full">
-              </div>
-              <div
-                class="new-events-card lg:p-4 md:p-8 sm:p-5 rounded-b-lg lg:rounded-r-lg lg:rounded-bl-none flex flex-col lg:gap-0 gap-3 border-solid border border-t-0 lg:border-l-0 lg:border-t border-gray-300 ">
-                <div class="lg:hidden block">Uncategorized / September 7, 2020 / Post by admin</div>
-                <h2 class="font-bold">10 Reasons To Do A Digital Detox Challenge</h2>
-                <div class="lg:block hidden">August 31, 2020</div>
-                <div class="line-clamp-2 lg:hidden">
-                  Ac haca ullamcorper donec ante habi tasse donec imperdiet eturpis varius per a augue magna hac. Nec
-                  hac et
-                  vestibulum duis a tincidunt per a aptent interdum purus feugiat a id aliquet erat himenaeos nunc
-                  torquent
-                  euismod adipiscing adipiscing dui gravida justo.
-                </div>
-              </div>
-            </div>
-          </a>
-        </div> -->
-      </div>
     </div>
 
   </div>
