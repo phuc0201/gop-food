@@ -7,6 +7,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { RouterModule, Routes } from '@angular/router';
 import { TranslateModule } from '@ngx-translate/core';
 import { NzGridModule } from 'ng-zorro-antd/grid';
+import { FoodCardComponent } from 'src/app/shared/component-shared/food-card/food-card.component';
 import { RestaurantCardComponent } from 'src/app/shared/component-shared/restaurant-card/restaurant-card.component';
 import { CuisinesSliderComponent } from './cuisines-slider/cuisines-slider.component';
 import { HomeSliderComponent } from './home-slider/home-slider.component';
@@ -26,6 +27,14 @@ const routes: Routes = [
   }
 ];
 
+const plugins = [
+  HomeSliderComponent,
+  RestaurantCardComponent,
+  CuisinesSliderComponent,
+  PromoSliderComponent,
+  RestaurantSliderComponent,
+  FoodCardComponent
+];
 
 @NgModule({
   declarations: [
@@ -37,12 +46,8 @@ const routes: Routes = [
   ],
   imports: [
     CommonModule,
-    HomeSliderComponent,
+    plugins,
     TranslateModule,
-    RestaurantCardComponent,
-    CuisinesSliderComponent,
-    PromoSliderComponent,
-    RestaurantSliderComponent,
     MatAutocompleteModule,
     FormsModule,
     ReactiveFormsModule,
