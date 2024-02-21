@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { TranslateService } from '@ngx-translate/core';
 import { NzDrawerComponent, NzDrawerPlacement } from 'ng-zorro-antd/drawer';
@@ -14,7 +14,8 @@ export interface ICuisineFilter {
 @Component({
   selector: 'app-cuisine-filter',
   templateUrl: './cuisine-filter.component.html',
-  styleUrls: ['./cuisine-filter.component.scss']
+  styleUrls: ['./cuisine-filter.component.scss'],
+  encapsulation: ViewEncapsulation.None,
 })
 export class CuisineFilterComponent implements OnInit {
   langData: string = 'PAGES.HOME_PAGE.SEARCH_LOCATION.';
@@ -32,19 +33,14 @@ export class CuisineFilterComponent implements OnInit {
   };
   @ViewChild('drawer') drawer!: NzDrawerComponent;
 
-  search(value: string): void {
-    console.log('search: ' + value);
+  inputValue?: string;
+  options: string[] = [];
 
+  onInput(event: Event): void {
+    const value = (event.target as HTMLInputElement).value;
+    this.options = value ? [value, value + value, value + value + value] : [];
   }
 
-  _filter(value: string): string[] {
-    const filterValue = this._normalizeValue(value);
-    return this.address.filter(addr => this._normalizeValue(addr).includes(filterValue));
-  }
-
-  _normalizeValue(value: string): string {
-    return value.toLowerCase().replace(/\s/g, '');
-  }
 
   openDrawer(): void {
     if (window.innerWidth < 768) {
@@ -60,10 +56,7 @@ export class CuisineFilterComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.filteredAddress = this.control.valueChanges.pipe(
-      startWith(''),
-      map(value => this._filter(value || '')),
-    );
+  
   }
 
   constructor(private translate: TranslateService) {

@@ -1,13 +1,16 @@
-<div class="py-5">
-  <div class="sectionContainer">
-    <app-cuisine-filter></app-cuisine-filter>
-  </div>
-  <div class="divider w-full h-2 my-5 bg-gray-100"></div>
-  <div class="sectionContainer">
-    <div class="pb-5">
-      <span class="text-3xl font-bold">Ẩm thực</span>
-    </div>
-    <app-list-restaurant></app-list-restaurant>
-  </div>
+<div class="py-5 min-h-[700px]">
+  <!-- <div class="divider w-full h-2 my-5 bg-gray-100"></div> -->
 
+  <div class="sectionContainer">
+    <div nz-row nzGutter="20">
+      <div nz-col nzSpan="24" nzLg="18">
+        <router-outlet></router-outlet>
+      </div>
+      <div nz-col nzLg="6" nzSpan="0">
+        <div class="w-ful">
+          <app-cuisine-filter></app-cuisine-filter>
+        </div>
+      </div>
+    </div>
+  </div>
 </div>

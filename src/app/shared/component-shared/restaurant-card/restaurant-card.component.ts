@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { Router, RouterModule } from '@angular/router';
 
 const plugins = [
@@ -14,6 +14,7 @@ const plugins = [
   imports: plugins
 })
 export class RestaurantCardComponent {
+  @Input() isloading!: boolean;
   isHome: boolean = false;
   constructor(
     private route: Router
