@@ -2,7 +2,8 @@ import { Component, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { TranslateService } from '@ngx-translate/core';
 import { NzDrawerComponent, NzDrawerPlacement } from 'ng-zorro-antd/drawer';
-import { Observable, map, startWith } from 'rxjs';
+import { Observable } from 'rxjs';
+import { CuisinesCategory } from 'src/app/core/enums/index.enum';
 
 export interface ICuisineFilter {
   rate: number,
@@ -23,7 +24,6 @@ export class CuisineFilterComponent implements OnInit {
   openFilter: boolean = false;
   drawerPlacement: NzDrawerPlacement = 'right';
   control = new FormControl('');
-  address: string[] = ['Champs-Élysées', 'Lombard Street', 'Abbey Road', 'Fifth Avenue'];
   filteredAddress?: Observable<string[]>;
   cuisineFilter: ICuisineFilter = {
     rate: 1,
@@ -31,35 +31,17 @@ export class CuisineFilterComponent implements OnInit {
     duration: [10, 30],
     cuisines: []
   };
+  cuisineCategory = CuisinesCategory;
   @ViewChild('drawer') drawer!: NzDrawerComponent;
 
   inputValue?: string;
   options: string[] = [];
 
-  onInput(event: Event): void {
-    const value = (event.target as HTMLInputElement).value;
-    this.options = value ? [value, value + value, value + value + value] : [];
-  }
-
-
-  openDrawer(): void {
-    if (window.innerWidth < 768) {
-      this.drawerPlacement = 'bottom';
-    }
-    else this.drawerPlacement = 'right';
-    this.openFilter = true;
-  }
-
-  closeDrawer(): void {
-    this.openFilter = false,
-      console.log(this.cuisineFilter);
+  constructor(private translate: TranslateService) {
+    translate.use(localStorage.getItem('language')?.toString() ?? 'vi');
   }
 
   ngOnInit(): void {
-  
-  }
 
-  constructor(private translate: TranslateService) {
-    translate.use(localStorage.getItem('language')?.toString() ?? 'vi');
   }
 }

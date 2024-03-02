@@ -2,60 +2,31 @@
   <div class="food-search">
 
   </div>
-  <div class="food-categories p-3 border border-solid border-gray-300 rounded-2xl">
+  <div class="food-categories p-3 border border-solid border-gray-200 rounded-2xl">
     <h2 class="font-bold">Danh mục</h2>
-    <div class="flex flex-col">
-      <a [routerLink]="['/cuisines/drinks']" routerLinkActive="active">Drinks</a>
-      <a [routerLink]="['/cuisines/pizza']" routerLinkActive="active">Pizza</a>
-      <a [routerLink]="['/cuisines/pasta']" routerLinkActive="active">Pasta</a>
+    <div class="flex flex-col bg-green3 rounded-xl">
+      <a [routerLink]="['/cuisines/banh-mi']" routerLinkActive="active" class="category py-3 px-5 text-gray-400">Banh
+        mi</a>
+      <a [routerLink]="['/cuisines/drinks']" routerLinkActive="active"
+        class="category py-3 px-5 text-gray-400">Drinks</a>
+      <a [routerLink]="['/cuisines/fast-food']" routerLinkActive="active" class="category py-3 px-5 text-gray-400">Fast
+        food</a>
+      <a [routerLink]="['/cuisines/milk-tea']" routerLinkActive="active" class="category py-3 px-5 text-gray-400">Milk
+        tea</a>
+      <a [routerLink]="['/cuisines/rice']" routerLinkActive="active" class="category py-3 px-5 text-gray-400">Rice
+      </a>
+      <a [routerLink]="['/cuisines/noodles']" routerLinkActive="active"
+        class="category py-3 px-5 text-gray-400">Noodles</a>
+      <a [routerLink]="['/cuisines/vegan-food']" routerLinkActive="active"
+        class="category py-3 px-5 text-gray-400">Vegan foods</a>
+      <a [routerLink]="['/cuisines/bbq']" routerLinkActive="active" class="category py-3 px-5 text-gray-400">BBQ</a>
+      <a [routerLink]="['/cuisines/thailand-food']" routerLinkActive="active"
+        class="category py-3 px-5 text-gray-400">Thailand food</a>
+      <a [routerLink]="['/cuisines/japanese-food']" routerLinkActive="active"
+        class="category py-3 px-5 text-gray-400">Japanese food</a>
+      <a [routerLink]="['/cuisines/korean-food']" routerLinkActive="active"
+        class="category py-3 px-5 text-gray-400">Korean food</a>
+      <a [routerLink]="['/cuisines/chinese-food']" routerLinkActive="active"
+        class="category py-3 px-5 text-gray-400">Chinese food</a>
     </div>
   </div>
-  <!-- <div class="relative group mb-3">
-    <i
-      class="fa-solid fa-magnifying-glass text-lg cursor-pointer basis-auto text-grey absolute top-[50%] -translate-y-[50%]  left-6 "></i>
-    <input placeholder="input here" nz-input [(ngModel)]="inputValue" (input)="onInput($event)" [nzAutocomplete]="auto"
-      class="outline-none py-3 rounded-3xl bg-gray-100 grow max-w-full min-w-0 px-16 w-full" />
-    <nz-autocomplete [nzDataSource]="options" nzBackfill #auto></nz-autocomplete>
-  </div> -->
-
-  <!-- <div class="items-center w-full md:gap-6 flex py-2">
-    <div>
-      <div
-        class="px-3 py-1 border border-solid border-gray-300 rounded-lg cursor-pointer hover:border-primary outline-4 hover:outline outline-[rgba(0,177,79,.1)] hover:text-primary flex items-center gap-2"
-        (click)="openDrawer()">
-        <mat-icon>tune</mat-icon>
-        Filter
-      </div>
-    </div>
-  </div>
-</div> -->
-
-  <!-- <div class="cuisine-drawer-filter">
-  <nz-drawer #drawer [appResponsiveDrawer]='drawer' [defaultPlacement]="'left'" [nzClosable]="false"
-    [nzVisible]="openFilter" (nzOnClose)="openFilter = false">
-    <ng-container *nzDrawerContent>
-      <div class="w-full h-full flex flex-col justify-between">
-        <div class="flex flex-col gap-5 text-gray-600">
-          <div class="text-base font-medium">Ẩm thực</div>
-          <div class="text-base font-medium">
-            <span>Đánh giá</span>
-            <div>
-              <nz-rate [(ngModel)]="cuisineFilter.rate"></nz-rate>
-            </div>
-          </div>
-          <div class="text-base font-medium">Khuyến mãi</div>
-          <div>
-            <div class="text-base font-medium">Thời gian: {{ cuisineFilter.duration[0] + 'm - ' +
-              cuisineFilter.duration[1] + 'm' }}</div>
-            <nz-slider nzRange [(ngModel)]="cuisineFilter.duration" nzMax="60"></nz-slider>
-          </div>
-        </div>
-        <div>
-          <button
-            class="bg-primary w-full rounded py-3 text-white font-medium md:text-xl text-base border-0 outline-0 hover:scale-[.98] transition-all"
-            (click)="closeDrawer()">Lưu</button>
-        </div>
-      </div>
-    </ng-container>
-  </nz-drawer>
-</div> -->

@@ -48,7 +48,8 @@ module.exports = {
         'grey': '#717176',
         'grey1': '#676767',
         'orange1': '#ff7903',
-      }
+        'black1': '#1E1D23',
+      },
     },
     screens: {
       'xs': '376px',
