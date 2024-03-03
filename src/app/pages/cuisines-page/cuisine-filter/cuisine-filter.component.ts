@@ -3,7 +3,8 @@ import { FormControl } from '@angular/forms';
 import { TranslateService } from '@ngx-translate/core';
 import { NzDrawerComponent, NzDrawerPlacement } from 'ng-zorro-antd/drawer';
 import { Observable } from 'rxjs';
-import { CuisinesCategory } from 'src/app/core/enums/index.enum';
+import { cuisineCategory } from 'src/assets/dummy-data/cuisine-category';
+
 
 export interface ICuisineFilter {
   rate: number,
@@ -31,7 +32,7 @@ export class CuisineFilterComponent implements OnInit {
     duration: [10, 30],
     cuisines: []
   };
-  cuisineCategory = CuisinesCategory;
+  cuisineCategory = cuisineCategory;
   @ViewChild('drawer') drawer!: NzDrawerComponent;
 
   inputValue?: string;

@@ -5,28 +5,7 @@
   <div class="food-categories p-3 border border-solid border-gray-200 rounded-2xl">
     <h2 class="font-bold">Danh mục</h2>
     <div class="flex flex-col bg-green3 rounded-xl">
-      <a [routerLink]="['/cuisines/banh-mi']" routerLinkActive="active" class="category py-3 px-5 text-gray-400">Banh
-        mi</a>
-      <a [routerLink]="['/cuisines/drinks']" routerLinkActive="active"
-        class="category py-3 px-5 text-gray-400">Drinks</a>
-      <a [routerLink]="['/cuisines/fast-food']" routerLinkActive="active" class="category py-3 px-5 text-gray-400">Fast
-        food</a>
-      <a [routerLink]="['/cuisines/milk-tea']" routerLinkActive="active" class="category py-3 px-5 text-gray-400">Milk
-        tea</a>
-      <a [routerLink]="['/cuisines/rice']" routerLinkActive="active" class="category py-3 px-5 text-gray-400">Rice
-      </a>
-      <a [routerLink]="['/cuisines/noodles']" routerLinkActive="active"
-        class="category py-3 px-5 text-gray-400">Noodles</a>
-      <a [routerLink]="['/cuisines/vegan-food']" routerLinkActive="active"
-        class="category py-3 px-5 text-gray-400">Vegan foods</a>
-      <a [routerLink]="['/cuisines/bbq']" routerLinkActive="active" class="category py-3 px-5 text-gray-400">BBQ</a>
-      <a [routerLink]="['/cuisines/thailand-food']" routerLinkActive="active"
-        class="category py-3 px-5 text-gray-400">Thailand food</a>
-      <a [routerLink]="['/cuisines/japanese-food']" routerLinkActive="active"
-        class="category py-3 px-5 text-gray-400">Japanese food</a>
-      <a [routerLink]="['/cuisines/korean-food']" routerLinkActive="active"
-        class="category py-3 px-5 text-gray-400">Korean food</a>
-      <a [routerLink]="['/cuisines/chinese-food']" routerLinkActive="active"
-        class="category py-3 px-5 text-gray-400">Chinese food</a>
+      <a *ngFor="let item of cuisineCategory" [routerLink]="['/cuisines', item.slug]" routerLinkActive="active"
+        class="category py-3 px-5 text-gray-400">{{ item.name }}</a>
     </div>
   </div>
