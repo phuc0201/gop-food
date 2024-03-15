@@ -1,21 +1,6 @@
-::ng-deep .ant-drawer-bottom.ant-drawer-open .ant-drawer-content-wrapper {
-  height: 80vh !important;
-}
-::ng-deep .ant-slider-track {
-  @apply bg-primary opacity-60;
-}
-
-::ng-deep .ant-slider-handle,
-::ng-deep .ant-slider-handle:focus {
-  @apply border-primary;
-}
-.active,
-.active:hover {
-  color: black;
-}
-.category.active {
-  @apply text-black1 bg-green rounded-lg;
-}
-a:hover {
-  @apply text-gray-400;
+#cuisine-filter {
+  @apply py-5;
+  button {
+    @apply bg-gray-100 hover:bg-gray-200 py-1 px-3 rounded-2xl mr-2 text-black1;
+  }
 }

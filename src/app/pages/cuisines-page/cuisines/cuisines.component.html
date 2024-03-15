@@ -1,16 +1,21 @@
 <div class="py-5 min-h-[785px]">
-  <!-- <div class="divider w-full h-2 my-5 bg-gray-100"></div> -->
 
   <div class="sectionContainer">
-    <div nz-row nzGutter="20">
+
+    <app-cuisine-filter></app-cuisine-filter>
+
+    <div nz-row nzGutter="20" class="!flex-col-reverse lg:!flex-row">
+
       <div nz-col nzSpan="24" nzLg="18">
         <router-outlet></router-outlet>
       </div>
-      <div nz-col nzLg="6" nzSpan="0">
+
+      <div nz-col nzLg="6" nzSpan="24">
         <div class="w-ful">
-          <app-cuisine-filter></app-cuisine-filter>
+          <app-cuisine-category></app-cuisine-category>
         </div>
       </div>
+
     </div>
   </div>
 </div>

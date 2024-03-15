@@ -1,11 +1,34 @@
-<div>
-  <div class="food-search">
+<div id="cuisine-filter">
+  <button>Sort by</button>
+  <button>Promo</button>
+  <button>Delivery fee</button>
+  <button>Price</button>
+  <button>Reset</button>
+  <a nz-dropdown nzTrigger="click" [nzDropdownMenu]="menu">
+    Click me
+    <span nz-icon nzType="down"></span>
+  </a>
+  <nz-dropdown-menu #menu="nzDropdownMenu">
+    <ul nz-menu>
+      <li nz-menu-item>
+        <a [routerLink]="['/cuisines', 'banh-mi']">banh mi</a>
+      </li>
+      <li nz-menu-item>2nd menu item</li>
+      <li nz-menu-divider></li>
+      <li nz-menu-item nzDisabled>disabled menu item</li>
+      <li nz-submenu nzTitle="sub menu">
+        <ul>
+          <li nz-menu-item>3rd menu item</li>
+          <li nz-menu-item>4th menu item</li>
+        </ul>
+      </li>
+      <li nz-submenu nzDisabled nzTitle="disabled sub menu">
+        <ul>
+          <li nz-menu-item>3rd menu item</li>
+          <li nz-menu-item>4th menu item</li>
+        </ul>
+      </li>
+    </ul>
+  </nz-dropdown-menu>
 
-  </div>
-  <div class="food-categories p-3 border border-solid border-gray-200 rounded-2xl">
-    <h2 class="font-bold">Danh mục</h2>
-    <div class="flex flex-col bg-green3 rounded-xl">
-      <a *ngFor="let item of cuisineCategory" [routerLink]="['/cuisines', item.slug]" routerLinkActive="active"
-        class="category py-3 px-5 text-gray-400">{{ item.name }}</a>
-    </div>
-  </div>
+</div>
