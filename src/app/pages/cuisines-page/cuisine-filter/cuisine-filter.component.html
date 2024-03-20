@@ -1,9 +1,28 @@
 <div id="cuisine-filter">
-  <button>Sort by</button>
-  <button>Promo</button>
+
+  <button nz-dropdown nzTrigger="click" [nzDropdownMenu]="sortBy">
+    Sort by
+    <span nz-icon nzType="down"></span>
+  </button>
+  <nz-dropdown-menu #sortBy="nzDropdownMenu">
+    <ul nz-menu>
+      <li nz-menu-item>
+        <a class="p-3" (click)="applyFilter('sortby', 'recommended')">Recommended</a>
+      </li>
+      <li nz-menu-item>
+        <a class="p-3" (click)="applyFilter('sortby', 'populary')">Popularity</a>
+      </li>
+      <li nz-menu-item>
+        <a class="p-3" (click)="applyFilter('sortby', 'rating')">Rating</a>
+      </li>
+    </ul>
+  </nz-dropdown-menu>
+
+  <button (click)="applyFilter('promo', 'true')">Promo</button>
   <button>Delivery fee</button>
   <button>Price</button>
   <button>Reset</button>
+
   <a nz-dropdown nzTrigger="click" [nzDropdownMenu]="menu">
     Click me
     <span nz-icon nzType="down"></span>

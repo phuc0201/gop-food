@@ -23,5 +23,11 @@ export class ListRestaurantComponent implements OnInit {
         this.isLoading = false;
       }, 500);
     });
+    this.route.queryParams.subscribe(params => {
+      this.isLoading = true;
+      setTimeout(() => {
+        this.isLoading = false;
+      }, 500);
+    });
   }
 }
