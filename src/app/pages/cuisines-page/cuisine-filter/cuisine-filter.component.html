@@ -1,53 +1,63 @@
 <div id="cuisine-filter">
 
-  <button nz-dropdown nzTrigger="click" [nzDropdownMenu]="sortBy">
+  <button nz-dropdown nzTrigger="click" [nzDropdownMenu]="sortBy" [(nzVisible)]="dropDownForSortBy">
     Sort by
-    <span nz-icon nzType="down"></span>
   </button>
   <nz-dropdown-menu #sortBy="nzDropdownMenu">
-    <ul nz-menu>
-      <li nz-menu-item>
-        <a class="p-3" (click)="applyFilter('sortby', 'recommended')">Recommended</a>
-      </li>
-      <li nz-menu-item>
-        <a class="p-3" (click)="applyFilter('sortby', 'populary')">Popularity</a>
-      </li>
-      <li nz-menu-item>
-        <a class="p-3" (click)="applyFilter('sortby', 'rating')">Rating</a>
-      </li>
-    </ul>
+    <nz-radio-group [(ngModel)]="filter.sortBy">
+      <div class="flex flex-col rounded-sm bg-white overflow-auto shadow-2xl">
+        <ng-container *ngFor="let item of [ 'recommended', 'populary', 'rating']">
+          <a nz-radio [nzValue]=item [routerLink]="[filterURL]" [queryParams]="{sortby: item}"
+            queryParamsHandling="merge" routerLinkActive="active"
+            class="!p-2 text-black hover:text-black !m-0 hover:bg-green3"
+            (click)="dropDownForSortBy=!dropDownForSortBy">
+            <span class="capitalize"> {{ item }} </span>
+          </a>
+        </ng-container>
+      </div>
+    </nz-radio-group>
   </nz-dropdown-menu>
 
-  <button (click)="applyFilter('promo', 'true')">Promo</button>
-  <button>Delivery fee</button>
-  <button>Price</button>
-  <button>Reset</button>
-
-  <a nz-dropdown nzTrigger="click" [nzDropdownMenu]="menu">
-    Click me
-    <span nz-icon nzType="down"></span>
+  <a [routerLink]="[filterURL]" [queryParams]="{promo: !filter.promo}" queryParamsHandling="merge"
+    (click)="filter.promo=!filter.promo" class="relative">
+    <button>
+      Promo
+    </button>
+    <i [hidden]="!filter.promo"
+      class="fa-solid fa-circle-check text-xs text-primary absolute top-0 right-0 -translate-x-2 -translate-y-2"></i>
   </a>
-  <nz-dropdown-menu #menu="nzDropdownMenu">
-    <ul nz-menu>
+
+  <button nz-dropdown nzTrigger="click" [nzDropdownMenu]="deliveryFee">Delivery fee</button>
+  <nz-dropdown-menu #deliveryFee="nzDropdownMenu">
+    <!-- <ul nz-menu>
       <li nz-menu-item>
-        <a [routerLink]="['/cuisines', 'banh-mi']">banh mi</a>
+        <a [routerLink]="[filterURL]" routerLinkActive="active" queryParamsHandling="merge"
+          [queryParams]="{deliveryFee: 'any'}" class="p-1 flex items-center gap-2 text-black hover:text-black">
+          <div class="sort-by-option flex justify-center items-center w-4 h-4 rounded-[50%] border border-gray-300">
+            <div class="hidden radio w-2 h-2 border border-gray-300 rounded-[50%]"></div>
+          </div>
+          <span class="capitalize"> Any </span>
+        </a>
       </li>
-      <li nz-menu-item>2nd menu item</li>
-      <li nz-menu-divider></li>
-      <li nz-menu-item nzDisabled>disabled menu item</li>
-      <li nz-submenu nzTitle="sub menu">
-        <ul>
-          <li nz-menu-item>3rd menu item</li>
-          <li nz-menu-item>4th menu item</li>
-        </ul>
+      <li nz-menu-item *ngFor="let item of [ '15000', '25000', '35000']">
+        <a [routerLink]="[filterURL]" [queryParams]="{deliveryFee: item}" queryParamsHandling="merge"
+          routerLinkActive="active" class="p-1 flex items-center gap-2 text-black hover:text-black">
+          <div class="sort-by-option flex justify-center items-center w-4 h-4 rounded-[50%] border border-gray-300">
+            <div class="hidden radio w-2 h-2 border border-gray-300 rounded-[50%]"></div>
+          </div>
+          <span class="capitalize"> Less than {{ item }} </span>
+        </a>
       </li>
-      <li nz-submenu nzDisabled nzTitle="disabled sub menu">
-        <ul>
-          <li nz-menu-item>3rd menu item</li>
-          <li nz-menu-item>4th menu item</li>
-        </ul>
-      </li>
-    </ul>
+    </ul> -->
   </nz-dropdown-menu>
+
+  <button>Price</button>
+
+  <a [routerLink]="[filterURL]">
+    <button (click)="resetFilter()">
+      <span class="capitalize"> reset </span>
+    </button>
+  </a>
+
 
 </div>

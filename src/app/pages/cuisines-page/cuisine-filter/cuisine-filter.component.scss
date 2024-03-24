@@ -4,3 +4,31 @@
     @apply bg-gray-100 hover:bg-gray-200 py-1 px-3 rounded-2xl mr-2 text-black1;
   }
 }
+
+.active .radio {
+  @apply block bg-primary border-primary;
+}
+.active .sort-by-option {
+  @apply border-primary;
+}
+a {
+  @apply text-black hover:text-black;
+}
+
+.ant-radio-checked .ant-radio-inner {
+  @apply border-primary;
+}
+.ant-radio-inner::after {
+  @apply bg-primary;
+}
+.ant-radio:hover .ant-radio-inner {
+  @apply border-primary outline-primary;
+}
+.ant-radio-input:focus + .ant-radio-inner,
+.ant-radio-wrapper:hover .ant-radio,
+.ant-radio:hover .ant-radio-inner {
+  @apply border-primary;
+}
+.ant-radio-checked::after {
+  @apply border-primary;
+}

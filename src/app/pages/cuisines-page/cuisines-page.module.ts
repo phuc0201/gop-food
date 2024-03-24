@@ -10,6 +10,7 @@ import { NzDrawerModule } from 'ng-zorro-antd/drawer';
 import { NzDropDownModule } from 'ng-zorro-antd/dropdown';
 import { NzGridModule } from 'ng-zorro-antd/grid';
 import { NzLayoutModule } from 'ng-zorro-antd/layout';
+import { NzRadioModule } from 'ng-zorro-antd/radio';
 import { NzRateModule } from 'ng-zorro-antd/rate';
 import { NzSliderModule } from 'ng-zorro-antd/slider';
 import { ListRestaurantComponent } from 'src/app/pages/cuisines-page/list-restaurant/list-restaurant.component';
@@ -18,7 +19,6 @@ import { ResponsiveDrawerDirective } from 'src/app/shared/widget/directives/resp
 import { CuisineCategoryComponent } from './cuisine-category/cuisine-category.component';
 import { CuisineFilterComponent } from './cuisine-filter/cuisine-filter.component';
 import { CuisinesComponent } from './cuisines/cuisines.component';
-
 const routes: Routes = [
   {
     path: '',
@@ -57,6 +57,7 @@ const plugins = [
     NzSliderModule,
     NzDropDownModule,
     NzAutocompleteModule,
+    NzRadioModule,
     NzLayoutModule
   ]
 })
