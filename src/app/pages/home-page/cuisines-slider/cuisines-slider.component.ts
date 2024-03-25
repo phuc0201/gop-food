@@ -1,6 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { AfterViewInit, CUSTOM_ELEMENTS_SCHEMA, Component, ElementRef, ViewChild } from '@angular/core';
 import { RouterModule } from '@angular/router';
+import { cuisineCategory } from 'src/assets/dummy-data/cuisine-category';
 import { register } from 'swiper/element/bundle';
 register();
 
@@ -24,40 +25,7 @@ const plugins = [
 })
 export class CuisinesSliderComponent implements AfterViewInit {
   @ViewChild('cuisinesSlider') swiperEl!: ElementRef;
-  listCuisine: ICategory[] = [
-    {
-      name: 'Bánh mì',
-      image: 'assets/img/banners/banner-1.jpg',
-    },
-    {
-      name: 'Phở',
-      image: 'assets/img/banners/banner-2.jpg',
-    },
-    {
-      name: 'Chè',
-      image: 'assets/img/banners/banner-3.jpg',
-    },
-    {
-      name: 'Bánh bao',
-      image: 'assets/img/banners/banner-4.jpg',
-    },
-    {
-      name: 'Bánh mì',
-      image: 'assets/img/banners/banner-1.jpg',
-    },
-    {
-      name: 'Phở',
-      image: 'assets/img/banners/banner-2.jpg',
-    },
-    {
-      name: 'Chè',
-      image: 'assets/img/banners/banner-3.jpg',
-    },
-    {
-      name: 'Bánh bao',
-      image: 'assets/img/banners/banner-4.jpg',
-    },
-  ];
+  listCuisine = cuisineCategory;
   swiperParams = {
     slidesPerView: 3,
     Infinity: true,
