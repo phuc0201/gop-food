@@ -32,3 +32,18 @@ a {
 .ant-radio-checked::after {
   @apply border-primary;
 }
+
+.ant-slider-handle:focus,
+.ant-slider:hover .ant-slider-handle:not(.ant-tooltip-open) {
+  @apply border-primary;
+}
+.ant-slider-handle {
+  @apply border-green2;
+}
+.ant-slider-track {
+  @apply bg-green2;
+}
+
+.ant-slider:hover .ant-slider-track {
+  @apply bg-primary;
+}
