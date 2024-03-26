@@ -32,3 +32,25 @@ a {
 .ant-radio-checked::after {
   @apply border-primary;
 }
+
+.ant-slider-handle:focus,
+.ant-slider:hover .ant-slider-handle:not(.ant-tooltip-open) {
+  @apply border-primary;
+}
+.ant-slider-handle {
+  @apply border-green2;
+}
+.ant-slider-track {
+  @apply bg-green2;
+}
+
+.ant-slider:hover .ant-slider-track {
+  @apply bg-primary;
+}
+
+.cuisine-filter-mobile .ant-drawer-body {
+  @apply bg-gray-100 mt-4 px-0 pt-0;
+}
+.filter-title {
+  @apply font-bold text-gray-500 py-3 px-4 m-0;
+}

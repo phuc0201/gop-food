@@ -55,6 +55,7 @@ const plugins = [
     NzDrawerModule,
     NzRateModule,
     NzSliderModule,
+    NzSliderModule,
     NzDropDownModule,
     NzAutocompleteModule,
     NzRadioModule,

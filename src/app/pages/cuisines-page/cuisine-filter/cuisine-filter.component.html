@@ -1,63 +1,143 @@
-<div id="cuisine-filter">
-
+<div id="cuisine-filter" class="sm:block hidden">
+  <!--  -->
   <button nz-dropdown nzTrigger="click" [nzDropdownMenu]="sortBy" [(nzVisible)]="dropDownForSortBy">
+    <i class="fa-solid fa-arrows-up-down"></i>
     Sort by
   </button>
   <nz-dropdown-menu #sortBy="nzDropdownMenu">
-    <nz-radio-group [(ngModel)]="filter.sortBy">
-      <div class="flex flex-col rounded-sm bg-white overflow-auto shadow-2xl">
-        <ng-container *ngFor="let item of [ 'recommended', 'populary', 'rating']">
-          <a nz-radio [nzValue]=item [routerLink]="[filterURL]" [queryParams]="{sortby: item}"
-            queryParamsHandling="merge" routerLinkActive="active"
-            class="!p-2 text-black hover:text-black !m-0 hover:bg-green3"
-            (click)="dropDownForSortBy=!dropDownForSortBy">
-            <span class="capitalize"> {{ item }} </span>
-          </a>
-        </ng-container>
-      </div>
-    </nz-radio-group>
+    <div class="shadow-2xl rounded-md overflow-hidden">
+      <ng-container [ngTemplateOutlet]="sortTemplate"></ng-container>
+    </div>
   </nz-dropdown-menu>
 
-  <a [routerLink]="[filterURL]" [queryParams]="{promo: !filter.promo}" queryParamsHandling="merge"
-    (click)="filter.promo=!filter.promo" class="relative">
+  <!--  -->
+  <a [routerLink]="[filterURL]" [queryParams]="{promo: !filter.promo}" queryParamsHandling="merge" class="relative">
     <button>
       Promo
     </button>
-    <i [hidden]="!filter.promo"
+    <i *ngIf="filter.promo"
       class="fa-solid fa-circle-check text-xs text-primary absolute top-0 right-0 -translate-x-2 -translate-y-2"></i>
   </a>
 
-  <button nz-dropdown nzTrigger="click" [nzDropdownMenu]="deliveryFee">Delivery fee</button>
+  <!--  -->
+  <button nz-dropdown nzTrigger="click" [nzDropdownMenu]="deliveryFee" [(nzVisible)]="dropDownForDeleivery">
+    <i class="fa-solid fa-motorcycle"></i>
+    Delivery fee
+  </button>
   <nz-dropdown-menu #deliveryFee="nzDropdownMenu">
-    <!-- <ul nz-menu>
-      <li nz-menu-item>
-        <a [routerLink]="[filterURL]" routerLinkActive="active" queryParamsHandling="merge"
-          [queryParams]="{deliveryFee: 'any'}" class="p-1 flex items-center gap-2 text-black hover:text-black">
-          <div class="sort-by-option flex justify-center items-center w-4 h-4 rounded-[50%] border border-gray-300">
-            <div class="hidden radio w-2 h-2 border border-gray-300 rounded-[50%]"></div>
-          </div>
-          <span class="capitalize"> Any </span>
-        </a>
-      </li>
-      <li nz-menu-item *ngFor="let item of [ '15000', '25000', '35000']">
-        <a [routerLink]="[filterURL]" [queryParams]="{deliveryFee: item}" queryParamsHandling="merge"
-          routerLinkActive="active" class="p-1 flex items-center gap-2 text-black hover:text-black">
-          <div class="sort-by-option flex justify-center items-center w-4 h-4 rounded-[50%] border border-gray-300">
-            <div class="hidden radio w-2 h-2 border border-gray-300 rounded-[50%]"></div>
-          </div>
-          <span class="capitalize"> Less than {{ item }} </span>
-        </a>
-      </li>
-    </ul> -->
+    <div class="shadow-2xl rounded-md overflow-hidden">
+      <ng-container [ngTemplateOutlet]="deliveryFeeTempalte"></ng-container>
+    </div>
   </nz-dropdown-menu>
 
-  <button>Price</button>
+  <!--  -->
+  <button nz-dropdown nzTrigger="click" [nzDropdownMenu]="price" [(nzVisible)]="dropDownForPrice">Price
+  </button>
+  <nz-dropdown-menu #price="nzDropdownMenu">
+    <div class="shadow-2xl rounded-md overflow-hidden">
+      <ng-container [ngTemplateOutlet]="priceTemplate"></ng-container>
+    </div>
 
+  </nz-dropdown-menu>
+  <!--  -->
   <a [routerLink]="[filterURL]">
     <button (click)="resetFilter()">
       <span class="capitalize"> reset </span>
     </button>
   </a>
-
-
 </div>
+<!--  -->
+<div class="sm:hidden block py-5">
+  <button class="bg-gray-100 hover:bg-gray-200 py-1 px-3 rounded-2xl mr-2 text-black1" (click)="openFilterDrawer()">
+    <i class="fa-solid fa-sliders"></i>
+  </button>
+  <nz-drawer [nzClosable]="true" [nzVisible]="visibleFilterDrawer" nzPlacement="bottom" nzSize="large"
+    (nzOnClose)="closeFilterDrawer()" nzWrapClassName="cuisine-filter-mobile">
+    <ng-container *nzDrawerContent>
+      <div>
+        <h3 class="filter-title">Sort By</h3>
+        <ng-container [ngTemplateOutlet]="sortTemplate"></ng-container>
+      </div>
+      <div>
+        <h3 class="filter-title">Restaurant options</h3>
+        <ng-container [ngTemplateOutlet]="restaurntOptionTemplate"></ng-container>
+      </div>
+      <div>
+        <h3 class="filter-title">Delivery Fee</h3>
+        <ng-container [ngTemplateOutlet]="deliveryFeeTempalte"></ng-container>
+      </div>
+      <div>
+        <h3 class="filter-title">Price</h3>
+        <ng-container [ngTemplateOutlet]="priceTemplate"></ng-container>
+      </div>
+    </ng-container>
+  </nz-drawer>
+</div>
+
+<ng-template #sortTemplate>
+  <div class="w-full bg-white px-4">
+    <nz-radio-group [(ngModel)]="filter.sortBy" ngClass="w-full">
+      <div class="flex flex-col rounded-sm overflow-auto">
+        <ng-container *ngFor="let item of [ 'recommended', 'populary', 'rating']">
+          <a nz-radio [nzValue]=item [routerLink]="[filterURL]" [queryParams]="{sortby: item}"
+            queryParamsHandling="merge" routerLinkActive="active"
+            class="!py-4 text-black hover:text-black !m-0 hover:bg-green3 border border-gray-200 border-x-0 border-t-0 last:border-0"
+            (click)="dropDownForSortBy=false">
+            <span class="capitalize"> {{ item }} </span>
+          </a>
+        </ng-container>
+      </div>
+    </nz-radio-group>
+  </div>
+</ng-template>
+
+<ng-template #deliveryFeeTempalte>
+  <div class="w-full bg-white px-4">
+    <nz-radio-group [(ngModel)]="filter.deliveryFee" ngClass="w-full">
+      <div class="flex flex-col rounded-sm overflow-auto">
+        <ng-container *ngFor="let item of [ 'any', '15000', '25000', '35000' ]">
+          <a nz-radio [nzValue]=item [routerLink]="[filterURL]" [queryParams]="{deliveryFee: item}"
+            queryParamsHandling="merge" routerLinkActive="active"
+            class="!py-4 text-black hover:text-black !m-0 hover:bg-green3 border border-gray-200 border-x-0 border-t-0 last:border-0"
+            (click)="dropDownForDeleivery=false">
+            <span *ngIf="item === 'any'" class="capitalize"> {{ item }} </span>
+            <span *ngIf="item!=='any'" class="capitalize"> Less than {{ item }} </span>
+          </a>
+        </ng-container>
+      </div>
+    </nz-radio-group>
+  </div>
+</ng-template>
+
+<ng-template #priceTemplate>
+  <div class="sm:w-96 w-full p-2 h-auto rounded-sm bg-white">
+
+    <div class="flex items-center justify-between">
+      <div class="flex items-center justify-center w-32 h-6 border border-gray-300">
+        <div>{{ filter.price[0] }}</div>
+      </div>
+      <div class="flex-1 h-[2px] bg-gray-200">
+
+      </div>
+      <div class="flex items-center justify-center w-32 h-6 border border-gray-300">
+        <div>{{ filter.price[1] }}</div>
+      </div>
+    </div>
+
+    <nz-slider nzRange [(ngModel)]="filter.price"></nz-slider>
+
+    <!-- <div class="flex flex-col items-end w-full">
+      <button class="px-4 py-2 rounded-sm bg-primary text-white font-bold"
+        (click)="applyFilter('price', filter.price[0] + '-' + filter.price[1])">Xem kết quả</button>
+    </div> -->
+  </div>
+</ng-template>
+
+<ng-template #restaurntOptionTemplate>
+  <div class="w-full px-4">
+    <div class="flex items-center justify-between">
+      <span>Promo</span>
+      <input type="checkbox">
+    </div>
+  </div>
+</ng-template>

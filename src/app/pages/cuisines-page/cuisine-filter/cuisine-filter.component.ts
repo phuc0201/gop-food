@@ -13,11 +13,13 @@ import { ICuisineFilter } from 'src/app/core/models/cuisine-filter.model';
   encapsulation: ViewEncapsulation.None,
 })
 export class CuisineFilterComponent implements OnInit {
-
   langData: string = 'PAGES.HOME_PAGE.SEARCH_LOCATION.';
   dropDownForSortBy: boolean = false;
+  dropDownForDeleivery: boolean = false;
+  dropDownForPrice: boolean = false;
   filter!: ICuisineFilter;
-  radioValue = 'A';
+  visibleFilterDrawer = true;
+
   constructor(
     private translate: TranslateService,
     private router: Router,
@@ -39,19 +41,24 @@ export class CuisineFilterComponent implements OnInit {
       queryParams,
       queryParamsHandling: 'merge',
     });
-    console.log(this.router);
+    this.dropDownForPrice = false;
   }
 
   resetFilter(): void {
     this.filter = {
       sortBy: 'recommended',
       promo: false,
-      deliveryFee: 25000,
-      price: {
-        min: 1000,
-        max: 500000
-      },
+      deliveryFee: 'any',
+      price: [0, 100]
     };
+  }
+
+  openFilterDrawer(): void {
+    this.visibleFilterDrawer = true;
+  }
+
+  closeFilterDrawer(): void {
+    this.visibleFilterDrawer = false;
   }
 
   ngOnInit(): void {
@@ -59,9 +66,17 @@ export class CuisineFilterComponent implements OnInit {
     this.route.queryParams.subscribe(params => {
       if (params["sortby"])
         this.filter.sortBy = params["sortby"];
-      // if (Object.keys(params).length === 0) {
-      //   this.resetFilter();
-      // }
+
+      if (params["deliveryFee"])
+        this.filter.deliveryFee = params["deliveryFee"];
+
+      if (params["price"]) {
+        this.filter.price = params['price'].split('-').map((str: string) => Number(str));
+      }
+
+      if (params["promo"]) {
+        this.filter.promo = JSON.parse(params['promo']);
+      }
     });
   }
 }
