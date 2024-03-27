@@ -51,7 +51,7 @@
   <button class="bg-gray-100 hover:bg-gray-200 py-1 px-3 rounded-2xl mr-2 text-black1" (click)="openFilterDrawer()">
     <i class="fa-solid fa-sliders"></i>
   </button>
-  <nz-drawer [nzClosable]="true" [nzVisible]="visibleFilterDrawer" nzPlacement="bottom" nzSize="large"
+  <nz-drawer [nzClosable]="true" [nzVisible]="visibleFilterDrawer" nzPlacement="bottom" [nzHeight]="'85%'"
     (nzOnClose)="closeFilterDrawer()" nzWrapClassName="cuisine-filter-mobile">
     <ng-container *nzDrawerContent>
       <div>
