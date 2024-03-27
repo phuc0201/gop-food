@@ -54,58 +54,90 @@
   <nz-drawer [nzClosable]="true" [nzVisible]="visibleFilterDrawer" nzPlacement="bottom" [nzHeight]="'85%'"
     (nzOnClose)="closeFilterDrawer()" nzWrapClassName="cuisine-filter-mobile">
     <ng-container *nzDrawerContent>
+
       <div>
         <h3 class="filter-title">Sort By</h3>
         <ng-container [ngTemplateOutlet]="sortTemplate"></ng-container>
       </div>
+
       <div>
         <h3 class="filter-title">Restaurant options</h3>
         <ng-container [ngTemplateOutlet]="restaurntOptionTemplate"></ng-container>
       </div>
+
       <div>
         <h3 class="filter-title">Delivery Fee</h3>
         <ng-container [ngTemplateOutlet]="deliveryFeeTempalte"></ng-container>
       </div>
+
       <div>
         <h3 class="filter-title">Price</h3>
         <ng-container [ngTemplateOutlet]="priceTemplate"></ng-container>
       </div>
+
     </ng-container>
   </nz-drawer>
 </div>
 
 <ng-template #sortTemplate>
   <div class="w-full bg-white px-4">
-    <nz-radio-group [(ngModel)]="filter.sortBy" ngClass="w-full">
-      <div class="flex flex-col rounded-sm overflow-auto">
-        <ng-container *ngFor="let item of [ 'recommended', 'populary', 'rating']">
-          <a nz-radio [nzValue]=item [routerLink]="[filterURL]" [queryParams]="{sortby: item}"
-            queryParamsHandling="merge" routerLinkActive="active"
-            class="!py-4 text-black hover:text-black !m-0 hover:bg-green3 border border-gray-200 border-x-0 border-t-0 last:border-0"
-            (click)="dropDownForSortBy=false">
-            <span class="capitalize"> {{ item }} </span>
-          </a>
-        </ng-container>
-      </div>
-    </nz-radio-group>
+
+    <ng-container *ngFor="let group of [filter, filterMobile]">
+      <nz-radio-group [(ngModel)]="group.sortBy"
+        [ngClass]="{'w-full sm:block hidden': group === filter, 'w-full sm:!hidden block': group === filterMobile}">
+        <div class="flex flex-col rounded-sm overflow-auto">
+          <ng-container *ngFor="let item of ['recommended', 'popular', 'rating']">
+            <ng-container *ngIf="group === filter; else sortByForMobile">
+              <a nz-radio [nzValue]="item" [routerLink]="[filterURL]" [queryParams]="{sortby: item}"
+                queryParamsHandling="merge"
+                class="sm:!flex !hidden items-center !py-4 text-black hover:text-black !m-0 hover:bg-green3 border border-gray-200 border-x-0 border-t-0 last:border-0"
+                (click)="dropDownForSortBy=false">
+                <span class="capitalize">{{ item }}</span>
+              </a>
+            </ng-container>
+
+            <ng-template #sortByForMobile>
+              <div nz-radio [nzValue]="item"
+                class="sm:!hidden !flex items-center !py-4 text-black hover:text-black !m-0 hover:bg-green3 border border-gray-200 border-x-0 border-t-0 last:border-0"
+                (click)="dropDownForSortBy=false">
+                <span class="capitalize">{{ item }}</span>
+              </div>
+            </ng-template>
+          </ng-container>
+        </div>
+      </nz-radio-group>
+    </ng-container>
+
   </div>
 </ng-template>
 
 <ng-template #deliveryFeeTempalte>
   <div class="w-full bg-white px-4">
-    <nz-radio-group [(ngModel)]="filter.deliveryFee" ngClass="w-full">
-      <div class="flex flex-col rounded-sm overflow-auto">
-        <ng-container *ngFor="let item of [ 'any', '15000', '25000', '35000' ]">
-          <a nz-radio [nzValue]=item [routerLink]="[filterURL]" [queryParams]="{deliveryFee: item}"
-            queryParamsHandling="merge" routerLinkActive="active"
-            class="!py-4 text-black hover:text-black !m-0 hover:bg-green3 border border-gray-200 border-x-0 border-t-0 last:border-0"
-            (click)="dropDownForDeleivery=false">
-            <span *ngIf="item === 'any'" class="capitalize"> {{ item }} </span>
-            <span *ngIf="item!=='any'" class="capitalize"> Less than {{ item }} </span>
-          </a>
-        </ng-container>
-      </div>
-    </nz-radio-group>
+    <ng-container *ngFor="let group of [filter, filterMobile]">
+      <nz-radio-group [(ngModel)]="group.deliveryFee"
+        [ngClass]="{'w-full sm:!block !hidden': group === filter, 'w-full sm:!hidden block': group === filterMobile}">
+        <div class="flex flex-col rounded-sm overflow-auto">
+          <ng-container *ngFor="let item of [ 'any', '15000', '25000', '35000' ]">
+            <ng-container *ngIf="group === filter; else deleveryForMobile">
+              <a nz-radio [nzValue]=item [routerLink]="[filterURL]" [queryParams]="{deliveryFee: item}"
+                queryParamsHandling="merge" routerLinkActive="active"
+                class="!py-4 text-black hover:text-black !m-0 hover:bg-green3 border border-gray-200 border-x-0 border-t-0 last:border-0"
+                (click)="dropDownForDeleivery=false">
+                <span *ngIf="item === 'any'" class="capitalize"> {{ item }} </span>
+                <span *ngIf="item!=='any'" class="capitalize"> Less than {{ item }} </span>
+              </a>
+            </ng-container>
+            <ng-template #deleveryForMobile>
+              <div nz-radio [nzValue]=item
+                class="!py-4 text-black hover:text-black !m-0 hover:bg-green3 border border-gray-200 border-x-0 border-t-0 last:border-0">
+                <span *ngIf="item === 'any'" class="capitalize"> {{ item }} </span>
+                <span *ngIf="item!=='any'" class="capitalize"> Less than {{ item }} </span>
+              </div>
+            </ng-template>
+          </ng-container>
+        </div>
+      </nz-radio-group>
+    </ng-container>
   </div>
 </ng-template>
 
@@ -134,16 +166,6 @@
 </ng-template>
 
 <ng-template #restaurntOptionTemplate>
-  <!-- <label for="restaurant-option--checkbox">
-    <div class="restaurant-option w-full p-4 bg-white">
-      <div class="flex items-center justify-between">
-        <span>Promo</span>
-        <input id='restaurant-option--checkbox' type='checkbox' class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 " />
-        <span class="relative checkbox w-4 h-4 border border-gray-400 rounded-sm"></span>
-      </div>
-    </div>
-  </label> -->
-
   <div class="p-4 bg-white">
     <label for="restaurant-option-checkbox"
       class="flex items-center justify-between text-sm font-medium text-gray-900 dark:text-gray-300">
@@ -152,5 +174,4 @@
         class="w-4 h-4 text-primary focus:ring-0 rounded-sm border-gray-400">
     </label>
   </div>
-
 </ng-template>

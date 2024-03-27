@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewEncapsulation } from '@angular/core';
+import { Component, HostListener, OnInit, ViewEncapsulation } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
 import { ICuisineFilter } from 'src/app/core/models/cuisine-filter.model';
@@ -18,7 +18,15 @@ export class CuisineFilterComponent implements OnInit {
   dropDownForDeleivery: boolean = false;
   dropDownForPrice: boolean = false;
   filter!: ICuisineFilter;
-  visibleFilterDrawer = true;
+  filterMobile!: ICuisineFilter;
+  visibleFilterDrawer: boolean = true;
+  isMobileScreen: boolean = false;
+
+  @HostListener('window:resize', ['$event'])
+  onResize(event: any) {
+    this.checkScreenWidth();
+  }
+
 
   constructor(
     private translate: TranslateService,
@@ -26,11 +34,23 @@ export class CuisineFilterComponent implements OnInit {
     private route: ActivatedRoute,
   ) {
     translate.use(localStorage.getItem('language')?.toString() ?? 'vi');
-    ;
+    this.checkScreenWidth();
   }
 
   get filterURL(): string {
     return this.router.url.split('?')[0];
+  }
+
+  checkScreenWidth() {
+    this.isMobileScreen = window.innerWidth <= 576;
+    if (!this.isMobileScreen) {
+      this.visibleFilterDrawer = false;
+    }
+    else {
+      this.dropDownForSortBy = false;
+      this.dropDownForDeleivery = false;
+      this.dropDownForPrice = false;
+    }
   }
 
   applyFilter(filterName: string, filterValue: any): void {
@@ -51,10 +71,17 @@ export class CuisineFilterComponent implements OnInit {
       deliveryFee: 'any',
       price: [0, 100]
     };
+    this.filterMobile = {
+      sortBy: 'recommended',
+      promo: false,
+      deliveryFee: 'any',
+      price: [0, 100]
+    };
   }
 
   openFilterDrawer(): void {
     this.visibleFilterDrawer = true;
+    this.filterMobile = { ...this.filter };
   }
 
   closeFilterDrawer(): void {
