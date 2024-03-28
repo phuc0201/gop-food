@@ -46,7 +46,7 @@
     </button>
   </a>
 </div>
-<!--  -->
+<!-- MOBILE -->
 <div class="sm:hidden block py-5">
   <button class="bg-gray-100 hover:bg-gray-200 py-1 px-3 rounded-2xl mr-2 text-black1" (click)="openFilterDrawer()">
     <i class="fa-solid fa-sliders"></i>
@@ -55,24 +55,41 @@
     (nzOnClose)="closeFilterDrawer()" nzWrapClassName="cuisine-filter-mobile">
     <ng-container *nzDrawerContent>
 
-      <div>
-        <h3 class="filter-title">Sort By</h3>
-        <ng-container [ngTemplateOutlet]="sortTemplate"></ng-container>
+      <div class="filterMobile pb-[120px]">
+        <div>
+          <h3 class="filter-title">Sort By</h3>
+          <ng-container [ngTemplateOutlet]="sortTemplate"></ng-container>
+        </div>
+
+        <div>
+          <h3 class="filter-title">Restaurant options</h3>
+          <ng-container [ngTemplateOutlet]="restaurntOptionTemplate"></ng-container>
+        </div>
+
+        <div>
+          <h3 class="filter-title">Delivery Fee</h3>
+          <ng-container [ngTemplateOutlet]="deliveryFeeTempalte"></ng-container>
+        </div>
+
+        <div>
+          <h3 class="filter-title">Price</h3>
+          <ng-container [ngTemplateOutlet]="priceTemplate"></ng-container>
+        </div>
       </div>
 
-      <div>
-        <h3 class="filter-title">Restaurant options</h3>
-        <ng-container [ngTemplateOutlet]="restaurntOptionTemplate"></ng-container>
-      </div>
-
-      <div>
-        <h3 class="filter-title">Delivery Fee</h3>
-        <ng-container [ngTemplateOutlet]="deliveryFeeTempalte"></ng-container>
-      </div>
-
-      <div>
-        <h3 class="filter-title">Price</h3>
-        <ng-container [ngTemplateOutlet]="priceTemplate"></ng-container>
+      <div class="applyFilter--button fixed bottom-0 left-0 right-0 px-4 py-4 bg-white shadow-inner">
+        <button (click)="applyFilterMobile()"
+          class="w-full mb-4 py-3 min-h-12 bg-primary text-white font-bold rounded-md hover:opacity-95">
+          <section *ngIf="loaderApplyFilter" class="dots-container">
+            <div class="dot"></div>
+            <div class="dot"></div>
+            <div class="dot"></div>
+          </section>
+          <span *ngIf="!loaderApplyFilter">Áp dụng</span>
+        </button>
+        <button (click)=" resetFilter()"
+          class=" w-full py-3 bg-white text-gray-500 border border-gray-600 font-bold rounded-md hover:opacity-95"> Làm
+          mới </button>
       </div>
 
     </ng-container>
@@ -83,7 +100,7 @@
   <div class="w-full bg-white px-4">
 
     <ng-container *ngFor="let group of [filter, filterMobile]">
-      <nz-radio-group [(ngModel)]="group.sortBy"
+      <nz-radio-group [(ngModel)]="group.sortby"
         [ngClass]="{'w-full sm:block hidden': group === filter, 'w-full sm:!hidden block': group === filterMobile}">
         <div class="flex flex-col rounded-sm overflow-auto">
           <ng-container *ngFor="let item of ['recommended', 'popular', 'rating']">
@@ -98,8 +115,7 @@
 
             <ng-template #sortByForMobile>
               <div nz-radio [nzValue]="item"
-                class="sm:!hidden !flex items-center !py-4 text-black hover:text-black !m-0 hover:bg-green3 border border-gray-200 border-x-0 border-t-0 last:border-0"
-                (click)="dropDownForSortBy=false">
+                class="sm:!hidden !flex items-center !py-4 text-black hover:text-black !m-0 hover:bg-green3 border border-gray-200 border-x-0 border-t-0 last:border-0">
                 <span class="capitalize">{{ item }}</span>
               </div>
             </ng-template>
@@ -146,17 +162,18 @@
 
     <div class="flex items-center justify-between">
       <div class="flex items-center justify-center w-32 h-6 border border-gray-300">
-        <div>{{ filter.price[0] }}</div>
+        <div>{{ isMobileScreen ? filterMobile.price[0] : filter.price[0] }}</div>
       </div>
       <div class="flex-1 h-[2px] bg-gray-200">
 
       </div>
       <div class="flex items-center justify-center w-32 h-6 border border-gray-300">
-        <div>{{ filter.price[1] }}</div>
+        <div>{{ isMobileScreen ? filterMobile.price[1] : filter.price[1] }}</div>
       </div>
     </div>
 
-    <nz-slider nzRange [(ngModel)]="filter.price"></nz-slider>
+    <nz-slider nzRange [(ngModel)]="filter.price" class="sm:block hidden"></nz-slider>
+    <nz-slider nzRange [(ngModel)]="filterMobile.price" class="sm:hidden block"></nz-slider>
 
     <div class="sm:flex hidden flex-col items-end w-full">
       <button class="px-4 py-2 rounded-sm bg-primary text-white font-bold"
@@ -170,7 +187,7 @@
     <label for="restaurant-option-checkbox"
       class="flex items-center justify-between text-sm font-medium text-gray-900 dark:text-gray-300">
       <span>Promo</span>
-      <input id="restaurant-option-checkbox" type="checkbox" value=""
+      <input id="restaurant-option-checkbox" type="checkbox" [(ngModel)]="filterMobile.promo"
         class="w-4 h-4 text-primary focus:ring-0 rounded-sm border-gray-400">
     </label>
   </div>

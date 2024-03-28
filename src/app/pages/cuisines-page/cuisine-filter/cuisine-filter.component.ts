@@ -21,7 +21,7 @@ export class CuisineFilterComponent implements OnInit {
   filterMobile!: ICuisineFilter;
   visibleFilterDrawer: boolean = true;
   isMobileScreen: boolean = false;
-
+  loaderApplyFilter: boolean = false;
   @HostListener('window:resize', ['$event'])
   onResize(event: any) {
     this.checkScreenWidth();
@@ -64,19 +64,31 @@ export class CuisineFilterComponent implements OnInit {
     this.dropDownForPrice = false;
   }
 
+  applyFilterMobile(): void {
+    this.loaderApplyFilter = true;
+    setTimeout(() => {
+      this.closeFilterDrawer();
+      this.loaderApplyFilter = false;
+      this.filter = { ...this.filterMobile };
+      let queryParams = { ...this.route.snapshot.queryParams };
+      queryParams = { ...this.filterMobile };
+      queryParams['price'] = this.filterMobile.price[0] + '-' + this.filterMobile.price[1];
+      this.router.navigate([], {
+        relativeTo: this.route,
+        queryParams,
+        queryParamsHandling: 'merge',
+      });
+    }, 500);
+  }
+
   resetFilter(): void {
     this.filter = {
-      sortBy: 'recommended',
+      sortby: 'recommended',
       promo: false,
       deliveryFee: 'any',
       price: [0, 100]
     };
-    this.filterMobile = {
-      sortBy: 'recommended',
-      promo: false,
-      deliveryFee: 'any',
-      price: [0, 100]
-    };
+    this.filterMobile = { ...this.filter };
   }
 
   openFilterDrawer(): void {
@@ -92,7 +104,7 @@ export class CuisineFilterComponent implements OnInit {
     this.resetFilter();
     this.route.queryParams.subscribe(params => {
       if (params["sortby"])
-        this.filter.sortBy = params["sortby"];
+        this.filter.sortby = params["sortby"];
 
       if (params["deliveryFee"])
         this.filter.deliveryFee = params["deliveryFee"];
