@@ -1,0 +1,6 @@
+.active .cuisine-item {
+  @apply border-primary;
+}
+.active .cuisine-item i {
+  display: block !important;
+}

@@ -31,10 +31,10 @@ export class CuisinesSliderComponent implements AfterViewInit {
     Infinity: true,
     spaceBetween: 10,
     speed: 1000,
-    autoplay: {
-      delay: 2000,
-      pauseOnMouseEnter: true,
-    },
+    // autoplay: {
+    //   delay: 2000,
+    //   pauseOnMouseEnter: true,
+    // },
     breakpoints: {
       992: {
         slidesPerView: 5,
