@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { AfterViewInit, CUSTOM_ELEMENTS_SCHEMA, Component, ElementRef, ViewChild } from '@angular/core';
+import { AfterViewInit, CUSTOM_ELEMENTS_SCHEMA, Component, ElementRef, Input, OnChanges, SimpleChanges, ViewChild } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { cuisineCategory } from 'src/assets/dummy-data/cuisine-category';
 import { register } from 'swiper/element/bundle';
@@ -23,9 +23,10 @@ const plugins = [
   imports: plugins,
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
 })
-export class CuisinesSliderComponent implements AfterViewInit {
+export class CuisinesSliderComponent implements AfterViewInit, OnChanges {
+  @Input() sortListCuisine: any;
   @ViewChild('cuisinesSlider') swiperEl!: ElementRef;
-  listCuisine = cuisineCategory;
+  listCuisine = [...cuisineCategory];
   swiperParams = {
     slidesPerView: 3,
     Infinity: true,
@@ -62,6 +63,15 @@ export class CuisinesSliderComponent implements AfterViewInit {
     },
     injectStyles: [':host .swiper-button-next svg, :host .swiper-button-prev svg { display: none; } :host .swiper-pagination-bullet-active {  background-color: #00b14f !important; width:20px; border-radius:5px }'],
   };
+
+  constructor() { }
+
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes["sortListCuisine"]) {
+      this.listCuisine = [...this.sortListCuisine];
+    }
+  }
+
   ngAfterViewInit(): void {
     Object.assign(this.swiperEl.nativeElement, this.swiperParams);
     this.swiperEl.nativeElement.initialize();
