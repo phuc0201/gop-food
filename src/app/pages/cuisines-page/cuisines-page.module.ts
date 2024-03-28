@@ -14,6 +14,7 @@ import { NzRadioModule } from 'ng-zorro-antd/radio';
 import { NzRateModule } from 'ng-zorro-antd/rate';
 import { NzSliderModule } from 'ng-zorro-antd/slider';
 import { ListRestaurantComponent } from 'src/app/pages/cuisines-page/list-restaurant/list-restaurant.component';
+import { CuisinesSliderComponent } from 'src/app/shared/component-shared/cuisines-slider/cuisines-slider.component';
 import { RestaurantCardComponent } from 'src/app/shared/component-shared/restaurant-card/restaurant-card.component';
 import { ResponsiveDrawerDirective } from 'src/app/shared/widget/directives/responsive-drawer.directive';
 import { CuisineCategoryComponent } from './cuisine-category/cuisine-category.component';
@@ -32,7 +33,8 @@ const routes: Routes = [
   },
 ];
 const plugins = [
-  RestaurantCardComponent
+  RestaurantCardComponent,
+  CuisinesSliderComponent
 ];
 @NgModule({
   declarations: [

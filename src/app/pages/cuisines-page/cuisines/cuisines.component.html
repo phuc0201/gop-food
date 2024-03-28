@@ -2,6 +2,9 @@
 
   <div class="sectionContainer">
 
+    <div class="lg:hidden block pt-2">
+      <app-cuisines-slider></app-cuisines-slider>
+    </div>
     <app-cuisine-filter></app-cuisine-filter>
 
     <div nz-row nzGutter="20" class="!flex-col-reverse lg:!flex-row">
@@ -10,7 +13,7 @@
         <router-outlet></router-outlet>
       </div>
 
-      <div nz-col nzLg="6" nzSpan="24">
+      <div nz-col nzLg="6" nzSpan="0">
         <div class="w-ful">
           <app-cuisine-category></app-cuisine-category>
         </div>

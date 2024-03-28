@@ -1,5 +1,5 @@
 #cuisine-filter {
-  @apply py-5;
+  @apply lg:pt-5 pt-0 pb-5;
   button {
     @apply bg-gray-100 hover:bg-gray-200 py-1 px-3 rounded-2xl mr-2 text-black1;
   }

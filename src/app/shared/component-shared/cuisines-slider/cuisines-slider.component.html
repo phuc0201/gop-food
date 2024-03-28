@@ -7,14 +7,15 @@
     <swiper-slide *ngFor="let cusine of listCuisine"
       class="w-full h-full flex items-center justify-center object-cover">
       <div>
-        <a [routerLink]="['cuisines', cusine.slug]" class="flex flex-col items-center justify-center relative w-full">
+        <a [routerLink]="['/cuisines', cusine.slug]" [queryParamsHandling]="'merge'"
+          class="flex flex-col items-center justify-center relative w-full">
           <div class="flex items-center flex-col">
             <div
               class="flex items-center justify-center max-h-40 overflow-hidden sm:aspect-video aspect-square sm:rounded-lg rounded-[50%] sm:w-auto w-14 bg-gray-200">
               <img [src]="cusine.img" onerror="this.src='assets/img/banners/banner-1.jpg'"
                 class="w-full sm:h-auto h-full object-cover">
             </div>
-            <span class="text-black text-center font-medium sm:text-base text-[10px] mt-2 uppercase">{{ cusine.name
+            <span class="text-black text-center lg:font-medium font-normal xs:text-sm text-[10px] mt-2">{{ cusine.name
               }}</span>
           </div>
         </a>

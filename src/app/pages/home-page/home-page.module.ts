@@ -9,7 +9,7 @@ import { TranslateModule } from '@ngx-translate/core';
 import { NzGridModule } from 'ng-zorro-antd/grid';
 import { FoodCardComponent } from 'src/app/shared/component-shared/food-card/food-card.component';
 import { RestaurantCardComponent } from 'src/app/shared/component-shared/restaurant-card/restaurant-card.component';
-import { CuisinesSliderComponent } from './cuisines-slider/cuisines-slider.component';
+
 import { HomeSliderComponent } from './home-slider/home-slider.component';
 import { HomeComponent } from './home/home.component';
 import { NewAndEventsComponent } from './new-and-events/new-and-events.component';
@@ -18,6 +18,7 @@ import { OurServicesComponent } from './our-services/our-services.component';
 import { PromoSliderComponent } from './promo-slider/promo-slider.component';
 import { RestaurantSliderComponent } from './restaurant-slider/restaurant-slider.component';
 import { SearchLocationComponent } from './search-location/search-location.component';
+import { CuisinesSliderComponent } from 'src/app/shared/component-shared/cuisines-slider/cuisines-slider.component';
 
 const routes: Routes = [
   {
