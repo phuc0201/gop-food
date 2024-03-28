@@ -19,7 +19,7 @@ export class CuisineFilterComponent implements OnInit {
   dropDownForPrice: boolean = false;
   filter!: ICuisineFilter;
   filterMobile!: ICuisineFilter;
-  visibleFilterDrawer: boolean = true;
+  visibleFilterDrawer: boolean = false;
   isMobileScreen: boolean = false;
   loaderApplyFilter: boolean = false;
   @HostListener('window:resize', ['$event'])
