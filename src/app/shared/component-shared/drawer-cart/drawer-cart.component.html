@@ -1,5 +1,5 @@
-<nz-drawer #cartDrawer [appResponsiveDrawer]="drawer" [nzClosable]="false" [nzVisible]="opened" nzPlacement="right"
-  (nzOnClose)="close()" [nzClosable]="true">
+<nz-drawer #cartDrawer [appResponsiveDrawer]="drawer" [nzClosable]="false" [nzVisible]="opened" [nzPlacement]="placementDrawer"
+  (nzOnClose)="closeDrawer()" [nzClosable]="true" [nzHeight]="'80%'">
   <ng-container *nzDrawerContent>
     <div class="w-full h-full flex justify-center items-center">
       <div class="w-full h-full flex flex-col items-center justify-center">

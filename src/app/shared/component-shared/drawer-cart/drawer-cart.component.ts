@@ -1,14 +1,15 @@
 import { CommonModule } from '@angular/common';
-import { Component, EventEmitter, Input, Output, ViewChild } from '@angular/core';
+import { Component, EventEmitter, HostListener, Input, OnChanges, Output, Renderer2, SimpleChanges, ViewChild } from '@angular/core';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
-import { NzDrawerComponent, NzDrawerModule } from 'ng-zorro-antd/drawer';
+import { NzDrawerComponent, NzDrawerModule, NzDrawerPlacement } from 'ng-zorro-antd/drawer';
+import { NzModalModule } from 'ng-zorro-antd/modal';
 import { ResponsiveDrawerDirective } from 'src/app/shared/widget/directives/responsive-drawer.directive';
-
 const plugins = [
   CommonModule,
   NzDrawerModule,
   TranslateModule,
-  ResponsiveDrawerDirective
+  ResponsiveDrawerDirective,
+  NzModalModule
 ];
 @Component({
   selector: 'app-drawer-cart',
@@ -17,21 +18,36 @@ const plugins = [
   standalone: true,
   imports: plugins,
 })
-export class DrawerCartComponent {
+export class DrawerCartComponent implements OnChanges {
   @Input() opened: boolean = false;
   @Output() openedChange = new EventEmitter<boolean>();
   langData: string = 'SHARED.COMPONENT_SHARED.DRAWER.';
   @ViewChild('cartDrawer') drawer!: NzDrawerComponent;
-  open(): void {
-    this.opened = true;
+  placementDrawer: NzDrawerPlacement = 'right';
+
+  @HostListener('window:resize', ['$event'])
+  onResize(event: any) {
+    if (window.innerWidth < 992) {
+      this.placementDrawer = 'bottom';
+    }
+  }
+  constructor(
+    private translate: TranslateService,
+    private render: Renderer2
+  ) {
+    translate.use(localStorage.getItem('language')?.toString() ?? 'vi');
   }
 
-  close(): void {
+  openModal(): void {
+
+  }
+
+  closeDrawer(): void {
     this.opened = false;
     this.openedChange.emit(this.opened);
   }
 
-  constructor(private translate: TranslateService) {
-    translate.use(localStorage.getItem('language')?.toString() ?? 'vi');
+  ngOnChanges(changes: SimpleChanges): void {
+
   }
 }

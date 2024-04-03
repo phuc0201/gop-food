@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl } from '@angular/forms';
+import { ActivatedRoute, Router } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
 import { Observable, map, startWith } from 'rxjs';
 
@@ -15,9 +16,8 @@ export class SearchLocationComponent implements OnInit {
   address: string[] = ['Champs-Élysées', 'Lombard Street', 'Abbey Road', 'Fifth Avenue'];
   filteredAddress?: Observable<string[]>;
 
-  search(value: string): void {
-    console.log('search: ' + value);
-
+  search(): void {
+    this.router.navigate(['/cuisines']);
   }
 
   _filter(value: string): string[] {
@@ -36,7 +36,11 @@ export class SearchLocationComponent implements OnInit {
     );
   }
 
-  constructor(private translate: TranslateService) {
+  constructor(
+    private translate: TranslateService,
+    private route: ActivatedRoute,
+    private router: Router
+  ) {
     translate.use(localStorage.getItem('language')?.toString() ?? 'vi');
   }
 }

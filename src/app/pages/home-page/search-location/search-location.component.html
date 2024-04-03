@@ -23,7 +23,7 @@
             class="fa-solid fa-location-crosshairs text-primary text-lg cursor-pointer basis-auto absolute right-3 top-[50%] -translate-y-[50%]"></i>
         </form>
       </div>
-      <button class="w-full h-12 bg-primary text-white text-lg font-medium rounded-lg">{{ langData + 'TIM_KIEM' |
+      <button (click)="search()" class="w-full h-12 bg-primary text-white text-lg font-medium rounded-lg">{{ langData + 'TIM_KIEM' |
         translate }}</button>
     </div>
   </div>

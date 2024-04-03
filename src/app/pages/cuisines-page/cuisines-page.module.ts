@@ -25,6 +25,10 @@ const routes: Routes = [
     component: CuisinesComponent,
     children: [
       {
+        path: '',
+        component: ListRestaurantComponent,
+      },
+      {
         path: ':slug',
         component: ListRestaurantComponent,
       },
