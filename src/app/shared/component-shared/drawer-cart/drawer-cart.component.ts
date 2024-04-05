@@ -3,12 +3,11 @@ import { Component, EventEmitter, HostListener, Input, OnChanges, Output, Render
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { NzDrawerComponent, NzDrawerModule, NzDrawerPlacement } from 'ng-zorro-antd/drawer';
 import { NzModalModule } from 'ng-zorro-antd/modal';
-import { ResponsiveDrawerDirective } from 'src/app/shared/widget/directives/responsive-drawer.directive';
+
 const plugins = [
   CommonModule,
   NzDrawerModule,
   TranslateModule,
-  ResponsiveDrawerDirective,
   NzModalModule
 ];
 @Component({
@@ -30,6 +29,7 @@ export class DrawerCartComponent implements OnChanges {
     if (window.innerWidth < 992) {
       this.placementDrawer = 'bottom';
     }
+    else this.placementDrawer = 'right';
   }
   constructor(
     private translate: TranslateService,
