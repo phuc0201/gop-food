@@ -27,7 +27,6 @@ export class CuisineFilterComponent implements OnInit {
     this.checkScreenWidth();
   }
 
-
   constructor(
     private translate: TranslateService,
     private router: Router,

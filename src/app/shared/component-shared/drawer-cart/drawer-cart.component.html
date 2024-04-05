@@ -1,11 +1,11 @@
-<nz-drawer #cartDrawer [appResponsiveDrawer]="drawer" [nzClosable]="false" [nzVisible]="opened" [nzPlacement]="placementDrawer"
-  (nzOnClose)="closeDrawer()" [nzClosable]="true" [nzHeight]="'80%'">
+<nz-drawer #cartDrawer [appResponsiveDrawer]="drawer" [nzClosable]="false" [nzVisible]="opened"
+  [nzPlacement]="placementDrawer" (nzOnClose)="closeDrawer()" [nzClosable]="true" [nzHeight]="'95%'">
   <ng-container *nzDrawerContent>
     <div class="w-full h-full flex justify-center items-center">
       <div class="w-full h-full flex flex-col items-center justify-center">
         <img src="assets/img/icons/ilus-basket-empty.svg">
         <h2>{{ langData + 'BAT_DAU_MUA_HANG' | translate }}</h2>
-        <span class="text-grey1">{{ langData + 'THEM_VAO_GIO_HANG' | translate}}</span>
+        <span class="text-grey1 text-center">{{ langData + 'THEM_VAO_GIO_HANG' | translate}}</span>
       </div>
     </div>
   </ng-container>
