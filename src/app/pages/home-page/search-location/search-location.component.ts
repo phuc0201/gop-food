@@ -1,39 +1,33 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewEncapsulation } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
-import { Observable, map, startWith } from 'rxjs';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-search-location',
   templateUrl: './search-location.component.html',
-  styleUrls: ['./search-location.component.scss']
+  styleUrls: ['./search-location.component.scss'],
+  encapsulation: ViewEncapsulation.None,
 })
 export class SearchLocationComponent implements OnInit {
   langData: string = 'PAGES.HOME_PAGE.SEARCH_LOCATION.';
   listResult: string[] = [];
   control = new FormControl('');
-  address: string[] = ['Champs-Élysées', 'Lombard Street', 'Abbey Road', 'Fifth Avenue'];
   filteredAddress?: Observable<string[]>;
-
+  inputValue?: string;
+  filteredOptions: string[] = [];
+  address = ['Burns Bay Road', 'Downing Street', 'Wall Street'];
   search(): void {
     this.router.navigate(['/cuisines']);
   }
 
-  _filter(value: string): string[] {
-    const filterValue = this._normalizeValue(value);
-    return this.address.filter(addr => this._normalizeValue(addr).includes(filterValue));
-  }
-
-  _normalizeValue(value: string): string {
-    return value.toLowerCase().replace(/\s/g, '');
+  onChange(value: string): void {
+    this.filteredOptions = this.address.filter(adr => adr.toLowerCase().indexOf(value.toLowerCase()) !== -1);
   }
 
   ngOnInit(): void {
-    this.filteredAddress = this.control.valueChanges.pipe(
-      startWith(''),
-      map(value => this._filter(value || '')),
-    );
+
   }
 
   constructor(
@@ -42,5 +36,6 @@ export class SearchLocationComponent implements OnInit {
     private router: Router
   ) {
     translate.use(localStorage.getItem('language')?.toString() ?? 'vi');
+    this.filteredOptions = this.address;
   }
 }

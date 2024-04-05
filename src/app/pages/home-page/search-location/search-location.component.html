@@ -1,30 +1,34 @@
 <div
-  class="md:absolute md:top-0 md:left-0 md:-translate-y-[82%] z-10 bg-white flex items-center md:h-96 h-80 rounded md:w-[360px] w-full border-0 md:border border-solid border-gray-200 md:p-6">
+  class="md:absolute md:top-0 md:left-0 md:p-6 pt-3 md:-translate-y-[82%] md:h-96 h-fit z-10 bg-white flex items-center rounded md:w-[360px] w-full border-0 md:border border-solid border-gray-200 ">
   <div class="w-full">
-    <div class="mb-6">
+    <!--  -->
+    <div class="md:block hidden mb-6">
       <span class="font-bold md:text-xl text-sm">Good Evening</span>
       <div class="md:text-4xl text-2xl font-bold">Where should we deliver your food today?</div>
     </div>
+    <!--  -->
+
     <div>
       <div class="relative group">
         <form class="search-form relative mb-3">
           <i
             class="fa-solid fa-compass text-lg cursor-pointer basis-auto text-red absolute top-[50%] -translate-y-[50%]  left-3 "></i>
-          <input type="text" [placeholder]="langData + 'NHAP_DIA_CHI' | translate" [formControl]="control"
-            [matAutocomplete]="auto"
-            class="outline-none py-3 border border-gray-400 rounded border-solid grow max-w-full min-w-0 px-10 w-full">
-          <mat-autocomplete #auto="matAutocomplete" class="!absolute !bg-white">
-            <mat-option *ngFor="let address of filteredAddress | async" [value]="address"
-              class="!bg-white hover:!bg-green2">
-              {{address}}
-            </mat-option>
-          </mat-autocomplete>
+
+          <input [placeholder]="langData + 'NHAP_DIA_CHI' | translate" nz-input [(ngModel)]="inputValue"
+            (ngModelChange)="onChange($event)" [formControl]="control" [nzAutocomplete]="auto"
+            class="outline-none py-3 border md:border-gray-400 border-transparent shadow-[rgba(0,0,0,0.1)_0px_0px_5px_1px] rounded border-solid grow max-w-full min-w-0 px-10 w-full" />
+          <nz-autocomplete [nzDataSource]="filteredOptions" #auto></nz-autocomplete>
+
           <i
             class="fa-solid fa-location-crosshairs text-primary text-lg cursor-pointer basis-auto absolute right-3 top-[50%] -translate-y-[50%]"></i>
         </form>
       </div>
-      <button (click)="search()" class="w-full h-12 bg-primary text-white text-lg font-medium rounded-lg">{{ langData + 'TIM_KIEM' |
+      <button (click)="search()"
+        class="md:block hidden w-full h-12 bg-primary text-white text-lg font-medium rounded-lg">{{ langData +
+        'TIM_KIEM' |
         translate }}</button>
     </div>
+
+    <!--  -->
   </div>
 </div>
