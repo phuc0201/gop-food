@@ -7,6 +7,7 @@
         class="p-3 gap-2 group rounded hidden md:flex justify-center items-center bg-white border border-solid border-gray-200 cursor-pointer ">
         <img src="assets/img/icons/icon-cart-black.svg" class="w-4 h-4">
       </div> -->
+
       <div class="relative h-10 bg-primary rounded hidden md:flex justify-center items-center cursor-pointer"
         (click)="openDrawer = true">
         <div
@@ -19,6 +20,7 @@
             }}</span>
         </div>
       </div>
+      
       <div class="h-full">
         <!-- <a [routerLink]="['profile']" class="md:w-10 w-7 h-full flex items-center">
           <img src="" alt="avatar" onerror="this.src='assets/img/avatars/user.png'" class="w-full h-full">
@@ -37,3 +39,4 @@
   </div>
 </div>
 <app-drawer-cart [(opened)]="openDrawer"></app-drawer-cart>
+

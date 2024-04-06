@@ -29,4 +29,12 @@
       </a>
     </li>
   </ul>
+
+  <div class="cart absolute -top-full right-3 -translate-y-3 cursor-pointer">
+    <button class="w-14 h-14 shadow-[rgba(0,0,0,0.1)_0_1px_30px_1px] flex bg-white rounded-[10px]"
+      (click)="openDrawerCart=true">
+      <i class="fa-solid fa-basket-shopping m-auto text-[20px]"></i>
+    </button>
+  </div>
+  <app-drawer-cart [(opened)]="openDrawerCart"></app-drawer-cart>
 </nav>

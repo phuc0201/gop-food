@@ -26,11 +26,9 @@ export class DrawerCartComponent implements OnChanges {
 
   @HostListener('window:resize', ['$event'])
   onResize(event: any) {
-    if (window.innerWidth < 992) {
-      this.placementDrawer = 'bottom';
-    }
-    else this.placementDrawer = 'right';
+    this.checkMobileScreen();
   }
+
   constructor(
     private translate: TranslateService,
     private render: Renderer2
@@ -38,8 +36,11 @@ export class DrawerCartComponent implements OnChanges {
     translate.use(localStorage.getItem('language')?.toString() ?? 'vi');
   }
 
-  openModal(): void {
-
+  checkMobileScreen(): void {
+    if (window.innerWidth <= 768) {
+      this.placementDrawer = 'bottom';
+    }
+    else this.placementDrawer = 'right';
   }
 
   closeDrawer(): void {
@@ -48,6 +49,6 @@ export class DrawerCartComponent implements OnChanges {
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-
+    this.checkMobileScreen();
   }
 }

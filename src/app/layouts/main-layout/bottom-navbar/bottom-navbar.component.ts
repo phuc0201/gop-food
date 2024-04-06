@@ -6,5 +6,6 @@ import { Component } from '@angular/core';
   styleUrls: ['./bottom-navbar.component.scss']
 })
 export class BottomNavbarComponent {
-
+  openDrawerCart: boolean = false;
 }
+                                             

@@ -24,3 +24,7 @@
 .bottom-navbar-wrapper li a i {
   @apply text-lg;
 }
+
+.cart button:active {
+  scale: 95%;
+}
