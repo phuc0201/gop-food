@@ -4,3 +4,6 @@
 .open.modal {
   @apply block;
 }
+::ng-deep .drawerCart .ant-drawer-body {
+  padding: 0 !important;
+}

@@ -1,12 +1,45 @@
-<nz-drawer #cartDrawer [nzClosable]="false" [nzVisible]="opened" [nzPlacement]="placementDrawer"
-  (nzOnClose)="closeDrawer()" [nzClosable]="true" [nzHeight]="'95%'">
+<!-- LAYOUT -->
+<nz-drawer #cartDrawer [nzVisible]="opened" [nzPlacement]="placementDrawer" [nzWidth]="'600px'" nzKeyboard="true"
+  [nzBodyStyle]="{ overflow: 'auto' }" [nzHeight]="'100%'" (nzOnClose)="closeDrawer()" nzClosable="false"
+  [nzWrapClassName]="'drawerCart'">
   <ng-container *nzDrawerContent>
-    <div class="w-full h-full flex justify-center items-center">
-      <div class="w-full h-full flex flex-col items-center justify-center">
-        <img src="assets/img/icons/ilus-basket-empty.svg">
-        <h2>{{ langData + 'BAT_DAU_MUA_HANG' | translate }}</h2>
-        <span class="text-grey1 text-center">{{ langData + 'THEM_VAO_GIO_HANG' | translate}}</span>
-      </div>
-    </div>
+    <ng-container [ngTemplateOutlet]="headerDrawerCart"></ng-container>
+    <ng-container [ngTemplateOutlet]="bodyDrawerCart"></ng-container>
+    <ng-container [ngTemplateOutlet]="footerDrawerCart"></ng-container>
   </ng-container>
 </nz-drawer>
+
+<!-- HEADAER DRAWER -->
+<ng-template #headerDrawerCart>
+  <header class="sticky top-0 left-0 right-0 flex justify-center items-center px-6 py-4">
+    <div class="text-center relative w-full">
+      <button class="absolute top-[50%] -translate-y-[50%] left-0" (click)="closeDrawer()">
+        <i class="fa-solid fa-xmark text-[25px] text-gray-500"></i>
+      </button>
+      <h3> Giỏ hàng </h3>
+      <div class="text-gray-400 text-xs">
+        <i class="fa-regular fa-clock"></i>
+        <span>
+          Thời gian giao: 20 phút (Cách bạn 2,8 km)</span>
+      </div>
+    </div>
+  </header>
+</ng-template>
+
+<!-- BODY DRAWER -->
+<ng-template #bodyDrawerCart>
+  <div class="w-full h-full flex justify-center items-center">
+    <div class="w-full h-full flex flex-col items-center justify-center">
+      <img src="assets/img/icons/ilus-basket-empty.svg">
+      <h2>{{ langData + 'BAT_DAU_MUA_HANG' | translate }}</h2>
+      <span class="text-grey1 text-center">{{ langData + 'THEM_VAO_GIO_HANG' | translate}}</span>
+    </div>
+  </div>
+</ng-template>
+
+<!-- FOOTER DRAWER -->
+<ng-template #footerDrawerCart>
+  <footer class="sticky bottom-0 left-0 right-0">
+    footer
+  </footer>
+</ng-template>
