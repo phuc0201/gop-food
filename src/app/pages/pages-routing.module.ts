@@ -17,6 +17,11 @@ const routes: Routes = [
         title: 'Ẩm thực'
       },
       {
+        path: 'restaurant',
+        loadChildren: () => import('./cuisines-page/cuisines-page.module').then(m => m.CuisinesPageModule),
+        title: 'Ẩm thực'
+      },
+      {
         path: 'orders',
         loadChildren: () => import('./order-history-page/order-history-page.module').then(m => m.OrderHistoryPageModule)
       },

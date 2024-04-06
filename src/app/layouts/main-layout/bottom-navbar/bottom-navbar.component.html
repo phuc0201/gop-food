@@ -1,5 +1,5 @@
 <nav
-  class="bottom-navbar-wrapper md:hidden block sticky left-0 bottom-0 bg-white shadow-[rgba(0,0,0,0.2)_0_10px_10px_5px] py-2">
+  class="bottom-navbar-wrapper md:hidden block sticky left-0 bottom-0 bg-white shadow-[rgba(0,0,0,0.2)_0_10px_10px_5px] py-2 z-50">
   <ul class="flex justify-between items-center m-0">
     <li>
       <a routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">
@@ -30,9 +30,8 @@
     </li>
   </ul>
 
-  <div class="cart absolute -top-full right-3 -translate-y-3 cursor-pointer">
-    <button class="w-14 h-14 shadow-[rgba(0,0,0,0.1)_0_1px_30px_1px] flex bg-white rounded-[10px]"
-      (click)="openDrawerCart=true">
+  <div class="cart fixed bottom-16 right-3 cursor-pointer" (click)="openDrawerCart=true">
+    <button class="w-14 h-14 shadow-[rgba(0,0,0,0.1)_0_1px_30px_1px] flex bg-white rounded-[10px]">
       <!-- <i class="fa-solid fa-basket-shopping m-auto text-[20px]"></i> -->
       <img src="assets/img/icons/icon-cart-black.svg" class="w-7 h-7 m-auto">
     </button>
