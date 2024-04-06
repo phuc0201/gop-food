@@ -23,7 +23,9 @@ export class SearchLocationComponent implements OnInit {
   }
 
   onChange(value: string): void {
-    this.filteredAddress = this.address.filter(adr => adr.toLowerCase().indexOf(value.toLowerCase()) !== -1);
+    if (value) {
+      this.filteredAddress = this.address.filter(adr => adr.toLowerCase().indexOf(value.toLowerCase()) !== -1);
+    }
   }
 
   ngOnInit(): void {

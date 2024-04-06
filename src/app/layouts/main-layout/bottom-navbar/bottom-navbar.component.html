@@ -1,0 +1,32 @@
+<nav
+  class="bottom-navbar-wrapper md:hidden block sticky left-0 bottom-0 bg-white shadow-[rgba(0,0,0,0.2)_0_10px_10px_5px] py-2">
+  <ul class="flex justify-between items-center m-0">
+    <li>
+      <a routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">
+        <i class="fa-solid fa-compass"></i>
+        <span>Home</span>
+      </a>
+    </li>
+
+    <li>
+      <a routerLink="/orders" routerLinkActive="active">
+        <i class="fa-brands fa-dropbox"></i>
+        <span>Orders</span>
+      </a>
+    </li>
+
+    <li>
+      <a routerLink="/messages" routerLinkActive="active">
+        <i class="fa-regular fa-comment-dots"></i>
+        <span>Messages</span>
+      </a>
+    </li>
+
+    <li>
+      <a routerLink="/my-account" routerLinkActive="active">
+        <i class="fa-regular fa-user"></i>
+        <span>Account</span>
+      </a>
+    </li>
+  </ul>
+</nav>

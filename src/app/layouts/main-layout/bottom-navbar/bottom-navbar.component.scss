@@ -1,0 +1,26 @@
+.bottom-navbar-wrapper {
+  li {
+    flex: 1;
+  }
+
+  li a {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+  }
+}
+
+.bottom-navbar-wrapper li a {
+  @apply text-gray-400;
+}
+.bottom-navbar-wrapper li a.active {
+  @apply text-primary;
+}
+
+.bottom-navbar-wrapper li a span {
+  @apply text-xs leading-3;
+}
+.bottom-navbar-wrapper li a i {
+  @apply text-lg;
+}

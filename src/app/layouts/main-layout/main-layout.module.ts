@@ -11,12 +11,14 @@ import { ScrollDirective } from 'src/app/shared/widget/directives/scroll.directi
 import { MainFooterComponent } from './main-footer/main-footer.component';
 import { MainHeaderComponent } from './main-header/main-header.component';
 import { MainLayoutComponent } from './main-layout/main-layout.component';
+import { BottomNavbarComponent } from './bottom-navbar/bottom-navbar.component';
 
 @NgModule({
   declarations: [
     MainHeaderComponent,
     MainFooterComponent,
     MainLayoutComponent,
+    BottomNavbarComponent,
   ],
   imports: [
     CommonModule,

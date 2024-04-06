@@ -15,7 +15,19 @@ const routes: Routes = [
         path: 'cuisines',
         loadChildren: () => import('./cuisines-page/cuisines-page.module').then(m => m.CuisinesPageModule),
         title: 'Ẩm thực'
-      }
+      },
+      {
+        path: 'orders',
+        loadChildren: () => import('./order-history-page/order-history-page.module').then(m => m.OrderHistoryPageModule)
+      },
+      {
+        path: 'messages',
+        loadChildren: () => import('./home-page/home-page.module').then(m => m.HomePageModule)
+      },
+      {
+        path: 'my-account',
+        loadChildren: () => import('./home-page/home-page.module').then(m => m.HomePageModule)
+      },
     ]
   }
 ];
