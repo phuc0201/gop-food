@@ -4,6 +4,11 @@ import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { NzDrawerComponent, NzDrawerModule, NzDrawerPlacement } from 'ng-zorro-antd/drawer';
 import { NzModalModule } from 'ng-zorro-antd/modal';
 
+
+export interface ICart {
+  quantity: number;
+}
+
 const plugins = [
   CommonModule,
   NzDrawerModule,
@@ -23,6 +28,35 @@ export class DrawerCartComponent implements OnChanges {
   langData: string = 'SHARED.COMPONENT_SHARED.DRAWER.';
   @ViewChild('cartDrawer') drawer!: NzDrawerComponent;
   placementDrawer: NzDrawerPlacement = 'right';
+  userCart: ICart[] = [
+    {
+      quantity: 2
+    },
+    {
+      quantity: 3
+    },
+    {
+      quantity: 1
+    },
+    {
+      quantity: 2
+    },
+    {
+      quantity: 3
+    },
+    {
+      quantity: 1
+    },
+    {
+      quantity: 2
+    },
+    {
+      quantity: 3
+    },
+    {
+      quantity: 1
+    },
+  ];
 
   @HostListener('window:resize', ['$event'])
   onResize(event: any) {
@@ -41,6 +75,21 @@ export class DrawerCartComponent implements OnChanges {
       this.placementDrawer = 'bottom';
     }
     else this.placementDrawer = 'right';
+  }
+
+  increaseQuantity(product: ICart): void {
+    if (product.quantity <= 50) {
+      product.quantity += 1;
+    }
+  }
+
+  decreaseQuantity(product: ICart, index: number): void {
+    if (product.quantity > 1) {
+      product.quantity -= 1;
+    }
+    else {
+      this.userCart.splice(index, 1);
+    }
   }
 
   closeDrawer(): void {
