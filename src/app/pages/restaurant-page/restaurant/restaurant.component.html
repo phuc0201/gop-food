@@ -1,0 +1,91 @@
+<div class="min-h-96 bg-white pt-6">
+  <!-- RESTAURANT-DETAILS -->
+  <div class="">
+    <!-- RESTAURANT INFO -->
+    <div class="restaurant-infor sectionContainer">
+      <h1 class="font-bold text-3xl">VUA NƯỚNG - Cơm thịt nướng than hoa - CN1</h1>
+      <h4 class="text-gray-500 font-light mb-2">Cơm,Lẩu & Nướng - Quay</h4>
+
+      <!--  -->
+
+      <div class="flex md:gap-3 gap-2 max-w-full mb-2">
+        <div class="restaurant-rat flex items-center md:gap-2 gap-1">
+          <i class="fa-solid fa-star text-yellow-300 md:text-base text-xs"></i>
+          <div class="text-gray-500 md:text-sm text-xs font-light">4.7</div>
+        </div>
+        <div class="restaurant-duration flex items-center md:gap-2 gap-1">
+          <i class="fa-regular fa-clock text-gray-500 md:text-base text-xs"></i>
+          <div class="text-gray-500 md:text-sm text-xs font-light">25m</div>
+        </div>
+        <div class="restaurant-distance hidden xs:flex items-center md:gap-2 gap-1">
+          <i class="fa-regular fa-map text-gray-500 md:text-base text-xs"></i>
+          <div class="text-gray-500 md:text-sm text-xs font-light">0.5km</div>
+        </div>
+      </div>
+
+      <!--  -->
+
+      <div class="flex items-center mb-2">
+        <h4 class="text-gray-500 font-normal mr-10">Giờ mở cửa</h4>
+        <h4 class="text-gray-500 font-light">Hôm nay 09:30-13:30 17:00-20:00</h4>
+      </div>
+
+      <!--  -->
+
+      <div class="flex items-center gap-4">
+        <i class="fa-solid fa-tag text-primary rotate-90"></i>
+        <h4 class="text-gray-600 font-light m-0 ">Ưu đãi đến 46.000 đ</h4>
+      </div>
+    </div>
+
+    <!-- MENU TABS -->
+    <div class="sticky top-20 -translate-y-[1px] pt-8 bg-white hidden md:block shadow-sm">
+      <div class="sectionContainer">
+        <div class="px-8 relative">
+          <div #tabsContainer class="tabs-contanter flex relative h-fit items-center overflow-hidden">
+            <div #tabsNav class="tabs-nav" [ngStyle]="{'transform': 'translateX(' + tabsPosition + 'px)'}"
+              class="flex items-center transition-all duration-300">
+              <div *ngFor="let item of restaurantCategory; let i = index" (click)="selectResCate(i)" role="tab"
+                [ngClass]="{'active': selectedCategory === i}"
+                class="tab py-3 px-6 hover:text-primary cursor-pointer text-[16px] text-gray-500 text-center inline-block whitespace-nowrap select-none">
+                {{ item.categoryName }}
+              </div>
+            </div>
+          </div>
+
+          <button (click)="handleButtonTab(-stepScrollTabValue)"
+            class="hover:text-primary w-8 h-8 text-gray-400 absolute left-0 top-[50%] -translate-y-[50%] bg-white">
+            <i class="fa-solid fa-chevron-left"></i>
+          </button>
+
+          <button (click)="handleButtonTab(stepScrollTabValue)"
+            class="hover:text-primary w-8 h-8 text-gray-400 absolute right-0  top-[50%] -translate-y-[50%] bg-white">
+            <i class="fa-solid fa-chevron-right"></i>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- MENU TAB CONTENT -->
+    <div class="tab-content pt-16 bg-gray-100">
+      <div class="sectionContainer">
+        <section *ngFor="let item of [1,2,3,4,5,6,7,8,9,10,11,12,13]" [id]="'section' + item">
+          <h1>Content {{ item }}</h1> <br>
+          Nhanh nhất - GrabFood cung cấp dịch vụ giao đồ ăn nhanh nhất thị trường.
+          Dễ dàng nhất - Giờ đây, bạn chỉ cần thực hiện vài cú nhấp chuột hoặc chạm nhẹ là đã có thể đặt đồ ăn. Hãy đặt
+          đồ
+          ăn trực tuyến hoặc tải xuống siêu ứng dụng Grab của chúng tôi để có trải nghiệm nhanh hơn và thú vị hơn.
+          Đáp ứng mọi nhu cầu - Từ món ăn đặc sản địa phương đến các nhà hàng được ưa thích, nhiều lựa chọn đa dạng chắc
+          chắn sẽ luôn làm hài lòng khẩu vị của bạn.
+          Thanh toán dễ dàng - Giao và nhận đồ ăn thật dễ dàng. Thanh toán bằng GrabPay thậm chí còn dễ dàng hơn nữa.
+          Nhiều quà tặng hơn - Tích điểm GrabRewards cho mỗi đơn hàng của bạn và sử dụng điểm thưởng để đổi lấy nhiều ưu
+          đãi hơn.
+        </section>
+      </div>
+    </div>
+
+  </div>
+
+
+  <!-- RESTAURANT CATEGORY -->
+</div>

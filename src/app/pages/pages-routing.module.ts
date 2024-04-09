@@ -14,12 +14,10 @@ const routes: Routes = [
       {
         path: 'cuisines',
         loadChildren: () => import('./cuisines-page/cuisines-page.module').then(m => m.CuisinesPageModule),
-        title: 'Ẩm thực'
       },
       {
         path: 'restaurant',
-        loadChildren: () => import('./cuisines-page/cuisines-page.module').then(m => m.CuisinesPageModule),
-        title: 'Ẩm thực'
+        loadChildren: () => import('./restaurant-page/restaurant-page.module').then(m => m.RestaurantPageModule),
       },
       {
         path: 'orders',

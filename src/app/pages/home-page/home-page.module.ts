@@ -2,8 +2,6 @@ import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { MatAutocompleteModule } from '@angular/material/autocomplete';
-import { MatIconModule } from '@angular/material/icon';
 import { RouterModule, Routes } from '@angular/router';
 import { TranslateModule } from '@ngx-translate/core';
 import { NzGridModule } from 'ng-zorro-antd/grid';
@@ -49,11 +47,9 @@ const plugins = [
     CommonModule,
     plugins,
     TranslateModule,
-    MatAutocompleteModule,
     FormsModule,
     ReactiveFormsModule,
     NzAutocompleteModule,
-    MatIconModule,
     NzGridModule,
     RouterModule,
     RouterModule.forChild(routes)

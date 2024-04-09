@@ -1,8 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { MatAutocompleteModule } from '@angular/material/autocomplete';
-import { MatIconModule } from '@angular/material/icon';
 import { RouterModule, Routes } from '@angular/router';
 import { TranslateModule } from '@ngx-translate/core';
 import { NzAutocompleteModule } from 'ng-zorro-antd/auto-complete';
@@ -23,6 +21,7 @@ const routes: Routes = [
   {
     path: '',
     component: CuisinesComponent,
+    title: 'Ẩm thực',
     children: [
       {
         path: '',
@@ -50,8 +49,6 @@ const plugins = [
     CommonModule,
     plugins,
     RouterModule.forChild(routes),
-    MatAutocompleteModule,
-    MatIconModule,
     TranslateModule,
     FormsModule,
     NzGridModule,
