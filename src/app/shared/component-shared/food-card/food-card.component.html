@@ -1,15 +1,22 @@
 <div
-  class="flex gap-3 cursor-pointer border border-solid border-transparent hover:border-primary p-3 rounded-2xl group bg-white shadow-md">
+  class="food-card flex h-full gap-3 cursor-pointer border-0 md:border border-solid border-transparent transition-all duration-500 hover:shadow-[rgba(156,231,190,0.2)_0_1px_15px_2px] hover:border-green2 px-0 py-4 md:p-4 md:rounded-lg group bg-white shadow-xs">
 
-  <div class="relative min-w-28 h-28 w-28 rounded-2xl overflow-hidden">
+  <div class="relative min-w-28 h-28 w-28 rounded-xl overflow-hidden">
     <img src="" onerror="this.src='assets/img/foods/food-default.webp'"
-      class="object-cover w-full h-full group-hover:scale-105 transition-all duration-500">
+      class="food-img object-cover w-full h-full group-hover:scale-105 transition-all duration-500">
     <span class="absolute top-1 left-1 text-xs font-medium text-white bg-primary px-2 py-1 rounded-2xl">Bán chạy</span>
   </div>
 
-  <div class="w-full">
-    <h3 class="line-clamp-2 font-bold">Combo 10 cuốn tôm thịt, kèm nước chấm nhà làm siêu ngon</h3>
-    <p class="text-gray-500 line-clamp-2">gồm bún,tôm cà mau,rau cải hẹ dưa leo</p>
+  <div class="w-full flex flex-col justify-between">
+    <div>
+      <h3 class="line-clamp-2 font-normal text-black capitalize">Combo 10 cuốn tôm thịt, kèm nước chấm nhà làm siêu ngon
+      </h3>
+      <p class="text-gray-400 md:line-clamp-3 line-clamp-2">
+        Gồm bún,tôm cà mau,rau cải hẹ dưa leo
+        Gồm bún,tôm cà mau,rau cải hẹ dưa leo
+        Gồm bún,tôm cà mau,rau cải hẹ dưa leo
+      </p>
+    </div>
 
     <div class="flex justify-between">
       <div class="flex flex-wrap gap-3 items-center">
