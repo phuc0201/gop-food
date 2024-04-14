@@ -5,3 +5,11 @@
 .tabs-contanter .tab {
   @apply text-gray-500 font-medium border-b-2 border-t-0 border-x-0  hover:border-gray-200 border-transparent;
 }
+
+::ng-deep .cuisine-drawer .ant-drawer-content {
+  border-radius: 20px;
+}
+
+.cuisine-item.active {
+  @apply text-primary;
+}

@@ -1,16 +1,17 @@
-<!-- <div class="min-h-96 bg-white pt-6">
+<div class="min-h-96 bg-white pt-6 md:block hidden">
   <div>
     <app-restaurant-info></app-restaurant-info>
     <app-restaurant-menu></app-restaurant-menu>
   </div>
-</div> -->
+</div>
 
-<div>
-  <img src="assets/img/foods/banh-mi.jpg" class="md:hidden block w-full h-auto">
-  <div class="relative xs:-translate-y-[12rem] sm:-translate-y-[15rem] -translate-y-[6rem] md:-translate-y-0 min-h-96 bg-transparent pt-6">
-    <div>
-      <app-restaurant-info></app-restaurant-info>
-      <app-restaurant-menu></app-restaurant-menu>
-    </div>
+<div class="block md:hidden">
+  <div class="fixed top-0 left-0 right-0 h-64 overflow-hidden">
+    <img src="assets/img/foods/banh-mi.jpg" class="md:hidden block w-full h-full object-cover"
+      [ngClass]="{'restaurant-banner-hidden' : hiddenBanner}">
+  </div>
+  <div class="w-full h-fit pt-44 bg-transparent sticky top-0 left-0">
+    <app-restaurant-info></app-restaurant-info>
+    <app-restaurant-menu></app-restaurant-menu>
   </div>
 </div>
