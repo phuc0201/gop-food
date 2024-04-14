@@ -64,14 +64,13 @@
           </svg>
 
           <input #autoCompleteInput placeholder='Have you craving ?' nz-input [(ngModel)]="searchValue"
-            (ngModelChange)="onChange($event)" (blur)="blurAutoComplete()" [nzAutocomplete]="autoSearchCraving"
+            (ngModelChange)="onChange($event)" (blur)="blurAutoComplete()"
             class="outline-none bg-transparent w-full px-10" />
 
           <div (click)="openSearchInput()" [ngClass]="{'hidden' : searchValue==''}">
             <i class="fa-solid fa-circle-xmark text-gray-400 absolute top-[50%] right-3 -translate-y-[50%]"></i>
           </div>
         </div>
-        <nz-autocomplete [nzDataSource]="filteredOptions" #autoSearchCraving></nz-autocomplete>
       </div>
 
       <!-- SEARCH -->
