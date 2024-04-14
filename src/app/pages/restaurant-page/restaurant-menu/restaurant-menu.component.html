@@ -56,7 +56,7 @@
 
       <!-- AUTOCOMPLETE -->
       <div class="autocomplete-input flex-1" [ngClass]="searching ? 'block' : 'hidden'">
-        <div class="relative px-10 bg-gray-200 h-[2.375rem] flex items-center rounded-lg">
+        <div class="relative bg-gray-100 h-[2.375rem] flex items-center rounded-lg">
           <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
             stroke="currentColor" class="w-5 h-5 absolute top-[50%] left-3 -translate-y-[50%]">
             <path stroke-linecap="round" stroke-linejoin="round"
@@ -64,10 +64,10 @@
           </svg>
 
           <input #autoCompleteInput placeholder='Have you craving ?' nz-input [(ngModel)]="searchValue"
-            (ngModelChange)="onChange($event)" [nzAutocomplete]="autoSearchCraving"
-            class="outline-none bg-transparent w-full" />
+            (ngModelChange)="onChange($event)" (blur)="blurAutoComplete()" [nzAutocomplete]="autoSearchCraving"
+            class="outline-none bg-transparent w-full px-10" />
 
-          <div (click)="searchValue=''" [ngClass]="{'hidden' : searchValue==''}">
+          <div (click)="openSearchInput()" [ngClass]="{'hidden' : searchValue==''}">
             <i class="fa-solid fa-circle-xmark text-gray-400 absolute top-[50%] right-3 -translate-y-[50%]"></i>
           </div>
         </div>
@@ -76,7 +76,7 @@
 
       <!-- SEARCH -->
       <div [ngClass]="searching ? 'hidden' : 'block'">
-        <button (click)="search()"
+        <button (click)="openSearchInput()"
           class="text-black bg-gray-100 py-2 px-5 flex text-center items-center justify-between rounded-2xl ">
           <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
             stroke="currentColor" class="w-5 h-5 mr-2">
@@ -111,10 +111,9 @@
 
 <!-- MENU TAB CONTENT -->
 
-<div #tabContent id="restaurant-menu" class="tab-content md:bg-gray-100 bg-white md:pt-16">
-  <div class="sectionContainer">
-    <section *ngFor="let item of [1,2,3,4,5,6,7,8,9,10,11,12,13]" [id]="'section' + item"
-      class="md:mb-16 md:py-0 px-0 py-5">
+<div #tabContent id="restaurant-menu" class="tab-content md:bg-gray-100 bg-white md:pt-16 sectionContainer">
+  <div *ngIf="!searching && searchValue==''">
+    <section *ngFor="let item of [1,2,3,4,5]" [id]="'section' + item" class="md:mb-16 md:py-0 px-0 py-5">
       <h1 class="mb-0 md:mb-3 lg:mb-6 font-bold text-lg md:text-2xl lg:text-4xl leading-[3rem]">Tên danh mục thứ {{ item
         }}</h1>
       <div nz-row [nzGutter]="{md:12, lg:20}" class="product-list">
@@ -127,5 +126,23 @@
         </div>
       </div>
     </section>
+  </div>
+
+  <!-- SEARCH-RESULT-CONTAINER -->
+  <div *ngIf="searching && searchValue!=''" #searchResultContainer>
+    <!-- MENU-CONTENT-EMPTY -->
+    <div *ngIf="filteredOptions.length == 0" class="sectionContainer py-5">
+      <div class="w-full flex flex-col items-center text-center">
+        <img src="assets/img/icons/empty.png" class="w-36  h-36">
+        <h3>We coundn't find any result</h3>
+        <span class="text-gray-400">Try a different search keyword or look for your favourite dish at orther
+          restaurant</span>
+      </div>
+    </div>
+
+    <!-- SEARCH-RESULT -->
+    <div *ngIf="filteredOptions.length > 0">
+      axasx
+    </div>
   </div>
 </div>

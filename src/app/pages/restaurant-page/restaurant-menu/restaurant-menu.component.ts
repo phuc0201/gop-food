@@ -1,16 +1,17 @@
-import { Component, ElementRef, HostListener, OnInit, Renderer2, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, HostListener, OnInit, Renderer2, ViewChild } from '@angular/core';
 
 @Component({
   selector: 'app-restaurant-menu',
   templateUrl: './restaurant-menu.component.html',
   styleUrls: ['./restaurant-menu.component.scss']
 })
-export class RestaurantMenuComponent implements OnInit {
+export class RestaurantMenuComponent implements OnInit, AfterViewInit {
   @ViewChild('tabsNav') tabsNav!: ElementRef;
   @ViewChild('tabsContainer') tabsContainer!: ElementRef;
   @ViewChild('menuTabMobile') menuTabMobile!: ElementRef;
   @ViewChild('tabContent') tabContent!: ElementRef;
   @ViewChild('autoCompleteInput') autoCompleteInput!: ElementRef;
+  @ViewChild('searchResultContainer', { static: true }) searchResultContainer!: ElementRef;
   restaurantCategory = [
     {
       id: 1,
@@ -41,12 +42,16 @@ export class RestaurantMenuComponent implements OnInit {
   searching: boolean = false;
   searchValue?: string = '';
   filteredOptions: string[] = [];
-  options = ['Burns Bay Road', 'Downing Street', 'Wall Street'];
+  foodItems = ['Burns Bay Road', 'Downing Street', 'Wall Street'];
 
   constructor(
     private el: ElementRef,
     private renderer: Renderer2
-  ) { this.filteredOptions = this.options; }
+  ) { this.filteredOptions = this.foodItems; }
+
+  ngAfterViewInit(): void {
+
+  }
 
   ngOnInit(): void {
     this.selectedCategory = 0;
@@ -54,6 +59,8 @@ export class RestaurantMenuComponent implements OnInit {
 
   @HostListener('window:scroll', ['$event'])
   onWindowScroll(event: Event): void {
+    if (this.searching)
+      return;
     if (this.tabContent.nativeElement.getBoundingClientRect().top <= 96) {
       this.renderer.removeClass(this.menuTabMobile.nativeElement, 'hidden');
       this.renderer.addClass(this.menuTabMobile.nativeElement, 'flex');
@@ -64,20 +71,33 @@ export class RestaurantMenuComponent implements OnInit {
     }
   }
 
-  search(): void {
+  openSearchInput(): void {
     this.searching = true;
+    this.searchValue = '';
     setTimeout(() => {
       this.autoCompleteInput.nativeElement.focus();
     }, 100);
   }
 
+  blurAutoComplete(): void {
+    if (this.searchValue == '') {
+      this.searching = false;
+    }
+  }
+
   onChange(value: string): void {
-    this.filteredOptions = this.options.filter(option => option.toLowerCase().indexOf(value.toLowerCase()) !== -1);
+    this.filteredOptions = this.foodItems.filter(option => option.toLowerCase().indexOf(value.toLowerCase()) !== -1);
+    let menuTabMobileContainerBottom = this.menuTabMobile.nativeElement.getBoundingClientRect().bottom;
+    let tabContentTop = this.tabContent.nativeElement.getBoundingClientRect().top;
+    setTimeout(() => {
+      window.scrollBy(0, tabContentTop - menuTabMobileContainerBottom);
+    }, 100);
   }
 
   goBack(): void {
     window.history.back();
   }
+
   openCuisineDrawer(): void {
     this.visibleCuisineDrawer = true;
   }
