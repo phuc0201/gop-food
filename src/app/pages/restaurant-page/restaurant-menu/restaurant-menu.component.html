@@ -112,7 +112,7 @@
 <!-- MENU TAB CONTENT -->
 
 <div #tabContent id="restaurant-menu" class="tab-content md:bg-gray-100 bg-white md:pt-16 sectionContainer">
-  <div *ngIf="!searching && searchValue==''">
+  <div *ngIf="searching==false">
     <section *ngFor="let item of [1,2,3,4,5]" [id]="'section' + item" class="md:mb-16 md:py-0 px-0 py-5">
       <h1 class="mb-0 md:mb-3 lg:mb-6 font-bold text-lg md:text-2xl lg:text-4xl leading-[3rem]">Tên danh mục thứ {{ item
         }}</h1>
@@ -129,9 +129,9 @@
   </div>
 
   <!-- SEARCH-RESULT-CONTAINER -->
-  <div *ngIf="searching && searchValue!=''" #searchResultContainer>
+  <div *ngIf="searching" #searchResultContainer>
     <!-- MENU-CONTENT-EMPTY -->
-    <div *ngIf="filteredOptions.length == 0" class="sectionContainer py-5">
+    <div *ngIf="filteredOptions.length === 0" class="sectionContainer py-5">
       <div class="w-full flex flex-col items-center text-center">
         <img src="assets/img/icons/empty.png" class="w-36  h-36">
         <h3>We coundn't find any result</h3>
@@ -142,7 +142,15 @@
 
     <!-- SEARCH-RESULT -->
     <div *ngIf="filteredOptions.length > 0">
-      axasx
+      <div nz-row [nzGutter]="{md:12, lg:20}">
+        <div *ngFor="let item of [1,2,3,4,5,6,7,8]; let last = last" nz-col nzSpan="24" nzLg="8" nzMd="12"
+          class="md:mb-3 ld:mb-5">
+          <div class="md:border-0 border border-x-0 border-t-0 border-gray-200"
+            [ngClass]="{'border-transparent': last}">
+            <app-food-card></app-food-card>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 </div>

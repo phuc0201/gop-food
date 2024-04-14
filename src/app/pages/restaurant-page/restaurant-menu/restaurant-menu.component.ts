@@ -72,6 +72,7 @@ export class RestaurantMenuComponent implements OnInit, AfterViewInit {
   }
 
   openSearchInput(): void {
+    console.log(this.filteredOptions.length);
     this.searching = true;
     this.searchValue = '';
     setTimeout(() => {
@@ -89,6 +90,7 @@ export class RestaurantMenuComponent implements OnInit, AfterViewInit {
     this.filteredOptions = this.foodItems.filter(option => option.toLowerCase().indexOf(value.toLowerCase()) !== -1);
     let menuTabMobileContainerBottom = this.menuTabMobile.nativeElement.getBoundingClientRect().bottom;
     let tabContentTop = this.tabContent.nativeElement.getBoundingClientRect().top;
+
     setTimeout(() => {
       window.scrollBy(0, tabContentTop - menuTabMobileContainerBottom);
     }, 100);
