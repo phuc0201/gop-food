@@ -110,8 +110,8 @@
 
 <!-- MENU TAB CONTENT -->
 
-<div #tabContent id="restaurant-menu" class="tab-content md:bg-gray-100 bg-white md:pt-16 sectionContainer">
-  <div *ngIf="searching==false">
+<div #tabContent id="restaurant-menu" class="tab-content md:bg-gray-100 bg-white md:pt-16">
+  <div *ngIf="searching==false" class="sectionContainer">
     <section *ngFor="let item of [1,2,3,4,5]" [id]="'section' + item" class="md:mb-16 md:py-0 px-0 py-5">
       <h1 class="mb-0 md:mb-3 lg:mb-6 font-bold text-lg md:text-2xl lg:text-4xl leading-[3rem]">Tên danh mục thứ {{ item
         }}</h1>
@@ -140,7 +140,7 @@
     </div>
 
     <!-- SEARCH-RESULT -->
-    <div *ngIf="filteredOptions.length > 0">
+    <div *ngIf="filteredOptions.length > 0" class="sectionContainer">
       <div nz-row [nzGutter]="{md:12, lg:20}">
         <div *ngFor="let item of [1,2,3,4,5,6,7,8]; let last = last" nz-col nzSpan="24" nzLg="8" nzMd="12"
           class="md:mb-3 ld:mb-5">
