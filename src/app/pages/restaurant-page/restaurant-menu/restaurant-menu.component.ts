@@ -10,6 +10,7 @@ export class RestaurantMenuComponent implements OnInit {
   @ViewChild('tabsContainer') tabsContainer!: ElementRef;
   @ViewChild('menuTabMobile') menuTabMobile!: ElementRef;
   @ViewChild('tabContent') tabContent!: ElementRef;
+  @ViewChild('autoCompleteInput') autoCompleteInput!: ElementRef;
   restaurantCategory = [
     {
       id: 1,
@@ -30,37 +31,6 @@ export class RestaurantMenuComponent implements OnInit {
     {
       id: 5,
       categoryName: 'For you 5'
-    },
-    {
-      id: 6,
-      categoryName: 'For you 6'
-    },
-    {
-      id: 7,
-      categoryName: 'For you 7'
-    },
-    {
-      id: 8,
-      categoryName: 'For you 8'
-    },
-    {
-      id: 9,
-      categoryName: 'For you 9'
-    }, {
-      id: 10,
-      categoryName: 'For you 10'
-    },
-    {
-      id: 11,
-      categoryName: 'For you 11'
-    },
-    {
-      id: 12,
-      categoryName: 'For you 12'
-    },
-    {
-      id: 13,
-      categoryName: 'For you 13'
     }
   ];
   selectedCategory: number = 0;
@@ -68,10 +38,15 @@ export class RestaurantMenuComponent implements OnInit {
   stepScrollTabValue: number = 300;
   isHandlingButtonTab = false;
   visibleCuisineDrawer: boolean = false;
+  searching: boolean = false;
+  searchValue?: string = '';
+  filteredOptions: string[] = [];
+  options = ['Burns Bay Road', 'Downing Street', 'Wall Street'];
+
   constructor(
     private el: ElementRef,
     private renderer: Renderer2
-  ) { }
+  ) { this.filteredOptions = this.options; }
 
   ngOnInit(): void {
     this.selectedCategory = 0;
@@ -87,6 +62,17 @@ export class RestaurantMenuComponent implements OnInit {
       this.renderer.removeClass(this.menuTabMobile.nativeElement, 'flex');
       this.renderer.addClass(this.menuTabMobile.nativeElement, 'hidden');
     }
+  }
+
+  search(): void {
+    this.searching = true;
+    setTimeout(() => {
+      this.autoCompleteInput.nativeElement.focus();
+    }, 100);
+  }
+
+  onChange(value: string): void {
+    this.filteredOptions = this.options.filter(option => option.toLowerCase().indexOf(value.toLowerCase()) !== -1);
   }
 
   goBack(): void {

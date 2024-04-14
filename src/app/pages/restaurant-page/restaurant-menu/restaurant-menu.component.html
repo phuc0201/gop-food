@@ -30,17 +30,20 @@
 
 <div #menuTabMobile
   class="sectionContainer h-24 items-center shadow-md fixed top-0 left-0 right-0 z-50 bg-white md:hidden hidden">
-
   <div class="w-full">
+    <!-- MENU-HEADER -->
     <div class="flex items-center mb-3">
       <i (click)="goBack()" class="fa-solid fa-chevron-left font-bold mr-5 pl-2"></i>
-
       <h3 class="font-bold capitalize m-0 line-clamp-1">
         {{ restaurantCategory[selectedCategory].categoryName }}
       </h3>
     </div>
+
+    <!-- MENU-SEARCH -->
     <div class="flex items-center w-full gap-2">
-      <button (click)="openCuisineDrawer()" id="dropdown-cuisine"
+
+      <!-- CUISINE-BUTTON -->
+      <button (click)="openCuisineDrawer()" [ngClass]="{'hidden' : searching}" id="dropdown-cuisine"
         class="text-black bg-gray-100 py-2 px-5 flex text-center items-center justify-between rounded-2xl flex-1 line-clamp-1"
         type="button">
         {{ restaurantCategory[selectedCategory].categoryName }}
@@ -50,8 +53,31 @@
             d="m1 1 4 4 4-4" />
         </svg>
       </button>
-      <div>
-        <button class="text-black bg-gray-100 py-2 px-5 flex text-center items-center justify-between rounded-2xl ">
+
+      <!-- AUTOCOMPLETE -->
+      <div class="autocomplete-input flex-1" [ngClass]="searching ? 'block' : 'hidden'">
+        <div class="relative px-10 bg-gray-200 h-[2.375rem] flex items-center rounded-lg">
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+            stroke="currentColor" class="w-5 h-5 absolute top-[50%] left-3 -translate-y-[50%]">
+            <path stroke-linecap="round" stroke-linejoin="round"
+              d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z" />
+          </svg>
+
+          <input #autoCompleteInput placeholder='Have you craving ?' nz-input [(ngModel)]="searchValue"
+            (ngModelChange)="onChange($event)" [nzAutocomplete]="autoSearchCraving"
+            class="outline-none bg-transparent w-full" />
+
+          <div (click)="searchValue=''" [ngClass]="{'hidden' : searchValue==''}">
+            <i class="fa-solid fa-circle-xmark text-gray-400 absolute top-[50%] right-3 -translate-y-[50%]"></i>
+          </div>
+        </div>
+        <nz-autocomplete [nzDataSource]="filteredOptions" #autoSearchCraving></nz-autocomplete>
+      </div>
+
+      <!-- SEARCH -->
+      <div [ngClass]="searching ? 'hidden' : 'block'">
+        <button (click)="search()"
+          class="text-black bg-gray-100 py-2 px-5 flex text-center items-center justify-between rounded-2xl ">
           <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
             stroke="currentColor" class="w-5 h-5 mr-2">
             <path stroke-linecap="round" stroke-linejoin="round"
@@ -60,6 +86,8 @@
           Seacrch
         </button>
       </div>
+      <!--  -->
+
     </div>
   </div>
 
@@ -70,7 +98,7 @@
       <div class="">
         <ul class="cuisine-list">
           <li (click)="selectResCate(index)" *ngFor="let item of restaurantCategory; let last = last; let index = index"
-            class="cuisine-item py-3 border border-x-0 border-t-0 border-gray-100 font-bold"
+            class="cuisine-item py-3 border border-x-0 border-t-0 border-gray-100 font-bold line-clamp-1"
             [ngClass]="{'border-0' : last, 'active' : index == selectedCategory}">
             {{ item.categoryName }}
           </li>
