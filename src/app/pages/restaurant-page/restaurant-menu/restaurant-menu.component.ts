@@ -72,7 +72,6 @@ export class RestaurantMenuComponent implements OnInit, AfterViewInit {
   }
 
   openSearchInput(): void {
-    console.log(this.filteredOptions.length);
     this.searching = true;
     this.searchValue = '';
     setTimeout(() => {
