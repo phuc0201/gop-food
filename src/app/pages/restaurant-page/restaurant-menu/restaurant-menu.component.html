@@ -17,7 +17,7 @@
 </div>
 
 <!-- MENU-TAB -->
-<div class="sticky z-50 pt-8 top-20 -translate-y-[1px] bg-white hidden md:block shadow-sm">
+<div class="sticky z-50 pt-8 top-20 -translate-y-[2px] bg-white hidden md:block shadow-sm">
   <div class="sectionContainer">
     <div class="px-8 relative">
       <div #tabsContainer class="tabs-contanter flex relative h-fit items-center overflow-hidden">
@@ -150,7 +150,7 @@
     <!-- MENU-CONTENT-EMPTY -->
     <div *ngIf="filteredOptions.length === 0" class="sectionContainer py-5">
       <div class="w-full flex flex-col items-center text-center">
-        <img src="assets/img/icons/empty.png" class="w-36  h-36">
+        <img loading="lazy" src="assets/img/icons/empty.png" class="w-36  h-36">
         <h3>We coundn't find any result</h3>
         <span class="text-gray-400">Try a different search keyword or look for your favourite dish at orther
           restaurant</span>

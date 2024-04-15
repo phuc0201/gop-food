@@ -1,5 +1,4 @@
-import { Component, OnInit, ViewEncapsulation } from '@angular/core';
-import { FormControl } from '@angular/forms';
+import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
 
@@ -7,12 +6,10 @@ import { TranslateService } from '@ngx-translate/core';
   selector: 'app-search-location',
   templateUrl: './search-location.component.html',
   styleUrls: ['./search-location.component.scss'],
-  encapsulation: ViewEncapsulation.None,
 })
 export class SearchLocationComponent implements OnInit {
   langData: string = 'PAGES.HOME_PAGE.SEARCH_LOCATION.';
   listResult: string[] = [];
-  control = new FormControl('');
   userAddress?: string;
   filteredAddress: string[] = [];
   address = ['Số 1 VVN', 'UFM', '92 Hoàng Diệu', 'IIG Tp.HCM'];

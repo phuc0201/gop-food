@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { NavigationEnd, Router } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
+import { UrlConstant } from 'src/app/core/constants/url.constant';
 
 @Component({
   selector: 'app-main-header',
@@ -12,7 +13,9 @@ export class MainHeaderComponent implements OnInit {
   currLang?: string = '';
   money: number = 1200000;
   openDrawer: boolean = false;
-  headerNonFixed: boolean = false;
+  stickyHeaderPage: string[] = [UrlConstant.ROUTE.CUISINE_PAGE.BASE];
+  isSticky: boolean = false;
+
   switchLanguage() {
     localStorage.setItem('language', this.currLang ?? 'vi');
     if (this.currLang !== this.translate.currentLang) {
@@ -21,11 +24,11 @@ export class MainHeaderComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.isSticky = this.stickyHeaderPage.includes('/' + this.router.url.split('/')[1]);
     this.currLang = localStorage.getItem('language')?.toString();
-    this.headerNonFixed = this.router.url === '/' ? false : true;
     this.router.events.subscribe(event => {
       if (event instanceof NavigationEnd) {
-        this.headerNonFixed = event.url === '/' ? false : true;
+        this.isSticky = this.stickyHeaderPage.includes('/' + this.router.url.split('/')[1]);
       }
     });
   }

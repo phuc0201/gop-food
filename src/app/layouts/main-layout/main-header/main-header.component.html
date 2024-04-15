@@ -1,11 +1,11 @@
-<div appScroll id="header" class="w-full py-3 md:py-5 top-0 left-0 z-50 md:fixed sticky hidden md:block">
-  <!-- [class.toggle]="headerNonFixed" -->
+<div appScroll id="header" class="w-full py-3 md:py-5 top-0 left-0 z-50 md:fixed sticky hidden md:block"
+  [class.header-sticky]="isSticky">
   <div class="sectionContainer flex justify-between items-center flex-wrap">
     <a routerLink="/" class="logo md:text-3xl text-xl font-medium text-white cursor-pointer">GoPFood</a>
     <div class="flex items-center md:gap-3 gap-1 md:h-10 h-7">
       <!-- <div
         class="p-3 gap-2 group rounded hidden md:flex justify-center items-center bg-white border border-solid border-gray-200 cursor-pointer ">
-        <img src="assets/img/icons/icon-cart-black.svg" class="w-4 h-4">
+        <img loading="lazy" src="assets/img/icons/icon-cart-black.svg" class="w-4 h-4">
       </div> -->
 
       <div class="relative h-10 bg-primary rounded hidden md:flex justify-center items-center cursor-pointer"
@@ -15,7 +15,7 @@
           <span class="font-medium text-primary">1</span>
         </div>
         <div class="px-3 gap-2 group flex justify-center items-center cursor-pointer ">
-          <img src="assets/img/icons/icon-cart-white.svg" class="w-4 h-4">
+          <img loading="lazy" src="assets/img/icons/icon-cart-white.svg" class="w-4 h-4">
           <span class="font-medium text-white">{{ money.toLocaleString('vi', {style : 'currency', currency : 'VND'})
             }}</span>
         </div>
@@ -23,7 +23,7 @@
 
       <div class="h-full">
         <!-- <a [routerLink]="['profile']" class="md:w-10 w-7 h-full flex items-center">
-          <img src="" alt="avatar" onerror="this.src='assets/img/avatars/user.png'" class="w-full h-full">
+          <img loading="lazy" src="" alt="avatar" onerror="this.src='assets/img/avatars/user.png'" class="w-full h-full">
         </a> -->
         <a [routerLink]="['auth', 'login']"
           class="h-full flex items-center bg-white rounded border border-solid border-gray-200">

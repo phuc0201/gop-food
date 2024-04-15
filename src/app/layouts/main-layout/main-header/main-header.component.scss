@@ -2,24 +2,25 @@
   @apply md:bg-[linear-gradient(180deg,rgba(0,0,0,0.4),transparent)] transition-[background-color] duration-[0.3s] ease-[ease];
 }
 
-#header.toggle {
+#header.header-sticky {
   position: sticky;
+  box-shadow: 0 3px 6px rgba(28, 28, 28, 0.1);
 }
 #header.scrolled,
-#header.toggle {
+#header.header-sticky {
   background-color: white;
   background-image: none;
 }
-#header.scrolled.toggle {
+/* #header.scrolled.header-sticky {
   box-shadow: none;
-}
+} */
 
 #header.scrolled {
   box-shadow: 0 3px 6px rgba(28, 28, 28, 0.1);
 }
 
 #header.scrolled .logo,
-#header.toggle .logo {
+#header.header-sticky .logo {
   @apply text-primary;
 }
 #header .logo {
