@@ -1,7 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { AfterViewInit, CUSTOM_ELEMENTS_SCHEMA, Component, ElementRef, Input, OnChanges, SimpleChanges, ViewChild } from '@angular/core';
 import { RouterModule } from '@angular/router';
-import { cuisineCategory } from 'src/assets/dummy-data/cuisine-category';
+import { CuisineCategory } from 'src/app/core/mock-data/cuisine-category.data';
 import { register } from 'swiper/element/bundle';
 register();
 
@@ -26,7 +26,7 @@ const plugins = [
 export class CuisinesSliderComponent implements AfterViewInit, OnChanges {
   @Input() sortListCuisine: any;
   @ViewChild('cuisinesSlider') swiperEl!: ElementRef;
-  listCuisine = [...cuisineCategory];
+  listCuisine = [...CuisineCategory];
   swiperParams = {
     slidesPerView: 3,
     Infinity: true,

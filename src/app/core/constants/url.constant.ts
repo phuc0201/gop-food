@@ -6,6 +6,9 @@ export const UrlConstant = {
     },
     CUISINE_PAGE: {
       BASE: '/cuisines'
+    },
+    CHECKOUT_PAGE: {
+      BASE: '/checkout'
     }
   }
 };

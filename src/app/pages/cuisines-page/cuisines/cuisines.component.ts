@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { cuisineCategory } from 'src/assets/dummy-data/cuisine-category';
+import { CuisineCategory } from 'src/app/core/mock-data/cuisine-category.data';
 
 @Component({
   selector: 'app-cuisines',
@@ -8,7 +8,7 @@ import { cuisineCategory } from 'src/assets/dummy-data/cuisine-category';
   styleUrls: ['./cuisines.component.scss']
 })
 export class CuisinesComponent implements OnInit {
-  listCuisine = [...cuisineCategory];
+  listCuisine = [...CuisineCategory];
 
   constructor(
     private router: Router

@@ -1,4 +1,4 @@
-export const cuisineCategory = [
+export const CuisineCategory = [
   {
     type: "MILK_TEA",
     name: 'Milk tea',
