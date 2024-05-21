@@ -1,4 +1,4 @@
-export const UrlConstant = {
+export const URLConstant = {
   ROUTE: {
     HOMEPAGE: '/',
     RESTAURANT_PAGE: {
@@ -9,6 +9,12 @@ export const UrlConstant = {
     },
     CHECKOUT_PAGE: {
       BASE: '/checkout'
+    }
+  },
+  API: {
+    AUTH: {
+      SIGNIN: '/auth/customer/signin',
+      SIGNUP: '/auth/customer/signup'
     }
   }
 };

@@ -6,13 +6,21 @@ import { TranslateModule } from '@ngx-translate/core';
 import { NzButtonModule } from 'ng-zorro-antd/button';
 import { NzGridModule } from 'ng-zorro-antd/grid';
 import { NzSelectModule } from 'ng-zorro-antd/select';
+
+import { AuthComponent } from 'src/app/shared/component-shared/auth/auth.component';
 import { DrawerCartComponent } from 'src/app/shared/component-shared/drawer-cart/drawer-cart.component';
+import { PageLoaderComponent } from 'src/app/shared/component-shared/page-loader/page-loader.component';
 import { ScrollDirective } from 'src/app/shared/widget/directives/scroll.directive';
+import { BottomNavbarComponent } from './bottom-navbar/bottom-navbar.component';
 import { MainFooterComponent } from './main-footer/main-footer.component';
 import { MainHeaderComponent } from './main-header/main-header.component';
 import { MainLayoutComponent } from './main-layout/main-layout.component';
-import { BottomNavbarComponent } from './bottom-navbar/bottom-navbar.component';
 
+const plugins = [
+  DrawerCartComponent,
+  PageLoaderComponent,
+  AuthComponent
+];
 @NgModule({
   declarations: [
     MainHeaderComponent,
@@ -27,9 +35,9 @@ import { BottomNavbarComponent } from './bottom-navbar/bottom-navbar.component';
     NzButtonModule,
     NzSelectModule,
     FormsModule,
-    DrawerCartComponent,
     ScrollDirective,
-    NzGridModule
+    NzGridModule,
+    plugins
   ]
 })
 export class MainLayoutModule { }

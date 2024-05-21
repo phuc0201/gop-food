@@ -1,0 +1,12 @@
+::ng-deep .auth-form .ant-modal .ant-modal-content {
+  @apply rounded-xl px-3 pb-4;
+}
+
+::ng-deep .auth-form .ant-modal .ant-modal-content .ant-modal-header,
+::ng-deep .auth-form .ant-modal .ant-modal-content .ant-modal-footer {
+  @apply border-0;
+}
+
+::ng-deep .auth-form .ant-modal .ant-modal-content .ant-modal-body {
+  @apply px-4 pb-4;
+}

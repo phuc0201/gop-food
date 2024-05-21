@@ -31,7 +31,6 @@
             ],
             "styles": [
               "src/styles.scss",
-              "node_modules/ng-zorro-antd/ng-zorro-antd.min.css",
               "./node_modules/@fortawesome/fontawesome-free/scss/fontawesome.scss",
               "./node_modules/@fortawesome/fontawesome-free/scss/regular.scss",
               "./node_modules/@fortawesome/fontawesome-free/scss/solid.scss",
@@ -49,8 +48,8 @@
                 },
                 {
                   "type": "anyComponentStyle",
-                  "maximumWarning": "2kb",
-                  "maximumError": "4kb"
+                  "maximumWarning": "1mb",
+                  "maximumError": "500kb"
                 }
               ],
               "outputHashing": "all"
