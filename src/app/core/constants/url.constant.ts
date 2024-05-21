@@ -12,7 +12,7 @@ export const URLConstant = {
     }
   },
   API: {
-    ENDPOINT: 'https://gop-gateway.purplesand-fad3fa4f.southeastasia.azurecontainerapps.io/api/docs',
+    ENDPOINT: 'https://gop-gateway.purplesand-fad3fa4f.southeastasia.azurecontainerapps.io',
     AUTH: {
       SIGNIN: '/auth/customer/signin',
       SIGNUP: '/auth/customer/signup'
