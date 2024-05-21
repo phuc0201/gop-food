@@ -11,7 +11,9 @@ import { IToken } from '../models/common/response-data.model';
 })
 export class AuthService {
 
-  private baseURL: string = 'http://localhost:8080';
+  // private baseURL: string = 'http://localhost:8080';
+  private baseURL: string = URLConstant.API.ENDPOINT;
+
   constructor(
     private http: HttpClient
   ) { }
