@@ -11,12 +11,15 @@ import { IToken } from '../models/common/response-data.model';
 })
 export class AuthService {
 
-  // private baseURL: string = 'http://localhost:8080';
   private baseURL: string = URLConstant.API.ENDPOINT;
 
   constructor(
     private http: HttpClient
-  ) { }
+  ) {
+    if (!this.isLogged()) {
+      sessionStorage.clear();
+    }
+  }
 
   doLogin(accCred: ILoginDTO): Observable<IToken> {
     return this.http.post<IToken>(this.baseURL + URLConstant.API.AUTH.SIGNIN, accCred);
@@ -25,6 +28,7 @@ export class AuthService {
   isLogged(): boolean {
     return this.getToken() != null;
   }
+
   doLogout(): void {
     console.log('log out');
   }
@@ -46,6 +50,6 @@ export class AuthService {
       'Content-Type': 'application/json',
       'Authorization': `Bearer ${this.getToken()?.refreshToken}`,
     });
-    return this.http.post<IToken>(this.baseURL + '/auth/refresh', '', { headers: header });
+    return this.http.post<IToken>(this.baseURL + URLConstant.API.AUTH.REFRESH, { headers: header });
   }
 }

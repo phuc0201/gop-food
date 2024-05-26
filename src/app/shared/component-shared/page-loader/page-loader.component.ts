@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 
 const plugins = [
   CommonModule
@@ -11,6 +11,11 @@ const plugins = [
   standalone: true,
   imports: plugins
 })
-export class PageLoaderComponent {
-
+export class PageLoaderComponent implements OnInit {
+  isLoading: boolean = true;
+  ngOnInit(): void {
+    setTimeout(() => {
+      this.isLoading = false;
+    }, 1600);
+  }
 }

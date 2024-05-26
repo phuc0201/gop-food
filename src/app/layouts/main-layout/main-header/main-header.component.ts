@@ -5,6 +5,7 @@ import { TranslateService } from '@ngx-translate/core';
 import { skip, take } from 'rxjs';
 import { URLConstant } from 'src/app/core/constants/url.constant';
 import { AuthService } from 'src/app/core/services/auth.service';
+import { ProfileService } from 'src/app/core/services/profile.service';
 import { selectToken } from 'src/app/core/store/auth/auth.selectors';
 
 @Component({
@@ -21,6 +22,7 @@ export class MainHeaderComponent implements OnInit {
   isSticky: boolean = false;
   isLogged: boolean = false;
   openAuthForm: boolean = false;
+  customerAvt: string = '';
   switchLanguage() {
     localStorage.setItem('language', this.currLang ?? 'vi');
     if (this.currLang !== this.translate.currentLang) {
@@ -46,13 +48,16 @@ export class MainHeaderComponent implements OnInit {
       take(1)).subscribe((auth) => {
         this.isLogged = auth.accessToken != '';
       });
+
+    this.profileSrv.currentProfile.subscribe(profile => this.customerAvt = profile.avatar);
   }
 
   constructor(
     private translate: TranslateService,
     private router: Router,
     private store: Store,
-    private authSrv: AuthService
+    private authSrv: AuthService,
+    private profileSrv: ProfileService
   ) {
     translate.use(localStorage.getItem('language')?.toString() ?? 'vi');
   }

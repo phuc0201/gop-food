@@ -63,7 +63,7 @@
   background-color: #282828;
   right: -50%;
   border-radius: 3px;
-  animation: roadAnimation 2s linear infinite;
+  animation: roadAnimation 1.5s linear infinite;
   border-left: 10px solid white;
 }
 .road::after {
@@ -83,7 +83,7 @@
   bottom: 0;
   right: -50%;
   height: 250px;
-  animation: roadAnimation 2s linear infinite;
+  animation: roadAnimation 1.5s linear infinite;
 }
 
 @keyframes roadAnimation {

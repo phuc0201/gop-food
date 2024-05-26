@@ -8,7 +8,7 @@ const routes: Routes = [
   {
     path: '',
     component: OrderHistoryComponent,
-    title: 'Lịch sử đặt hàng'
+    title: 'Order history'
   }
 ];
 

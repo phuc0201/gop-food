@@ -1,3 +1,7 @@
+
+const endpoint_deploy = 'https://gop-gateway.purplesand-fad3fa4f.southeastasia.azurecontainerapps.io';
+const endpoint_local = 'http://localhost:8080';
+const endpoint = endpoint_local;
 export const URLConstant = {
   ROUTE: {
     HOMEPAGE: '/',
@@ -12,10 +16,19 @@ export const URLConstant = {
     }
   },
   API: {
-    ENDPOINT: 'https://gop-gateway.purplesand-fad3fa4f.southeastasia.azurecontainerapps.io',
+    FILE: endpoint + 'rest/file',
+    ENDPOINT: endpoint,
     AUTH: {
       SIGNIN: '/auth/customer/signin',
-      SIGNUP: '/auth/customer/signup'
+      SIGNUP: '/auth/customer/signup',
+      REFRESH: '/auth/customer/refresh'
+    },
+    PROFILE: {
+      GET: '/customer/profile'
+    },
+    RESTAURANT: {
+      GET_LIST: '/restaurant/recommended',
+      GET_INFO: '/restaurant/info'
     }
   }
 };

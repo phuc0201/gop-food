@@ -3,6 +3,7 @@ import { AfterViewInit, CUSTOM_ELEMENTS_SCHEMA, Component, ElementRef, Input, On
 import { RouterModule } from '@angular/router';
 import { CuisineCategory } from 'src/app/core/mock-data/cuisine-category.data';
 import { register } from 'swiper/element/bundle';
+import { GetImageSrcDirective } from '../../widget/directives/get-image-src.directive';
 register();
 
 export interface ICategory {
@@ -12,7 +13,8 @@ export interface ICategory {
 
 const plugins = [
   CommonModule,
-  RouterModule
+  RouterModule,
+  GetImageSrcDirective
 ];
 
 @Component({

@@ -14,15 +14,16 @@ export class AuthEffects {
     this.action$.pipe(
       ofType(authActions.loginRequest),
       exhaustMap((action) =>
-        this.authSrv.doLogin(action.accCred).pipe(
-          map((token) => authActions.loginSuccess({ token })),
-          catchError((error) => {
-            alert(
-              'Login failure! '
-            );
-            return of(authActions.loginFailure({ error }));
-          })
-        )
+        this.authSrv.doLogin(action.accCred)
+          .pipe(
+            map((token) => authActions.loginSuccess({ token })),
+            catchError((error) => {
+              alert(
+                'Login failure! '
+              );
+              return of(authActions.loginFailure({ error }));
+            })
+          )
       )
     )
   );

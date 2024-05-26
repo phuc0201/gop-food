@@ -22,7 +22,7 @@ const routes: Routes = [
   {
     path: '',
     component: HomeComponent,
-    title: 'Giao đồ ăn trực tuyến'
+    title: 'Food delivery online'
   }
 ];
 
@@ -32,7 +32,7 @@ const plugins = [
   CuisinesSliderComponent,
   PromoSliderComponent,
   RestaurantSliderComponent,
-  FoodCardComponent
+  FoodCardComponent,
 ];
 
 @NgModule({

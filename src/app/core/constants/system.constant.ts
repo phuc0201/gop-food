@@ -3,6 +3,8 @@ export class SystemConstant {
   public static WEB_NAME = 'hcmute-portal-fe';
 
   public static CURRENT_INFO = 'CURRENT_INFO';
+  public static LOCATION = 'LOCATION';
+  public static CURRENT_PROFILE = 'CURRENT_PROFILE';
   public static CURRENT_INFO_GOOGLE = 'CURRENT_INFO_GOOGLE';
 
   public static ACTION = {
@@ -13,15 +15,14 @@ export class SystemConstant {
   };
 
   public static ROLE = {
-    STUDENT: 'ROLE_STUDENT',
+    CUSTOMER: 'CUSTOMER',
   };
   public static MNG_ROLE = {
     ADMIN: 'ROLE_ADMIN',
   };
 
   public static ROLE_TITLE = [
-    { id: SystemConstant.MNG_ROLE.ADMIN, title: { vi: 'Quản trị viên', en: 'Administrator' } },
-    { id: SystemConstant.ROLE.STUDENT, title: { vi: 'Sinh viên', en: 'Student' } },
+    { id: SystemConstant.ROLE.CUSTOMER, title: { vi: 'Khách hàng', en: 'Customer' } },
   ];
 
   public static CkEditorCfg = {

@@ -1,11 +1,23 @@
-<img loading="lazy" src="assets/img/foods/banh-mi.jpg" class="w-full h-[30rem] object-cover md:block hidden">
-<div id="restaurant-infor" class="sectionContainer md:block hidden pt-8">
-  <h1 class="font-bold text-3xl">VUA NƯỚNG - Cơm thịt nướng than hoa - CN1</h1>
-  <h4 class="text-gray-500 font-light mb-2">Cơm,Lẩu & Nướng - Quay</h4>
+<div class="w-full h-[30rem]">
+  <img [hidden]="isLoading" loading="lazy" [src]="restaurantInfo.avatar"
+    onerror="this.src='assets/img/banners/banner-1.jpg'"
+    class="animation-fadeIn w-full h-full object-cover md:block hidden">
+  <div *ngIf="isLoading" class="w-full h-full bg-gray-100 flex">
+    <div class="m-auto"><app-img-loader></app-img-loader></div>
+  </div>
+</div>
+<div *ngIf="!isMobile" id="restaurant-infor" class="sectionContainer md:block hidden pt-8 min-h-44">
+  <h1 [hidden]="isLoading" class="font-bold text-3xl">{{ restaurantInfo.restaurant_name }}</h1>
+  <div class="flex items-center">
+    <ng-container *ngFor="let item of restaurantInfo.cuisine_categories; let last = last">
+      <h4 *ngIf="!isLoading" class="text-gray-500 font-light mb-2 mr-1">{{ !last ? item + ',' : item }}</h4>
+    </ng-container>
+  </div>
+
 
   <!--  -->
 
-  <div class="flex md:gap-3 gap-2 max-w-full mb-2">
+  <div *ngIf="!isLoading" class="flex md:gap-3 gap-2 max-w-full mb-2">
     <div class="restaurant-rat flex items-center md:gap-2 gap-1">
       <i class="fa-solid fa-star text-yellow-300 md:text-base text-xs"></i>
       <div class="text-gray-500 md:text-sm text-xs font-light">4.7</div>
@@ -22,65 +34,108 @@
 
   <!--  -->
 
-  <div class="flex items-center mb-2">
+  <div [hidden]="isLoading" class="flex items-center mb-2">
     <h4 class="text-gray-500 font-normal mr-10">Giờ mở cửa</h4>
     <h4 class="text-gray-500 font-light">Hôm nay 09:30-13:30 17:00-20:00</h4>
   </div>
 
   <!--  -->
 
-  <div class="flex items-center gap-4 mb-4">
+  <div [hidden]="isLoading" class="flex items-center gap-4">
     <i class="fa-solid fa-tag text-primary rotate-90"></i>
     <h4 class="text-gray-600 font-light m-0 text-center">Ưu đãi đến 46.000 đ</h4>
   </div>
-</div>
 
 
-<!-- MOBILE -->
-<div class="sectionContainer bg-transparent md:hidden block">
-  <div class="bg-white border border-gray-200 p-4 rounded-lg">
-    <div class="border border-gray-200 border-x-0 border-t-0 pb-2">
-      <h1 class="font-bold text-2xl">VUA NƯỚNG - Cơm thịt nướng than hoa - CN1</h1>
-    </div>
+  <!-- MOBILE -->
+  <div *ngIf="isMobile" class="sectionContainer bg-transparent md:hidden block">
+    <div class="bg-white border border-gray-200 p-4 rounded-lg">
+      <div class="border border-gray-200 border-x-0 border-t-0 pb-2">
+        <h1 class="font-bold text-2xl">VUA NƯỚNG - Cơm thịt nướng than hoa - CN1</h1>
+      </div>
 
-    <div class="flex items-center gap-3 py-4 border border-gray-200 border-x-0 border-t-0 ">
-      <i class="fa-solid fa-star text-yellow-300 text-[20px]"></i>
-      <span>
-        <span class="font-bold">4.3 </span>(122)
-      </span>
-      <span>Ratings and reviews</span>
-    </div>
-
-    <div class="flex items-center gap-3 py-4 border border-gray-200 border-x-0 border-t-0 ">
-      <img loading="lazy" src="assets/img/icons/icon-delivery-bike.png" class="w-5 h-5">
-      <div class="flex flex-col">
+      <div class="flex items-center gap-3 py-4 border border-gray-200 border-x-0 border-t-0 ">
+        <i class="fa-solid fa-star text-yellow-300 text-[20px]"></i>
         <span>
-          <span class="font-bold">4.1 km</span> (25m)
+          <span class="font-bold">4.3 </span>(122)
         </span>
-        <div>
-          <span>Delivery now | 4.0000đ <s class="text-gray-400">19.000đ</s></span>
+        <span>Ratings and reviews</span>
+      </div>
+
+      <div class="flex items-center gap-3 py-4 border border-gray-200 border-x-0 border-t-0 ">
+        <img loading="lazy" src="assets/img/icons/icon-delivery-bike.png" class="w-5 h-5">
+        <div class="flex flex-col">
+          <span>
+            <span class="font-bold">4.1 km</span> (25m)
+          </span>
+          <div>
+            <span>Delivery now | 4.0000đ <s class="text-gray-400">19.000đ</s></span>
+          </div>
         </div>
       </div>
-    </div>
 
-    <div class="flex items-center gap-3 py-4 Infinity border border-gray-200 border-x-0 border-t-0">
-      <div class="rotate-90 w-5 h-5">
-        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="#20bb65"
-          className="w-6 h-6">
-          <path strokeLinecap="round" strokeLinejoin="round"
-            d="M9.568 3H5.25A2.25 2.25 0 0 0 3 5.25v4.318c0 .597.237 1.17.659 1.591l9.581 9.581c.699.699 1.78.872 2.607.33a18.095 18.095 0 0 0 5.223-5.223c.542-.827.369-1.908-.33-2.607L11.16 3.66A2.25 2.25 0 0 0 9.568 3Z" />
-          <path strokeLinecap="round" strokeLinejoin="round" d="M6 6h.008v.008H6V6Z" />
-        </svg>
+      <div class="flex items-center gap-3 py-4 Infinity border border-gray-200 border-x-0 border-t-0">
+        <div class="rotate-90 w-5 h-5">
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="#20bb65"
+            className="w-6 h-6">
+            <path strokeLinecap="round" strokeLinejoin="round"
+              d="M9.568 3H5.25A2.25 2.25 0 0 0 3 5.25v4.318c0 .597.237 1.17.659 1.591l9.581 9.581c.699.699 1.78.872 2.607.33a18.095 18.095 0 0 0 5.223-5.223c.542-.827.369-1.908-.33-2.607L11.16 3.66A2.25 2.25 0 0 0 9.568 3Z" />
+            <path strokeLinecap="round" strokeLinejoin="round" d="M6 6h.008v.008H6V6Z" />
+          </svg>
+        </div>
+        <span> Ưu đãi đến 50k</span>
       </div>
-      <span> Ưu đãi đến 50k</span>
-    </div>
 
-    <div class="flex items-center justify-between p-4 mt-4 bg-premium rounded-md">
-      <div class="flex items-center gap-3">
-        <img loading="lazy" src="assets/img/icons/premium.png" class="w-5 h-5">
-        <span class="font-bold">Get GoPUnlimited now</span>
+      <div class="flex items-center justify-between p-4 mt-4 bg-premium rounded-md">
+        <div class="flex items-center gap-3">
+          <img loading="lazy" src="assets/img/icons/premium.png" class="w-5 h-5">
+          <span class="font-bold">Get GoPUnlimited now</span>
+        </div>
+        <i class="fa-solid fa-circle-arrow-right text-white"></i>
       </div>
-      <i class="fa-solid fa-circle-arrow-right text-white"></i>
     </div>
   </div>
+
+
+
+  <!-- INFO IS LOADING ON PC -->
+  <ng-container *ngIf="isLoading">
+    <div class="">
+      <div role="status" class="max-w-sm animate-pulse">
+        <div class="h-2 bg-gray-200 rounded-full w-56 mb-3"></div>
+      </div>
+
+      <div class="flex items-center">
+        <ng-container>
+          <div role="status" class="max-w-sm animate-pulse">
+            <div class="h-2 bg-gray-200 rounded-full w-20 mb-3"></div>
+          </div>
+        </ng-container>
+      </div>
+
+      <div class="flex items-center">
+        <ng-container>
+          <div role="status" class="max-w-sm animate-pulse">
+            <div class="h-2 bg-gray-200 rounded-full w-44 mb-3"></div>
+          </div>
+        </ng-container>
+      </div>
+
+      <div class="flex items-center">
+        <ng-container>
+          <div role="status" class="max-w-sm animate-pulse">
+            <div class="h-2 bg-gray-200 rounded-full w-44 mb-3"></div>
+          </div>
+        </ng-container>
+      </div>
+
+      <div class="flex items-center">
+        <ng-container>
+          <div role="status" class="max-w-sm animate-pulse">
+            <div class="h-2 bg-gray-200 rounded-full w-52 mb-3"></div>
+          </div>
+        </ng-container>
+      </div>
+    </div>
+  </ng-container>
 </div>

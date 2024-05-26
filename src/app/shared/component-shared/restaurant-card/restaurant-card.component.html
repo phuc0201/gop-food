@@ -1,10 +1,13 @@
-<a *ngIf="!isloading" [routerLink]="['/restaurant']" class="text-black hover:text-black">
+<a [routerLink]="['/restaurant', restaurant._id]" class="text-black hover:text-black">
   <div class="restaurant-card rounded-xl cursor-pointer group mb-8 flex gap-0" [class.responsive]="!isHome">
     <div class="mb-3 relative">
-      <div class="restaurant-banner bg-gray-200 flex justify-center items-center overflow-hidden rounded-xl w-auto">
-        <img loading="lazy" src="" onerror="this.src='assets/img/foods/food-default.webp'"
-          class="max-w-full origin-center transition-all duration-500 group-hover:scale-110 md:h-auto object-cover w-full h-full">
+      <div class="restaurant-img bg-gray-200 flex justify-center items-center overflow-hidden rounded-xl w-full h-full"
+        [ngClass]="isLoading ? 'animate-pulse' : ''">
+        <img [hidden]="isLoading" loading="lazy" [src]="restaurant.avatar"
+          class="origin-center transition-all duration-500 group-hover:scale-110 object-cover h-full w-full"
+          alt="picture">
       </div>
+
       <div
         class="restaurant-promo absolute top-3 -left-1 w-fit px-1 bg-primary text-center text-white font-medium text-xs">
         Promo
@@ -16,12 +19,17 @@
         </div>
       </div>
     </div>
+
     <div class="restaurant-content flex flex-col md:gap-4 gap-2">
-      <div class="restaurant-name line-clamp-2 text-sm md:text-lg font-bold uppercase leading-6">Heo Con - Gà Rán, Khoai
-        Lắc Hamburger &
-        Kimbap - Đào Trinh Nhất</div>
+      <div class="restaurant-name line-clamp-1 text-sm md:text-lg font-bold uppercase leading-6">{{
+        restaurant.restaurant_name }}</div>
       <div class="flex flex-col gap-2">
-        <div class="cuisine-types line-clamp-1 text-grey1 md:text-base text-xs">Gà Rán - Burger,Trà Sữa,Pizza,Cơm</div>
+        <div class="flex items-center">
+          <ng-container *ngFor="let cuisine_name of cuisine_cate_name ; let last = last">
+            <div class="cuisine-types line-clamp-1 text-grey1 md:text-sm text-xs mr-1">{{ last ? cuisine_name :
+              cuisine_name + ','}}</div>
+          </ng-container>
+        </div>
         <div class="flex md:gap-3 gap-2 max-w-full">
           <div class="restaurant-rate flex items-center md:gap-2 gap-1">
             <i class="fa-solid fa-star text-yellow-400 md:text-base text-xs"></i>
@@ -29,11 +37,11 @@
           </div>
           <div class="restaurant-duration flex items-center md:gap-2 gap-1">
             <i class="fa-regular fa-clock text-grey1 md:text-base text-xs"></i>
-            <div class="text-grey1 md:text-base text-xs">25m</div>
+            <div class="text-grey1 md:text-base text-xs">{{ duration }}m</div>
           </div>
           <div class="restaurant-distance hidden xs:flex items-center md:gap-2 gap-1">
             <i class="fa-regular fa-map text-grey1 md:text-base text-xs"></i>
-            <div class="text-grey1 md:text-base text-xs">0.5km</div>
+            <div class="text-grey1 md:text-base text-xs">{{distance}}km</div>
           </div>
         </div>
       </div>
@@ -46,7 +54,7 @@
 </a>
 
 
-<div *ngIf="isloading" class="text-black hover:text-black animate-pulse">
+<!-- <div *ngIf="isLoading" class="text-black hover:text-black animate-pulse">
   <div class="restaurant-card rounded-xl cursor-pointer mb-8 flex gap-0" [class.responsive]="!isHome">
     <div class="mb-3 relative">
       <div class="restaurant-banner bg-gray-200 flex justify-center items-center overflow-hidden rounded-xl w-auto">
@@ -76,4 +84,4 @@
       </div>
     </div>
   </div>
-</div>
+</div> -->

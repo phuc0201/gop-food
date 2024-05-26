@@ -25,12 +25,16 @@ export class AuthInterceptor implements HttpInterceptor {
 
     return next.handle(authreq).pipe(
       catchError((err) => {
-        if (err.status === 401) {
-          return this.handleRefrehToken(request, next);
-        } else {
+        if (!authservice.isLogged()) {
           authservice.doLogout();
           return throwError(() => err);
         }
+        else if (err.status === 401) {
+          return this.handleRefrehToken(request, next);
+        } else {
+          return throwError(() => err);
+        }
+
       })
     );
   }
@@ -44,7 +48,9 @@ export class AuthInterceptor implements HttpInterceptor {
         return next.handle(this.addTokenHeader(request, data.accessToken));
       }),
       catchError((err) => {
-        authservice.doLogout();
+        if (err.status === 401) {
+          authservice.doLogout();
+        }
         return throwError(() => err);
       }),
     );

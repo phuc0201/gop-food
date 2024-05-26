@@ -16,22 +16,6 @@ export class RestaurantMenuComponent implements OnInit, AfterViewInit {
     {
       id: 1,
       categoryName: 'For you'
-    },
-    {
-      id: 2,
-      categoryName: 'For you 2'
-    },
-    {
-      id: 3,
-      categoryName: 'For you 3'
-    },
-    {
-      id: 4,
-      categoryName: 'For you 4'
-    },
-    {
-      id: 5,
-      categoryName: 'For you 5'
     }
   ];
   selectedCategory: number = 0;

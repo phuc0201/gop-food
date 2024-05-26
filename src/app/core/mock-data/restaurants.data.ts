@@ -3,8 +3,12 @@ export const Restaurants = [
   {
     id: "6619f8d0637116c6a679f4aa",
     status: 'CLOSED',
-    name: 'UTE88',
+    restaurant_name: 'UTE88',
     address: '',
+    location: {
+      type: 'Point',
+      coordinates: [1, 1]
+    },
     bio: '',
     review: '',
     avatar: '',
@@ -15,6 +19,7 @@ export const Restaurants = [
       'DRINKS',
       'BANH_MI'
     ],
+    distance: 0,
     restaurant_categories: [
       {
         id: '1',

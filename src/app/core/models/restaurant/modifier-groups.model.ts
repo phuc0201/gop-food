@@ -1,5 +1,4 @@
 import { IModifier } from "./modifier.mode";
-
 export interface IModifierGroups {
   id: string,
   name: string,

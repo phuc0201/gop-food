@@ -8,10 +8,10 @@ import { NzFormModule } from 'ng-zorro-antd/form';
 import { NzInputModule } from 'ng-zorro-antd/input';
 import { NzRadioModule } from 'ng-zorro-antd/radio';
 import { Restaurants } from 'src/app/core/mock-data/restaurants.data';
-import { IItems } from 'src/app/core/models/items.model';
-import { IModifierGroups } from 'src/app/core/models/modifier-groups.model';
-import { IModifier } from 'src/app/core/models/modifier.mode';
-import { IRestaurant } from 'src/app/core/models/restaurant.model';
+import { IFoodItems } from 'src/app/core/models/restaurant/food-items.model';
+import { IModifierGroups } from 'src/app/core/models/restaurant/modifier-groups.model';
+import { IModifier } from 'src/app/core/models/restaurant/modifier.mode';
+import { IRestaurant } from 'src/app/core/models/restaurant/restaurant.model';
 
 export interface FormControls {
   [key: string]: FormControl;
@@ -40,7 +40,7 @@ export class FoodDetailsComponent implements OnInit, AfterViewInit {
   quantity: number = 1;
   modifierList: IModifier[] = [];
   restaurantData: IRestaurant[] = Restaurants;
-  foodDetails: IItems = {
+  foodDetails: IFoodItems = {
     id: '',
     name: '',
     bio: '',

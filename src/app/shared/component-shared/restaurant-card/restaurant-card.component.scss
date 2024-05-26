@@ -4,10 +4,23 @@
 .responsive .restaurant-banner {
   @apply md:aspect-video aspect-square w-24 md:w-auto;
 }
-.restaurant-banner {
+.restaurant-img {
   @apply aspect-video;
 }
 
 .restaurant-card {
   @apply flex-col;
+}
+
+.restaurant-img img {
+  animation: fadeIn 2s forwards;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
 }

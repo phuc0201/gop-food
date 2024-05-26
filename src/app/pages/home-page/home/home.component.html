@@ -11,25 +11,13 @@
 <div class="divider w-full h-0 md:h-[1px] bg-gray-100 md:bg-gray-200"></div>
 
 <div class="sectionContainer md:pt-12">
-  <!-- <div class="w-full mb-7">
-    <div class="flex items-center gap-2 mb-5">
-      <div class="text-black text-xl md:text-3xl font-bold md:h-8 h-6">Khuyến mãi hấp dẫn</div>
-      <div class="md:w-8 w-6 aspect-square rounded-[50%] bg-gray-200 flex items-center justify-center animate-slide-right">
-        <i class="fa-solid fa-arrow-right md:text-base text-sm"></i>
-      </div>
-    </div>
-    <app-promo-slider></app-promo-slider>
-  </div> -->
   <app-cuisines-slider></app-cuisines-slider>
 </div>
-<!-- <div class="w-full h-96 bg-green3">
-</div> -->
 
 <div class="sectionContainer">
   <div class="w-full lg:py-4 md:pt-2 pb-4">
     <span class="text-black text-xl md:text-3xl font-bold">Các cửa hàng gần nhất </span>
-    <span class="text-primary text-xl md:text-3xl font-bold">01 Võ Văn Ngân, P.Linh Chiểu, Tp.Thủ Đức, Hồ Chí
-      Minh</span>
+    <span class="text-primary text-xl md:text-3xl font-bold">{{ customers.address }}</span>
   </div>
   <app-restaurant-slider></app-restaurant-slider>
   <a href="">

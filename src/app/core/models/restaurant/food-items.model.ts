@@ -1,6 +1,6 @@
 import { IModifierGroups } from "./modifier-groups.model";
 
-export interface IItems {
+export interface IFoodItems {
   id: string,
   name: string,
   bio: string,

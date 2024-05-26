@@ -12,6 +12,7 @@
 html,
 body {
   height: fit-content !important;
+  scroll-behavior: smooth;
 }
 body::-webkit-scrollbar {
   width: 4px;
@@ -28,6 +29,19 @@ body::-webkit-scrollbar-thumb {
 /* body::-webkit-scrollbarbody {
   @apply fixed left-0 top-0 w-full overflow-y-scroll;
 } */
+
+.animation-fadeIn {
+  animation: fadeIn 1s forwards;
+}
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
 a {
   @apply text-black hover:text-black;
 }

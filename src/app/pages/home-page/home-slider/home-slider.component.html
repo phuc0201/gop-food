@@ -1,9 +1,23 @@
-<swiper-container init="false" #swiper class="w-full h-[480px] overflow-hidden hidden md:flex items-center">
+<section class="w-full h-[480px] md:block hidden">
+  <ng-container>
+    <div class="w-full h-full overflow-hidden hidden md:flex items-center">
+      <div class="w-full h-full flex items-center">
+        <img [src]="currBannerImg" class="w-full h-auto animation-fadeIn">
+      </div>
+    </div>
+  </ng-container>
+
+  <!-- <swiper-container *ngIf="!isLoading" init="false" #swiper
+    class="w-full h-full overflow-hidden hidden md:flex items-center">
+    <ng-container [ngTemplateOutlet]="homeBannerTemplate"></ng-container>
+  </swiper-container> -->
+</section>
+
+<!-- <ng-template #homeBannerTemplate>
   <swiper-slide *ngIf="!listBannerSrc.length" class="w-full h-full flex items-center">
-    <img loading="lazy" src="assets/img/banners/banner-1.jpg" class="w-full h-auto">
+    <img loading="lazy" src="currBannerImg" class="w-full h-auto">
   </swiper-slide>
   <swiper-slide *ngFor="let banner of listBannerSrc" class="w-full h-full flex items-center">
-    <img loading="lazy" [src]="banner" onerror="this.src='assets/img/banners/banner-1.jpg'"
-      class="w-full h-auto object-cover">
+    <img loading="lazy" [src]="banner" onerror="this.src='currBannerImg'" class="w-full h-auto object-cover">
   </swiper-slide>
-</swiper-container>
+</ng-template> -->

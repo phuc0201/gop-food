@@ -20,5 +20,11 @@ export class CuisinesComponent implements OnInit {
       const cuisine = this.listCuisine.splice(index, 1)[0];
       this.listCuisine.unshift(cuisine);
     }
+
+    window.scrollTo({
+      top: 0,
+      left: 0,
+      behavior: "instant",
+    });
   }
 }

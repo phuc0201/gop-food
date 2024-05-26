@@ -7,7 +7,7 @@ const _loginReducer = createReducer(
     return {
       ...state,
       token: token,
-      isLoading: true
+      isLoading: false
     };
   }),
   on(authActions.loginFailure, (state, { error }) => {
