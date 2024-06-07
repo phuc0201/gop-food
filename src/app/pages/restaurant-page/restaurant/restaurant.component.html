@@ -1,22 +1,35 @@
 <!-- PC LAYOUT -->
 <ng-container *ngIf="!isMobile">
   <div class="min-h-96 bg-white md:block hidden">
-    <div>
-      <app-restaurant-info></app-restaurant-info>
-      <app-restaurant-menu></app-restaurant-menu>
+    <div class="w-full h-[30rem] md:block hidden">
+      <img [hidden]="isLoading" loading="lazy" [src]="restaurant.cover_image"
+        onerror="this.src='assets/img/banners/banner-1.jpg'"
+        class="animation-fadeIn w-full h-full object-cover md:block hidden">
+      <div *ngIf="isLoading" class="w-full h-full bg-gray-100 flex">
+        <div class="m-auto"><app-img-loader></app-img-loader></div>
+      </div>
     </div>
   </div>
+  <ng-container [ngTemplateOutlet]="restaurantContentTemplate"></ng-container>
+
 </ng-container>
+
+
 <!-- MOBILE LAYOUT -->
 <ng-container *ngIf="isMobile">
   <div class="block md:hidden">
     <div class="fixed top-0 left-0 right-0 h-64 overflow-hidden">
-      <img loading="lazy" src="assets/img/foods/banh-mi.jpg" class="md:hidden block w-full h-full object-cover"
+      <img loading="lazy" [src]="restaurant.cover_image" class="md:hidden block w-full h-full object-cover"
         [ngClass]="{'restaurant-banner-hidden' : hiddenBanner}">
     </div>
     <div class="w-full h-fit pt-44 bg-transparent sticky top-0 left-0">
-      <app-restaurant-info></app-restaurant-info>
-      <app-restaurant-menu></app-restaurant-menu>
+      <ng-container [ngTemplateOutlet]="restaurantContentTemplate"></ng-container>
     </div>
   </div>
 </ng-container>
+
+<!-- COMMON COMPONENTS -->
+<ng-template #restaurantContentTemplate>
+  <app-restaurant-info [restaurant]="restaurant" [isLoading]="isLoading"></app-restaurant-info>
+  <app-restaurant-menu></app-restaurant-menu>
+</ng-template>

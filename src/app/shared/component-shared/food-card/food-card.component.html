@@ -1,35 +1,47 @@
-<div (click)="showFoodDetails = true"
+<div (click)="showDetails()"
   class="food-card flex h-full gap-3 cursor-pointer border-0 md:border border-solid border-transparent transition-all duration-500 hover:shadow-[rgba(156,231,190,0.2)_0_1px_15px_2px] hover:border-green2 px-0 py-4 md:p-4 md:rounded-lg group bg-white shadow-xs">
 
   <div class="relative min-w-28 h-28 w-28 rounded-xl overflow-hidden">
-    <img loading="lazy" src="" onerror="this.src='assets/img/foods/food-default.webp'"
+    <img loading="lazy" [src]="foodInfor.image" onerror="this.src='assets/img/foods/food-default.webp'"
       class="food-img object-cover w-full h-full group-hover:scale-105 transition-all duration-500">
     <span class="absolute top-1 left-1 text-xs font-medium text-white bg-primary px-2 py-1 rounded-2xl">Bán chạy</span>
   </div>
 
   <div class="w-full flex flex-col justify-between">
     <div>
-      <h3 class="line-clamp-2 font-normal text-black capitalize">Combo 10 cuốn tôm thịt, kèm nước chấm nhà làm siêu ngon
+      <h3 class="font-normal text-black capitalize line-clamp-1">{{ foodInfor.name }}
       </h3>
-      <p class="text-gray-400 md:line-clamp-3 line-clamp-2">
-        Gồm bún,tôm cà mau,rau cải hẹ dưa leo
-        Gồm bún,tôm cà mau,rau cải hẹ dưa leo
-        Gồm bún,tôm cà mau,rau cải hẹ dưa leo
-      </p>
+      <div class="min-h-36">
+        <p class="text-gray-400 line-clamp-5">
+          {{ foodInfor.bio }}
+        </p>
+      </div>
     </div>
 
     <div class="flex justify-between">
       <div class="flex flex-wrap gap-3 items-center">
-        <span class="font-bold">{{ 10000 }}</span>
+        <span class="font-bold">{{ foodInfor.price.toLocaleString('vi-VN', {style:"currency", currency:"VND"})
+          }}</span>
         <div class="flex items-center gap-2">
-          <s class="text-gray-500">{{ 20000 }}</s>
+          <!-- <s class="text-gray-500">{{ 20000 }}</s> -->
           <i class="fa-solid fa-tag text-red"></i>
         </div>
       </div>
-      <div class="min-w-7 h-7 rounded-[50%] bg-primary flex items-center justify-center cursor-pointer">
-        <i class="fa-solid fa-plus text-white"></i>
+      <div class="min-w-8 h-8 relative rounded-lg bg-primary flex items-center justify-center cursor-pointer" [ngClass]="isAddToCard ? 'opacity-60' : ''">
+        <i class="fa-solid fa-basket-shopping text-white"></i>
+        <div *ngIf="isAddToCard" class="absolute top-[50%] left-[50%] -translate-x-[50%] -translate-y-[50%]">
+          <dot-spinner></dot-spinner>
+        </div>
       </div>
     </div>
   </div>
 </div>
-<app-food-details [(visibleFormDrawer)]="showFoodDetails"></app-food-details>
+
+<!-- <ng-template #foodDetailsTemplate>
+  <header class="absolute top-4 left-4 z-50">
+    <button (click)="drawerRef?.close()" class="w-11 h-11 flex rounded-[50%] bg-black opacity-40">
+      <i class="fa-solid fa-xmark m-auto text-[25px] text-white"></i>
+    </button>
+  </header>
+  <app-food-details [foodDetails]="foodDetails"></app-food-details>
+</ng-template> -->

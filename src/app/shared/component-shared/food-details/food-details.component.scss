@@ -58,6 +58,10 @@
   @apply border-primary;
 }
 
+.food-detail-body {
+  scroll-behavior: smooth;
+  will-change: transform;
+}
 .food-detail-body::-webkit-scrollbar {
   width: 4px;
 }
@@ -69,8 +73,4 @@
 .food-detail-body::-webkit-scrollbar-thumb {
   background-color: #676767d7;
   outline: 1px solid transparent;
-}
-
-::ng-deep .food-detail-drawer .ant-drawer-body {
-  padding: 0 !important;
 }

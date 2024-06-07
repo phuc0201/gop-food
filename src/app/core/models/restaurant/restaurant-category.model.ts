@@ -1,7 +1,7 @@
-import { IFoodItems } from "./food-items.model";
 
-export interface IRestaurantCategory {
-  name: string;
-  bio: string;
-  food_items: IFoodItems[];
+export class RestaurantCategory<T> {
+  _id: string = '';
+  name: string = '';
+  bio: string = '';
+  food_items: T[] = [];
 }

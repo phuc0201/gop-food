@@ -2,10 +2,11 @@ export class SystemConstant {
   public static REVISON = '230329.1';
   public static WEB_NAME = 'hcmute-portal-fe';
 
-  public static CURRENT_INFO = 'CURRENT_INFO';
+  public static CURRENT_INFO = 'customer_token';
   public static LOCATION = 'LOCATION';
   public static CURRENT_PROFILE = 'CURRENT_PROFILE';
   public static CURRENT_INFO_GOOGLE = 'CURRENT_INFO_GOOGLE';
+  public static BASKET = 'BASKET';
 
   public static ACTION = {
     ADD: 'ADD',

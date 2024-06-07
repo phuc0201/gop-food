@@ -1,8 +1,9 @@
-import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { NgModule } from '@angular/core';
 
-import { PagesRoutingModule } from './pages-routing.module';
+import { HeaderStickyLayoutModule } from '../layouts/header-sticky-layout/header-sticky-layout.module';
 import { MainLayoutModule } from '../layouts/main-layout/main-layout.module';
+import { PagesRoutingModule } from './pages-routing.module';
 
 
 @NgModule({
@@ -10,7 +11,8 @@ import { MainLayoutModule } from '../layouts/main-layout/main-layout.module';
   imports: [
     CommonModule,
     PagesRoutingModule,
-    MainLayoutModule
+    MainLayoutModule,
+    HeaderStickyLayoutModule
   ]
 })
 export class PagesModule { }

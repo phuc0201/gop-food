@@ -1,10 +1,18 @@
-import { IModifierGroups } from "./modifier-groups.model";
+export class FoodItems<T> {
+  _id: string = '';
+  name: string = 'Loading....';
+  bio: string = 'Loading....';
+  image: string = '';
+  price: number = 0;
+  modifier_groups: T[] = [];
+}
 
-export interface IFoodItems {
-  id: string,
-  name: string,
-  bio: string,
-  image: string,
-  price: number,
-  modifier_groups: IModifierGroups[];
+
+export class FoodItemDTO<T> {
+  food_id: string = '';
+  food_name?: string = '';
+  image?: string = '';
+  base_price?: number = 0;
+  quantity: number = 0;
+  modifiers: T[] = [];
 }

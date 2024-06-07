@@ -5,11 +5,12 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { RouterModule, Routes } from '@angular/router';
 import { TranslateModule } from '@ngx-translate/core';
 import { NzGridModule } from 'ng-zorro-antd/grid';
-import { FoodCardComponent } from 'src/app/shared/component-shared/food-card/food-card.component';
+
 import { RestaurantCardComponent } from 'src/app/shared/component-shared/restaurant-card/restaurant-card.component';
 
 import { NzAutocompleteModule } from 'ng-zorro-antd/auto-complete';
 import { CuisinesSliderComponent } from 'src/app/shared/component-shared/cuisines-slider/cuisines-slider.component';
+import { FoodCardComponent } from 'src/app/shared/component-shared/food-card/food-card.component';
 import { HomeSliderComponent } from './home-slider/home-slider.component';
 import { HomeComponent } from './home/home.component';
 import { NewAndEventsComponent } from './new-and-events/new-and-events.component';

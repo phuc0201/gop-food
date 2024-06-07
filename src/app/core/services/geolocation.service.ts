@@ -15,9 +15,9 @@ export class GeolocationService {
     });
   }
 
-  getLocation(): number[] | null {
+  getLocation(): number[] {
     const lct = localStorage.getItem(SystemConstant.LOCATION);
-    return lct ? JSON.parse(lct) : null;
+    return lct ? JSON.parse(lct) : [0, 0];
   }
 
   loadLocaion(): Observable<number[]> {

@@ -1,17 +1,19 @@
 import { createReducer, on } from "@ngrx/store";
 import * as restaurantAction from './restaurant.actions';
-import { initialRestaurantInfo, initialRestaurantListSate } from "./restaurant.state";
+import { initialFoodDetails, initialMenuState, initialRestaurantInfo, initialRestaurantListSate } from "./restaurant.state";
 const _getRestaurantList = createReducer(
   initialRestaurantListSate,
   on(restaurantAction.getRestaurantList, (state) => {
     return {
-      ...state
+      ...state,
+      isLoading: true
     };
   }),
 
   on(restaurantAction.getRestaurantListSuccess, (state, { restaurantList }) => {
     return {
       ...state,
+      isLoading: false,
       restaurants: restaurantList
     };
   }),
@@ -19,11 +21,11 @@ const _getRestaurantList = createReducer(
   on(restaurantAction.getRestaurantListFailure, (state, { error }) => {
     return {
       ...state,
+      isLoading: false,
       error: error
     };
   })
 );
-
 
 const _getRestaurantInfoReducer = createReducer(
   initialRestaurantInfo,
@@ -51,10 +53,68 @@ const _getRestaurantInfoReducer = createReducer(
   })
 );
 
+const _getMenuReducer = createReducer(
+  initialMenuState,
+  on(restaurantAction.getMenu, (state) => {
+    return {
+      ...state,
+      isLoading: true
+    };
+  }),
+
+  on(restaurantAction.getMenuSuccess, (state, { menu }) => {
+    return {
+      ...state,
+      isLoading: false,
+      menu: menu
+    };
+  }),
+
+  on(restaurantAction.getMenuFailure, (state, { error }) => {
+    return {
+      ...state,
+      error: error,
+      isLoading: false,
+    };
+  })
+);
+
+const _getFoodDetailsReducer = createReducer(
+  initialFoodDetails,
+  on(restaurantAction.getFoodDetails, (state) => {
+    return {
+      ...state,
+      isLoading: true
+    };
+  }),
+  on(restaurantAction.getFoodDetailsSuccess, (state, { foodDetails }) => {
+    return {
+      ...state,
+      foodDetails: foodDetails,
+      isLoading: false
+    };
+  }),
+  on(restaurantAction.getFoodDetailsFailure, (state, { error }) => {
+    return {
+      ...state,
+      error: error,
+      isLoading: false
+    };
+  })
+);
+
 export function getRestaurantListReducer(state: any, action: any) {
   return _getRestaurantList(state, action);
 };
 
 export function getRestaurantInfoReducer(state: any, action: any) {
   return _getRestaurantInfoReducer(state, action);
+}
+
+export function getMenuReducer(state: any, action: any) {
+  return _getMenuReducer(state, action);
+}
+
+export function getFoodDetailsReducer(state: any, action: any) {
+  return _getFoodDetailsReducer(state, action);
 }

@@ -1,0 +1,102 @@
+<!-- LAYOUT -->
+<nz-drawer #cartDrawer [nzVisible]="opened" [nzPlacement]="placementDrawer" [nzWidth]="'600px'" nzKeyboard="true"
+  [nzBodyStyle]="{ overflow: 'auto' }" [nzHeight]="'100%'" (nzOnClose)="closeDrawer()" nzClosable="false"
+  [nzWrapClassName]="'drawerCart'">
+  <ng-container *nzDrawerContent>
+    <div class="flex flex-col h-full w-full overflow-hidden">
+      <ng-container [ngTemplateOutlet]="headerDrawerCart"></ng-container>
+      <ng-container [ngTemplateOutlet]="bodyDrawerCart"></ng-container>
+      <ng-container [ngTemplateOutlet]="footerDrawerCart"></ng-container>
+    </div>
+  </ng-container>
+</nz-drawer>
+
+<!-- HEADAER DRAWER -->
+<ng-template #headerDrawerCart>
+  <header class="flex justify-center items-center px-6 py-4">
+    <div class="text-center select-none relative w-full">
+      <button class="absolute border-none outline-none top-[50%] -translate-y-[50%] left-0" (click)="closeDrawer()">
+        <i class="fa-solid fa-xmark text-[25px] text-gray-500"></i>
+      </button>
+      <h3> Giỏ hàng </h3>
+      <div class="text-gray-400 text-xs">
+        <i class="fa-regular fa-clock"></i>
+        <span>
+          Thời gian giao: 20 phút (Cách bạn 2,8 km)</span>
+      </div>
+    </div>
+  </header>
+  <div class="h-[1px] w-full bg-gray-200"></div>
+</ng-template>
+
+<!-- BODY DRAWER -->
+<ng-template #bodyDrawerCart>
+  <div class="flex-1 drawer-cart-body w-full overflow-y-scroll p-6">
+    <h2 class="font-bold uppercase md:text-xl text-lg">ẨM THỰC KHẾ VINHOMES - NƯỚNG & LẨU</h2>
+    <div *ngFor="let foodItem of cartItems.cart.items; let i = index; let last = last"
+      class="py-6 flex justify-between gap-3 border border-x-0 border-t-0 border-gray-200" [ngClass]="last ? 'border-0' : ''">
+
+      <div class="w-12 h-12">
+        <img loading="lazy" [src]="foodItem.image" class="object-cover w-full h-full rounded-lg" onerror="this.src ='assets/img/foods/food-default.webp'">
+      </div>
+
+      <div class="flex-1 font-medium">
+        <h4 class="line-clamp-1">{{ foodItem.food_name }}</h4>
+        <ng-container *ngFor="let modifier of foodItem.modifiers">
+          <p class="text-gray-400 font-light">{{ modifier.name }}  + {{ modifier.price.toLocaleString("vi-VN", { style: "currency", currency: "VND" }) }}</p>
+        </ng-container>
+        <div *ngIf="foodItem.modifiers.length > 0" class=" cursor-pointer mt-2">
+          <i class="relative fa-solid fa-pen text-gray-500">
+            <div class="absolute w-3 h-[2px] bg-gray-400 top-full left-0"></div>
+          </i>
+        </div>
+      </div>
+
+      <section class="flex flex-col justify-between">
+        <div class="flex flex-col items-end mb-5">
+          <span>{{ getPrice(foodItem).toLocaleString("vi-VN", { style: "currency", currency: "VND" }) }}</span>
+        </div>
+
+        <div class="flex items-center gap-4 justify-center">
+          <div (click)="decreaseQuantity(foodItem, i)"
+            class="font-normal cursor-pointer min-w-7 h-7 rounded-lg bg-gray-200 flex">
+            <i class="fa-solid fa-minus m-auto"></i>
+          </div>
+
+          <div class="text-center">
+            {{ foodItem.quantity }}
+          </div>
+
+          <div (click)="increaseQuantity(foodItem)"
+            class="font-normal cursor-pointer min-w-7 h-7 rounded-lg bg-primary flex">
+            <i class="fa-solid fa-plus text-white m-auto"></i>
+          </div>
+        </div>
+      </section>
+    </div>
+  </div>
+</ng-template>
+
+<!-- FOOTER DRAWER -->
+<ng-template #footerDrawerCart>
+  <footer class="w-full p-6 shadow-[rgba(0,0,0,0.1)_0_8px_8px_7px] bg-white">
+    <div class="flex items-center justify-between mb-5">
+      <span class="text-2xl font-normal">Tổng cộng</span>
+      <h2 class="m-0">{{ cartItems.total_price.toLocaleString("vi-VN", { style: "currency", currency: "VND"}) }}</h2>
+    </div>
+    <a [routerLink]="[urlCheckout]" routerLinkActive="router-link-active" >
+      <button class="w-full p-3 rounded-lg bg-primary text-white font-bold text-md">Xem đơn hàng</button>
+    </a>
+  </footer>
+</ng-template>
+
+<!-- CART EMPTY -->
+<ng-template #cartEmpty>
+  <div class="w-full h-full flex justify-center items-center">
+    <div class="w-full h-full flex flex-col items-center justify-center">
+      <img loading="lazy" src="assets/img/icons/ilus-basket-empty.svg">
+      <h2>{{ langData + 'BAT_DAU_MUA_HANG' | translate }}</h2>
+      <span class="text-grey1 text-center">{{ langData + 'THEM_VAO_GIO_HANG' | translate}}</span>
+    </div>
+  </div>
+</ng-template>

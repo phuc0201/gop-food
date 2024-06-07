@@ -1,107 +1,120 @@
-<nz-drawer [nzClosable]="false" [nzVisible]="visibleFormDrawer" nzPlacement="right" [nzWidth]="'600px'"
-  nzKeyboard="true" [nzBodyStyle]="{ overflow: 'auto' }" [nzHeight]="'100%'"
-  [nzWrapClassName]="'food-detail-drawer relative'" (nzOnClose)="close()">
-  <ng-container *nzDrawerContent>
-    <div class="flex flex-col h-full w-full overflow-hidden">
-      <ng-container [ngTemplateOutlet]="headerFoodDetailTemplate"></ng-container>
-      <div class="food-detail-body overflow-y-scroll">
-        <ng-container [ngTemplateOutlet]="foodInfoTemplate"></ng-container>
-        <ng-container [ngTemplateOutlet]="formFoodOptionTemplate"></ng-container>
-      </div>
-      <ng-container [ngTemplateOutlet]="footerFoodDetailTemplate"></ng-container>
+<ng-container>
+  <div class="flex flex-col justify-between h-full w-full overflow-hidden">
+    <div class="food-detail-body overflow-y-auto flex-1">
+      <ng-container [ngTemplateOutlet]="foodInfoTemplate"></ng-container>
+      <ng-container [ngTemplateOutlet]="formFoodOptionTemplate"></ng-container>
     </div>
-  </ng-container>
-</nz-drawer>
-
-<!-- HEADAER DRAWER -->
-<ng-template #headerFoodDetailTemplate>
-  <header class="absolute top-4 left-4">
-    <button class="w-11 h-11 flex rounded-[50%] bg-black opacity-40" (click)="close()">
-      <i class="fa-solid fa-xmark m-auto text-[25px] text-white"></i>
-    </button>
-  </header>
-</ng-template>
+    <ng-container [ngTemplateOutlet]="footerFoodDetailTemplate"></ng-container>
+  </div>
+</ng-container>
 
 <!-- FOOTER DRAWER -->
 <ng-template #footerFoodDetailTemplate>
   <footer class="w-full p-6 shadow-[rgba(0,0,0,0.1)_0_8px_8px_7px] bg-white">
     <div class="flex items-center justify-between mb-5">
-      <div>
-        <div class="flex items-center w-20 justify-center gap-4">
-          <div (click)="decreaseQuantity()"
+      <section>
+        <div class="flex items-center justify-center gap-2">
+          <div
+            (click)="decreaseQuantity()"
             class="font-normal cursor-pointer min-w-8 h-8 rounded-lg border border-gray-200 flex">
             <i class="fa-solid fa-minus m-auto"></i>
           </div>
-
-          <div class="w-10 text-center">
+          <div class="w-10 text-center text-lg">
             {{ quantity }}
           </div>
-
-          <div (click)="increaseQuantity()"
+          <div
+            (click)="increaseQuantity()"
             class="font-normal cursor-pointer min-w-8 h-8 rounded-lg border border-gray-200 flex">
             <i class="fa-solid fa-plus m-auto"></i>
           </div>
         </div>
-      </div>
-      <h2 class="m-0">{{ (foodDetails.price * quantity).toLocaleString('vi-VN', {style:"currency", currency:"VND"})}}
+      </section>
+      <h2 class="m-0">
+        {{ getPrice.toLocaleString("vi-VN", { style: "currency", currency: "VND" }) }}
       </h2>
     </div>
-    <button (click)="addToCart()" class="w-full p-3 rounded-lg bg-primary text-white font-bold text-md">Add to
-      basket</button>
+    <button [disabled]="isLoading"
+      (click)="addToCart()"
+      class="w-full px-3 rounded-lg min-h-12 bg-primary text-white font-bold text-md">
+      <ng-container *ngIf="isAddToCart">
+        <app-dots-loader></app-dots-loader>
+      </ng-container>
+      <span *ngIf="!isAddToCart">Add to basket</span>
+    </button>
   </footer>
 </ng-template>
 
 <!-- TEMPLATE-ITEMS -->
 <ng-template #foodInfoTemplate>
-  <section>
-    <img loading="lazy" [src]="foodDetails.image" onerror="this.src='assets/img/foods/food-default.webp'"
-      class="mb-5 w-full aspect-video object-cover ">
-  </section>
+  <div
+    class="w-full aspect-video overflow-hidden flex justify-center items-center bg-gray-100"
+    [ngClass]="isLoading ? 'animate-pulse' : ''">
+    <img
+      *ngIf="isLoading === false"
+      loading="lazy"
+      [src]="foodDetails.image"
+      onerror="this.src='assets/img/foods/food-default.webp'"
+      class="mb-5 object-cover w-full animation-fadeIn">
+    <app-img-loader [isLoading]="isLoading"></app-img-loader>
+  </div>
 </ng-template>
 
-
 <ng-template #formFoodOptionTemplate>
-  <div class="food-details-form p-4">
+  <div *ngIf="isLoading" class="p-6">
+    <nz-skeleton [nzActive]="true"></nz-skeleton>
+  </div>
+  <div *ngIf="!isLoading" class="food-details-form p-6">
     <ng-container *ngFor="let item of foodDetails.modifier_groups">
-
-      <ng-container *ngIf="item.max == 1 && foodDetails.modifier_groups.length > 0">
-        <h3 class="font-bold">{{ item.name }}
+      <ng-container *ngIf="item.max === 1 && foodDetails.modifier_groups.length > 0">
+        <h3 class="font-bold">
+          {{ item.name }}
           <span class="text-gray-500 font-light text-sm"> pick 1</span>
         </h3>
-        <nz-radio-group class="!flex flex-col" [ngModel]="item.modifier[0]" (ngModelChange)="addOption($event, item)">
-          <label nz-radio *ngFor="let option of item.modifier" [nzValue]="option"
+        <nz-radio-group
+          class="!flex flex-col mb-5"
+          [ngModel]="item.modifier[0]"
+          (ngModelChange)="addOption($event, item)">
+          <label
+            nz-radio
+            *ngFor="let option of item.modifier"
+            [nzValue]="option"
             class="border border-x-0 border-t-0 border-gray-200">
             <ng-container *ngTemplateOutlet="foodOptionItemTemplate; context: {$implicit: option}"></ng-container>
           </label>
         </nz-radio-group>
       </ng-container>
-
       <ng-container *ngIf="item.max > 1">
-        <h3 class="font-bold">{{ item.name }}
+        <h3 class="font-bold">
+          {{ item.name }}
           <span class="text-gray-500 font-light text-sm"> max {{ item.max }}</span>
         </h3>
-        <div class="!flex flex-col">
-          <label *ngFor="let option of item.modifier" nz-checkbox [ngModel]="false"
+        <div class="!flex flex-col mb-5">
+          <label
+            *ngFor="let option of item.modifier"
+            nz-checkbox
+            [ngModel]="false"
             (ngModelChange)="addExtraDish($event, option)">
             <ng-container *ngTemplateOutlet="foodOptionItemTemplate; context: {$implicit: option}"></ng-container>
           </label>
         </div>
       </ng-container>
     </ng-container>
-
     <div class="mt-3">
       <h3 class="font-bold">Special instructions</h3>
-      <input type="text" nz-input placeholder="E.g No onions please" class="!p-4 !rounded-lg !mt-3" />
+      <input
+        type="text"
+        nz-input
+        placeholder="E.g No onions please"
+        class="!p-4 !rounded-lg !mt-3" />
     </div>
   </div>
-
 </ng-template>
-
 
 <ng-template #foodOptionItemTemplate let-data>
   <div class="w-full flex items-center justify-between text-gray-600 font-light text-[1rem]">
-    <span class="">{{ data.name }}</span>
-    <span class="">+ {{ data.price.toLocaleString("vi-VN",
-      {style:"currency", currency:"VND"}) }}</span>
+    <span>{{ data.name }}</span>
+    <span>
+      + {{ data.price.toLocaleString("vi-VN", { style: "currency", currency: "VND" }) }}
+    </span>
   </div>
 </ng-template>

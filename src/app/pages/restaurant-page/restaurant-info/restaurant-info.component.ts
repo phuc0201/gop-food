@@ -1,34 +1,18 @@
-import { Component, HostListener, OnInit } from '@angular/core';
-import { Store } from '@ngrx/store';
-import { IRestaurantInfo } from 'src/app/core/models/common/response-data.model';
-import { selectRestaurantInfo } from 'src/app/core/store/restaurant/restaurant.selectors';
+import { Component, HostListener, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
+import { Restaurant } from 'src/app/core/models/restaurant/restaurant.model';
+
 
 @Component({
   selector: 'app-restaurant-info',
   templateUrl: './restaurant-info.component.html',
   styleUrls: ['./restaurant-info.component.scss']
 })
-export class RestaurantInfoComponent implements OnInit {
-  isLoading: boolean = true;
+export class RestaurantInfoComponent implements OnInit, OnChanges {
   isMobile: boolean = false;
-  restaurantInfo: IRestaurantInfo = {
-    _id: '',
-    cuisine_categories: [],
-    status: '',
-    restaurant_name: '',
-    bio: '',
-    tier: '',
-    location: {
-      type: 'Point',
-      coordinates: []
-    },
-    avatar: '',
-    cover_image: '',
-    distance: 0,
-    duration: 0,
-    rating: 0
-  };
-
+  @Input() isLoading: boolean = true;
+  @Input() restaurant = new Restaurant();
+  distance: number = 0;
+  duration: string = '';
   @HostListener('window:resize', ['$event'])
   onWindowResize() {
     if (window.innerWidth < 768) {
@@ -37,19 +21,19 @@ export class RestaurantInfoComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.store.select(selectRestaurantInfo).subscribe(data => {
-      if (data.error === '' && data.restaurant._id !== '') {
-        this.restaurantInfo = data.restaurant;
-        setTimeout(() => {
-          this.isLoading = false;
-        }, 500);
+
+  }
+
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes['restaurant']) {
+      if (this.restaurant.distance && this.restaurant.duration) {
+        this.distance = parseFloat((this.restaurant.distance / 1000).toFixed(2));
+        let duration = parseFloat((this.restaurant.duration / 60000).toFixed(0));
+
+        this.duration = duration < 60 ? duration + 'm' : (parseFloat((duration / 60).toFixed(0)) + 'h');
       }
-    });
+    }
   }
 
-  constructor(
-    private store: Store
-  ) {
-
-  }
+  constructor() { }
 }

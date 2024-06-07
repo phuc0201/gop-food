@@ -1,0 +1,25 @@
+::ng-deep .popover-select-location .ant-popover-inner {
+  @apply bg-white rounded-xl;
+}
+
+::ng-deep .popover-select-location .ant-popover-arrow-content::before{
+  @apply bg-white
+}
+
+::ng-deep .campaigns .ant-modal-body {
+  @apply p-0 rounded-lg h-full overflow-hidden
+}
+
+::ng-deep .campaigns .ant-modal-content {
+  @apply rounded-lg h-full overflow-hidden
+}
+
+
+@media (min-width: 992px) {
+  ::ng-deep .campaigns .ant-modal{
+    width: 600px !important;
+    height: 100% !important;
+    padding: 50px 0;
+    top: 0
+  }
+}

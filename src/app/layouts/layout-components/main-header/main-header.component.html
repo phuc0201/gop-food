@@ -1,0 +1,48 @@
+<div appScroll id="header" class="w-full py-3 md:py-5 top-0 left-0 z-50 md:fixed sticky hidden md:block"
+  [class.header-sticky]="isSticky">
+  <div class="sectionContainer flex justify-between items-center flex-wrap">
+    <a routerLink="/" class="logo md:text-3xl text-xl font-medium text-white cursor-pointer">GoPFood</a>
+    <div class="flex items-center md:gap-3 gap-1 md:h-10 h-7">
+      <ng-container *ngIf="basket.total_price <= 0">
+        <div
+          class="w-10 h-10 gap-2 group rounded hidden md:flex justify-center items-center bg-white border border-solid border-gray-200 cursor-pointer ">
+          <img loading="lazy" src="assets/img/icons/icon-cart-black.svg" class="w-4 h-4">
+        </div>
+      </ng-container>
+
+      <ng-container *ngIf="basket.total_price > 0">
+        <nz-badge nzPlacement="left" [nzCount]="basket.cart.items.length" [nzOverflowCount]="10" class="badge-cart">
+          <div class="h-10 select-none bg-primary rounded hidden md:flex justify-center items-center cursor-pointer"
+            (click)="openDrawer = true">
+            <div class="px-3 gap-2 group flex justify-center items-center cursor-pointer ">
+              <img loading="lazy" src="assets/img/icons/icon-cart-white.svg" class="w-4 h-4">
+              <span class="font-medium text-white">{{ basket.total_price.toLocaleString('vi', {style : 'currency',
+                currency
+                : 'VND'})
+                }}</span>
+            </div>
+          </div>
+        </nz-badge>
+      </ng-container>
+
+      <div class="h-full">
+        <a *ngIf="isLogged" [routerLink]="['profile']" class="md:w-10 w-7 h-full flex items-center">
+          <img loading="lazy" [src]="customerAvt" alt="avatar"
+            onerror="this.src='assets/img/avatars/user.png'" class="w-full h-full rounded-[50%]">
+        </a>
+        <div *ngIf="!isLogged" (click)="openAuthForm=true"
+          class="cursor-pointer select-none h-full flex items-center bg-white rounded border border-solid border-gray-200">
+          <div class="text-grey1 font-medium text-[12px] text-center px-3">{{ langData + 'DANG_NHAP' | translate}}
+          </div>
+        </div>
+      </div>
+      <nz-select [(ngModel)]="currLang" class="" nzSize="large" (ngModelChange)="switchLanguage()">
+        <nz-option nzValue="vi" nzLabel="Việt Nam"></nz-option>
+        <nz-option nzValue="en" nzLabel="English"></nz-option>
+      </nz-select>
+    </div>
+  </div>
+</div>
+
+<app-cart [(opened)]="openDrawer"></app-cart>
+<app-auth [(openAuthForm)]="openAuthForm"></app-auth>

@@ -31,7 +31,7 @@ body::-webkit-scrollbar-thumb {
 } */
 
 .animation-fadeIn {
-  animation: fadeIn 1s forwards;
+  animation: fadeIn .5s forwards;
 }
 @keyframes fadeIn {
   from {

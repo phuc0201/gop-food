@@ -12,10 +12,6 @@
   @apply flex-col;
 }
 
-.restaurant-img img {
-  animation: fadeIn 2s forwards;
-}
-
 @keyframes fadeIn {
   from {
     opacity: 0;

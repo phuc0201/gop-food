@@ -1,4 +1,9 @@
 import { AfterViewInit, Component, ElementRef, HostListener, OnInit, Renderer2, ViewChild } from '@angular/core';
+import { Store } from '@ngrx/store';
+import { filter } from 'rxjs';
+import { FoodItems } from 'src/app/core/models/restaurant/food-items.model';
+import { RestaurantCategory } from 'src/app/core/models/restaurant/restaurant-category.model';
+import { selectMenu } from 'src/app/core/store/restaurant/restaurant.selectors';
 
 @Component({
   selector: 'app-restaurant-menu',
@@ -12,12 +17,7 @@ export class RestaurantMenuComponent implements OnInit, AfterViewInit {
   @ViewChild('tabContent') tabContent!: ElementRef;
   @ViewChild('autoCompleteInput') autoCompleteInput!: ElementRef;
   @ViewChild('searchResultContainer', { static: true }) searchResultContainer!: ElementRef;
-  restaurantCategory = [
-    {
-      id: 1,
-      categoryName: 'For you'
-    }
-  ];
+  menu: RestaurantCategory<FoodItems<string>>[] = [];
   selectedCategory: number = 0;
   tabsPosition: number = 0;
   stepScrollTabValue: number = 300;
@@ -28,17 +28,17 @@ export class RestaurantMenuComponent implements OnInit, AfterViewInit {
   filteredOptions: string[] = [];
   foodItems = ['Burns Bay Road', 'Downing Street', 'Wall Street'];
 
-  constructor(
-    private el: ElementRef,
-    private renderer: Renderer2
-  ) { this.filteredOptions = this.foodItems; }
-
   ngAfterViewInit(): void {
 
   }
 
   ngOnInit(): void {
     this.selectedCategory = 0;
+    this.store.select(selectMenu).pipe(
+      filter(data => data.error == '' && data.isLoading == false)
+    ).subscribe(data => {
+      this.menu = data.menu;
+    });
   }
 
   @HostListener('window:scroll', ['$event'])
@@ -158,4 +158,11 @@ export class RestaurantMenuComponent implements OnInit, AfterViewInit {
       this.isHandlingButtonTab = false;
     }, 300);
   }
+
+  constructor(
+    private el: ElementRef,
+    private renderer: Renderer2,
+    private store: Store
+  ) { this.filteredOptions = this.foodItems; }
+
 }

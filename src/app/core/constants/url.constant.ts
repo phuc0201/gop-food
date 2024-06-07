@@ -12,7 +12,7 @@ export const URLConstant = {
       BASE: '/cuisines'
     },
     CHECKOUT_PAGE: {
-      BASE: '/checkout'
+      BASE: '/order/checkout'
     }
   },
   API: {
@@ -28,7 +28,9 @@ export const URLConstant = {
     },
     RESTAURANT: {
       GET_LIST: '/restaurant/recommended',
-      GET_INFO: '/restaurant/info'
+      GET_INFO: '/restaurant/info',
+      GET_MENU: '/restaurant/menu',
+      GET_FOOD_DETAILS: '/restaurant/fooditem/'
     }
   }
 };

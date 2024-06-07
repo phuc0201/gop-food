@@ -1,0 +1,25 @@
+.open.drawer-cart {
+  @apply translate-x-0;
+}
+.open.modal {
+  @apply block;
+}
+::ng-deep .drawerCart .ant-drawer-body {
+  padding: 0 !important;
+}
+.drawer-cart-body {
+  scroll-behavior: smooth;
+  will-change: transform;
+}
+.drawer-cart-body::-webkit-scrollbar {
+  width: 4px;
+}
+
+.drawer-cart-body::-webkit-scrollbar-track {
+  box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.2);
+}
+
+.drawer-cart-body::-webkit-scrollbar-thumb {
+  background-color: #afacac;
+  outline: 1px solid transparent;
+}

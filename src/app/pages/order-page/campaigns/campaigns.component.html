@@ -1,0 +1,77 @@
+<section class="bg-white w-full rounded-lg h-full flex flex-col">
+  <section class="p-5 shadow-header flex items-center justify-between">
+    <h3 class="font-bold text-gray-700 text-lg">Khuyến mãi</h3>
+    <button (click)="destroyModal()" class="w-7 h-7 flex  rounded-lg hover:bg-gray-200">
+      <i class="fa-solid fa-xmark m-auto text-xl"></i>
+    </button>
+  </section>
+
+  <section class="flex-1 overflow-y-auto p-5 compaigns-body">
+    <div class="mb-6">
+      <h3 class="font-bold text-gray-500 text-xs mb-5 uppercase">
+        Ưu đãi ăn uống
+      </h3>
+
+      <ng-container *ngFor="let item of checkboxes">
+        <ng-container *ngTemplateOutlet="promoCardTemplate; context: { $implicit: item }"></ng-container>
+      </ng-container>
+    </div>
+
+    <div>
+      <h3 class="font-bold text-gray-500 text-xs uppercase mb-5">
+        Ưu đãi vận chuyển
+      </h3>
+
+      <ng-container *ngFor="let item of checkboxes">
+        <ng-container *ngTemplateOutlet="promoCardTemplate; context: { $implicit: item }"></ng-container>
+      </ng-container>
+
+    </div>
+  </section>
+
+  <section class="flex flex-col items-end p-5">
+    <button (click)="applyPromotion()" class="bg-primary text-white px-4 py-2 rounded-md font-bold">
+      Áp dụng
+    </button>
+  </section>
+</section>
+
+
+<ng-template #promoCardTemplate let-data>
+  <div class="relative overflow-hidden rounded-l-xl border-none mb-3">
+    <div class="absolute -translate-y-1/2 translate-x-1/2 top-0 right-[67px] w-3 h-3 border rounded-[50%] border-primary bg-white z-20"></div>
+    <div class="absolute translate-y-1/2 translate-x-1/2 bottom-0 right-[67px] w-3 h-3 border rounded-[50%] border-primary bg-white z-20"></div>
+
+    <ng-container >
+      <div class="flex flex-col gap-1 absolute top-0 right-[67px] -translate-x-[50%] z-10">
+        <ng-container *ngFor="let item of [1,2,3,4,5,6,7,8,9,10]">
+          <div class="h-2 w-[0.2px] bg-gray-300"></div>
+        </ng-container>
+      </div>
+    </ng-container>
+
+    <div class="py-3 pl-3 pr-5 border border-primary bg-green5 h-24 rounded-xl overflow-hidden flex items-center justify-between">
+      <div class="h-full aspect-square flex flex-1 gap-3">
+        <img src="https://media.be.com.vn/bizops/image/aab72c63-52d0-11ee-8146-82365e52a8ee/original" alt="" class="object-cover rounded-lg">
+        <div class="max-w-[85%] flex flex-col justify-between">
+          <h3 class="font-bold text-gray-700 line-clamp-1">
+            Giảm 20%, giảm tối đa 50K
+          </h3>
+          <span class="text-gray-500 font-medium text-xs">Đơn hàng tối thiểu 100.000 đ</span>
+          <span class="text-gray-700 font-medium text-xs">HSD: 08/06/2024</span>
+        </div>
+      </div>
+
+      <div (click)="onCheckboxChange(data.id)" class="cntr">
+        <input
+          type="checkbox"
+          [id]="data.id"
+          [checked]="data.checked"
+          class="promo-item-checkbox hidden-xs-up">
+
+        <label for="cbx" class="cbx"></label>
+      </div>
+    </div>
+
+  </div>
+</ng-template>
