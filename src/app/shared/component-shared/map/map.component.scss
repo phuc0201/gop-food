@@ -1,0 +1,20 @@
+.map-container {
+  @apply w-full aspect-video;
+}
+
+.map-frame {
+  height: 100%;
+}
+
+#map {
+  height: 100%;
+}
+
+
+::ng-deep .leaflet-control-attribution.leaflet-control {
+  @apply hidden
+}
+
+::ng-deep .leaflet-marker-icon {
+  margin-top: -30px !important;
+}

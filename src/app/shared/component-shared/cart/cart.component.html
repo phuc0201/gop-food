@@ -84,9 +84,7 @@
       <span class="text-2xl font-normal">Tổng cộng</span>
       <h2 class="m-0">{{ cartItems.total_price.toLocaleString("vi-VN", { style: "currency", currency: "VND"}) }}</h2>
     </div>
-    <a [routerLink]="[urlCheckout]" routerLinkActive="router-link-active" >
-      <button class="w-full p-3 rounded-lg bg-primary text-white font-bold text-md">Xem đơn hàng</button>
-    </a>
+    <button (click)="redirecrCheckout()" class="w-full p-3 rounded-lg bg-primary text-white font-bold text-md">Xem đơn hàng</button>
   </footer>
 </ng-template>
 

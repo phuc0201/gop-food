@@ -154,6 +154,7 @@ export class FoodDetailsComponent implements OnInit {
       })
     ).subscribe(cartItems => {
       cartItems.cart.delivery_location = {
+        type: "Point",
         address: this.cusProfile.getCustomerProfile().address,
         coordinates: this.location.getLocation()
       };

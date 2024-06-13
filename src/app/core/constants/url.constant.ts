@@ -11,8 +11,9 @@ export const URLConstant = {
     CUISINE_PAGE: {
       BASE: '/cuisines'
     },
-    CHECKOUT_PAGE: {
-      BASE: '/order/checkout'
+    ORDER_PAGE: {
+      BASE: '/order/checkout',
+      TRACKER: '/order/tracker'
     }
   },
   API: {
@@ -31,6 +32,12 @@ export const URLConstant = {
       GET_INFO: '/restaurant/info',
       GET_MENU: '/restaurant/menu',
       GET_FOOD_DETAILS: '/restaurant/fooditem/'
+    },
+    ORDER: {
+      QUOTE: '/order/quote/delivery'
+    },
+    CAMPAIGN: {
+      GET_ALL: '/customer/campaigns'
     }
   }
 };

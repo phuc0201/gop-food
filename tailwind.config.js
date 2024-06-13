@@ -34,6 +34,7 @@ module.exports = {
         '2x': '0px 18px 1px -15px rgba(255,255,255,0.5)',
         '3x': 'rgba(0, 0, 0, 0.16) 0px 10px 36px 0px, rgba(0, 0, 0, 0.06) 0px 0px 0px 1px;',
         '4x': '30px 30px 60px #A6ABBD',
+        '5x': 'rgba(149, 157, 165, 0.2) 0px 8px 24px;',
         'header': '0 1px 1px rgba(28, 28, 28, 0.1)'
       },
       colors: {

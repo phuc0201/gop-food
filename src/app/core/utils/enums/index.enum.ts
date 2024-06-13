@@ -60,3 +60,34 @@ export enum PaymentMethod {
   VNPAY = "VNPAY",
   GOP_Wallet = "GOP_Wallet"
 }
+
+
+
+export enum  CampaignUserGroup {
+  ALL_CUSTOMER = 'ALL_CUSTOMER'
+}
+
+export enum CampaignScopeType {
+  ORDER = 'ORDER',
+  ITEMS = 'ITEMS',
+  CATEGORY = 'CATEGORY'
+}
+
+export enum CampaignDiscountType {
+  PERCENTAGE = 'PERCENTAGE',
+  DELIVERY = 'DELIVERY',
+  TRANSPORT = 'TRANSPORT',
+  NET = 'NET'
+}
+
+export enum CurrencyCode {
+  VND = 'VND',
+  USD = 'USD'
+}
+
+export enum OrderStatusTrackerType {
+  PLACE_ORDER_SUCCESS = '',
+  RESTAURANT_ACCEPT = '',
+  DRIVER_ACCEPT = '',
+  COMPLETED = ''
+}

@@ -40,6 +40,12 @@
   transform: rotate(45deg) scale(1);
  }
 
+ .disabled {
+  pointer-events: none;
+  user-select: none;
+  opacity: 0.6;
+}
+
  .cntr {
   position: relative;
  }

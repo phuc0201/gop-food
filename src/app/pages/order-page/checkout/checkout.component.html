@@ -22,9 +22,10 @@
               <div class="border border-gray-300 relative rounded-lg overflow-hidden">
                 <i class="fa-solid fa-location-dot absolute top-1/2 -translate-y-1/2 left-4 text-lg text-red"></i>
 
-                <input type="text" class="border-none text-sm font-normal outline-none ring-0 w-full px-10 py-3" [value]="address">
+                <input type="text" class="border-none text-sm font-normal outline-none ring-0 w-full px-10 py-3" [value]="basket.cart.delivery_location.address">
 
                 <button
+                  (click)="showMapSelector()"
                   nzPopoverPlacement="left"
                   nz-popover nzType="primary"
                   nzPopoverContent="Click here to select location"
@@ -55,8 +56,7 @@
       </div>
 
       <div nz-col nzSpan="24" nzLg="8">
-        <!--  -->
-        <div class="bg-white rounded-lg mt-5 mb-5 lg:mt-0">
+        <div class="bg-white rounded-t-lg mt-5 mb-5 lg:mt-0">
           <div class="shadow-header p-5 ">
             <h3 class="m-0 font-bold text-gray-700">Hình thúc thành toán & ưu đãi</h3>
           </div>
@@ -81,7 +81,7 @@
 
               <div class="flex items-center gap-3">
                 <i class="fa-solid fa-ticket text-red"></i>
-                <span class="text-sm text-gray-500">Đã áp dụng 1 mã KM</span>
+                <span class="text-sm text-gray-500">Đã áp dụng {{basket.cart.campaign_id.length}} mã KM</span>
               </div>
               <button (click)="showPromotion()" class="font-bold text-[#2b77eb] text-sm">Chọn mã</button>
             </div>
@@ -89,7 +89,6 @@
           </div>
         </div>
 
-        <!--  -->
        <div class="bg-white rounded-b-lg">
         <div class="shadow-header p-5">
           <h3 class="m-0 font-bold text-gray-700">
@@ -100,30 +99,30 @@
         <div class="shadow-header p-5">
           <div class="flex items-center justify-between mb-2">
             <span class="font-medium">Tạm tính</span>
-            <span>39.000 đ</span>
+            <span>{{ this.basket.total_price.toLocaleString("vi-VN", { style: "currency", currency: "VND" }) }}</span>
           </div>
 
           <div class="flex items-center justify-between mb-2">
             <span class="font-medium">Phí vận chuyển</span>
-            <span>10.000 đ</span>
+            <span>{{ formatMoney(quote.delivery_fare) }}</span>
           </div>
 
           <div class="flex items-center justify-between mb-2">
             <span class="font-medium">Phí nền tảng</span>
-            <span>2.000 đ</span>
+            <span>{{ formatMoney(2000) }}</span>
           </div>
 
           <div class="flex items-center justify-between">
             <span class="font-medium">Áp dụng khuyến mãi</span>
-            <span class="text-green"> - 10.000 đ </span>
+            <span class="text-green">- {{ formatMoney(quote.discount) }}</span>
           </div>
         </div>
         <div class="p-5">
           <div class="flex items-center justify-between">
             <span class="font-bold text-xl">Tổng tiền</span>
-            <span class="font-bold text-xl">49.000 đ</span>
+            <span class="font-bold text-xl"> {{ formatMoney(quote.total) }}</span>
           </div>
-          <button class="p-3 mt-5 bg-primary w-full text-white font-bold rounded-lg"> Đặt món </button>
+          <button (click)="placeOrder()" class="p-3 mt-5 bg-primary w-full text-white font-bold rounded-lg"> Đặt món </button>
         </div>
        </div>
       </div>
@@ -170,8 +169,10 @@
 
       <div class="flex justify-between">
         <button class="font-bold text-[#2b77eb] text-sm">Chỉnh sửa món</button>
-        <span class="font-bold">{{ getPrice(data).toLocaleString("vi-VN", { style: "currency", currency: "VND" }) }}</span>
+        <span class="font-bold">{{ getFoodItemPrice(data).toLocaleString("vi-VN", { style: "currency", currency: "VND" }) }}</span>
       </div>
     </div>
   </div>
 </ng-template>
+
+

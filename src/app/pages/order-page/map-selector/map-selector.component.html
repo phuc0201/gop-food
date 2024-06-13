@@ -1,0 +1,29 @@
+<section class="flex flex-col h-full">
+  <app-map [enableSelectLocation]="true" [location]="location"></app-map>
+  <div class="flex flex-col flex-1 justify-between">
+    <div class="p-5">
+      <h2 class="font-bold text-gray-700 mb-3">Select your location</h2>
+      <div class="flex flex-col gap-1">
+        <input type="text" placeholder="your location" class=" outline-none px-0 py-3 text-gray-500 border-x-0 border-t-0 focus:ring-0 focus:border-primary" [value]="addressSelected.address">
+        <div class="shadow-5x rounded-b-lg">
+          <ng-container *ngFor="let item of addressList">
+            <div (click)="selectAddress(item)" class="px-2 py-1 cursor-pointer hover:bg-gray-100">
+              <p class="line-clamp-1">{{ item.formatted_address }}</p>
+            </div>
+          </ng-container>
+        </div>
+      </div>
+    </div>
+
+    <div class="p-5">
+      <button (click)="confirm()" class="w-full p-3 rounded-lg bg-primary text-white font-bold">
+        Confirm Location
+      </button>
+    </div>
+  </div>
+</section>
+
+
+<ng-template #resultSelectTemplate>
+
+</ng-template>

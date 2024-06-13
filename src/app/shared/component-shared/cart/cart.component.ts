@@ -1,6 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { ChangeDetectionStrategy, Component, EventEmitter, HostListener, Input, OnChanges, OnInit, Output, Renderer2, SimpleChanges, ViewChild } from '@angular/core';
-import { RouterModule } from '@angular/router';
+import { Router, RouterModule } from '@angular/router';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { NzDrawerComponent, NzDrawerModule, NzDrawerPlacement } from 'ng-zorro-antd/drawer';
 import { NzModalModule } from 'ng-zorro-antd/modal';
@@ -36,7 +36,7 @@ export class CartComponent implements OnChanges, OnInit{
   langData: string = 'SHARED.COMPONENT_SHARED.DRAWER.';
   @ViewChild('cartDrawer') drawer!: NzDrawerComponent;
   placementDrawer: NzDrawerPlacement = 'right';
-  urlCheckout = URLConstant.ROUTE.CHECKOUT_PAGE.BASE;
+  urlCheckout = URLConstant.ROUTE.ORDER_PAGE.BASE;
   cartItems = new Cart()
 
   @HostListener('window:resize', ['$event'])
@@ -71,6 +71,11 @@ export class CartComponent implements OnChanges, OnInit{
     this.openedChange.emit(this.opened);
   }
 
+  redirecrCheckout() {
+    this.closeDrawer();
+    this.router.navigate([URLConstant.ROUTE.ORDER_PAGE.BASE])
+  }
+
   getPrice(foodItems: FoodItemDTO<Modifier>): number{
     const totalModifersPrice =foodItems.modifiers.reduce((total, currValue) => {
       return total +  currValue.price;
@@ -90,7 +95,8 @@ export class CartComponent implements OnChanges, OnInit{
   constructor(
     private translate: TranslateService,
     private render: Renderer2,
-    private orderSrv: OrderService
+    private orderSrv: OrderService,
+    private router: Router
   ) {
     translate.use(localStorage.getItem('language')?.toString() ?? 'vi');
   }

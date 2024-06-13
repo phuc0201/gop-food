@@ -1,4 +1,4 @@
-import { ILocation } from "../location.model";
+import { ILocation } from "../geolocation/location.model";
 
 export class Restaurant {
   _id: string = '';
