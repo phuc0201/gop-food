@@ -10,7 +10,7 @@ import { Cart, CreateOrderDTO, Quote } from "../models/order/order.model";
 })
 export class OrderService {
 
-  private baseUrl = URLConstant.API.ENDPOINT
+  private baseUrl = URLConstant.API.ENDPOINT;
   private newCartItems;
   basket: Observable<Cart>;
   constructor(
@@ -25,33 +25,39 @@ export class OrderService {
     this.newCartItems.next(cart);
   }
 
+  updateCart(cart: Cart) {
+    console.log('update cart');
+    localStorage.setItem(SystemConstant.BASKET, JSON.stringify(cart));
+    this.newCartItems.next(cart);
+  }
+
   getCartItems(): Cart {
     const basket = localStorage.getItem(SystemConstant.BASKET);
     return basket ? JSON.parse(basket) : new Cart();
   }
 
-  quoteOrder(dto: CreateOrderDTO<string>): Observable<Quote>{
-    return this.http.post<Quote>(this.baseUrl + URLConstant.API.ORDER.QUOTE, dto)
+  quoteOrder(dto: CreateOrderDTO<string>): Observable<Quote> {
+    return this.http.post<Quote>(this.baseUrl + URLConstant.API.ORDER.QUOTE, dto);
   }
 
   createOrderDTO(basket: Cart): CreateOrderDTO<string> {
-    const order = new CreateOrderDTO<string>()
+    const order = new CreateOrderDTO<string>();
     order.items = [];
     order.campaign_ids = basket.cart.campaign_ids;
-    order.restaurant_id = basket.cart.restaurant_id
+    order.restaurant_id = basket.cart.restaurant_id;
     order.delivery_location = {
       type: "Point",
       address: basket.cart.delivery_location.address,
       coordinates: basket.cart.delivery_location.coordinates
-    }
+    };
     basket.cart.items.map(foodItem => {
-      const modifiers = foodItem.modifiers.map(md => md._id)
+      const modifiers = foodItem.modifiers.map(md => md._id);
       order.items.push({
         food_id: foodItem.food_id,
         quantity: foodItem.quantity,
         modifiers: modifiers
-      })
-    })
-    return order
+      });
+    });
+    return order;
   }
 }

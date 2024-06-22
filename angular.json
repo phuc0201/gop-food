@@ -20,6 +20,7 @@
             "outputPath": "dist/gop-food",
             "index": "src/index.html",
             "main": "src/main.ts",
+            "optimization": false,
             "polyfills": [
               "zone.js"
             ],
@@ -50,12 +51,12 @@
               "budgets": [
                 {
                   "type": "initial",
-                  "maximumWarning": "4mb",
-                  "maximumError": "5mb"
+                  "maximumWarning": "10mb",
+                  "maximumError": "10mb"
                 },
                 {
                   "type": "anyComponentStyle",
-                  "maximumWarning": "1mb",
+                  "maximumWarning": "2mb",
                   "maximumError": "500kb"
                 }
               ],

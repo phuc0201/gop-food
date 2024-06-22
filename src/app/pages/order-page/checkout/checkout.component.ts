@@ -75,8 +75,7 @@ export class CheckoutComponent implements OnInit {
     modalRef.afterClose.subscribe(result => {
       if (result !== undefined) {
         this.basket.cart.campaign_ids = result;
-        this.orderSrv.addToCart(this.basket);
-
+        this.orderSrv.updateCart(this.basket);
         this.discount_value = this.campaignSrv.caculateDiscountValue(this.quote.delivery_fare);
       }
     });
@@ -106,7 +105,7 @@ export class CheckoutComponent implements OnInit {
     this.addressSelected.coordinates = coordinates;
     this.basket.cart.delivery_location.address = address;
     this.basket.cart.delivery_location.coordinates = [coordinates[1], coordinates[0]];
-    this.orderSrv.addToCart(this.basket);
+    this.orderSrv.updateCart(this.basket);
   }
 
   placeOrder() {
@@ -128,15 +127,17 @@ export class CheckoutComponent implements OnInit {
   }
 
   initData() {
-    this.geoSrv.currLocation.subscribe(res => {
+    this.orderSrv.basket.subscribe(res => {
       this.basket = this.orderSrv.getCartItems();
+    });
+    this.geoSrv.currLocation.subscribe(res => {
       this.addressSelected = res;
       this.basket.cart.delivery_location.address = this.addressSelected.address;
       this.basket.cart.delivery_location.coordinates = [
         this.addressSelected.coordinates[1],
         this.addressSelected.coordinates[0]
       ];
-      this.orderSrv.addToCart(this.basket);
+      this.orderSrv.updateCart(this.basket);
     });
   }
 

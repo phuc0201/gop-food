@@ -51,14 +51,14 @@ export class CartComponent implements OnChanges, OnInit {
 
   increaseQuantity(product: FoodItemDTO<Modifier>): void {
     if (product.quantity <= 50) {
-      const index = this.cartItems.cart.items.findIndex(item => item.food_id == product.food_id);
+      const index = this.cartItems.cart.items.findIndex(item => item === product);
       this.cartItems.cart.items[index].quantity += 1;
       this.updateCart();
     }
   }
 
   decreaseQuantity(product: FoodItemDTO<Modifier>): void {
-    const index = this.cartItems.cart.items.findIndex(item => item.food_id == product.food_id);
+    const index = this.cartItems.cart.items.findIndex(item => item === product);
     if (product.quantity > 1) {
       this.cartItems.cart.items[index].quantity -= 1;
     }
@@ -73,7 +73,7 @@ export class CartComponent implements OnChanges, OnInit {
       const itemTotal = ((item.base_price ?? 0) + item.modifiers.reduce((price, modifier) => price + modifier.price, 0)) * item.quantity;
       return total_price + itemTotal;
     }, 0);
-    this.orderSrv.addToCart(this.cartItems);
+    this.orderSrv.updateCart(this.cartItems);
   }
 
   closeDrawer(): void {

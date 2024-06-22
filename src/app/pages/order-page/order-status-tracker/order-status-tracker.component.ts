@@ -93,7 +93,7 @@ export class OrderStatusTrackerComponent implements OnInit, OnDestroy, AfterView
 
   ngOnDestroy(): void {
     this.basket.cart.campaign_ids = [];
-    this.orderSrv.addToCart(this.basket);
+    this.orderSrv.updateCart(this.basket);
   }
 
   constructor(
