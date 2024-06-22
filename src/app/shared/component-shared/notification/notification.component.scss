@@ -1,0 +1,52 @@
+.notifications-container {
+  --color-text-content: rgb(21 128 61);
+  --color-title-heading: rgb(22 101 52);
+  --color-icon: rgb(74 222 128);
+  width: 320px;
+  height: auto;
+  font-size: 0.875rem;
+  line-height: 1.25rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.flex {
+  display: flex;
+}
+
+.flex-shrink-0 {
+  flex-shrink: 0;
+}
+
+.notification {
+  padding: 1rem;
+  border-radius: 0.375rem;
+}
+
+.icon-svg {
+  color: var(--color-icon);
+  width: 1.25rem;
+  height: 1.25rem;
+}
+
+.notification-prompt-wrap {
+  margin-left: 0.75rem;
+}
+
+.notification-prompt-heading {
+  font-weight: bold;
+  color: var(--color-title-heading);
+}
+
+.notification-prompt-prompt {
+  margin-top: 0.5rem;
+  color: var(--color-text-content);
+}
+
+::ng-deep .ant-notification-notice {
+  padding: 0 !important;
+}
+::ng-deep .notification-wrapper {
+  border-radius: 0.5rem;
+}

@@ -11,6 +11,8 @@ import { RestaurantCardComponent } from 'src/app/shared/component-shared/restaur
 import { NzAutocompleteModule } from 'ng-zorro-antd/auto-complete';
 import { CuisinesSliderComponent } from 'src/app/shared/component-shared/cuisines-slider/cuisines-slider.component';
 import { FoodCardComponent } from 'src/app/shared/component-shared/food-card/food-card.component';
+import { ListRestaurantComponent } from 'src/app/shared/component-shared/list-restaurant/list-restaurant.component';
+import { MapComponent } from 'src/app/shared/component-shared/map/map.component';
 import { HomeSliderComponent } from './home-slider/home-slider.component';
 import { HomeComponent } from './home/home.component';
 import { NewAndEventsComponent } from './new-and-events/new-and-events.component';
@@ -34,6 +36,8 @@ const plugins = [
   PromoSliderComponent,
   RestaurantSliderComponent,
   FoodCardComponent,
+  MapComponent,
+  ListRestaurantComponent
 ];
 
 @NgModule({

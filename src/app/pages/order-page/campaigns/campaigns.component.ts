@@ -3,10 +3,11 @@ import { Store } from '@ngrx/store';
 import { NzModalRef } from 'ng-zorro-antd/modal';
 import { filter } from 'rxjs';
 import { Campaign } from 'src/app/core/models/campaign/campain.model';
+import { Cart } from 'src/app/core/models/order/order.model';
+import { CampaignService } from 'src/app/core/services/campaign.service';
 import { FormatService } from 'src/app/core/services/common/format.serive';
 import { OrderService } from 'src/app/core/services/order.service';
 import { ProfileService } from 'src/app/core/services/profile.service';
-import { getAllCampaign } from 'src/app/core/store/campaign/campaign.actions';
 import { selectCampaigns } from 'src/app/core/store/campaign/campaign.selectors';
 
 @Component({
@@ -18,6 +19,7 @@ export class CampaignsComponent implements OnInit{
   #modal = inject(NzModalRef);
   campaigns: Campaign[] = [];
   campainsSelected: string[] = [];
+  basket = new Cart();
 
   selectPromotion(id: string) {
     const index = this.campaigns.findIndex(cp =>  cp._id === id)
@@ -28,8 +30,8 @@ export class CampaignsComponent implements OnInit{
         const sameDiscountTypeExists = this.campaigns.some(
           cp => cp.discount.type === currentCampaign.discount.type && cp._id !== id && cp.checked
         );
-        const isPromoQuotaUsed = currentCampaign.unavailable_users.filter(id => id == this.profileSrv.getCustomerProfile()._id ).length >= currentCampaign.quotas.total_count_per_count
-        if (!sameDiscountTypeExists && !isPromoQuotaUsed) {
+        const isValidCampaign = this.campaignSrv.isValidCampaign(this.profileSrv.getProfileInSession()._id, currentCampaign, this.basket.subtotal)
+        if (!sameDiscountTypeExists && isValidCampaign) {
           this.campainsSelected.push(currentCampaign._id);
           currentCampaign.checked = true;
           this.campaigns.forEach(cp => {
@@ -64,8 +66,8 @@ export class CampaignsComponent implements OnInit{
   }
 
   ngOnInit(): void {
-    const basket = this.orderSrv.getCartItems();
-    this.store.dispatch(getAllCampaign())
+    this.basket = this.orderSrv.getCartItems();
+    this.campainsSelected = this.basket.cart.campaign_ids;
     const fetchCampaign = this.store.select(selectCampaigns)
     .pipe(
       filter(data => data.campaigns.length > 0)
@@ -73,11 +75,11 @@ export class CampaignsComponent implements OnInit{
     .subscribe({
       next: data => {
         this.campaigns = data.campaigns.map(campaign => {
-          const isPromoQuotaUsed = campaign.unavailable_users.filter(id => id == this.profileSrv.getCustomerProfile()._id ).length >= campaign.quotas.total_count_per_count
+          const isValidCampaign = this.campaignSrv.isValidCampaign(this.profileSrv.getProfileInSession()._id, campaign, this.basket.subtotal)
           return {
             ...campaign,
-            checked: basket.cart.campaign_id.findIndex(id => campaign._id == id) !== -1,
-            disabled: isPromoQuotaUsed
+            checked: this.basket.cart.campaign_ids.findIndex(id => campaign._id == id) !== -1,
+            disabled: !isValidCampaign
           }
         });
       },
@@ -91,6 +93,7 @@ export class CampaignsComponent implements OnInit{
     private store: Store,
     private formatSrv: FormatService,
     private profileSrv: ProfileService,
-    private orderSrv: OrderService
+    private orderSrv: OrderService,
+    private campaignSrv: CampaignService
   ){}
 }

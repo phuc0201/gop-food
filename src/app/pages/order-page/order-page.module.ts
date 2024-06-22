@@ -5,10 +5,11 @@ import { NzCheckboxModule } from 'ng-zorro-antd/checkbox';
 import { NzGridModule } from 'ng-zorro-antd/grid';
 import { NzModalModule } from 'ng-zorro-antd/modal';
 import { NzPopoverModule } from 'ng-zorro-antd/popover';
+import { CreateReviewComponent } from 'src/app/shared/component-shared/create-review/create-review.component';
 import { MapComponent } from 'src/app/shared/component-shared/map/map.component';
+import { NotificationComponent } from 'src/app/shared/component-shared/notification/notification.component';
 import { CampaignsComponent } from './campaigns/campaigns.component';
 import { CheckoutComponent } from './checkout/checkout.component';
-import { MapSelectorComponent } from './map-selector/map-selector.component';
 import { OrderHistoryComponent } from './order-history/order-history.component';
 import { OrderStatusTrackerComponent } from './order-status-tracker/order-status-tracker.component';
 const routes: Routes = [
@@ -33,14 +34,15 @@ const plugins = [
   NzPopoverModule,
   NzCheckboxModule,
   NzModalModule,
-  MapComponent
-]
+  MapComponent,
+  NotificationComponent,
+  CreateReviewComponent
+];
 @NgModule({
   declarations: [
     CheckoutComponent,
     OrderHistoryComponent,
     CampaignsComponent,
-    MapSelectorComponent,
     OrderStatusTrackerComponent
   ],
   imports: [

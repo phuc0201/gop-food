@@ -45,13 +45,15 @@ export class RestaurantMenuComponent implements OnInit, AfterViewInit {
   onWindowScroll(event: Event): void {
     if (this.searching)
       return;
-    if (this.tabContent.nativeElement.getBoundingClientRect().top <= 96) {
-      this.renderer.removeClass(this.menuTabMobile.nativeElement, 'hidden');
-      this.renderer.addClass(this.menuTabMobile.nativeElement, 'flex');
-    }
-    else {
-      this.renderer.removeClass(this.menuTabMobile.nativeElement, 'flex');
-      this.renderer.addClass(this.menuTabMobile.nativeElement, 'hidden');
+    if(this.tabContent !== undefined){
+      if (this.tabContent.nativeElement.getBoundingClientRect().top <= 96) {
+        this.renderer.removeClass(this.menuTabMobile.nativeElement, 'hidden');
+        this.renderer.addClass(this.menuTabMobile.nativeElement, 'flex');
+      }
+      else {
+        this.renderer.removeClass(this.menuTabMobile.nativeElement, 'flex');
+        this.renderer.addClass(this.menuTabMobile.nativeElement, 'hidden');
+      }
     }
   }
 
@@ -128,11 +130,11 @@ export class RestaurantMenuComponent implements OnInit, AfterViewInit {
 
         if (restaurantInforBottom - header.offsetHeight > 0) {
           const scrollPosition = (contentOffsetTop - tabsContainerBottom) + (restaurantInforBottom - header.offsetHeight);
-          window.scrollTo({ top: scrollPosition, behavior: 'smooth' });
+          window.scrollTo({ top: scrollPosition + 40, behavior: 'smooth' });
         }
         else {
           const scrollPosition = contentOffsetTop - tabsContainerBottom;
-          window.scrollTo({ top: scrollPosition, behavior: 'smooth' });
+          window.scrollTo({ top: scrollPosition - 40, behavior: 'smooth' });
         }
       }
     }

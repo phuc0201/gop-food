@@ -1,0 +1,43 @@
+<div class="relative flex justify-between w-full h-32 mb-5 bg-white p-3 rounded-md">
+  <a [routerLink]="['/restaurant', restaurant._id]"
+    class="absolute right-3 bottom-3 p-2 px-4 bg-primary text-white font-bold rounded-md hover:text-white hover:opacity-90">
+    Start Grabbing Food
+  </a>
+
+  <div class="flex gap-2">
+    <img [src]="restaurant.cover_image" alt="" class="w-24 h-24 object-cover rounded-md">
+    <div>
+      <h3 class="font-bold">{{ restaurant.restaurant_name }}</h3>
+      <p class="text-gray-400 line-clamp-2">{{ restaurant.bio }}</p>
+    </div>
+  </div>
+  <div class="flex flex-col justify-between items-end">
+    <ng-container [ngTemplateOutlet]="binButtonTpl"></ng-container>
+  </div>
+</div>
+
+
+
+<ng-template #binButtonTpl>
+  <button (click)="removeRestaurant(restaurant._id)" class="bin-button">
+    <ng-container *ngIf="removing">
+      <dot-spinner></dot-spinner>
+    </ng-container>
+    <ng-container *ngIf="!removing">
+      <svg class="bin-top" viewBox="0 0 39 7" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <line y1="5" x2="39" y2="5" stroke="white" stroke-width="4"></line>
+        <line x1="12" y1="1.5" x2="26.0357" y2="1.5" stroke="white" stroke-width="3"></line>
+      </svg>
+      <svg class="bin-bottom" viewBox="0 0 33 39" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <mask id="path-1-inside-1_8_19" fill="white">
+          <path d="M0 0H33V35C33 37.2091 31.2091 39 29 39H4C1.79086 39 0 37.2091 0 35V0Z"></path>
+        </mask>
+        <path
+          d="M0 0H33H0ZM37 35C37 39.4183 33.4183 43 29 43H4C-0.418278 43 -4 39.4183 -4 35H4H29H37ZM4 43C-0.418278 43 -4 39.4183 -4 35V0H4V35V43ZM37 0V35C37 39.4183 33.4183 43 29 43V35V0H37Z"
+          fill="white" mask="url(#path-1-inside-1_8_19)"></path>
+        <path d="M12 6L12 29" stroke="white" stroke-width="4"></path>
+        <path d="M21 6V29" stroke="white" stroke-width="4"></path>
+      </svg>
+    </ng-container>
+  </button>
+</ng-template>

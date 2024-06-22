@@ -14,7 +14,7 @@
           <i
             class="fa-solid fa-compass text-lg cursor-pointer text-red absolute  left-3 top-1/2 -translate-y-1/2"></i>
 
-          <input nz-input [placeholder]="langData + 'NHAP_DIA_CHI' | translate" [(ngModel)]="userAddress"
+          <input nz-input [placeholder]="langData + 'NHAP_DIA_CHI' | translate" [(ngModel)]="addressSelected.address"
             (ngModelChange)="onChange($event)" [nzAutocomplete]="auto" (keyup.enter)="search()"
             class="outline-none py-3 px-10 shadow-[rgba(0,0,0,0.1)_0px_0px_5px_1px] rounded grow max-w-full w-full" />
           <nz-autocomplete #auto nzBackfill="true">
@@ -24,7 +24,7 @@
             </nz-auto-option>
           </nz-autocomplete>
 
-          <i
+          <i (click)="showMapSelector()"
             class="fa-solid fa-location-crosshairs text-lg text-primary cursor-pointer absolute right-3 top-1/2 -translate-y-1/2"></i>
         </div>
       </div>
@@ -37,3 +37,4 @@
     <!--  -->
   </div>
 </div>
+

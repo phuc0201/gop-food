@@ -1,7 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Store } from '@ngrx/store';
-import { IProfile } from 'src/app/core/models/profile/profile.model';
-import { AuthService } from 'src/app/core/services/auth.service';
+import { GeolocationService } from 'src/app/core/services/geolocation.service';
 import { ProfileService } from 'src/app/core/services/profile.service';
 
 @Component({
@@ -10,30 +8,18 @@ import { ProfileService } from 'src/app/core/services/profile.service';
   styleUrls: ['./home.component.scss']
 })
 export class HomeComponent implements OnInit {
-  customers!: IProfile;
-  initData() {
-    this.customers = {
-      _id: '',
-      email: '',
-      full_name: '',
-      gender: true,
-      avatar: '',
-      address: ''
-    };
-  }
+  address: string = '';
 
-  loadCustomerProfile(): void {
-    this.profileSrv.currentProfile.subscribe(profile => this.customers = profile);
+  loadProfile(): void {
+    this.geoSrv.currLocation.subscribe(res => this.address = res.address)
   }
 
   ngOnInit(): void {
-    this.initData();
-    this.loadCustomerProfile();
+    this.loadProfile();
   }
 
   constructor(
-    private store: Store,
-    private authSrv: AuthService,
+    private geoSrv: GeolocationService,
     private profileSrv: ProfileService
   ) { }
 }

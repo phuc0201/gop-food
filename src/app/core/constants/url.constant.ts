@@ -14,6 +14,9 @@ export const URLConstant = {
     ORDER_PAGE: {
       BASE: '/order/checkout',
       TRACKER: '/order/tracker'
+    },
+    WISH_LIST: {
+      BASE: '/wishlist'
     }
   },
   API: {
@@ -38,6 +41,12 @@ export const URLConstant = {
     },
     CAMPAIGN: {
       GET_ALL: '/customer/campaigns'
+    },
+    PAYMENT: {
+      METHOD: {
+        VNPAY: '/bill/vnpay'
+      },
+      RETURN_URL: 'http://localhost:4200/user/wallet',
     }
   }
 };

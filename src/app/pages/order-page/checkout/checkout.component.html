@@ -22,16 +22,12 @@
               <div class="border border-gray-300 relative rounded-lg overflow-hidden">
                 <i class="fa-solid fa-location-dot absolute top-1/2 -translate-y-1/2 left-4 text-lg text-red"></i>
 
-                <input type="text" class="border-none text-sm font-normal outline-none ring-0 w-full px-10 py-3" [value]="basket.cart.delivery_location.address">
+                <input type="text" class="border-none text-sm font-normal outline-none ring-0 w-full px-10 py-3"
+                  [value]="addressSelected.address">
 
-                <button
-                  (click)="showMapSelector()"
-                  nzPopoverPlacement="left"
-                  nz-popover nzType="primary"
-                  nzPopoverContent="Click here to select location"
-                  [nzPopoverVisible]="true"
-                  nzPopoverOverlayClassName="popover-select-location"
-                  class="absolute top-1/2 -translate-y-1/2 right-4">
+                <button (click)="showMapSelector()" nzPopoverPlacement="left" nz-popover nzType="primary"
+                  nzPopoverContent="Click here to select location" [nzPopoverVisible]="true"
+                  nzPopoverOverlayClassName="popover-select-location" class="absolute top-1/2 -translate-y-1/2 right-4">
                   <i class="fa-solid fa-location-crosshairs text-lg text-primary"></i>
                 </button>
               </div>
@@ -39,7 +35,9 @@
 
             <section class="flex flex-col text-gray-500 font-medium">
               <label for="" class="mb-2">Ghi chú cho tài xế</label>
-              <input type="text" class="border-gray-300 focus:ring-0 ring-0 focus:border-gray-300 px-5 py-3 text-sm font-normal outline-none rounded-lg" [placeholder]="'VD: Đậu cách nhà 100m'">
+              <input type="text"
+                class="border-gray-300 focus:ring-0 ring-0 focus:border-gray-300 px-5 py-3 text-sm font-normal outline-none rounded-lg"
+                [placeholder]="'VD: Đậu cách nhà 100m'">
             </section>
           </div>
         </div>
@@ -64,12 +62,15 @@
           <div class="p-5 cursor-pointer">
             <div class="relative mb-5">
               <div class="border relative border-gray-300 rounded-xl h-11 overflow-hidden">
-                <ng-container *ngTemplateOutlet="paymentMethodTemplate; context: { $implicit:  paymentMethodSelected }"></ng-container>
+                <ng-container
+                  *ngTemplateOutlet="paymentMethodTemplate; context: { $implicit:  paymentMethodSelected }"></ng-container>
 
-                <i class="fa-solid absolute right-4 -translate-y-1/2 top-1/2" [ngClass]="isSelectPaymentMethod? 'fa-chevron-up': 'fa-angle-down'"></i>
+                <i class="fa-solid absolute right-4 -translate-y-1/2 top-1/2"
+                  [ngClass]="isSelectPaymentMethod? 'fa-chevron-up': 'fa-angle-down'"></i>
               </div>
 
-              <div *ngIf="isSelectPaymentMethod" class="absolute top-full left-0 right-0 translate-y-1 bg-white shadow rounded-lg ">
+              <div *ngIf="isSelectPaymentMethod"
+                class="absolute top-full left-0 right-0 translate-y-1 bg-white shadow rounded-lg ">
                 <ng-container *ngFor="let item of paymentMethod">
                   <ng-container *ngTemplateOutlet="paymentMethodTemplate; context: { $implicit:  item }"></ng-container>
                 </ng-container>
@@ -81,7 +82,7 @@
 
               <div class="flex items-center gap-3">
                 <i class="fa-solid fa-ticket text-red"></i>
-                <span class="text-sm text-gray-500">Đã áp dụng {{basket.cart.campaign_id.length}} mã KM</span>
+                <span class="text-sm text-gray-500">Đã áp dụng {{basket.cart.campaign_ids.length}} mã KM</span>
               </div>
               <button (click)="showPromotion()" class="font-bold text-[#2b77eb] text-sm">Chọn mã</button>
             </div>
@@ -89,42 +90,43 @@
           </div>
         </div>
 
-       <div class="bg-white rounded-b-lg">
-        <div class="shadow-header p-5">
-          <h3 class="m-0 font-bold text-gray-700">
-            Thanh toán
-          </h3>
+        <div class="bg-white rounded-b-lg">
+          <div class="shadow-header p-5">
+            <h3 class="m-0 font-bold text-gray-700">
+              Thanh toán
+            </h3>
+          </div>
+
+          <div class="shadow-header p-5">
+            <div class="flex items-center justify-between mb-2">
+              <span class="font-medium">Tạm tính</span>
+              <span>{{ this.basket.subtotal.toLocaleString("vi-VN", { style: "currency", currency: "VND" }) }}</span>
+            </div>
+
+            <div class="flex items-center justify-between mb-2">
+              <span class="font-medium">Phí vận chuyển</span>
+              <span>{{ formatMoney(quote.delivery_fare) }}</span>
+            </div>
+
+            <div class="flex items-center justify-between mb-2">
+              <span class="font-medium">Phí nền tảng</span>
+              <span>{{ formatMoney(2000) }}</span>
+            </div>
+
+            <div class="flex items-center justify-between">
+              <span class="font-medium">Áp dụng khuyến mãi</span>
+              <span class="text-green">- {{ formatMoney(discount_value) }}</span>
+            </div>
+          </div>
+          <div class="p-5">
+            <div class="flex items-center justify-between">
+              <span class="font-bold text-xl">Tổng tiền</span>
+              <span class="font-bold text-xl"> {{ formatMoney(quote.total - discount_value) }}</span>
+            </div>
+            <button (click)="placeOrder()" class="p-3 mt-5 bg-primary w-full text-white font-bold rounded-lg"> Đặt món
+            </button>
+          </div>
         </div>
-
-        <div class="shadow-header p-5">
-          <div class="flex items-center justify-between mb-2">
-            <span class="font-medium">Tạm tính</span>
-            <span>{{ this.basket.total_price.toLocaleString("vi-VN", { style: "currency", currency: "VND" }) }}</span>
-          </div>
-
-          <div class="flex items-center justify-between mb-2">
-            <span class="font-medium">Phí vận chuyển</span>
-            <span>{{ formatMoney(quote.delivery_fare) }}</span>
-          </div>
-
-          <div class="flex items-center justify-between mb-2">
-            <span class="font-medium">Phí nền tảng</span>
-            <span>{{ formatMoney(2000) }}</span>
-          </div>
-
-          <div class="flex items-center justify-between">
-            <span class="font-medium">Áp dụng khuyến mãi</span>
-            <span class="text-green">- {{ formatMoney(quote.discount) }}</span>
-          </div>
-        </div>
-        <div class="p-5">
-          <div class="flex items-center justify-between">
-            <span class="font-bold text-xl">Tổng tiền</span>
-            <span class="font-bold text-xl"> {{ formatMoney(quote.total) }}</span>
-          </div>
-          <button (click)="placeOrder()" class="p-3 mt-5 bg-primary w-full text-white font-bold rounded-lg"> Đặt món </button>
-        </div>
-       </div>
       </div>
     </div>
 
@@ -145,9 +147,9 @@
 <ng-template #cartItemsTemplate>
   <div class="p-5 flex flex-col gap-4">
     <ng-container *ngFor="let item of basket.cart.items; let last = last">
-     <div [ngClass]="last ? '' : 'shadow-header pb-5'">
-      <ng-container *ngTemplateOutlet="foodItemCardTemplate; context: { $implicit: item }"></ng-container>
-     </div>
+      <div [ngClass]="last ? '' : 'shadow-header pb-5'">
+        <ng-container *ngTemplateOutlet="foodItemCardTemplate; context: { $implicit: item }"></ng-container>
+      </div>
     </ng-container>
   </div>
 </ng-template>
@@ -159,8 +161,10 @@
       <div class="flex justify-between mb-3">
         <div class="flex flex-col">
           <span class="font-bold text-gray-700 uppercase">{{ data.food_name }}</span>
-          <span class="text-gray-400">Giá gốc: {{ data.base_price.toLocaleString("vi-VN", { style: "currency", currency: "VND" }) }}</span>
-          <span *ngFor="let modifier of data.modifiers" class="text-gray-400">{{ modifier.name }} + {{ modifier.price.toLocaleString("vi-VN", { style: "currency", currency: "VND" }) }}</span>
+          <span class="text-gray-400">Giá gốc: {{ data.base_price.toLocaleString("vi-VN", { style: "currency", currency:
+            "VND" }) }}</span>
+          <span *ngFor="let modifier of data.modifiers" class="text-gray-400">{{ modifier.name }} + {{
+            modifier.price.toLocaleString("vi-VN", { style: "currency", currency: "VND" }) }}</span>
         </div>
         <button>
           <i class="fa-solid fa-trash-can text-lg hover:text-red"></i>
@@ -168,11 +172,10 @@
       </div>
 
       <div class="flex justify-between">
-        <button class="font-bold text-[#2b77eb] text-sm">Chỉnh sửa món</button>
-        <span class="font-bold">{{ getFoodItemPrice(data).toLocaleString("vi-VN", { style: "currency", currency: "VND" }) }}</span>
+        <button (click)="createFoodDetailsDrawer(data)" class="font-bold text-[#2b77eb] text-sm">Chỉnh sửa món</button>
+        <span class="font-bold">{{ getFoodItemPrice(data).toLocaleString("vi-VN", { style: "currency", currency: "VND"
+          }) }}</span>
       </div>
     </div>
   </div>
 </ng-template>
-
-

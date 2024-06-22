@@ -13,8 +13,8 @@ export const GET_MENU_SUCCESS = '[menu] get success';
 export const GET_MENU_FAILURE = '[menu] get failed';
 
 export const GET_RESTAURANT_INFO = '[restaurant] get restaurant info';
-export const GET_RESTAURANT_INFO_SUCCESS = '[restaurant] get success';
-export const GET_RESTAURANT_INFO_FAILURE = '[restaurant] get failed';
+export const GET_RESTAURANT_INFO_SUCCESS = '[restaurant] get info success';
+export const GET_RESTAURANT_INFO_FAILURE = '[restaurant] get info failed';
 
 export const GET_FOOD_DETAILS = '[food] get food details';
 export const GET_FOOD_DETAILS_SUCCESS = '[food] get success';

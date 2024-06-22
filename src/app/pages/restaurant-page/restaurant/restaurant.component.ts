@@ -1,6 +1,7 @@
 import { Component, HostListener, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Store } from '@ngrx/store';
+import { filter } from 'rxjs';
 import { Restaurant } from 'src/app/core/models/restaurant/restaurant.model';
 import { getMenu, getRestaurantInfo } from 'src/app/core/store/restaurant/restaurant.actions';
 import { selectRestaurantInfo } from 'src/app/core/store/restaurant/restaurant.selectors';
@@ -39,22 +40,24 @@ export class RestaurantComponent implements OnInit {
       behavior: "instant",
     });
 
-    this.store.select(selectRestaurantInfo).subscribe(data => {
-      if (data.error === '' && data.restaurant._id !== '') {
+    const id = this.route.snapshot.paramMap.get('id') as string;
+    this.store.dispatch(getRestaurantInfo({ res_id: id }));
+    this.store.dispatch(getMenu({ id: id }));
+
+    this.store.select(selectRestaurantInfo)
+      .pipe(
+        filter(res => res.restaurant._id !== '')
+      )
+      .subscribe(data => {
         this.restaurant = data.restaurant;
         setTimeout(() => {
           this.isLoading = false;
         }, 500);
-      }
-    });
+      });
   }
 
   constructor(
     private store: Store,
     private route: ActivatedRoute
-  ) {
-    const id = this.route.snapshot.paramMap.get('id') as string;
-    this.store.dispatch(getRestaurantInfo({ res_id: id }));
-    this.store.dispatch(getMenu({ id: id }));
-  }
+  ) { }
 }

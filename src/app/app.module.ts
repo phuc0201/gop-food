@@ -1,6 +1,6 @@
 import { registerLocaleData } from '@angular/common';
 import { HTTP_INTERCEPTORS, HttpClient, HttpClientModule } from '@angular/common/http';
-import en from '@angular/common/locales/en';
+import vi from '@angular/common/locales/vi';
 import { NgModule, isDevMode } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -13,8 +13,8 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { CoreModule } from './core/core.module';
 import { AuthInterceptor } from './core/interceptors/auth.interceptor';
-
-registerLocaleData(en);
+import { NotificationComponent } from './shared/component-shared/notification/notification.component';
+registerLocaleData(vi);
 
 const ngZorroConfig: NzConfig = {
   theme: {
@@ -22,12 +22,16 @@ const ngZorroConfig: NzConfig = {
   }
 };
 
+const plugins = [
+  NotificationComponent
+];
 
 @NgModule({
   declarations: [
     AppComponent,
   ],
   imports: [
+    plugins,
     BrowserModule,
     AppRoutingModule,
     BrowserAnimationsModule,

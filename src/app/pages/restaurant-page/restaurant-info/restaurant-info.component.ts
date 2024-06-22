@@ -13,6 +13,8 @@ export class RestaurantInfoComponent implements OnInit, OnChanges {
   @Input() restaurant = new Restaurant();
   distance: number = 0;
   duration: string = '';
+  isShowRatingsAndReviews: boolean = false;
+
   @HostListener('window:resize', ['$event'])
   onWindowResize() {
     if (window.innerWidth < 768) {

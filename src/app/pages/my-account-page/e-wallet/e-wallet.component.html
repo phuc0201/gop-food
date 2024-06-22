@@ -1,0 +1,98 @@
+<div nz-row nzGutter="20">
+  <div nz-col nzSpan="15" class="flex flex-col justify-between">
+    <div nz-row nzGutter="10">
+      <div nz-col nzSpan="12">
+        <div class="p-3 flex flex-col justify-between gap-5 border border-[#a1b0d8] rounded-md">
+          <span class="text-gray-500">Total deposit amount</span>
+          <div class="flex items-center gap-2">
+            <h2 class="font-bold m-0">{{ 2000000000 | number:'1.0-0':'vi' }}</h2>
+            <span class="font-medium text-base">VND</span>
+          </div>
+        </div>
+      </div>
+      <div nz-col nzSpan="12">
+        <div class="p-3 flex flex-col justify-between gap-5 border border-[#a1b0d8] rounded-md">
+          <span class="text-gray-500">Number of payment </span>
+          <div class="flex items-center gap-2">
+            <h2 class="font-bold m-0">150</h2>
+            <span class="font-medium text-base">transactions</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div>
+      <!-- <span>Choose a payment method</span>
+      <div class="flex mt-2 flex-wrap">
+        <div
+          class="relative border-primary border w-48 h-20 cursor-pointer rounded-md p-4 flex justify-center items-center">
+          <img src="assets/img/icons/vn-pay.svg" alt="picture" class="w-full h-auto">
+          <i
+            class="fa-solid fa-circle-check absolute text-primary top-0 right-0 translate-x-1/2 -translate-y-1/2 bg-white text-lg"></i>
+        </div>
+
+      </div> -->
+
+      <button (click)="deposit()" class="bg-primary text-white font-bold p-2 w-full mt-5 rounded-lg">Deposit</button>
+    </div>
+
+  </div>
+  <!--  -->
+  <div nz-col nzSpan="9">
+    <div class="visa-card">
+      <div class="balance absolute top-5 left-5">
+        <span class='inputstyle font-medium text-xl'>
+          {{ balance.toLocaleString("vi-VN", { style: "currency", currency: "VND" }) }}
+        </span>
+      </div>
+      <div class="logoContainer">
+        <svg xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" width="23" height="23" viewBox="0 0 48 48"
+          class="svgLogo">
+          <path fill="#ff9800" d="M32 10A14 14 0 1 0 32 38A14 14 0 1 0 32 10Z"></path>
+          <path fill="#d50000" d="M16 10A14 14 0 1 0 16 38A14 14 0 1 0 16 10Z"></path>
+          <path fill="#ff3d00"
+            d="M18,24c0,4.755,2.376,8.95,6,11.48c3.624-2.53,6-6.725,6-11.48s-2.376-8.95-6-11.48 C20.376,15.05,18,19.245,18,24z">
+          </path>
+        </svg>
+      </div>
+      <div class="number-container">
+        <label class="input-label" for="cardNumber">CARD NUMBER</label>
+        <input class="inputstyle px-0" id="cardNumber" placeholder="XXXX XXXX XXXX XXXX" name="cardNumber"
+          type="text" />
+      </div>
+
+      <div class="name-date-cvv-container">
+        <div class="name-wrapper">
+          <label class="input-label" for="holderName">CARD HOLDER</label>
+          <input class="inputstyle px-0 placeholder:uppercase" id="holderName"
+            [placeholder]="removeAccents(profile.full_name)" type="text" />
+        </div>
+
+        <div class="expiry-wrapper">
+          <label class="input-label w-fit" for="expiry">VALID THRU</label>
+          <input class="inputstyle px-0" id="expiry" placeholder="MM/YY" type="text" />
+        </div>
+        <div class="cvv-wrapper">
+          <label class="input-label" for="cvv">CVV</label>
+          <input class="inputstyle px-0" placeholder="***" maxlength="3" id="cvv" type="password" />
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<ng-container *ngIf="paymentSuccessful">
+  <div class="fixed top-60 shadow-2xl left-1/2 -translate-x-1/2 -translate-y-1/2
+  bg-white w-96 rounded-lg transition-all">
+    <nz-result nzStatus="success" nzTitle="Top-Up Successful">
+    </nz-result>
+  </div>
+</ng-container>
+<ng-container *ngIf="paymentFailure">
+  <div class="fixed top-60 shadow-2xl left-1/2 -translate-x-1/2 -translate-y-1/2
+  bg-white w-96 rounded-lg transition-all">
+    <nz-result nzStatus="error" nzTitle="Error Processing Payment">
+    </nz-result>
+  </div>
+</ng-container>

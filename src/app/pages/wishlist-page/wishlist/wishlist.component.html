@@ -1,0 +1,17 @@
+<div class="w-full h-full bg-gray-100">
+  <div class="sectionContainer">
+    <ng-container *ngIf="wishlist.length > 0">
+      <div nz-row nzGutter="20" class="py-5">
+        <div *ngFor="let item of wishlist" nz-col nzSpan="24" nzLg="12">
+          <app-restaurant-card [restaurant]="item"></app-restaurant-card>
+        </div>
+      </div>
+    </ng-container>
+
+    <ng-container *ngIf="wishlist.length === 0">
+      <div class="w-full flex justify-center items-center p-52">
+        <img src="assets/img/icons/ilus-basket-empty.svg" alt="" class="w-full max-w-96">
+      </div>
+    </ng-container>
+  </div>
+</div>

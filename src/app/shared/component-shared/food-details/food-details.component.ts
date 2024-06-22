@@ -1,6 +1,6 @@
 import { ScrollingModule } from '@angular/cdk/scrolling';
 import { CommonModule } from '@angular/common';
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { Store } from '@ngrx/store';
 import { NzButtonModule } from 'ng-zorro-antd/button';
@@ -9,11 +9,12 @@ import { NzDrawerModule, NzDrawerRef } from 'ng-zorro-antd/drawer';
 import { NzInputModule } from 'ng-zorro-antd/input';
 import { NzRadioModule } from 'ng-zorro-antd/radio';
 import { NzSkeletonModule } from 'ng-zorro-antd/skeleton';
-import { filter, of, switchMap } from 'rxjs';
+import { Observable, filter, of, switchMap, take, tap } from 'rxjs';
 import { Cart } from 'src/app/core/models/order/order.model';
 import { FoodItemDTO, FoodItems } from 'src/app/core/models/restaurant/food-items.model';
 import { ModifierGroups } from 'src/app/core/models/restaurant/modifier-groups.model';
 import { Modifier } from 'src/app/core/models/restaurant/modifier.model';
+import { Restaurant } from 'src/app/core/models/restaurant/restaurant.model';
 import { GeolocationService } from 'src/app/core/services/geolocation.service';
 import { OrderService } from 'src/app/core/services/order.service';
 import { ProfileService } from 'src/app/core/services/profile.service';
@@ -41,9 +42,9 @@ export const plugins = [
   imports: plugins,
 })
 export class FoodDetailsComponent implements OnInit {
+  @Input() modifiersSelected: Modifier[] = [];
   foodDetails = new FoodItems<ModifierGroups>();
   quantity: number = 1;
-  modifiersSelected: Modifier[] = [];
   isLoading: boolean = true;
   isAddToCart: boolean = true;
 
@@ -53,23 +54,48 @@ export class FoodDetailsComponent implements OnInit {
 
   initial(): void {
     this.store.select(selectFoodDetails)
-    .pipe(
-      filter(data => !data.isLoading && data.foodDetails._id !== '')
-    )
-    .subscribe(data => {
-      this.foodDetails = data.foodDetails
-      this.modifiersSelected = [];
-      this.foodDetails.modifier_groups.forEach(mdg => {
-        if (mdg.min === 1 && mdg.max === 1 && mdg.modifier.length > 0) {
-          this.modifiersSelected.push(mdg.modifier[0]);
+      .pipe(
+        filter(data => !data.isLoading && data.foodDetails._id !== ''),
+        tap(data => {
+          data.foodDetails.modifier_groups.forEach(mdg => {
+            if (mdg.min === 1 && mdg.max === 1 && mdg.modifier.length > 0) {
+              let check = false;
+              for (const md of mdg.modifier) {
+                const index = this.modifiersSelected.findIndex(item => item._id == md._id);
+                if (index !== -1)
+                  check = true;
+              }
+              if (!check) {
+                this.modifiersSelected.push(mdg.modifier[0]);
+              }
+            }
+          });
+        })
+      )
+      .subscribe({
+        next: data => {
+          this.foodDetails = data.foodDetails;
+          setTimeout(() => {
+            this.isLoading = false;
+            this.isAddToCart = false;
+          }, 500);
         }
       });
+  }
 
-      setTimeout(() => {
-        this.isLoading = false;
-        this.isAddToCart = false;
-      }, 500);
-    })
+  checkExtraDishSelected(id: string): boolean {
+    const index = this.modifiersSelected.findIndex(md => md._id == id);
+    return index !== -1;
+  }
+
+  checkOptionSelected(modifier_group: ModifierGroups): Modifier {
+    for (const modifier of modifier_group.modifier) {
+      const index = this.modifiersSelected.findIndex(md => modifier._id == md._id);
+      if (index !== -1) {
+        return modifier;
+      }
+    }
+    return modifier_group.modifier[0];
   }
 
   get getPrice(): number {
@@ -143,35 +169,51 @@ export class FoodDetailsComponent implements OnInit {
   addToCart(): void {
     let basket = this.orderSrv.getCartItems();
     this.isAddToCart = true;
-    const addToCartAction = this.store.select(selectRestaurantInfo).pipe(
-      switchMap(data => {
-        if (basket.cart.restaurant_id !== data.restaurant._id) {
-          basket = new Cart();
-        }
-        basket.cart.restaurant_id = data.restaurant._id;
-        basket.cart.restaurant_name = data.restaurant.restaurant_name
-        return of(basket);
-      })
-    ).subscribe(cartItems => {
-      cartItems.cart.delivery_location = {
-        type: "Point",
-        address: this.cusProfile.getCustomerProfile().address,
-        coordinates: this.location.getLocation()
-      };
-      cartItems = this.updateCartItems(cartItems);
-      cartItems.total_price = cartItems.cart.items.reduce((total_price, item) => {
-        return ((total_price + (item.base_price ?? 0)) + item.modifiers.reduce((price, modifier) => {
-          return price + modifier.price;
-        }, 0)) * item.quantity;
-      }, 0);
 
-      this.orderSrv.addToCart(cartItems);
-      setTimeout(()=>{
+    this.store.select(selectRestaurantInfo).pipe(
+      take(1),
+      switchMap(data => this.handleRestaurantChange(data.restaurant, basket)),
+      switchMap(cartItems => this.setDeliveryLocation(cartItems)),
+      tap(cartItems => this.finalizeCart(cartItems)),
+    ).subscribe(() => {
+      setTimeout(() => {
         this.isAddToCart = false;
         this.drawerRef.close();
-      }, 700)
+      }, 700);
     });
-    addToCartAction.unsubscribe();
+  }
+
+  private handleRestaurantChange(restaurant: Restaurant, basket: Cart): Observable<any> {
+    if (basket.cart.restaurant_id !== restaurant._id)
+      basket = new Cart();
+
+    basket.cart.restaurant_id = restaurant._id;
+    basket.cart.restaurant_name = restaurant.restaurant_name;
+    basket.cart.restaurant_location = restaurant.location.coordinates;
+    return of(basket);
+  }
+
+  setDeliveryLocation(cartItems: Cart): Observable<any> {
+    return this.geoSrv.currLocation.pipe(
+      tap(location => {
+        cartItems.cart.delivery_location = {
+          type: "Point",
+          address: location.address,
+          coordinates: [location.coordinates[1], location.coordinates[0]]
+        };
+      }),
+      switchMap(() => of(cartItems))
+    );
+  }
+
+  finalizeCart(cartItems: Cart): void {
+    cartItems = this.updateCartItems(cartItems);
+    cartItems.subtotal = cartItems.cart.items.reduce((total_price, item) => {
+      const itemTotal = ((item.base_price ?? 0) + item.modifiers.reduce((price, modifier) => price + modifier.price, 0)) * item.quantity;
+      return total_price + itemTotal;
+    }, 0);
+
+    this.orderSrv.addToCart(cartItems);
   }
 
   increaseQuantity(): void {
@@ -189,7 +231,7 @@ export class FoodDetailsComponent implements OnInit {
   constructor(
     private store: Store,
     private cusProfile: ProfileService,
-    private location: GeolocationService,
+    private geoSrv: GeolocationService,
     private orderSrv: OrderService,
     private drawerRef: NzDrawerRef<string>,
   ) { }

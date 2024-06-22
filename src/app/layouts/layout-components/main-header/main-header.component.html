@@ -3,20 +3,20 @@
   <div class="sectionContainer flex justify-between items-center flex-wrap">
     <a routerLink="/" class="logo md:text-3xl text-xl font-medium text-white cursor-pointer">GoPFood</a>
     <div class="flex items-center md:gap-3 gap-1 md:h-10 h-7">
-      <ng-container *ngIf="basket.total_price <= 0">
+      <ng-container *ngIf="basket.subtotal <= 0">
         <div
           class="w-10 h-10 gap-2 group rounded hidden md:flex justify-center items-center bg-white border border-solid border-gray-200 cursor-pointer ">
           <img loading="lazy" src="assets/img/icons/icon-cart-black.svg" class="w-4 h-4">
         </div>
       </ng-container>
 
-      <ng-container *ngIf="basket.total_price > 0">
+      <ng-container *ngIf="basket.subtotal > 0">
         <nz-badge nzPlacement="left" [nzCount]="basket.cart.items.length" [nzOverflowCount]="10" class="badge-cart">
           <div class="h-10 select-none bg-primary rounded hidden md:flex justify-center items-center cursor-pointer"
             (click)="openDrawer = true">
             <div class="px-3 gap-2 group flex justify-center items-center cursor-pointer ">
               <img loading="lazy" src="assets/img/icons/icon-cart-white.svg" class="w-4 h-4">
-              <span class="font-medium text-white">{{ basket.total_price.toLocaleString('vi', {style : 'currency',
+              <span class="font-medium text-white">{{ basket.subtotal.toLocaleString('vi', {style : 'currency',
                 currency
                 : 'VND'})
                 }}</span>
@@ -25,10 +25,18 @@
         </nz-badge>
       </ng-container>
 
+      <a [routerLink]="['/wishlist']"
+        class="wishlist h-full cursor-pointer aspect-square bg-transparent relative rounded-full">
+        <nz-badge nzPlacement="left" [nzCount]="wishlist" [nzOverflowCount]="10"
+          class="absolute top-1/2 left-1/2 -translate-y-1/2 -translate-x-1/2">
+          <i class="fa-solid fa-heart m-auto text-3xl text-white"></i>
+        </nz-badge>
+      </a>
+
       <div class="h-full">
-        <a *ngIf="isLogged" [routerLink]="['profile']" class="md:w-10 w-7 h-full flex items-center">
-          <img loading="lazy" [src]="customerAvt" alt="avatar"
-            onerror="this.src='assets/img/avatars/user.png'" class="w-full h-full rounded-[50%]">
+        <a *ngIf="isLogged" [routerLink]="['/user']" class="md:w-10 w-7 h-full flex items-center">
+          <img loading="lazy" [src]="customerAvt" alt="avatar" onerror="this.src='assets/img/avatars/user.png'"
+            class="w-full h-full rounded-[50%]">
         </a>
         <div *ngIf="!isLogged" (click)="openAuthForm=true"
           class="cursor-pointer select-none h-full flex items-center bg-white rounded border border-solid border-gray-200">

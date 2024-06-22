@@ -1,0 +1,33 @@
+<div class="otp-Form w-full">
+  <span class="mainHeading">Enter OTP</span>
+  <p class="otpSubheading">We have sent a verification code to your mobile number</p>
+  <div class="inputContainer">
+    <input #otpInput1 autocomplete="new-password" required="required" maxlength="1" type="text"
+      class="otp-input focus:ring-green1 focus:border-primary border-transparent" id="otp-input1"
+      (input)="moveToNext(otpInput2, $event)" (keydown)="moveToPrevious(null, $event)">
+
+    <input #otpInput2 autocomplete="new-password" required="required" maxlength="1" type="text"
+      class="otp-input focus:ring-green1 focus:border-primary border-transparent" id="otp-input2"
+      (input)="moveToNext(otpInput3, $event)" (keydown)="moveToPrevious(otpInput1, $event)">
+
+    <input #otpInput3 autocomplete="new-password" required="required" maxlength="1" type="text"
+      class="otp-input focus:ring-green1 focus:border-primary border-transparent" id="otp-input3"
+      (input)="moveToNext(otpInput4, $event)" (keydown)="moveToPrevious(otpInput2, $event)">
+
+    <input #otpInput4 autocomplete="new-password" required="required" maxlength="1" type="text"
+      class="otp-input focus:ring-green1 focus:border-primary border-transparent" id="otp-input4"
+      (input)="moveToNext(otpInput5, $event)" (keydown)="moveToPrevious(otpInput3, $event)">
+
+    <input #otpInput5 autocomplete="new-password" required="required" maxlength="1" type="text"
+      class="otp-input focus:ring-green1 focus:border-primary border-transparent" id="otp-input5"
+      (input)="moveToNext(otpInput6, $event)" (keydown)="moveToPrevious(otpInput4, $event)">
+
+    <input #otpInput6 autocomplete="new-password" required="required" maxlength="1" type="text"
+      class="otp-input focus:ring-green1 focus:border-primary border-transparent" id="otp-input6"
+      (keydown)="moveToPrevious(otpInput5, $event)">
+  </div>
+  <button class="verifyButton bg-primary hover:opacity-90 py-2" type="submit">Verify</button>
+  <!-- <button class="exitBtn">×</button> -->
+  <p class="resendNote text-gray-500">Didn't receive the code? <button class="resendBtn text-primary">Resend
+      Code</button></p>
+</div>

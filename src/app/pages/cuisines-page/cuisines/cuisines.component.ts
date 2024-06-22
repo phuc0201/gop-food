@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { CuisineCategory } from 'src/app/core/mock-data/cuisine-category.data';
+import { ProfileService } from 'src/app/core/services/profile.service';
 
 @Component({
   selector: 'app-cuisines',
@@ -9,11 +10,6 @@ import { CuisineCategory } from 'src/app/core/mock-data/cuisine-category.data';
 })
 export class CuisinesComponent implements OnInit {
   listCuisine = [...CuisineCategory];
-
-  constructor(
-    private router: Router
-  ) { }
-
   ngOnInit(): void {
     let index = this.listCuisine.findIndex(item => this.router.url.includes(item.slug));
     if (index !== -1) {
@@ -27,4 +23,10 @@ export class CuisinesComponent implements OnInit {
       behavior: "instant",
     });
   }
+
+  constructor(
+    private router: Router,
+    private profileSrv: ProfileService
+  ) { }
+
 }

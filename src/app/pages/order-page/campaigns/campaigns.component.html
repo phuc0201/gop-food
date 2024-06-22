@@ -30,7 +30,7 @@
 <ng-template #promoCardTemplate let-campaign="campaign">
   <div
   [class.disabled]="campaign.disabled"
-    class="relative overflow-hidden rounded-l-xl border-none mb-3">
+    class="relative overflow-hidden rounded-l-xl border-none mb-3 group">
     <div class="absolute -translate-y-1/2 translate-x-1/2 top-0 right-[67px] w-3 h-3 border rounded-[50%] border-primary bg-white z-20"></div>
     <div class="absolute translate-y-1/2 translate-x-1/2 bottom-0 right-[67px] w-3 h-3 border rounded-[50%] border-primary bg-white z-20"></div>
 
@@ -42,7 +42,7 @@
       </div>
     </ng-container>
 
-    <div class="py-3 pl-3 pr-5 border border-primary bg-green5 h-24 rounded-xl overflow-hidden flex items-center justify-between">
+    <div class="promo-card-wrapper py-3 pl-3 pr-5 border border-primary bg-green5 h-24 rounded-xl overflow-hidden flex items-center justify-between">
       <div class="h-full flex flex-1 gap-3">
         <div class="h-full aspect-square bg-gray-200 rounded-lg" [ngClass]="!campaign.image ? 'animate-pulse' : '' ">
           <img [src]="campaign.image" onerror="this.src='assets/img/promo/promotion.jpg'" class="object-cover rounded-lg">

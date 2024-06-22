@@ -1,6 +1,6 @@
 import { Injectable } from "@angular/core";
 import { Actions, createEffect, ofType } from "@ngrx/effects";
-import { catchError, exhaustMap, map, of } from "rxjs";
+import { catchError, map, of, switchMap } from "rxjs";
 import { RestaurantService } from "../../services/restaurant.service";
 import * as restaurantAction from './restaurant.actions';
 
@@ -14,37 +14,34 @@ export class RestaurantEffects {
   _getRestaurantList = createEffect(() =>
     this.action$.pipe(
       ofType(restaurantAction.getRestaurantList),
-      exhaustMap(() => this.restaurantSrv.getRestaurants().pipe(
+      switchMap(() => this.restaurantSrv.getRestaurants().pipe(
         map((resList) => restaurantAction.getRestaurantListSuccess({ restaurantList: resList })),
         catchError(error => of(restaurantAction.getRestaurantListFailure({ error: error })))
       ))
     )
   );
 
-  _getRestaurantInfo = createEffect(() =>
-    this.action$.pipe(
-      ofType(restaurantAction.getRestaurantInfo),
-      exhaustMap((dto) => this.restaurantSrv.getRestaurantInfo(dto.res_id).pipe(
-        map(data => restaurantAction.getRestaurantInfoSuccess({ info: data })),
-        catchError(error => of(restaurantAction.getRestaurantInfoFailure({ error: error }))
-        )
-      ))
-    )
-  );
+  _getRestaurantInfo = createEffect(() => this.action$.pipe(
+    ofType(restaurantAction.getRestaurantInfo),
+    switchMap((dto) => this.restaurantSrv.getRestaurantInfo(dto.res_id).pipe(
+      map(data => restaurantAction.getRestaurantInfoSuccess({ info: data })),
+      catchError(error => of(restaurantAction.getRestaurantInfoFailure({ error: error }))
+      )
+    ))
+  ));
 
-  _getMenu = createEffect(() =>
-    this.action$.pipe(
-      ofType(restaurantAction.getMenu),
-      exhaustMap((dto) => this.restaurantSrv.getMenu(dto.id).pipe(
-        map(data => restaurantAction.getMenuSuccess({ menu: data })),
-        catchError(error => of(restaurantAction.getMenuFailure({ error: error })))
-      ))
-    ));
+  _getMenu = createEffect(() => this.action$.pipe(
+    ofType(restaurantAction.getMenu),
+    switchMap((dto) => this.restaurantSrv.getMenu(dto.id).pipe(
+      map(data => restaurantAction.getMenuSuccess({ menu: data })),
+      catchError(error => of(restaurantAction.getMenuFailure({ error: error })))
+    ))
+  ));
 
   _getFoodDetails = createEffect(() =>
     this.action$.pipe(
       ofType(restaurantAction.getFoodDetails),
-      exhaustMap(dto => this.restaurantSrv.getFoodDetails(dto.id).pipe(
+      switchMap(dto => this.restaurantSrv.getFoodDetails(dto.id).pipe(
         map(data => restaurantAction.getFoodDetailsSuccess({ foodDetails: data })),
         catchError(error => of(restaurantAction.getFoodDetailsFailure({ error: error })))
       ))

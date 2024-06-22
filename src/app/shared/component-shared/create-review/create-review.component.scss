@@ -1,0 +1,71 @@
+::ng-deep .star-rate .ant-rate-star {
+  font-size: 30px;
+}
+
+.e-card {
+  margin: 0 auto;
+  background: transparent;
+  position: relative;
+  overflow: hidden;
+}
+
+.wave {
+  position: absolute;
+  opacity: 0.6;
+  left: 0;
+  top: 0;
+  margin-top: -20%;
+  margin-left: -10%;
+  /* background: linear-gradient(744deg, #af40ff, #5b42f3 60%, #00ddeb); */
+  background: linear-gradient(744deg, #40ffc6, #07d322 60%, #41f190);
+}
+
+.wave:nth-child(2),
+.wave:nth-child(3) {
+  top: 95%;
+}
+
+.playing .wave {
+  border-radius: 40%;
+  animation: wave 3000ms infinite linear;
+}
+
+.wave {
+  border-radius: 40%;
+  animation: wave 55s infinite linear;
+}
+
+.playing .wave:nth-child(2) {
+  animation-duration: 4000ms;
+}
+
+.wave:nth-child(2) {
+  animation-duration: 50s;
+}
+
+.playing .wave:nth-child(3) {
+  animation-duration: 5000ms;
+}
+
+.wave:nth-child(3) {
+  animation-duration: 45s;
+}
+
+@keyframes wave {
+  0% {
+    transform: rotate(0deg);
+  }
+
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+::ng-deep .review-modal .ant-modal-body {
+  padding: 0;
+}
+
+::ng-deep .review-modal .ant-modal-content {
+  background-color: transparent;
+  box-shadow: none;
+}

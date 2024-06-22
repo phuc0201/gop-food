@@ -1,8 +1,8 @@
 export enum RoleType  {
-  CUSTOMER = "customer",
-  DRIVER = "driver",
-  RESTAURANT = "restaurant",
-  ADMIN = "admin"
+  CUSTOMER = "CUSTOMER",
+  DRIVER = "DRIVER",
+  RESTAURANT = "RESTAURANT",
+  ADMIN = "ADMIN"
 }
 
 export enum VehicleType {
@@ -91,3 +91,16 @@ export enum OrderStatusTrackerType {
   DRIVER_ACCEPT = '',
   COMPLETED = ''
 }
+
+export enum NotificationType {
+  SUCCESS = 'SUCCESS',
+  ERROR = 'ERROR',
+  WARNING = 'WARNING'
+}
+
+export enum IconMarker {
+  DRIVER = 'assets/img/icons/food-delivery.png',
+  RESTAURANT = 'assets/img/icons/restaurant.png',
+  CUSTOMER = 'assets/img/icons/pin-map.png'
+}
+

@@ -1,7 +1,10 @@
 <!--  -->
 <div id="restaurant-infor" class="sectionContainer pt-8 min-h-44">
   <div class="md:block hidden">
-    <h1 [hidden]="isLoading" class="font-bold text-3xl">{{ restaurant.restaurant_name }}</h1>
+    <div [hidden]="isLoading" class="flex items-center gap-5">
+      <h1 class="font-bold text-3xl m-0">{{ restaurant.restaurant_name }}</h1>
+      <div class="p-1 px-5 bg-primary text-white rounded-md font-bold">Open</div>
+    </div>
     <div class="flex items-center">
       <ng-container *ngFor="let item of restaurant.cuisine_categories; let last = last">
         <h4 *ngIf="!isLoading" class="text-gray-500 font-light mb-2 mr-1">{{ !last ? item + ',' : item }}</h4>
@@ -23,14 +26,21 @@
       </div>
     </div>
 
-    <div [hidden]="isLoading" class="flex items-center mb-2">
+    <!-- <div [hidden]="isLoading" class="flex items-center mb-2">
       <h4 class="text-gray-500 font-normal mr-10">Giờ mở cửa</h4>
       <h4 class="text-gray-500 font-light">Hôm nay 09:30-13:30 17:00-20:00</h4>
-    </div>
+    </div> -->
 
     <div [hidden]="isLoading" class="flex items-center gap-4">
       <i class="fa-solid fa-tag text-primary rotate-90"></i>
       <h4 class="text-gray-600 font-light m-0 text-center">Ưu đãi đến 46.000 đ</h4>
+    </div>
+
+    <div [hidden]="isLoading" class="flex items-center mt-3 group">
+      <div (click)="isShowRatingsAndReviews = true"
+        class="text-gray-600 cursor-pointer font-light m-0 text-center underline group-hover:hover:text-primary group-hover:underline select-none">
+        Ratings and
+        reviews</div>
     </div>
   </div>
 
@@ -41,7 +51,8 @@
         <h1 class="font-bold text-2xl">{{ isLoading ? 'Loading...' : restaurant.restaurant_name }}</h1>
       </div>
 
-      <div class="flex items-center gap-3 py-4 border border-gray-200 border-x-0 border-t-0 ">
+      <div (click)="isShowRatingsAndReviews = true"
+        class="flex items-center gap-3 py-4 border border-gray-200 border-x-0 border-t-0 ">
         <i class="fa-solid fa-star text-yellow-300 text-[20px]"></i>
         <span>
           <span class="font-bold">4.3 </span>(122)
@@ -124,3 +135,6 @@
     </div>
   </ng-container>
 </div>
+
+
+<app-ratings-and-reviews [(opened)]="isShowRatingsAndReviews" [restaurant]="restaurant"></app-ratings-and-reviews>

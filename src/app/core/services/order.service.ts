@@ -37,7 +37,7 @@ export class OrderService {
   createOrderDTO(basket: Cart): CreateOrderDTO<string> {
     const order = new CreateOrderDTO<string>()
     order.items = [];
-    order.campaign_id = basket.cart.campaign_id;
+    order.campaign_ids = basket.cart.campaign_ids;
     order.restaurant_id = basket.cart.restaurant_id
     order.delivery_location = {
       type: "Point",

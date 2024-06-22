@@ -9,18 +9,19 @@ export class DeliveryLocation {
 
 export class CreateOrderDTO<T> {
   restaurant_id: string = '';
-  campaign_id: string[] = [];
+  campaign_ids: string[] = [];
   delivery_location = new DeliveryLocation();
   items: FoodItemDTO<T>[] = [];
 }
 
 export class CreateCartItems extends CreateOrderDTO<Modifier> {
-  restaurant_name: string = ''
+  restaurant_name: string = '';
+  restaurant_location: number[] = [0, 0]
 }
 
 export class Cart {
   cart = new CreateCartItems();
-  total_price: number = 0;
+  subtotal: number = 0;
 }
 
 

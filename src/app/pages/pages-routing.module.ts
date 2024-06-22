@@ -21,10 +21,6 @@ const routes: Routes = [
         path: 'messages',
         loadChildren: () => import('./home-page/home-page.module').then(m => m.HomePageModule)
       },
-      {
-        path: 'profile',
-        loadChildren: () => import('./profile-page/profile-page.module').then(m => m.ProfilePageModule)
-      },
     ]
 
   },
@@ -38,6 +34,16 @@ const routes: Routes = [
     component: HeaderStickyLayoutComponent,
     loadChildren: () => import('./order-page/order-page.module').then(m => m.OrderPageModule)
   },
+  {
+    path: 'user',
+    component: HeaderStickyLayoutComponent,
+    loadChildren: () => import('./my-account-page/my-account-page.module').then(m => m.MyAccountPageModule)
+  },
+  {
+    path: 'wishlist',
+    component: HeaderStickyLayoutComponent,
+    loadChildren: () => import('./wishlist-page/wishlist-page.module').then(m => m.WishlistPageModule)
+  }
 
 ];
 

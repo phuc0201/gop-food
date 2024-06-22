@@ -1,7 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { Component, Input, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { Router, RouterModule } from '@angular/router';
+import { RouterModule } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { NzBadgeModule } from 'ng-zorro-antd/badge';
@@ -11,7 +11,9 @@ import { Cart } from 'src/app/core/models/order/order.model';
 import { AuthService } from 'src/app/core/services/auth.service';
 import { OrderService } from 'src/app/core/services/order.service';
 import { ProfileService } from 'src/app/core/services/profile.service';
+import { RestaurantService } from 'src/app/core/services/restaurant.service';
 import { selectToken } from 'src/app/core/store/auth/auth.selectors';
+import { selectProfile } from 'src/app/core/store/profile/profile.selectors';
 import { AuthComponent } from 'src/app/shared/component-shared/auth/auth.component';
 import { CartComponent } from 'src/app/shared/component-shared/cart/cart.component';
 import { ScrollDirective } from 'src/app/shared/widget/directives/scroll.directive';
@@ -26,7 +28,7 @@ const plugins = [
   FormsModule,
   RouterModule,
   ScrollDirective
-]
+];
 
 @Component({
   selector: 'app-main-header',
@@ -45,6 +47,8 @@ export class MainHeaderComponent implements OnInit {
   openAuthForm: boolean = false;
   customerAvt: string = '';
   basket = new Cart();
+  wishlist: number = 0;
+
   switchLanguage() {
     localStorage.setItem('language', this.currLang ?? 'vi');
     if (this.currLang !== this.translate.currentLang) {
@@ -65,17 +69,23 @@ export class MainHeaderComponent implements OnInit {
         this.isLogged = auth.accessToken != '';
       });
 
-    this.profileSrv.currentProfile.subscribe(profile => this.customerAvt = profile.avatar);
+    this.store.select(selectProfile).subscribe(res => {
+      if (res.profile._id === '') {
+        this.customerAvt = this.profileSrv.getProfileInSession().avatar;
+      } else this.customerAvt = res.profile.avatar;
+    });
 
     this.orderSrv.basket.subscribe(basket => {
       this.basket = basket;
     });
 
+    this.resSrv.currWishlistCount.subscribe(wl => this.wishlist = wl);
+
   }
 
   constructor(
     private translate: TranslateService,
-    private router: Router,
+    private resSrv: RestaurantService,
     private store: Store,
     private authSrv: AuthService,
     private profileSrv: ProfileService,
