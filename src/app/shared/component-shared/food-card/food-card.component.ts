@@ -31,15 +31,15 @@ export class FoodCardComponent implements OnInit {
 
   showDetails() {
     this.isAddToCard = true;
-    setTimeout(()=>{
+    setTimeout(() => {
       this.createFoodDetailsDrawer();
       this.store.dispatch(getFoodDetails({ id: this.foodInfor._id }));
       this.isAddToCard = false;
-    }, 500)
+    }, 500);
   }
 
   createFoodDetailsDrawer() {
-    this.drawerRef = this.drawerSrv.create<FoodDetailsComponent, { foodDetails: FoodItems<ModifierGroups> }, FoodItems<ModifierGroups>>({
+    this.drawerRef = this.drawerSrv.create<FoodDetailsComponent, { foodDetails: FoodItems<ModifierGroups>; }, FoodItems<ModifierGroups>>({
       nzClosable: false,
       nzPlacement: 'right',
       nzWidth: '600px',
@@ -58,5 +58,5 @@ export class FoodCardComponent implements OnInit {
     private store: Store,
     private drawerSrv: NzDrawerService,
     private restaurantSrv: RestaurantService
-  ) {}
+  ) { }
 }

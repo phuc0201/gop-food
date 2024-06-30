@@ -26,6 +26,7 @@ export class RestaurantCardComponent implements OnChanges, OnInit {
   duration: number = 0;
   hasPromotion: boolean = true;
   checkInWishList: boolean = false;
+
   getCuisineNameByType() {
     this.cuisine_cate_name = [];
     this.restaurant.cuisine_categories.forEach(type => {

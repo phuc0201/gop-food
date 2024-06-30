@@ -36,9 +36,10 @@ export class CheckoutComponent implements OnInit {
   isShowFoodDetails: boolean = false;
   drawerRef?: NzDrawerRef<any, any>;
 
-  createFoodDetailsDrawer(foodItem: FoodItemDTO<Modifier>) {
+  createFoodDetailsDrawer(foodItem: FoodItemDTO<Modifier>, index: number) {
+    const item = { ...foodItem };
     this.store.dispatch(getFoodDetails({ id: foodItem.food_id }));
-    this.drawerRef = this.drawerSrv.create<FoodDetailsComponent, { modifiersSelected: Modifier[]; }>({
+    this.drawerRef = this.drawerSrv.create<FoodDetailsComponent, { foodItem: FoodItemDTO<Modifier>; foodItemIndex: number; }>({
       nzClosable: false,
       nzPlacement: 'right',
       nzWidth: '600px',
@@ -47,7 +48,8 @@ export class CheckoutComponent implements OnInit {
       nzKeyboard: true,
       nzContent: FoodDetailsComponent,
       nzContentParams: {
-        modifiersSelected: foodItem.modifiers
+        foodItem: item,
+        foodItemIndex: index
       }
     });
   }
@@ -89,7 +91,6 @@ export class CheckoutComponent implements OnInit {
     const modalRef = this.createModal(MapSelectorComponent, 'map-selector', [restaurantMarker, customerMarker]);
     modalRef.afterClose.subscribe((result: AddressSelected) => {
       if (result !== undefined && result.coordinates.length > 0 && result.address !== '') {
-        this.updateLocation(result.address, result.coordinates);
         this.createQuote();
       }
     });
@@ -109,9 +110,11 @@ export class CheckoutComponent implements OnInit {
   }
 
   placeOrder() {
-    const order = this.orderSrv.createOrderDTO(this.basket);
-    if (order.items.length > 0) {
-      this.router.navigate([URLConstant.ROUTE.ORDER_PAGE.TRACKER]);
+    if (this.basket.cart.items.length > 0) {
+      const order = this.orderSrv.createOrderDTO(this.basket);
+      if (order.items.length > 0) {
+        this.router.navigate([URLConstant.ROUTE.ORDER_PAGE.TRACKER]);
+      }
     }
   }
 
@@ -122,6 +125,10 @@ export class CheckoutComponent implements OnInit {
     });
   }
 
+  removeFoodItem(id: string) {
+    this.orderSrv.removeFoodItem(id);
+  }
+
   formatMoney(price: number = 0): string {
     return price.toLocaleString("vi-VN", { style: "currency", currency: "VND" });
   }
@@ -130,6 +137,7 @@ export class CheckoutComponent implements OnInit {
     this.orderSrv.basket.subscribe(res => {
       this.basket = this.orderSrv.getCartItems();
     });
+
     this.geoSrv.currLocation.subscribe(res => {
       this.addressSelected = res;
       this.basket.cart.delivery_location.address = this.addressSelected.address;

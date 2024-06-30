@@ -77,7 +77,8 @@
         </div>
       </div>
 
-      <div *ngIf="visibleFilterDrawer" class="applyFilter--button fixed bottom-0 left-0 right-0 px-4 py-4 bg-white shadow-inner">
+      <div *ngIf="visibleFilterDrawer"
+        class="applyFilter--button fixed bottom-0 left-0 right-0 px-4 py-4 bg-white shadow-inner">
         <button (click)="applyFilterMobile()"
           class="w-full mb-4 py-3 min-h-12 bg-primary text-white font-bold rounded-md hover:opacity-95">
           <section *ngIf="loaderApplyFilter" class="dots-container">
@@ -168,7 +169,8 @@
 
       </div>
       <div class="flex items-center justify-center w-32 h-6 border border-gray-300">
-        <div>{{ isMobileScreen ? filterMobile.price[1] : filter.price[1] }}</div>
+        <div>{{ ((isMobileScreen ? filterMobile.price[1] : filter.price[1])/100) * priceMax | number:'1.0-0':'vi' }} VND
+        </div>
       </div>
     </div>
 
@@ -177,7 +179,7 @@
 
     <div class="sm:flex hidden flex-col items-end w-full">
       <button class="px-4 py-2 rounded-sm bg-primary text-white font-bold"
-        (click)="applyFilter('price', filter.price[0] + '-' + filter.price[1])">Xem kết quả</button>
+        (click)="applyFilter('price', filter.price[0] + '-' + (filter.price[1]/100)*priceMax)">Xem kết quả</button>
     </div>
   </div>
 </ng-template>

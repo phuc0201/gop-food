@@ -21,17 +21,11 @@ export class CuisineFilterComponent implements OnInit {
   visibleFilterDrawer: boolean = false;
   isMobileScreen: boolean = false;
   loaderApplyFilter: boolean = false;
+  priceMax: number = 250000;
+
+
   @HostListener('window:resize', ['$event'])
   onResize(event: any) {
-    this.checkScreenWidth();
-  }
-
-  constructor(
-    private translate: TranslateService,
-    private router: Router,
-    private route: ActivatedRoute,
-  ) {
-    translate.use(localStorage.getItem('language')?.toString() ?? 'vi');
     this.checkScreenWidth();
   }
 
@@ -108,12 +102,21 @@ export class CuisineFilterComponent implements OnInit {
         this.filter.deliveryFee = params["deliveryFee"];
 
       if (params["price"]) {
-        this.filter.price = params['price'].split('-').map((str: string) => Number(str));
+        this.filter.price = params['price'].split('-').map((str: string) => (Number(str) / this.priceMax) * 100);
       }
 
       if (params["promo"]) {
         this.filter.promo = JSON.parse(params['promo']);
       }
     });
+  }
+
+  constructor(
+    private translate: TranslateService,
+    private router: Router,
+    private route: ActivatedRoute,
+  ) {
+    translate.use(localStorage.getItem('language')?.toString() ?? 'vi');
+    this.checkScreenWidth();
   }
 }

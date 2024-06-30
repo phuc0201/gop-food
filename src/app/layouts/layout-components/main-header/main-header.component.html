@@ -4,7 +4,7 @@
     <a routerLink="/" class="logo md:text-3xl text-xl font-medium text-white cursor-pointer">GoPFood</a>
     <div class="flex items-center md:gap-3 gap-1 md:h-10 h-7">
       <ng-container *ngIf="basket.subtotal <= 0">
-        <div
+        <div (click)="openDrawer = true"
           class="w-10 h-10 gap-2 group rounded hidden md:flex justify-center items-center bg-white border border-solid border-gray-200 cursor-pointer ">
           <img loading="lazy" src="assets/img/icons/icon-cart-black.svg" class="w-4 h-4">
         </div>

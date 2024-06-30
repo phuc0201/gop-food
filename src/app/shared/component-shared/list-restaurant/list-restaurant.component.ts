@@ -4,6 +4,7 @@ import { ActivatedRoute } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { NzGridModule } from 'ng-zorro-antd/grid';
 import { filter } from 'rxjs';
+import { ICuisineFilter } from 'src/app/core/models/restaurant/cuisine-filter.model';
 import { RestaurantsRecommended } from 'src/app/core/models/restaurant/restaurant.model';
 import { getRestaurantList } from 'src/app/core/store/restaurant/restaurant.actions';
 import { selectRestaurantList } from 'src/app/core/store/restaurant/restaurant.selectors';
@@ -22,42 +23,73 @@ const plugin = [
   imports: plugin
 })
 export class ListRestaurantComponent implements OnInit {
-
+  filter: ICuisineFilter = {
+    sortby: '',
+    promo: false,
+    deliveryFee: '',
+    price: [0, 100]
+  };
   slug: string = '';
   isLoading: boolean = true;
-  reataurants = new RestaurantsRecommended();
+  restaurants = new RestaurantsRecommended();
+  priceMax: number = 250000;
 
+  reloadListRestaurant() {
+    setTimeout(() => {
+      this.isLoading = false;
+    }, 700);
+  }
 
   ngOnInit(): void {
+    this.isLoading = true;
+
     this.route.params.subscribe(params => {
       this.slug = params["slug"];
       this.isLoading = true;
-      setTimeout(() => {
-        this.isLoading = false;
-      }, 500);
+      this.reloadListRestaurant();
     });
+
     this.route.queryParams.subscribe(params => {
       this.isLoading = true;
-      setTimeout(() => {
-        this.isLoading = false;
-      }, 500);
+      console.log(this.filter);
+
+      this.reloadListRestaurant();
     });
+
     this.store.dispatch(getRestaurantList());
     const resSeletor = this.store.select(selectRestaurantList)
       .pipe(
         filter(res => res.restaurants.count != 0)
       )
       .subscribe({
-        next: res => this.reataurants = res.restaurants,
+        next: res => this.restaurants = res.restaurants,
         complete: () => {
-          this.isLoading = false;
+          setTimeout(() => {
+            this.isLoading = false;
+          }, 500);
           resSeletor.unsubscribe();
         }
       });
+
+    this.route.queryParams.subscribe(params => {
+      if (params["sortby"])
+        this.filter.sortby = params["sortby"];
+
+      if (params["deliveryFee"])
+        this.filter.deliveryFee = params["deliveryFee"];
+
+      if (params["price"]) {
+        this.filter.price = params['price'].split('-').map((str: string) => Number(str));
+      }
+
+      if (params["promo"]) {
+        this.filter.promo = JSON.parse(params['promo']);
+      }
+    });
   }
 
   constructor(
     private route: ActivatedRoute,
-    private store: Store
+    private store: Store,
   ) { }
 }

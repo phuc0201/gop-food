@@ -42,15 +42,14 @@ export const plugins = [
   imports: plugins,
 })
 export class FoodDetailsComponent implements OnInit {
-  @Input() modifiersSelected: Modifier[] = [];
+  @Input() foodItem = new FoodItemDTO<Modifier>();
+  @Input() foodItemIndex: number = 0;
+  modifiersSelected: Modifier[] = [];
   foodDetails = new FoodItems<ModifierGroups>();
   quantity: number = 1;
   isLoading: boolean = true;
-  isAddToCart: boolean = true;
-
-  ngOnInit(): void {
-    this.initial();
-  }
+  isAddToCart: boolean = false;
+  isUpdate: boolean = false;
 
   initial(): void {
     this.store.select(selectFoodDetails)
@@ -106,7 +105,7 @@ export class FoodDetailsComponent implements OnInit {
   }
 
   addOption(modifier: Modifier, modifier_groups: ModifierGroups): void {
-    const index = this.modifiersSelected.findIndex(md => modifier_groups.modifier.includes(md));
+    const index = this.modifiersSelected.findIndex(modifier => modifier_groups.modifier.findIndex(md => md._id === modifier._id) !== -1);
     if (index > -1) {
       this.modifiersSelected[index] = modifier;
     } else {
@@ -115,7 +114,7 @@ export class FoodDetailsComponent implements OnInit {
   }
 
   addExtraDish(event: boolean, option: Modifier): void {
-    if (event) {
+    if (event && this.modifiersSelected.findIndex(md => md._id === option._id) === -1) {
       this.modifiersSelected.push(option);
     }
     else {
@@ -124,8 +123,8 @@ export class FoodDetailsComponent implements OnInit {
   }
 
   removeFromModifierList(modifier: Modifier): void {
-    let index = this.modifiersSelected.indexOf(modifier);
-    if (index > -1) {
+    let index = this.modifiersSelected.findIndex(md => md._id === modifier._id);
+    if (index !== -1) {
       this.modifiersSelected.splice(index, 1);
     }
   }
@@ -169,21 +168,33 @@ export class FoodDetailsComponent implements OnInit {
   addToCart(): void {
     let basket = this.orderSrv.getCartItems();
     this.isAddToCart = true;
+    if (!this.isUpdate) {
+      this.store.select(selectRestaurantInfo).pipe(
+        take(1),
+        switchMap(data => this.handleRestaurantChange(data.restaurant, basket)),
+        switchMap(cartItems => this.setDeliveryLocation(cartItems)),
+      ).subscribe(cartItems => {
+        this.finalizeCart(cartItems);
+      });
+    }
+    else {
+      basket.cart.items[this.foodItemIndex].modifiers = this.modifiersSelected;
+      basket.cart.items[this.foodItemIndex].quantity = this.quantity;
+      basket.subtotal = basket.cart.items.reduce((total_price, item) => {
+        const itemTotal = ((item.base_price ?? 0) + item.modifiers.reduce((price, modifier) => price + modifier.price, 0)) * item.quantity;
+        return total_price + itemTotal;
+      }, 0);
 
-    this.store.select(selectRestaurantInfo).pipe(
-      take(1),
-      switchMap(data => this.handleRestaurantChange(data.restaurant, basket)),
-      switchMap(cartItems => this.setDeliveryLocation(cartItems)),
-      tap(cartItems => this.finalizeCart(cartItems)),
-    ).subscribe(() => {
+      this.orderSrv.updateCart(basket);
+
       setTimeout(() => {
         this.isAddToCart = false;
         this.drawerRef.close();
       }, 700);
-    });
+    }
   }
 
-  private handleRestaurantChange(restaurant: Restaurant, basket: Cart): Observable<any> {
+  handleRestaurantChange(restaurant: Restaurant, basket: Cart): Observable<any> {
     if (basket.cart.restaurant_id !== restaurant._id)
       basket = new Cart();
 
@@ -207,13 +218,18 @@ export class FoodDetailsComponent implements OnInit {
   }
 
   finalizeCart(cartItems: Cart): void {
-    cartItems = this.updateCartItems(cartItems);
-    cartItems.subtotal = cartItems.cart.items.reduce((total_price, item) => {
-      const itemTotal = ((item.base_price ?? 0) + item.modifiers.reduce((price, modifier) => price + modifier.price, 0)) * item.quantity;
-      return total_price + itemTotal;
-    }, 0);
-
-    this.orderSrv.addToCart(cartItems);
+    if (this.isAddToCart) {
+      cartItems = this.updateCartItems(cartItems);
+      cartItems.subtotal = cartItems.cart.items.reduce((total_price, item) => {
+        const itemTotal = ((item.base_price ?? 0) + item.modifiers.reduce((price, modifier) => price + modifier.price, 0)) * item.quantity;
+        return total_price + itemTotal;
+      }, 0);
+      this.orderSrv.addToCart(cartItems);
+      setTimeout(() => {
+        this.isAddToCart = false;
+        this.drawerRef.close();
+      }, 700);
+    }
   }
 
   increaseQuantity(): void {
@@ -225,7 +241,30 @@ export class FoodDetailsComponent implements OnInit {
   decreaseQuantity(): void {
     if (this.quantity > 1) {
       this.quantity -= 1;
+    } else if (this.isUpdate) {
+      this.removeFoodItem();
     }
+  }
+
+  removeFoodItem() {
+    this.orderSrv.removeFoodItem(this.foodDetails._id);
+    this.closeDrawer();
+  }
+
+  closeDrawer() {
+    setTimeout(() => {
+      this.isAddToCart = false;
+      this.drawerRef.close();
+    }, 700);
+  }
+
+  ngOnInit(): void {
+    this.modifiersSelected = [...this.foodItem.modifiers];
+    this.isUpdate = this.foodItem.food_id !== '';
+    if (this.foodItem.food_id !== '')
+      this.quantity = this.foodItem.quantity;
+
+    this.initial();
   }
 
   constructor(

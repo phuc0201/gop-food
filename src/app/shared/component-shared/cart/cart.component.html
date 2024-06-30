@@ -5,28 +5,36 @@
   <ng-container *nzDrawerContent>
     <div class="flex flex-col h-full w-full overflow-hidden">
       <ng-container [ngTemplateOutlet]="headerDrawerCart"></ng-container>
-      <ng-container [ngTemplateOutlet]="bodyDrawerCart"></ng-container>
-      <ng-container [ngTemplateOutlet]="footerDrawerCart"></ng-container>
+      <ng-container *ngIf="cartItems.cart.items.length > 0">
+        <ng-container [ngTemplateOutlet]="bodyDrawerCart"></ng-container>
+        <ng-container [ngTemplateOutlet]="footerDrawerCart"></ng-container>
+      </ng-container>
+
+      <ng-container *ngIf="cartItems.cart.items.length == 0">
+        <ng-container [ngTemplateOutlet]="cartEmpty"></ng-container>
+      </ng-container>
     </div>
   </ng-container>
 </nz-drawer>
 
+
 <!-- HEADAER DRAWER -->
 <ng-template #headerDrawerCart>
-  <header class="flex justify-center items-center px-6 py-4">
+  <header class="flex justify-center items-center px-6 py-4 min-h-20">
     <div class="text-center select-none relative w-full">
       <button class="absolute border-none outline-none top-[50%] -translate-y-[50%] left-0" (click)="closeDrawer()">
         <i class="fa-solid fa-xmark text-[25px] text-gray-500"></i>
       </button>
-      <h3> Giỏ hàng </h3>
-      <div class="text-gray-400 text-xs">
-        <i class="fa-regular fa-clock"></i>
-        <span>
-          Thời gian giao: 20 phút (Cách bạn 2,8 km)</span>
-      </div>
+      <ng-container *ngIf="cartItems.cart.items.length > 0">
+        <h3> Giỏ hàng </h3>
+        <div class="text-gray-400 text-xs">
+          <i class="fa-regular fa-clock"></i>
+          <span> Thời gian giao: 20 phút (Cách bạn 2,8 km) </span>
+        </div>
+      </ng-container>
     </div>
   </header>
-  <div class="h-[1px] w-full bg-gray-200"></div>
+  <div *ngIf="cartItems.cart.items.length > 0" class="h-[1px] w-full bg-gray-200"></div>
 </ng-template>
 
 <!-- BODY DRAWER -->
@@ -96,9 +104,9 @@
 <ng-template #cartEmpty>
   <div class="w-full h-full flex justify-center items-center">
     <div class="w-full h-full flex flex-col items-center justify-center">
-      <img loading="lazy" src="assets/img/icons/ilus-basket-empty.svg">
-      <h2>{{ langData + 'BAT_DAU_MUA_HANG' | translate }}</h2>
-      <span class="text-grey1 text-center">{{ langData + 'THEM_VAO_GIO_HANG' | translate}}</span>
+      <img loading="lazy" src="assets/img/icons/ilus-basket-empty.svg" class="max-w-80">
+      <h2 class="font-medium">{{ langData + 'BAT_DAU_MUA_HANG' | translate }}</h2>
+      <span class="text-gray-300 text-center">{{ langData + 'THEM_VAO_GIO_HANG' | translate}}</span>
     </div>
   </div>
 </ng-template>

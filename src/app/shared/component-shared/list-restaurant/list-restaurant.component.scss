@@ -1,0 +1,13 @@
+.restaurant-card-wrapper {
+  animation-name: displayContent;
+  animation-duration: 0.7s;
+}
+
+@keyframes displayContent {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}

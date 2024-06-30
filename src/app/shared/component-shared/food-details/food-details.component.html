@@ -36,7 +36,9 @@
       <ng-container *ngIf="isAddToCart">
         <app-dots-loader></app-dots-loader>
       </ng-container>
-      <span *ngIf="!isAddToCart">Add to basket</span>
+      <span *ngIf="!isAddToCart">
+        {{ isUpdate ? 'Update' : 'Add to cart' }}
+      </span>
     </button>
   </footer>
 </ng-template>

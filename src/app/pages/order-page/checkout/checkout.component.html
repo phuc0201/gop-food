@@ -121,9 +121,12 @@
           <div class="p-5">
             <div class="flex items-center justify-between">
               <span class="font-bold text-xl">Tổng tiền</span>
-              <span class="font-bold text-xl"> {{ formatMoney(quote.total - discount_value) }}</span>
+              <span class="font-bold text-xl"> {{ formatMoney(basket.subtotal + quote.delivery_fare - discount_value +
+                2000)
+                }}</span>
             </div>
-            <button (click)="placeOrder()" class="p-3 mt-5 bg-primary w-full text-white font-bold rounded-lg"> Đặt món
+            <button (click)="placeOrder()" class="p-3 mt-5 bg-primary w-full text-white font-bold rounded-lg">
+              Đặt món
             </button>
           </div>
         </div>
@@ -146,34 +149,42 @@
 
 <ng-template #cartItemsTemplate>
   <div class="p-5 flex flex-col gap-4">
-    <ng-container *ngFor="let item of basket.cart.items; let last = last">
+    <ng-container *ngFor="let item of basket.cart.items; let last = last; let index = index">
       <div [ngClass]="last ? '' : 'shadow-header pb-5'">
-        <ng-container *ngTemplateOutlet="foodItemCardTemplate; context: { $implicit: item }"></ng-container>
+        <ng-container
+          *ngTemplateOutlet="foodItemCardTemplate; context: { foodItem: item, index: index }"></ng-container>
       </div>
     </ng-container>
   </div>
 </ng-template>
 
-<ng-template #foodItemCardTemplate let-data>
+<ng-template #foodItemCardTemplate let-foodItem="foodItem" let-index="index">
   <div class="flex gap-4">
-    <img [src]="data.image" alt="" class="w-16 h-16 aspect-square object-cover rounded-lg">
+    <img [src]="foodItem.image" alt="" class="w-16 h-16 aspect-square object-cover rounded-lg">
     <div class="flex-1 flex flex-col justify-between">
-      <div class="flex justify-between mb-3">
+      <div class="flex justify-between mb-3 items-start">
         <div class="flex flex-col">
-          <span class="font-bold text-gray-700 uppercase">{{ data.food_name }}</span>
-          <span class="text-gray-400">Giá gốc: {{ data.base_price.toLocaleString("vi-VN", { style: "currency", currency:
+          <div class="">
+            <span class="font-bold text-gray-700 uppercase">{{ foodItem.food_name }}</span>
+            <span class="font-normal text-gray-500 ml-1">x{{ foodItem.quantity }}</span>
+          </div>
+          <span class="text-gray-400">Giá gốc: {{ foodItem.base_price.toLocaleString("vi-VN", { style: "currency",
+            currency:
             "VND" }) }}</span>
-          <span *ngFor="let modifier of data.modifiers" class="text-gray-400">{{ modifier.name }} + {{
+          <span *ngFor="let modifier of foodItem.modifiers" class="text-gray-400">{{ modifier.name }} + {{
             modifier.price.toLocaleString("vi-VN", { style: "currency", currency: "VND" }) }}</span>
         </div>
-        <button>
+
+        <button (click)="removeFoodItem(foodItem.food_id)">
           <i class="fa-solid fa-trash-can text-lg hover:text-red"></i>
         </button>
       </div>
 
       <div class="flex justify-between">
-        <button (click)="createFoodDetailsDrawer(data)" class="font-bold text-[#2b77eb] text-sm">Chỉnh sửa món</button>
-        <span class="font-bold">{{ getFoodItemPrice(data).toLocaleString("vi-VN", { style: "currency", currency: "VND"
+        <button (click)="createFoodDetailsDrawer(foodItem, index)" class="font-bold text-[#2b77eb] text-sm">Chỉnh sửa
+          món</button>
+        <span class="font-bold">{{ getFoodItemPrice(foodItem).toLocaleString("vi-VN", { style: "currency", currency:
+          "VND"
           }) }}</span>
       </div>
     </div>

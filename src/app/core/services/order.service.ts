@@ -21,14 +21,23 @@ export class OrderService {
   }
 
   addToCart(cart: Cart) {
+    cart.subtotal = this.caculateSubtotal(cart);
     localStorage.setItem(SystemConstant.BASKET, JSON.stringify(cart));
     this.newCartItems.next(cart);
   }
 
   updateCart(cart: Cart) {
     console.log('update cart');
+    cart.subtotal = this.caculateSubtotal(cart);
     localStorage.setItem(SystemConstant.BASKET, JSON.stringify(cart));
     this.newCartItems.next(cart);
+  }
+
+  removeFoodItem(id: string) {
+    const basket = this.getCartItems();
+    const newFoodItems = basket.cart.items.filter(item => item.food_id !== id);
+    basket.cart.items = newFoodItems;
+    this.updateCart(basket);
   }
 
   getCartItems(): Cart {
@@ -38,6 +47,14 @@ export class OrderService {
 
   quoteOrder(dto: CreateOrderDTO<string>): Observable<Quote> {
     return this.http.post<Quote>(this.baseUrl + URLConstant.API.ORDER.QUOTE, dto);
+  }
+
+  caculateSubtotal(basket: Cart): number {
+    basket.subtotal = basket.cart.items.reduce((total_price, item) => {
+      const itemTotal = ((item.base_price ?? 0) + item.modifiers.reduce((price, modifier) => price + modifier.price, 0)) * item.quantity;
+      return total_price + itemTotal;
+    }, 0);
+    return basket.subtotal;
   }
 
   createOrderDTO(basket: Cart): CreateOrderDTO<string> {
