@@ -1,5 +1,5 @@
 <div nz-row nzGutter="20" class="-mb-5">
-  <div nz-col nzSpan="24" nzLg="8" nzSm="12" *ngFor="let item of foodItems; let last = last" class="mb-5">
+  <div nz-col nzSpan="24" nzLg="8" *ngFor="let item of foodItems; let last = last" class="mb-5">
     <app-food-card [foodInfor]="item"></app-food-card>
     <div *ngIf="!last" class="h-[1px] w-full bg-gray-200"></div>
   </div>

@@ -1,7 +1,7 @@
 import { CommonModule } from '@angular/common';
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, HostListener, Input, OnInit } from '@angular/core';
 import { Store } from '@ngrx/store';
-import { NzDrawerRef, NzDrawerService } from 'ng-zorro-antd/drawer';
+import { NzDrawerPlacement, NzDrawerRef, NzDrawerService } from 'ng-zorro-antd/drawer';
 import { Subscription } from 'rxjs';
 import { FoodItems } from 'src/app/core/models/restaurant/food-items.model';
 import { ModifierGroups } from 'src/app/core/models/restaurant/modifier-groups.model';
@@ -29,19 +29,36 @@ export class FoodCardComponent implements OnInit {
   foodDetailsSubscription?: Subscription;
   isAddToCard: boolean = false;
 
+  placementDrawer: NzDrawerPlacement = 'right';
+
+
+  @HostListener('window:resize', ['event'])
+  onResize(event: any) {
+    this.handleMobileScreen();
+  }
+
+  handleMobileScreen() {
+    if (window.innerWidth <= 768) {
+      this.placementDrawer = 'bottom';
+    }
+    else this.placementDrawer = 'right';
+  }
+
   showDetails() {
-    this.isAddToCard = true;
-    setTimeout(() => {
-      this.createFoodDetailsDrawer();
-      this.store.dispatch(getFoodDetails({ id: this.foodInfor._id }));
-      this.isAddToCard = false;
-    }, 500);
+    if (!this.isAddToCard) {
+      this.isAddToCard = true;
+      setTimeout(() => {
+        this.createFoodDetailsDrawer();
+        this.store.dispatch(getFoodDetails({ id: this.foodInfor._id }));
+        this.isAddToCard = false;
+      }, 500);
+    }
   }
 
   createFoodDetailsDrawer() {
     this.drawerRef = this.drawerSrv.create<FoodDetailsComponent, { foodDetails: FoodItems<ModifierGroups>; }, FoodItems<ModifierGroups>>({
       nzClosable: false,
-      nzPlacement: 'right',
+      nzPlacement: this.placementDrawer,
       nzWidth: '600px',
       nzHeight: '100%',
       nzWrapClassName: 'food-detail-drawer',
@@ -51,7 +68,7 @@ export class FoodCardComponent implements OnInit {
   }
 
   ngOnInit(): void {
-
+    this.handleMobileScreen();
   }
 
   constructor(

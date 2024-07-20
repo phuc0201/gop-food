@@ -45,11 +45,21 @@
 
 <!-- TEMPLATE-ITEMS -->
 <ng-template #foodInfoTemplate>
-  <div class="w-full aspect-video overflow-hidden flex justify-center items-center bg-gray-100"
+  <div class="relative w-full aspect-video overflow-hidden flex justify-center items-center bg-gray-100"
     [ngClass]="isLoading ? 'animate-pulse' : ''">
     <img *ngIf="isLoading === false" loading="lazy" [src]="foodDetails.image"
       onerror="this.src='assets/img/foods/food-default.webp'" class="mb-5 object-cover w-full animation-fadeIn">
     <app-img-loader [isLoading]="isLoading"></app-img-loader>
+
+    <div class="absolute top-2 left-2 bg-black opacity-15 rounded-full w-14 h-14">
+    </div>
+    <button (click)="closeDrawer()"
+      class="absolute top-2 left-2 w-14 h-14 z-10 rounded-full border-none outline-none bg-transparent text-white flex justify-center items-center">
+      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"
+        class="size-7">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12" />
+      </svg>
+    </button>
   </div>
 
   <div class="px-6 py-4 pb-0">

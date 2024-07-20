@@ -1,5 +1,5 @@
 <nav
-  class="bottom-navbar-wrapper md:hidden block sticky left-0 bottom-0 bg-white shadow-[rgba(0,0,0,0.2)_0_10px_10px_5px] py-2 z-50">
+  class="bottom-navbar-wrapper md:hidden block fixed right-0 left-0 bottom-0 bg-white shadow-[rgba(0,0,0,0.2)_0_10px_10px_5px] py-2 z-50">
   <ul class="flex justify-between items-center m-0">
     <li>
       <a routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">
@@ -9,7 +9,7 @@
     </li>
 
     <li>
-      <a routerLink="/orders" routerLinkActive="active">
+      <a routerLink="/order/history" routerLinkActive="active">
         <i class="fa-brands fa-dropbox"></i>
         <span>Orders</span>
       </a>
@@ -23,18 +23,19 @@
     </li>
 
     <li>
-      <a routerLink="/profile" routerLinkActive="active">
+      <a routerLink="/user/profile" routerLinkActive="active">
         <i class="fa-regular fa-user"></i>
         <span>Account</span>
       </a>
     </li>
   </ul>
 
-  <div class="cart fixed bottom-16 right-3 cursor-pointer" (click)="openDrawerCart=true">
-    <button class="w-14 h-14 shadow-[rgba(0,0,0,0.1)_0_1px_30px_1px] flex bg-white rounded-[10px]">
-      <!-- <i class="fa-solid fa-basket-shopping m-auto text-[20px]"></i> -->
-      <img loading="lazy" src="assets/img/icons/icon-cart-black.svg" class="w-7 h-7 m-auto">
-    </button>
+  <div *ngIf="isShowCartBtn" class="cart fixed bottom-16 right-3 cursor-pointer" (click)="openDrawerCart=true">
+    <nz-badge [nzCount]="foodCount" class="badge-cart-mobile">
+      <button class="w-14 h-14 shadow-[rgba(0,0,0,0.1)_0_1px_30px_1px] flex bg-white rounded-[10px]">
+        <img loading="lazy" src="assets/img/icons/icon-cart-black.svg" class="w-7 h-7 m-auto">
+      </button>
+    </nz-badge>
   </div>
   <app-cart [(opened)]="openDrawerCart"></app-cart>
 </nav>

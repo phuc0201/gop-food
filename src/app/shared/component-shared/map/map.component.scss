@@ -1,5 +1,5 @@
 .map-container {
-  @apply w-full aspect-video;
+  @apply w-full aspect-video md:h-auto h-[30rem];
 }
 
 .map-frame {
@@ -10,9 +10,8 @@
   height: 100%;
 }
 
-
 ::ng-deep .leaflet-control-attribution.leaflet-control {
-  @apply hidden
+  @apply hidden;
 }
 
 ::ng-deep .leaflet-marker-icon {

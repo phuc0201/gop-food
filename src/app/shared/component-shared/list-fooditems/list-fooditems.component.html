@@ -1,6 +1,6 @@
 <div *ngIf="!isLoading" nz-row nzGutter="20" class="">
   <ng-container *ngFor="let item of foodForSearch">
-    <div nz-col nzSpan="24" [nzLg]="listFoodCol" nzMd="12" class="mb-5">
+    <div nz-col nzSpan="24" [nzLg]="listFoodCol" class="mb-5">
       <div class="">
         <app-fooditem-card [fooditem]="item"></app-fooditem-card>
       </div>

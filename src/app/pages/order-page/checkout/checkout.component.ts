@@ -1,7 +1,7 @@
-import { Component, OnInit, Type, ViewContainerRef } from '@angular/core';
+import { Component, HostListener, OnInit, Type, ViewContainerRef } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Store } from '@ngrx/store';
-import { NzDrawerRef, NzDrawerService } from 'ng-zorro-antd/drawer';
+import { NzDrawerPlacement, NzDrawerRef, NzDrawerService } from 'ng-zorro-antd/drawer';
 import { NzModalService } from 'ng-zorro-antd/modal';
 import { filter, tap } from 'rxjs';
 import { URLConstant } from 'src/app/core/constants/url.constant';
@@ -41,13 +41,28 @@ export class CheckoutComponent implements OnInit {
   phone: string = '';
   paymentSuccessful: boolean = false;
   paymentFailure: boolean = false;
+  placementDrawer: NzDrawerPlacement = 'right';
+
+
+  @HostListener('window:resize', ['event'])
+  onResize(event: any) {
+    this.handleMobileScreen();
+  }
+
+  handleMobileScreen() {
+    if (window.innerWidth <= 768) {
+      this.placementDrawer = 'bottom';
+    }
+    else this.placementDrawer = 'right';
+  }
+
 
   createFoodDetailsDrawer(foodItem: FoodItemDTO<Modifier>, index: number) {
     const item = { ...foodItem };
     this.store.dispatch(getFoodDetails({ id: foodItem.food_id }));
     this.drawerRef = this.drawerSrv.create<FoodDetailsComponent, { foodItem: FoodItemDTO<Modifier>; foodItemIndex: number; }>({
       nzClosable: false,
-      nzPlacement: 'right',
+      nzPlacement: this.placementDrawer,
       nzWidth: '600px',
       nzHeight: '100%',
       nzWrapClassName: 'food-detail-drawer',
@@ -211,6 +226,7 @@ export class CheckoutComponent implements OnInit {
     this.createQuote();
     this.store.dispatch(getAllCampaign());
     this.getCurrentPhone();
+    this.handleMobileScreen();
   }
 
 

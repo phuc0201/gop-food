@@ -1,6 +1,8 @@
+<app-page-loader [isLoading]="isLoading"></app-page-loader>
+
 <app-no-data [isShow]="false"></app-no-data>
 
-<div *ngIf="true" class="flex flex-col gap-4 min-h-[500px]">
+<div *ngIf="true" class="flex flex-col gap-4 min-h-[500px] p-5 md:p-0">
   <div class="relative">
     <input [(ngModel)]="searchValue" (ngModelChange)="search($event)" type="text"
       placeholder="You can search by restaurant name"
@@ -41,7 +43,7 @@
         </div>
       </div>
     </div>
-    <div class="flex flex-col justify-between items-end">
+    <div class="flex flex-col justify-between items-end min-w-28">
       <div class="flex items-center gap-2">
         <span class="text-primary font-bold">{{ order.total.toLocaleString("vi-VN", {style:"currency", currency: "VND"})
           }}</span>

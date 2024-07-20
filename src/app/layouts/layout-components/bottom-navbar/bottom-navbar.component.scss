@@ -1,4 +1,8 @@
 .bottom-navbar-wrapper {
+  z-index: 70;
+}
+
+.bottom-navbar-wrapper {
   li {
     flex: 1;
   }
@@ -27,4 +31,9 @@
 
 .cart button:active {
   scale: 95%;
+}
+
+::ng-deep .badge-cart-mobile nz-badge-sup {
+  right: 100% !important;
+  transform: translate(70%, -30%) !important;
 }

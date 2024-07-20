@@ -198,6 +198,8 @@ export class FoodDetailsComponent implements OnInit {
     }
   }
 
+
+
   handleRestaurantChange(restaurant: Restaurant, basket: Cart): Observable<any> {
     if (basket.cart.restaurant_id !== restaurant._id)
       basket = new Cart();
@@ -245,8 +247,6 @@ export class FoodDetailsComponent implements OnInit {
   decreaseQuantity(): void {
     if (this.quantity > 1) {
       this.quantity -= 1;
-    } else if (this.isUpdate) {
-      this.removeFoodItem();
     }
   }
 
@@ -256,10 +256,8 @@ export class FoodDetailsComponent implements OnInit {
   }
 
   closeDrawer() {
-    setTimeout(() => {
-      this.isAddToCart = false;
-      this.drawerRef.close();
-    }, 700);
+    this.isAddToCart = false;
+    this.drawerRef.close();
   }
 
   ngOnInit(): void {

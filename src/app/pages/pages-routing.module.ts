@@ -21,6 +21,10 @@ const routes: Routes = [
         path: 'messages',
         loadChildren: () => import('./home-page/home-page.module').then(m => m.HomePageModule)
       },
+      {
+        path: 'order',
+        loadChildren: () => import('./order-page/order-page.module').then(m => m.OrderPageModule)
+      },
     ]
 
   },
@@ -28,11 +32,6 @@ const routes: Routes = [
     path: 'cuisines',
     component: HeaderStickyLayoutComponent,
     loadChildren: () => import('./cuisines-page/cuisines-page.module').then(m => m.CuisinesPageModule),
-  },
-  {
-    path: 'order',
-    component: HeaderStickyLayoutComponent,
-    loadChildren: () => import('./order-page/order-page.module').then(m => m.OrderPageModule)
   },
   {
     path: 'user',

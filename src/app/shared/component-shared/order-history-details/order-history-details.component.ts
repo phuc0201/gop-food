@@ -1,3 +1,4 @@
+import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { LocationMarker } from 'src/app/core/models/geolocation/location.model';
@@ -5,10 +6,16 @@ import { Cart, OrderDetails, OrderFoodItems } from 'src/app/core/models/order/or
 import { OrderService } from 'src/app/core/services/order.service';
 import { OrderStatusTrackerType } from 'src/app/core/utils/enums/index.enum';
 
+const plugins = [
+  CommonModule
+];
+
 @Component({
   selector: 'app-order-history-details',
   templateUrl: './order-history-details.component.html',
-  styleUrls: ['./order-history-details.component.scss']
+  styleUrls: ['./order-history-details.component.scss'],
+  standalone: true,
+  imports: plugins
 })
 export class OrderHistoryDetailsComponent implements OnInit {
   basket = new Cart();

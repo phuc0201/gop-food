@@ -1,11 +1,9 @@
-<div class="flex flex-col justify-between h-[100vh]">
+<div class="h-[100vh] relative" [ngClass]="isMobile ? '' : ''">
   <app-main-header></app-main-header>
   <div class="pb-10">
     <router-outlet></router-outlet>
   </div>
-  <ng-container *ngIf="!isMobile">
-    <app-main-footer></app-main-footer>
-  </ng-container>
+  <app-main-footer></app-main-footer>
 
   <ng-container *ngIf="isMobile">
     <app-bottom-navbar></app-bottom-navbar>

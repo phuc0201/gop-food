@@ -4,4 +4,8 @@
     <router-outlet></router-outlet>
   </div>
   <app-main-footer></app-main-footer>
+
+  <ng-container *ngIf="isMobile">
+    <app-bottom-navbar></app-bottom-navbar>
+  </ng-container>
 </div>
