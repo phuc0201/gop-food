@@ -1,22 +1,20 @@
 <div
-  class="md:absolute md:top-0 md:left-0 md:p-6 pt-3 md:-translate-y-[82%] md:h-96 h-fit z-10 bg-white flex items-center rounded md:w-[360px] w-full border-0 md:border border-solid border-gray-200 ">
+  class="md:absolute md:top-0 md:left-0 md:p-6 md:px-7 pt-3 md:-translate-y-[125%] h-fit z-10 bg-white flex items-center rounded-2xl md:w-[500px] w-full border-0 md:border border-solid border-gray-200 ">
   <div class="w-full">
     <!--  -->
     <div class="md:block hidden mb-6">
-      <span class="font-bold md:text-xl text-sm">Good Evening</span>
-      <div class="md:text-4xl text-2xl font-bold">Where should we deliver your food today?</div>
+      <div class="md:text-xl text-lg font-bold">Where should we deliver your food today?</div>
     </div>
     <!--  -->
 
     <div>
       <div class="mb-3">
-        <div class="search-form relative border md:border-gray-400 border-transparent rounded">
-          <i
-            class="fa-solid fa-compass text-lg cursor-pointer text-red absolute  left-3 top-1/2 -translate-y-1/2"></i>
-
+        <div class="search-form relative border md:border-gray-300 border-transparent rounded-lg">
+          <i class="fa-solid fa-compass text-lg cursor-pointer text-red absolute  left-3 top-1/2 -translate-y-1/2"></i>
+          <!-- shadow-[rgba(208,211,213,1)_0px_0px_5px_1px] -->
           <input nz-input [placeholder]="langData + 'NHAP_DIA_CHI' | translate" [(ngModel)]="addressSelected.address"
             (ngModelChange)="onChange($event)" [nzAutocomplete]="auto" (keyup.enter)="search()"
-            class="outline-none py-3 px-10 shadow-[rgba(0,0,0,0.1)_0px_0px_5px_1px] rounded grow max-w-full w-full" />
+            class="outline-none py-3 px-10  rounded-lg grow max-w-full w-full" />
           <nz-autocomplete #auto nzBackfill="true">
             <nz-auto-option *ngFor="let option of filteredAddress" (click)="search()" (nzSelect)="search()"
               [nzValue]="option">
@@ -28,13 +26,6 @@
             class="fa-solid fa-location-crosshairs text-lg text-primary cursor-pointer absolute right-3 top-1/2 -translate-y-1/2"></i>
         </div>
       </div>
-      <button (click)="search()"
-        class="md:block hidden w-full h-12 bg-primary text-white text-lg font-medium rounded-lg">{{ langData +
-        'TIM_KIEM' |
-        translate }}</button>
     </div>
-
-    <!--  -->
   </div>
 </div>
-

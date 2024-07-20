@@ -15,14 +15,14 @@ import { selectCampaigns } from 'src/app/core/store/campaign/campaign.selectors'
   templateUrl: './campaigns.component.html',
   styleUrls: ['./campaigns.component.scss'],
 })
-export class CampaignsComponent implements OnInit{
+export class CampaignsComponent implements OnInit {
   #modal = inject(NzModalRef);
   campaigns: Campaign[] = [];
   campainsSelected: string[] = [];
   basket = new Cart();
 
   selectPromotion(id: string) {
-    const index = this.campaigns.findIndex(cp =>  cp._id === id)
+    const index = this.campaigns.findIndex(cp => cp._id === id);
     if (index !== -1) {
       const currentCampaign = this.campaigns[index];
 
@@ -30,7 +30,7 @@ export class CampaignsComponent implements OnInit{
         const sameDiscountTypeExists = this.campaigns.some(
           cp => cp.discount.type === currentCampaign.discount.type && cp._id !== id && cp.checked
         );
-        const isValidCampaign = this.campaignSrv.isValidCampaign(this.profileSrv.getProfileInSession()._id, currentCampaign, this.basket.subtotal)
+        const isValidCampaign = this.campaignSrv.isValidCampaign(this.profileSrv.getProfileInSession()._id, currentCampaign, this.basket.subtotal);
         if (!sameDiscountTypeExists && isValidCampaign) {
           this.campainsSelected.push(currentCampaign._id);
           currentCampaign.checked = true;
@@ -41,11 +41,11 @@ export class CampaignsComponent implements OnInit{
           });
         }
       } else {
-        const index = this.campainsSelected.findIndex(cp => cp == currentCampaign._id)
-        this.campainsSelected.splice(index, 1)
+        const index = this.campainsSelected.findIndex(cp => cp == currentCampaign._id);
+        this.campainsSelected.splice(index, 1);
         currentCampaign.checked = false;
         this.campaigns.forEach(cp => {
-          if(cp.discount.type === currentCampaign.discount.type) {
+          if (cp.discount.type === currentCampaign.discount.type) {
             cp.disabled = false;
           }
         });
@@ -58,7 +58,7 @@ export class CampaignsComponent implements OnInit{
   }
 
   applyPromotion() {
-    this.#modal.close(this.campainsSelected)
+    this.#modal.close(this.campainsSelected);
   }
 
   formatDate(isoDate: string): string {
@@ -69,24 +69,25 @@ export class CampaignsComponent implements OnInit{
     this.basket = this.orderSrv.getCartItems();
     this.campainsSelected = this.basket.cart.campaign_ids;
     const fetchCampaign = this.store.select(selectCampaigns)
-    .pipe(
-      filter(data => data.campaigns.length > 0)
-    )
-    .subscribe({
-      next: data => {
-        this.campaigns = data.campaigns.map(campaign => {
-          const isValidCampaign = this.campaignSrv.isValidCampaign(this.profileSrv.getProfileInSession()._id, campaign, this.basket.subtotal)
-          return {
-            ...campaign,
-            checked: this.basket.cart.campaign_ids.findIndex(id => campaign._id == id) !== -1,
-            disabled: !isValidCampaign
-          }
-        });
-      },
-      complete: () => {
-        fetchCampaign.unsubscribe()
-      }
-    })
+      .pipe(
+        filter(data => data.campaigns.length > 0)
+      )
+      .subscribe({
+        next: data => {
+          const cmp = data.campaigns.filter(cmp => cmp.restaurant_id == this.basket.cart.restaurant_id || cmp.restaurant_id == null);
+          this.campaigns = cmp.map(campaign => {
+            const isValidCampaign = this.campaignSrv.isValidCampaign(this.profileSrv.getProfileInSession()._id, campaign, this.basket.subtotal);
+            return {
+              ...campaign,
+              checked: this.basket.cart.campaign_ids.findIndex(id => campaign._id == id) !== -1,
+              disabled: !isValidCampaign
+            };
+          });
+        },
+        complete: () => {
+          fetchCampaign.unsubscribe();
+        }
+      });
   }
 
   constructor(
@@ -95,5 +96,5 @@ export class CampaignsComponent implements OnInit{
     private profileSrv: ProfileService,
     private orderSrv: OrderService,
     private campaignSrv: CampaignService
-  ){}
+  ) { }
 }

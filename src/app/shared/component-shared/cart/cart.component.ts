@@ -70,7 +70,7 @@ export class CartComponent implements OnChanges, OnInit {
 
   updateCart() {
     this.cartItems.subtotal = this.cartItems.cart.items.reduce((total_price, item) => {
-      const itemTotal = ((item.base_price ?? 0) + item.modifiers.reduce((price, modifier) => price + modifier.price, 0)) * item.quantity;
+      const itemTotal = ((item.price ?? 0) + item.modifiers.reduce((price, modifier) => price + modifier.price, 0)) * item.quantity;
       return total_price + itemTotal;
     }, 0);
     this.orderSrv.updateCart(this.cartItems);
@@ -90,7 +90,7 @@ export class CartComponent implements OnChanges, OnInit {
     const totalModifersPrice = foodItems.modifiers.reduce((total, currValue) => {
       return total + currValue.price;
     }, 0);
-    return foodItems.base_price ? (foodItems.base_price + totalModifersPrice) * foodItems.quantity : 0;
+    return foodItems.price ? (foodItems.price + totalModifersPrice) * foodItems.quantity : 0;
   }
 
   ngOnChanges(changes: SimpleChanges): void {

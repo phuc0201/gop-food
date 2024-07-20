@@ -1,5 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
+import { FormsModule } from '@angular/forms';
 import { RouterModule, Routes } from '@angular/router';
 import { NzGridModule } from 'ng-zorro-antd/grid';
 import { NzModalModule } from 'ng-zorro-antd/modal';
@@ -34,7 +35,7 @@ const routes: Routes = [
         title: 'Lịch sử đặt hàng'
       },
       {
-        path: 'order-history/details',
+        path: 'order-history/details/:id',
         component: OrderHistoryDetailsComponent,
         title: 'Chi tiết đơn hàng'
       },
@@ -56,7 +57,8 @@ const plugins = [
   OtpFormComponent,
   NzModalModule,
   NoDataComponent,
-  NzResultModule
+  NzResultModule,
+  FormsModule
 ];
 
 @NgModule({

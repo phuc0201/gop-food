@@ -1,0 +1,7 @@
+.category.active {
+  @apply bg-primary;
+}
+
+.category.active .cate-name {
+  @apply text-white;
+}

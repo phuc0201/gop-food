@@ -26,10 +26,11 @@
         <i class="fa-solid fa-xmark text-[25px] text-gray-500"></i>
       </button>
       <ng-container *ngIf="cartItems.cart.items.length > 0">
-        <h3> Giỏ hàng </h3>
+        <h3> Cart </h3>
         <div class="text-gray-400 text-xs">
           <i class="fa-regular fa-clock"></i>
-          <span> Thời gian giao: 20 phút (Cách bạn 2,8 km) </span>
+          <span> </span>
+          <!--  Thời gian giao: 20 phút (Cách bạn 2,8 km) -->
         </div>
       </ng-container>
     </div>
@@ -40,7 +41,6 @@
 <!-- BODY DRAWER -->
 <ng-template #bodyDrawerCart>
   <div class="flex-1 drawer-cart-body w-full overflow-y-scroll p-6">
-    <h2 class="font-bold uppercase md:text-xl text-lg">ẨM THỰC KHẾ VINHOMES - NƯỚNG & LẨU</h2>
     <div *ngFor="let foodItem of cartItems.cart.items; let i = index; let last = last"
       class="py-6 flex justify-between gap-3 border border-x-0 border-t-0 border-gray-200"
       [ngClass]="last ? 'border-0' : ''">
@@ -56,11 +56,11 @@
           <p class="text-gray-400 font-light">{{ modifier.name }} + {{ modifier.price.toLocaleString("vi-VN", { style:
             "currency", currency: "VND" }) }}</p>
         </ng-container>
-        <div *ngIf="foodItem.modifiers.length > 0" class=" cursor-pointer mt-2">
+        <!-- <div *ngIf="foodItem.modifiers.length > 0" class=" cursor-pointer mt-2">
           <i class="relative fa-solid fa-pen text-gray-500">
             <div class="absolute w-3 h-[2px] bg-gray-400 top-full left-0"></div>
           </i>
-        </div>
+        </div> -->
       </div>
 
       <section class="flex flex-col justify-between">
@@ -92,11 +92,11 @@
 <ng-template #footerDrawerCart>
   <footer class="w-full p-6 shadow-[rgba(0,0,0,0.1)_0_8px_8px_7px] bg-white">
     <div class="flex items-center justify-between mb-5">
-      <span class="text-2xl font-normal">Tổng cộng</span>
+      <span class="text-2xl font-normal">Total</span>
       <h2 class="m-0">{{ cartItems.subtotal.toLocaleString("vi-VN", { style: "currency", currency: "VND"}) }}</h2>
     </div>
-    <button (click)="redirecrCheckout()" class="w-full p-3 rounded-lg bg-primary text-white font-bold text-md">Xem đơn
-      hàng</button>
+    <button (click)="redirecrCheckout()" class="w-full p-3 rounded-lg bg-primary text-white font-bold text-md">View
+      order</button>
   </footer>
 </ng-template>
 

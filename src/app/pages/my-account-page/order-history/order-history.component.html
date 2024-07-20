@@ -1,8 +1,9 @@
-<app-no-data [isShow]="true"></app-no-data>
+<app-no-data [isShow]="false"></app-no-data>
 
-<div *ngIf="false" class="flex flex-col gap-4">
+<div *ngIf="true" class="flex flex-col gap-4 min-h-[500px]">
   <div class="relative">
-    <input type="text" placeholder="You can search by restaurant name"
+    <input [(ngModel)]="searchValue" (ngModelChange)="search($event)" type="text"
+      placeholder="You can search by restaurant name"
       class="focus:ring-green2 focus:border-primary rounded-md w-full border-gray-200 text-gray-500 font-normal placeholder:text-gray-300 placeholder:font-light px-16">
     <div class="absolute top-1/2 -translate-y-1/2 left-4 text-gray-400">
       <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"
@@ -14,38 +15,38 @@
   </div>
 
   <div>
-    <ng-container *ngFor="let item of [1,2,3,4,5,6,7,8]; let last = last">
+    <ng-container *ngFor="let item of orderForSearch; let last = last">
       <div class="mb-3">
-        <ng-container [ngTemplateOutlet]="orderHistoryCard"></ng-container>
+        <ng-container *ngTemplateOutlet="orderHistoryCard; context: { order: item }"></ng-container>
       </div>
       <div *ngIf="!last" class="h-[1px] w-full bg-gray-200 mb-3"></div>
     </ng-container>
   </div>
 </div>
 
-<ng-template #orderHistoryCard>
+<ng-template #orderHistoryCard let-order="order">
   <div class="flex justify-between w-full">
     <div class="flex gap-3">
       <div class="w-20 h-20 min-w-20 aspect-square">
-        <img src="https://media.be.com.vn/bizops/image/9de765b8-f3b9-11ed-99ae-5e8316b9abf2/original"
-          class="object-cover w-full h-full rounded-md">
+        <img src="assets/img/icons/cooking.png" class="object-cover w-full h-full rounded-md">
       </div>
       <div class="flex flex-col justify-between">
         <div class="flex flex-col">
           <h3 class="">
-            Bánh Tráng Trộn PinPin
+            {{order.restaurant.restaurant_name}}
           </h3>
-          <span class="text-sm text-gray-400">Bánh tráng cuốn</span>
-          <span class="text-sm text-gray-400">Bánh tráng phơi sương</span>
+          <ng-container *ngFor="let item of order.items">
+            <span class="text-sm text-gray-400">{{ item.food_name }} x{{item.quantity}}</span>
+          </ng-container>
         </div>
       </div>
     </div>
-    <div class="flex flex-col justify-between">
+    <div class="flex flex-col justify-between items-end">
       <div class="flex items-center gap-2">
-        <s class="text-gray-300">40000 đ</s>
-        <span class="text-primary font-bold">35000 đ</span>
+        <span class="text-primary font-bold">{{ order.total.toLocaleString("vi-VN", {style:"currency", currency: "VND"})
+          }}</span>
       </div>
-      <a [routerLink]="['details']"
+      <a [routerLink]="['details', order._id]"
         class="bg-primary text-white p-2 rounded-md text-center cursor-pointer hover:text-white">View
         details</a>
     </div>

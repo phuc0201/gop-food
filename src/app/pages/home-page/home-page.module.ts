@@ -9,10 +9,13 @@ import { NzGridModule } from 'ng-zorro-antd/grid';
 import { RestaurantCardComponent } from 'src/app/shared/component-shared/restaurant-card/restaurant-card.component';
 
 import { NzAutocompleteModule } from 'ng-zorro-antd/auto-complete';
-import { CuisinesSliderComponent } from 'src/app/shared/component-shared/cuisines-slider/cuisines-slider.component';
+import { CategorySliderComponent } from 'src/app/shared/component-shared/category-slider/category-slider.component';
 import { FoodCardComponent } from 'src/app/shared/component-shared/food-card/food-card.component';
+import { ListFooditemsComponent } from 'src/app/shared/component-shared/list-fooditems/list-fooditems.component';
 import { ListRestaurantComponent } from 'src/app/shared/component-shared/list-restaurant/list-restaurant.component';
+import { PageLoaderComponent } from 'src/app/shared/component-shared/loaders/page-loader/page-loader.component';
 import { MapComponent } from 'src/app/shared/component-shared/map/map.component';
+import { CuisinesSliderComponent } from "../../shared/component-shared/cuisines-slider/cuisines-slider.component";
 import { HomeSliderComponent } from './home-slider/home-slider.component';
 import { HomeComponent } from './home/home.component';
 import { NewAndEventsComponent } from './new-and-events/new-and-events.component';
@@ -32,12 +35,14 @@ const routes: Routes = [
 const plugins = [
   HomeSliderComponent,
   RestaurantCardComponent,
-  CuisinesSliderComponent,
+  CategorySliderComponent,
   PromoSliderComponent,
   RestaurantSliderComponent,
   FoodCardComponent,
   MapComponent,
-  ListRestaurantComponent
+  ListRestaurantComponent,
+  ListFooditemsComponent,
+  PageLoaderComponent
 ];
 
 @NgModule({
@@ -57,7 +62,8 @@ const plugins = [
     NzAutocompleteModule,
     NzGridModule,
     RouterModule,
-    RouterModule.forChild(routes)
+    RouterModule.forChild(routes),
+    CuisinesSliderComponent
   ]
 })
 export class HomePageModule { }

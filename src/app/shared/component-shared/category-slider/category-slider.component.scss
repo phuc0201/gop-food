@@ -1,0 +1,20 @@
+.active .cuisine-item {
+  @apply border-primary;
+}
+.active .cuisine-item i {
+  display: block !important;
+}
+
+.display-animation {
+  animation-name: displayContent;
+  animation-duration: 0.9s;
+}
+
+@keyframes displayContent {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}

@@ -1,8 +1,9 @@
 import { Component, OnInit, Type, ViewContainerRef } from '@angular/core';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { NzDrawerRef, NzDrawerService } from 'ng-zorro-antd/drawer';
 import { NzModalService } from 'ng-zorro-antd/modal';
+import { filter, tap } from 'rxjs';
 import { URLConstant } from 'src/app/core/constants/url.constant';
 import { PaymentMethodData } from 'src/app/core/mock-data/payment-method.data';
 import { AddressSelected, LocationMarker } from 'src/app/core/models/geolocation/location.model';
@@ -13,9 +14,11 @@ import { Modifier } from 'src/app/core/models/restaurant/modifier.model';
 import { CampaignService } from 'src/app/core/services/campaign.service';
 import { GeolocationService } from 'src/app/core/services/geolocation.service';
 import { OrderService } from 'src/app/core/services/order.service';
+import { PaymentService } from 'src/app/core/services/payment.service';
+import { ProfileService } from 'src/app/core/services/profile.service';
 import { getAllCampaign } from 'src/app/core/store/campaign/campaign.actions';
 import { getFoodDetails } from 'src/app/core/store/restaurant/restaurant.actions';
-import { IconMarker, RoleType } from 'src/app/core/utils/enums/index.enum';
+import { IconMarker, PaymentMethod, RoleType } from 'src/app/core/utils/enums/index.enum';
 import { FoodDetailsComponent } from 'src/app/shared/component-shared/food-details/food-details.component';
 import { MapSelectorComponent } from '../../../shared/component-shared/map-selector/map-selector.component';
 import { CampaignsComponent } from '../campaigns/campaigns.component';
@@ -35,6 +38,9 @@ export class CheckoutComponent implements OnInit {
   addressSelected = new AddressSelected();
   isShowFoodDetails: boolean = false;
   drawerRef?: NzDrawerRef<any, any>;
+  phone: string = '';
+  paymentSuccessful: boolean = false;
+  paymentFailure: boolean = false;
 
   createFoodDetailsDrawer(foodItem: FoodItemDTO<Modifier>, index: number) {
     const item = { ...foodItem };
@@ -58,7 +64,7 @@ export class CheckoutComponent implements OnInit {
     const totalModifersPrice = foodItem.modifiers.reduce((total, currValue) => {
       return total + currValue.price;
     }, 0);
-    return foodItem.base_price ? (foodItem.base_price + totalModifersPrice) * foodItem.quantity : 0;
+    return foodItem.price ? (foodItem.price + totalModifersPrice) * foodItem.quantity : 0;
   }
 
   createModal<T>(component: Type<T>, className: string, data: LocationMarker[] = []) {
@@ -99,6 +105,8 @@ export class CheckoutComponent implements OnInit {
   selectPaymentMethod(payment: PaymentMethodType): void {
     this.isSelectPaymentMethod = !this.isSelectPaymentMethod;
     this.paymentMethodSelected = payment;
+    this.basket.cart.payment_method = payment.value;
+    this.orderSrv.updateCart(this.basket);
   }
 
   updateLocation(address: string, coordinates: number[]) {
@@ -109,17 +117,55 @@ export class CheckoutComponent implements OnInit {
     this.orderSrv.updateCart(this.basket);
   }
 
-  placeOrder() {
+  payment(amount: number) {
+    this.paymentSrv.payForTheBill(amount)
+      .pipe(
+        filter(res => res !== '' && res !== undefined),
+        tap(res => console.log('Response received:', res)) // Log phản hồi
+      )
+      .subscribe({
+        next: res => {
+          try {
+            const url = new URL(res);
+            window.location.href = url.href;
+          } catch (e) {
+            console.log('Invalid URL:', res);
+          }
+        },
+        error: err => {
+          console.log('Error occurred:', err);
+        }
+      });
+  }
+
+  checkPaymentMethod(): void {
     if (this.basket.cart.items.length > 0) {
-      const order = this.orderSrv.createOrderDTO(this.basket);
-      if (order.items.length > 0) {
-        this.router.navigate([URLConstant.ROUTE.ORDER_PAGE.TRACKER]);
+      if (this.basket.cart.payment_method === PaymentMethod.VNPAY) {
+        this.payment(this.quote.total);
+      }
+      else {
+        this.placeOrder();
       }
     }
   }
 
+  placeOrder() {
+    const order = this.orderSrv.createOrderDTO(this.basket);
+    order.phone = this.phone;
+
+    this.orderSrv.placeOrder(order).subscribe({
+      next: data => {
+        if (data._id !== undefined) {
+          this.router.navigate([URLConstant.ROUTE.ORDER_PAGE.TRACKER + `/${data.order}`]);
+        }
+        else alert('Nhà hàng đã đóng cửa');
+      }
+    });
+  }
+
   createQuote() {
     const order = this.orderSrv.createOrderDTO(this.basket);
+    order.payment_method = this.paymentMethodSelected.value;
     this.orderSrv.quoteOrder(order).subscribe(data => {
       this.quote = data;
     });
@@ -138,6 +184,12 @@ export class CheckoutComponent implements OnInit {
       this.basket = this.orderSrv.getCartItems();
     });
 
+    this.paymentMethod.forEach(payment => {
+      if (payment.value == this.basket.cart.payment_method) {
+        this.paymentMethodSelected = payment;
+      }
+    });
+
     this.geoSrv.currLocation.subscribe(res => {
       this.addressSelected = res;
       this.basket.cart.delivery_location.address = this.addressSelected.address;
@@ -149,11 +201,16 @@ export class CheckoutComponent implements OnInit {
     });
   }
 
+  getCurrentPhone() {
+    this.phone = this.profileService.getProfileInSession().phone;
+  }
+
   ngOnInit(): void {
     this.initData();
     this.basket.cart.campaign_ids = [];
     this.createQuote();
     this.store.dispatch(getAllCampaign());
+    this.getCurrentPhone();
   }
 
 
@@ -166,5 +223,32 @@ export class CheckoutComponent implements OnInit {
     private store: Store,
     private campaignSrv: CampaignService,
     private drawerSrv: NzDrawerService,
-  ) { }
+    private profileService: ProfileService,
+    private paymentSrv: PaymentService,
+    private route: ActivatedRoute,
+  ) {
+    this.route.queryParams.subscribe({
+      next: params => {
+        if (params['vnp_Amount']) {
+          if (params['vnp_ResponseCode'] == '00') {
+            this.paymentSuccessful = true;
+            setTimeout(() => {
+              this.paymentSuccessful = false;
+              this.placeOrder();
+            }, 1000);
+          }
+          else {
+            this.paymentFailure = true;
+            setTimeout(() => {
+              this.paymentFailure = false;
+              this.router.navigate(['/order/checkout'], { replaceUrl: true });
+            }, 1500);
+          }
+        }
+      },
+      complete: () => {
+        // observe.unsubscribe();
+      }
+    });
+  }
 }

@@ -6,4 +6,33 @@ export class Review {
   type: OrderType = OrderType.DELIVERY;
   rating: number = 0;
   reviewable_id: string = '';
+  createdAt?: string;
+  updatedAt?: string;
+  customer?: {
+    _id: string;
+    full_name: string;
+    avatar: string;
+  };
+}
+
+
+export class ReviewFoodItem {
+  owner_id?: string = '';
+  content: string = '';
+  rating: number = 0;
+  createdAt: string = '';
+  customerInfo?: CustomerInfo;
+}
+
+export class ReviewDTO {
+  food_id: string = '';
+  owner_id: string = '';
+  content: string = '';
+  rating: number = 0;
+}
+
+class CustomerInfo {
+  _id: string = '';
+  full_name: string = '';
+  avatar: string = '';
 }

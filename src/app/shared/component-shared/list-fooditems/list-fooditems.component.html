@@ -1,0 +1,15 @@
+<div *ngIf="!isLoading" nz-row nzGutter="20" class="">
+  <ng-container *ngFor="let item of foodForSearch">
+    <div nz-col nzSpan="24" [nzLg]="listFoodCol" nzMd="12" class="mb-5">
+      <div class="">
+        <app-fooditem-card [fooditem]="item"></app-fooditem-card>
+      </div>
+    </div>
+  </ng-container>
+</div>
+<!-- <div class="w-full flex mt-5">
+  <div class="m-auto">
+    <nz-pagination [(nzPageIndex)]="currPage" (nzPageIndexChange)="reloadFoodItems()"
+      [nzTotal]="totalPage"></nz-pagination>
+  </div>
+</div> -->

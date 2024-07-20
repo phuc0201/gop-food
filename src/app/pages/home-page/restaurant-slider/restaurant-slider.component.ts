@@ -1,11 +1,7 @@
 import { CommonModule } from '@angular/common';
-import { AfterViewInit, CUSTOM_ELEMENTS_SCHEMA, ChangeDetectionStrategy, ChangeDetectorRef, Component, ElementRef, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { AfterViewInit, CUSTOM_ELEMENTS_SCHEMA, ChangeDetectionStrategy, Component, ElementRef, Input, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { RouterModule } from '@angular/router';
-import { Store } from '@ngrx/store';
-import { Subject, takeUntil } from 'rxjs';
 import { RestaurantsRecommended } from 'src/app/core/models/restaurant/restaurant.model';
-import { getRestaurantList } from 'src/app/core/store/restaurant/restaurant.actions';
-import { selectRestaurantList } from 'src/app/core/store/restaurant/restaurant.selectors';
 import { RestaurantCardComponent } from 'src/app/shared/component-shared/restaurant-card/restaurant-card.component';
 
 const plugin = [
@@ -25,9 +21,10 @@ const plugin = [
 })
 export class RestaurantSliderComponent implements AfterViewInit, OnInit, OnDestroy {
   @ViewChild('restaurantSlider') resSwiper!: ElementRef;
-  restaurants = new RestaurantsRecommended();
+  @Input() restaurants = new RestaurantsRecommended();
   isLoading: boolean = true;
-  private destroy$ = new Subject<void>();
+  // private destroy$ = new Subject<void>();
+
   swiperParams = {
     slidesPerView: 1,
     direction: 'horizontal',
@@ -61,17 +58,6 @@ export class RestaurantSliderComponent implements AfterViewInit, OnInit, OnDestr
     return item._id;
   }
 
-  getRecommendedRestaurants() {
-    this.store.dispatch(getRestaurantList());
-    this.store.select(selectRestaurantList)
-      .pipe(takeUntil(this.destroy$))
-      .subscribe(data => {
-        this.restaurants = data.restaurants;
-        this.isLoading = false;
-        this.cdRef.markForCheck();
-      });
-  }
-
   ngAfterViewInit(): void {
     Object.assign(this.resSwiper.nativeElement, this.swiperParams);
     this.resSwiper.nativeElement.initialize();
@@ -79,17 +65,12 @@ export class RestaurantSliderComponent implements AfterViewInit, OnInit, OnDestr
 
   ngOnInit(): void {
     this.isLoading = true;
-    this.getRecommendedRestaurants();
-
   };
 
   ngOnDestroy(): void {
-    this.destroy$.next();
-    this.destroy$.complete();
+    // this.destroy$.next();
+    // this.destroy$.complete();
   }
 
-  constructor(
-    private store: Store,
-    private cdRef: ChangeDetectorRef
-  ) { }
+  constructor() { }
 }

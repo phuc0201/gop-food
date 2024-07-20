@@ -1,4 +1,4 @@
-export enum RoleType  {
+export enum RoleType {
   CUSTOMER = "CUSTOMER",
   DRIVER = "DRIVER",
   RESTAURANT = "RESTAURANT",
@@ -37,11 +37,16 @@ export enum CuisinesCategory {
 }
 
 export enum OrderStatus {
-  PENDING = "PENDING",
-  ACCEPTED = "ACCEPTED",
-  PICKED_UP = "PICKED_UP",
+  PENDING_CONFIRM = "PENDING_CONFIRM",
+  ALLOCATING = "ALLOCATING",
+  PENDING_PICKUP = "PENDING_PICKUP",
+  PICKING_UP = "PICKING_UP",
+  PENDING_DROP_OFF = "PENDING_DROP_OFF",
+  DROPPING_OFF = "DROPPING_OFF",
   COMPLETED = "COMPLETED",
-  CANCELLED = "CANCELLED"
+  CANCELLED = "CANCELLED",
+  FAILED = "FAILED",
+  PROGRESSING = "PROGRESSING"
 }
 
 export enum OrderType {
@@ -50,9 +55,10 @@ export enum OrderType {
 }
 
 export enum BillStatus {
-  PENDING = "PENDING",
-  PAID = "PAID",
-  CANCELLED = "CANCELLED"
+  PENDING = "PENDING", // initial status của cash order
+  PAID = "PAID", // status của VNPAY order
+  COMPLETED = "COMPLETED", // status của order khi đã hoàn thành
+  CANCELLED = "CANCELLED" // status của order khi bị hủy
 }
 
 export enum PaymentMethod {
@@ -63,7 +69,7 @@ export enum PaymentMethod {
 
 
 
-export enum  CampaignUserGroup {
+export enum CampaignUserGroup {
   ALL_CUSTOMER = 'ALL_CUSTOMER'
 }
 
@@ -86,10 +92,10 @@ export enum CurrencyCode {
 }
 
 export enum OrderStatusTrackerType {
-  PLACE_ORDER_SUCCESS = '',
-  RESTAURANT_ACCEPT = '',
+  PLACE_ORDER_SUCCESS = 'PLACE_ORDER_SUCCESS',
+  RESTAURANT_ACCEPT = 'RESTAURANT_ACCEPT',
   DRIVER_ACCEPT = '',
-  COMPLETED = ''
+  COMPLETED = 'COMPLETED'
 }
 
 export enum NotificationType {

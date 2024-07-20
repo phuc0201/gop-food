@@ -20,4 +20,11 @@ export class PaymentService {
       returnUrl: URLConstant.API.PAYMENT.RETURN_URL
     }, { responseType: 'text' });
   }
+
+  payForTheBill(amount: number): Observable<string> {
+    return this.http.post(this.baseUrl + URLConstant.API.PAYMENT.METHOD.VNPAY, {
+      amount: amount,
+      returnUrl: URLConstant.API.PAYMENT.RETURN_URL_PAY_FOR_BILL
+    }, { responseType: 'text' });
+  }
 }

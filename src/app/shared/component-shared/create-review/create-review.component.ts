@@ -5,6 +5,7 @@ import { NZ_MODAL_DATA, NzModalRef } from 'ng-zorro-antd/modal';
 import { NzRateModule } from 'ng-zorro-antd/rate';
 import { Review } from 'src/app/core/models/review/review.model';
 import { ProfileService } from 'src/app/core/services/profile.service';
+import { ReviewService } from 'src/app/core/services/review.service';
 const plugins = [
   CommonModule,
   NzRateModule,
@@ -28,11 +29,12 @@ export class CreateReviewComponent {
   ratingValue: number = 0;
   review = new Review();
   #modal = inject(NzModalRef);
+
   submitReview() {
     if (this.review.rating > 0) {
       this.review.owner_id = this.profileSrv.getProfileInSession()._id;
       this.review.reviewable_id = this.reviewable.id;
-      console.log(this.review);
+      // this.reviewSrv.createReview(this.review).subscribe();
       this.#modal.close();
     }
   }
@@ -41,6 +43,7 @@ export class CreateReviewComponent {
     this.#modal.close();
   }
   constructor(
-    private profileSrv: ProfileService
+    private profileSrv: ProfileService,
+    private reviewSrv: ReviewService
   ) { }
 }

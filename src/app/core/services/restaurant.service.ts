@@ -4,9 +4,9 @@ import { BehaviorSubject, Observable, switchMap } from "rxjs";
 import { SystemConstant } from "../constants/system.constant";
 import { URLConstant } from "../constants/url.constant";
 import { AddressSelected } from "../models/geolocation/location.model";
-import { FoodItems } from "../models/restaurant/food-items.model";
+import { FoodItemPagination, FoodItems } from "../models/restaurant/food-items.model";
 import { ModifierGroups } from "../models/restaurant/modifier-groups.model";
-import { RestaurantCategory } from "../models/restaurant/restaurant-category.model";
+import { CategorySlider, RestaurantCategory } from "../models/restaurant/restaurant-category.model";
 import { Restaurant } from "../models/restaurant/restaurant.model";
 import { GeolocationService } from "./geolocation.service";
 
@@ -23,6 +23,15 @@ export class RestaurantService {
   ) {
     this.wistlistCount = new BehaviorSubject<number>(this.getWishList().length);
     this.currWishlistCount = this.wistlistCount.asObservable();
+  }
+
+
+  getFoodItems(page: number, limit: number, category_id: string = ''): Observable<FoodItemPagination> {
+    return this.http.get<FoodItemPagination>(this.baseURL + `/admin/fooditems?page=${page}&limit=${limit}&category_id=${category_id}`);
+  }
+
+  getCategories(): Observable<CategorySlider[]> {
+    return this.http.get<CategorySlider[]>(this.baseURL + `/admin/${SystemConstant.MERCHANT_ID}/categories`);
   }
 
   getRestaurants(): Observable<any> {

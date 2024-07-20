@@ -128,7 +128,7 @@
 
 <!-- MENU TAB CONTENT -->
 
-<div *ngIf="menu.length > 0" #tabContent id="restaurant-menu" class="tab-content md:bg-gray-100 bg-white md:pt-16">
+<div *ngIf="menu.length > 0" #tabContent id="restaurant-menu" class="tab-content md:bg-[#f7f7f7] bg-white md:pt-16">
   <div *ngIf="searching==false" class="sectionContainer">
     <ng-container *ngIf="menu.length > 0">
       <section *ngFor="let item of menu let i = index" [id]="'section' + (i + 1)" class="md:mb-16 md:py-0 px-0 py-5">
@@ -172,4 +172,3 @@
     </div>
   </div>
 </div>
-

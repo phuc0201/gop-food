@@ -1,3 +1,5 @@
+import { ReviewFoodItem } from "../review/review.model";
+
 export class FoodItems<T> {
   _id: string = '';
   name: string = 'Loading....';
@@ -5,14 +7,21 @@ export class FoodItems<T> {
   image: string = '';
   price: number = 0;
   modifier_groups: T[] = [];
+  reviews: ReviewFoodItem[] = [];
 }
 
+
+export class FoodItemPagination {
+  totalPage: number = 0;
+  foodItems: FoodItems<string>[] = [];
+}
 
 export class FoodItemDTO<T> {
   food_id: string = '';
   food_name?: string = '';
   image?: string = '';
-  base_price?: number = 0;
+  price?: number = 0;
   quantity: number = 0;
   modifiers: T[] = [];
 }
+

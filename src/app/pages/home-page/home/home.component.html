@@ -1,3 +1,4 @@
+<app-page-loader [isLoading]="isLoading"></app-page-loader>
 <app-home-sldier></app-home-sldier>
 
 <div class="sectionContainer">
@@ -6,48 +7,13 @@
   </div>
 </div>
 
-<div class="backgroundImage_border w-full md:pt-20"></div>
-
-<div class="divider w-full h-0 md:h-[1px] bg-gray-100 md:bg-gray-200"></div>
-
-<div class="sectionContainer md:pt-12">
+<div class="md:min-h-[500px] sectionContainer md:py-10 py-0">
   <app-cuisines-slider></app-cuisines-slider>
+  <app-restaurant-slider [restaurants]="restaurants"></app-restaurant-slider>
 </div>
 
-<div class="sectionContainer">
-  <div class="w-full lg:py-4 md:pt-2 pb-4">
-    <span class="text-black text-xl md:text-3xl font-bold">Các cửa hàng gần nhất </span>
-    <span class="text-primary text-xl md:text-3xl font-bold">{{ address }}</span>
-  </div>
-
-  <div class="">
-    <app-list-restaurant></app-list-restaurant>
-  </div>
-  <!-- <app-restaurant-slider></app-restaurant-slider> -->
-  <!-- <a href="">
-    <div class="text-center text-gray-500 border border-solid border-gray-400 p-3 rounded-lg font-bold">See all
-      promotions
-    </div>
-  </a> -->
-</div>
-
-<div class="mt-20">
-  <div class="flex flex-col gap-14">
-    <!-- <div class="sectionContainer">
-      <app-our-services></app-our-services>
-    </div> -->
-
-
-
-    <!-- <div class="bg-[#f7f7f7]">
-      <div class="sectionContainer py-14">
-        <app-our-menu></app-our-menu>
-      </div>
-    </div>
-
-    <div class="sectionContainer">
-      <app-new-and-events></app-new-and-events>
-    </div>
-  </div> -->
+<div class="w-full md:bg-[#f7f7f7] bg-white">
+  <div class="sectionContainer md:p-5">
+    <app-our-menu [foodItems]="foodItems"></app-our-menu>
   </div>
 </div>

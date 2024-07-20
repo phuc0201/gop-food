@@ -21,13 +21,13 @@ export class ProfileService {
     this.currentAddress = this.address.asObservable();
   }
 
-  setAddressSelected (address: string) {
+  setAddressSelected(address: string) {
     this.address.next(address);
   }
 
   setProfileIntoSession(profile: IProfile) {
     sessionStorage.setItem(SystemConstant.CURRENT_PROFILE, JSON.stringify(profile));
-    this.setAddressSelected(profile.address)
+    this.setAddressSelected(profile.address);
   }
 
   getProfileInSession(): IProfile {
@@ -36,23 +36,24 @@ export class ProfileService {
       _id: '',
       full_name: '',
       email: '',
+      phone: '',
       gender: false,
       address: '',
       avatar: ''
     };
 
-    if(profile ==  null){
+    if (profile == null) {
       this.getProfile()
-      .pipe(
-        filter(res => res._id !=='')
-      )
-      .subscribe(data => {
-        crrProfile = data;
-        this.setProfileIntoSession(data);
-      })
+        .pipe(
+          filter(res => res._id !== '')
+        )
+        .subscribe(data => {
+          crrProfile = data;
+          this.setProfileIntoSession(data);
+        });
     }
     return profile ? JSON.parse(profile) :
-     (crrProfile ? crrProfile : null);
+      (crrProfile ? crrProfile : null);
   }
 
   getProfile(): Observable<IProfile> {

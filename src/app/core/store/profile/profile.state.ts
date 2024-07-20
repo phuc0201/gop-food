@@ -10,6 +10,7 @@ export const inititalProfileState: ProfileState = {
   profile: {
     _id: '',
     email: '',
+    phone: '',
     full_name: '',
     gender: true,
     avatar: '',

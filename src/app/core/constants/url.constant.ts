@@ -47,6 +47,7 @@ export const URLConstant = {
         VNPAY: '/bill/vnpay'
       },
       RETURN_URL: 'http://localhost:4200/user/wallet',
+      RETURN_URL_PAY_FOR_BILL: 'http://localhost:4200/order/checkout'
     }
   }
 };

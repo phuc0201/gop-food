@@ -1,4 +1,4 @@
-<div class="relative">
+<div class="relative bg-white">
   <button (click)="toggleWishlist()" class="favorite absolute top-3 right-3 z-40">
     <div class="icon-wrapper w-8 h-8 rounded-full bg-white flex justify-center items-center">
       <div class="ui-bookmark">
@@ -14,10 +14,10 @@
   </button>
 
   <a [routerLink]="['/restaurant', restaurant._id]" class="text-black hover:text-black">
-    <div class="restaurant-card rounded-xl cursor-pointer group mb-8 flex gap-0" [class.responsive]="true">
+    <div class="restaurant-card rounded-xl cursor-pointer group mb-8 flex gap-0" [class.responsive]="!isHome">
       <div class="mb-3 relative">
-        <div
-          class="restaurant-img bg-gray-300 flex justify-center items-center overflow-hidden rounded-xl md:w-full md:h-auto w-20 h-20 md:aspect-video aspect-square">
+        <div class="restaurant-img bg-gray-300 flex justify-center items-center overflow-hidden rounded-xl "
+          [ngClass]="isHome ? 'aspect-video w-full' : 'md:aspect-video aspect-square w-20 h-20 md:w-full md:h-auto'">
           <img loading="lazy" [src]="restaurant.avatar"
             class="origin-center transition-all duration-500 group-hover:scale-110 object-cover w-full h-full"
             alt="picture">
@@ -36,15 +36,18 @@
       </div>
 
       <div class="restaurant-content flex flex-col md:gap-4 gap-2">
-        <div class="restaurant-name line-clamp-1 text-sm md:text-lg font-bold uppercase leading-6">{{
-          restaurant.restaurant_name }}</div>
-        <div class="flex flex-col gap-2">
+        <div>
+          <div class="restaurant-name line-clamp-1 text-sm md:text-lg font-bold uppercase leading-6">{{
+            restaurant.restaurant_name }}</div>
           <div class="flex items-center">
             <ng-container *ngFor="let cuisine_name of cuisine_cate_name ; let last = last">
               <div class="cuisine-types line-clamp-1 text-grey1 md:text-sm text-xs mr-1">{{ last ? cuisine_name :
                 cuisine_name + ','}}</div>
             </ng-container>
           </div>
+        </div>
+        <div class="flex flex-col gap-2">
+
           <div class="flex md:gap-3 gap-2 max-w-full">
             <div class="restaurant-rate flex items-center md:gap-2 gap-1">
               <i class="fa-solid fa-star text-yellow-400 md:text-base text-xs"></i>

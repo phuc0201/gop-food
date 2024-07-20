@@ -1,0 +1,18 @@
+.foodCard {
+  box-shadow: rgba(0, 0, 0, 0.05) 0px 6px 24px 0px,
+    rgba(0, 0, 0, 0.08) 0px 0px 0px 1px;
+}
+
+.food-card-wrapper {
+  animation-name: displayContent;
+  animation-duration: 0.7s;
+}
+
+@keyframes displayContent {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}

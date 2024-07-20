@@ -43,6 +43,11 @@ const routes: Routes = [
     path: 'wishlist',
     component: HeaderStickyLayoutComponent,
     loadChildren: () => import('./wishlist-page/wishlist-page.module').then(m => m.WishlistPageModule)
+  },
+  {
+    path: 'food-details',
+    component: HeaderStickyLayoutComponent,
+    loadChildren: () => import('./food-details-page/food-details-page.module').then(m => m.FoodDetailsPageModule)
   }
 
 ];

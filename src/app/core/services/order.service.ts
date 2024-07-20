@@ -3,7 +3,7 @@ import { Injectable } from "@angular/core";
 import { BehaviorSubject, Observable } from "rxjs";
 import { SystemConstant } from "../constants/system.constant";
 import { URLConstant } from "../constants/url.constant";
-import { Cart, CreateOrderDTO, Quote } from "../models/order/order.model";
+import { Bill, Cart, CreateOrderDTO, OrderDetails, OrderHistory, OrderTracking, Quote } from "../models/order/order.model";
 
 @Injectable({
   providedIn: 'root'
@@ -33,6 +33,10 @@ export class OrderService {
     this.newCartItems.next(cart);
   }
 
+  removeCart() {
+    localStorage.removeItem(SystemConstant.BASKET);
+  }
+
   removeFoodItem(id: string) {
     const basket = this.getCartItems();
     const newFoodItems = basket.cart.items.filter(item => item.food_id !== id);
@@ -51,7 +55,7 @@ export class OrderService {
 
   caculateSubtotal(basket: Cart): number {
     basket.subtotal = basket.cart.items.reduce((total_price, item) => {
-      const itemTotal = ((item.base_price ?? 0) + item.modifiers.reduce((price, modifier) => price + modifier.price, 0)) * item.quantity;
+      const itemTotal = ((item.price ?? 0) + item.modifiers.reduce((price, modifier) => price + modifier.price, 0)) * item.quantity;
       return total_price + itemTotal;
     }, 0);
     return basket.subtotal;
@@ -72,9 +76,26 @@ export class OrderService {
       order.items.push({
         food_id: foodItem.food_id,
         quantity: foodItem.quantity,
-        modifiers: modifiers
+        modifiers: modifiers,
       });
     });
+    order.payment_method = basket.cart.payment_method;
     return order;
+  }
+
+  placeOrder(dto: CreateOrderDTO<string>): Observable<Bill> {
+    return this.http.post<Bill>(this.baseUrl + '/order/create/delivery', dto);
+  }
+
+  getHistory(): Observable<OrderHistory[]> {
+    return this.http.get<OrderHistory[]>(this.baseUrl + '/order/customer/history');
+  }
+
+  getOrderDetails(id: string): Observable<OrderDetails> {
+    return this.http.get<OrderDetails>(this.baseUrl + `/order/${id}` + '/details');
+  }
+
+  trackingOrder(id: string): Observable<OrderTracking> {
+    return this.http.get<OrderTracking>(this.baseUrl + `/order/${id}` + '/tracking');
   }
 }

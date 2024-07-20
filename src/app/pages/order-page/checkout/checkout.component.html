@@ -1,7 +1,7 @@
 <header class="bg-white">
   <div class="sectionContainer">
     <h1 class="m-0 py-7 font-medium">
-      {{ basket.cart.restaurant_name }}
+      <!-- {{ basket.cart.restaurant_name }} -->
     </h1>
   </div>
 </header>
@@ -13,12 +13,12 @@
       <div nz-col nzSpan="24" nzLg="16">
         <div class="bg-white rounded-t-lg mb-5">
           <div class="shadow-header p-5">
-            <h3 class="m-0 font-bold text-gray-700">Giao tới</h3>
+            <h3 class="m-0 font-bold text-gray-700">Delivery address</h3>
           </div>
 
           <div class="p-5 flex flex-col gap-5">
             <section class="flex flex-col text-gray-500 font-medium">
-              <label for="" class="mb-2">Địa chỉ</label>
+              <label for="" class="mb-2">Address</label>
               <div class="border border-gray-300 relative rounded-lg overflow-hidden">
                 <i class="fa-solid fa-location-dot absolute top-1/2 -translate-y-1/2 left-4 text-lg text-red"></i>
 
@@ -34,19 +34,21 @@
             </section>
 
             <section class="flex flex-col text-gray-500 font-medium">
-              <label for="" class="mb-2">Ghi chú cho tài xế</label>
+              <label for="" class="mb-2">Phone
+                <span class="text-red">*</span>
+              </label>
               <input type="text"
                 class="border-gray-300 focus:ring-0 ring-0 focus:border-gray-300 px-5 py-3 text-sm font-normal outline-none rounded-lg"
-                [placeholder]="'VD: Đậu cách nhà 100m'">
+                [(ngModel)]="phone" [placeholder]="'0987654321'">
             </section>
           </div>
         </div>
 
         <div class="bg-white rounded-b-lg">
           <div class="shadow-header p-5 flex items-center justify-between">
-            <h3 class="m-0 font-bold text-gray-700 uppercase">Đơn hàng ({{basket.cart.items.length}})</h3>
+            <h3 class="m-0 font-bold text-gray-700 uppercase">Foods ({{basket.cart.items.length}})</h3>
             <a [routerLink]="['/restaurant', basket.cart.restaurant_id]" class="font-medium text-[#2b77eb] text-base">
-              Thêm món
+
             </a>
           </div>
           <ng-container [ngTemplateOutlet]="cartItemsTemplate"></ng-container>
@@ -56,7 +58,7 @@
       <div nz-col nzSpan="24" nzLg="8">
         <div class="bg-white rounded-t-lg mt-5 mb-5 lg:mt-0">
           <div class="shadow-header p-5 ">
-            <h3 class="m-0 font-bold text-gray-700">Hình thúc thành toán & ưu đãi</h3>
+            <h3 class="m-0 font-bold text-gray-700">Payment methods & offers</h3>
           </div>
 
           <div class="p-5 cursor-pointer">
@@ -82,51 +84,52 @@
 
               <div class="flex items-center gap-3">
                 <i class="fa-solid fa-ticket text-red"></i>
-                <span class="text-sm text-gray-500">Đã áp dụng {{basket.cart.campaign_ids.length}} mã KM</span>
+                <span class="text-sm text-gray-500">{{basket.cart.campaign_ids.length}} applied</span>
               </div>
-              <button (click)="showPromotion()" class="font-bold text-[#2b77eb] text-sm">Chọn mã</button>
+              <button (click)="showPromotion()" class="font-bold text-[#2b77eb] text-sm">Apply</button>
             </div>
-            <p class="text-gray-400 m-0 font-medium mt-1 text-xs">Bạn có thể áp dụng nhiều mã giảm giá một lúc</p>
+            <p class="text-gray-400 m-0 font-medium mt-1 text-xs">You can apply multiple discount codes at once</p>
           </div>
         </div>
 
         <div class="bg-white rounded-b-lg">
           <div class="shadow-header p-5">
             <h3 class="m-0 font-bold text-gray-700">
-              Thanh toán
+              Checkout
             </h3>
           </div>
 
           <div class="shadow-header p-5">
             <div class="flex items-center justify-between mb-2">
-              <span class="font-medium">Tạm tính</span>
+              <span class="font-medium">Subtotal</span>
               <span>{{ this.basket.subtotal.toLocaleString("vi-VN", { style: "currency", currency: "VND" }) }}</span>
             </div>
 
             <div class="flex items-center justify-between mb-2">
-              <span class="font-medium">Phí vận chuyển</span>
+              <span class="font-medium">Delivery fee</span>
               <span>{{ formatMoney(quote.delivery_fare) }}</span>
             </div>
 
             <div class="flex items-center justify-between mb-2">
-              <span class="font-medium">Phí nền tảng</span>
+              <span class="font-medium">Platform</span>
               <span>{{ formatMoney(2000) }}</span>
             </div>
 
             <div class="flex items-center justify-between">
-              <span class="font-medium">Áp dụng khuyến mãi</span>
+              <span class="font-medium">Discount</span>
               <span class="text-green">- {{ formatMoney(discount_value) }}</span>
             </div>
           </div>
           <div class="p-5">
             <div class="flex items-center justify-between">
-              <span class="font-bold text-xl">Tổng tiền</span>
+              <span class="font-bold text-xl">Total</span>
               <span class="font-bold text-xl"> {{ formatMoney(basket.subtotal + quote.delivery_fare - discount_value +
                 2000)
                 }}</span>
             </div>
-            <button (click)="placeOrder()" class="p-3 mt-5 bg-primary w-full text-white font-bold rounded-lg">
-              Đặt món
+            <button (click)="checkPaymentMethod()" class="p-3 mt-5 bg-primary w-full text-white font-bold rounded-lg"
+              [disabled]="quote.total == 0">
+              Place order
             </button>
           </div>
         </div>
@@ -168,7 +171,7 @@
             <span class="font-bold text-gray-700 uppercase">{{ foodItem.food_name }}</span>
             <span class="font-normal text-gray-500 ml-1">x{{ foodItem.quantity }}</span>
           </div>
-          <span class="text-gray-400">Giá gốc: {{ foodItem.base_price.toLocaleString("vi-VN", { style: "currency",
+          <span class="text-gray-400">Giá gốc: {{ foodItem.price.toLocaleString("vi-VN", { style: "currency",
             currency:
             "VND" }) }}</span>
           <span *ngFor="let modifier of foodItem.modifiers" class="text-gray-400">{{ modifier.name }} + {{
@@ -190,3 +193,19 @@
     </div>
   </div>
 </ng-template>
+
+
+<ng-container *ngIf="paymentSuccessful">
+  <div class="fixed top-60 shadow-2xl left-1/2 -translate-x-1/2 -translate-y-1/2
+  bg-white w-96 rounded-lg transition-all">
+    <nz-result nzStatus="success" nzTitle="Top-Up Successful">
+    </nz-result>
+  </div>
+</ng-container>
+<ng-container *ngIf="paymentFailure">
+  <div class="fixed top-60 shadow-2xl left-1/2 -translate-x-1/2 -translate-y-1/2
+  bg-white w-96 rounded-lg transition-all">
+    <nz-result nzStatus="error" nzTitle="Error Processing Payment">
+    </nz-result>
+  </div>
+</ng-container>

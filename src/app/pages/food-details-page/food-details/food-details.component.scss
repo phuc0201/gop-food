@@ -1,0 +1,84 @@
+.food-details-form .ant-input:hover,
+.food-details-form .ant-input-focused,
+.ant-input:focus {
+  @apply border-primary;
+}
+.food-details-form .ant-input-focused,
+.ant-input:focus {
+  box-shadow: 0 0 0 2px rgba(0, 177, 79, 0.2);
+}
+
+::ng-deep .food-details-form .ant-radio:hover .ant-radio-inner,
+::ng-deep .food-details-form .ant-checkbox:hover .ant-checkbox-inner {
+  @apply border-primary;
+}
+
+::ng-deep .food-details-form .ant-radio-checked .ant-radio-inner,
+::ng-deep .food-details-form .ant-checkbox-checked .ant-checkbox-inner {
+  @apply border-primary;
+}
+
+::ng-deep .food-details-form .ant-checkbox-checked .ant-checkbox-inner {
+  @apply bg-primary;
+}
+
+::ng-deep .food-details-form .ant-radio,
+::ng-deep .food-details-form .ant-checkbox {
+  @apply top-0;
+}
+
+::ng-deep .food-details-form .ant-radio-inner::after {
+  @apply bg-primary;
+}
+
+::ng-deep .food-details-form .ant-radio-inner,
+::ng-deep .food-details-form .ant-checkbox-inner {
+  @apply w-5 h-5;
+}
+
+::ng-deep .food-details-form .ant-radio-inner::after {
+  @apply w-3 h-3 m-0 -translate-x-[50%] -translate-y-[50%];
+}
+
+::ng-deep .food-details-form .ant-radio-wrapper,
+::ng-deep .food-details-form .ant-checkbox-wrapper {
+  @apply flex items-center text-lg py-3 m-0;
+}
+
+::ng-deep .food-details-form span.ant-radio + *,
+::ng-deep .food-details-form span.ant-checkbox + * {
+  @apply flex-1 pr-0 pl-3;
+}
+
+::ng-deep .food-details-form .ant-checkbox-wrapper:hover .ant-checkbox-inner {
+  @apply border-primary;
+}
+
+::ng-deep .food-details-form .ant-checkbox-checked::after {
+  @apply border-primary;
+}
+
+.food-detail-body {
+  scroll-behavior: smooth;
+  will-change: transform;
+}
+.food-detail-body::-webkit-scrollbar {
+  width: 4px;
+}
+
+.food-detail-body::-webkit-scrollbar-track {
+  box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.2);
+}
+
+.food-detail-body::-webkit-scrollbar-thumb {
+  background-color: #676767d7;
+  outline: 1px solid transparent;
+}
+
+::ng-deep .food-detail-drawer .ant-drawer-body {
+  padding: 0 !important;
+}
+
+::ng-deep .star-rate .ant-rate-star {
+  font-size: 30px;
+}

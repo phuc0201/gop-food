@@ -25,8 +25,9 @@
           </ng-container>
 
           <ng-container *ngIf="!isLoading">
-            <ng-container *ngFor="let item of [1,2,3,4,5,6,7,8,9,10,11,12,13]"
-              [ngTemplateOutlet]="reviewCardTpl"></ng-container>
+            <ng-container *ngFor="let item of reviews">
+              <ng-container *ngTemplateOutlet="reviewCardTpl; context: { review: item }"></ng-container>
+            </ng-container>
           </ng-container>
         </div>
       </div>
@@ -35,19 +36,19 @@
 </nz-drawer>
 
 
-<ng-template #reviewCardTpl>
+<ng-template #reviewCardTpl let-review="review">
   <div class="mb-10">
     <div class="flex flex-col">
       <div class="flex items-center">
         <img src="assets/img/avatars/user.png" class="object-cover w-12 h-12 mr-5">
-        <span class="font-bold text-lg">Phúc</span>
+        <span class="font-bold text-lg">{{ review.customer.full_name }}</span>
         <span class="w-1 h-1 bg-gray-500 rounded-full mx-2"></span>
-        <span>21/06/2024</span>
+        <span>{{ formatDate(review.createdAt) }}</span>
       </div>
 
       <div>
-        <nz-rate [ngModel]="4" nzDisabled></nz-rate>
-        <p>Hương vị tạm ổn nhưng phần ăn ít so với các tiệm khác trong khu vực</p>
+        <nz-rate [ngModel]="review.rating" nzDisabled></nz-rate>
+        <p>{{ review.content }}</p>
       </div>
     </div>
   </div>

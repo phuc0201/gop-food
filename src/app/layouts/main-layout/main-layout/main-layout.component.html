@@ -3,5 +3,11 @@
   <div class="pb-10">
     <router-outlet></router-outlet>
   </div>
-  <app-main-footer></app-main-footer>
+  <ng-container *ngIf="!isMobile">
+    <app-main-footer></app-main-footer>
+  </ng-container>
+
+  <ng-container *ngIf="isMobile">
+    <app-bottom-navbar></app-bottom-navbar>
+  </ng-container>
 </div>

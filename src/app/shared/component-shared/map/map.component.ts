@@ -13,7 +13,7 @@ import { IconMarker, RoleType } from 'src/app/core/utils/enums/index.enum';
 const plugins = [
   CommonModule,
   LeafletModule
-]
+];
 @Component({
   selector: 'app-map',
   templateUrl: './map.component.html',
@@ -21,20 +21,20 @@ const plugins = [
   standalone: true,
   imports: plugins
 })
-export class MapComponent implements AfterViewInit, OnChanges{
+export class MapComponent implements AfterViewInit, OnChanges {
   @Input() address: string = '';
   @Input() enableSelectLocation: boolean = true;
   @Input() zoomValue: number = 13;
   @Input() location: number[] = [0, 0];
-  @Input() addressList: Address[] = []
+  @Input() addressList: Address[] = [];
   @Input() locationMarkers: LocationMarker[] = [];
   @Output() addressListChange = new EventEmitter<Address[]>();
   map!: L.Map;
-  currMarker!: L.Marker
+  currMarker!: L.Marker;
   pinIcon = L.icon({
     iconUrl: IconMarker.CUSTOMER,
     iconSize: [50, 50]
-  })
+  });
 
   routingControl!: L.Routing.Control;
 
@@ -54,12 +54,12 @@ export class MapComponent implements AfterViewInit, OnChanges{
 
     this.handleTracking();
 
-    if(this.enableSelectLocation){
-      this.map.on('click', (event: any)=>{
-        this.searchAddress(event.latlng.lat, event.latlng.lng)
-        this.handleChangeLocation(RoleType.CUSTOMER ,event.latlng.lat, event.latlng.lng)
+    if (this.enableSelectLocation) {
+      this.map.on('click', (event: any) => {
+        this.searchAddress(event.latlng.lat, event.latlng.lng);
+        this.handleChangeLocation(RoleType.CUSTOMER, event.latlng.lat, event.latlng.lng);
         this.handleTracking();
-      })
+      });
     }
   }
 
@@ -68,11 +68,11 @@ export class MapComponent implements AfterViewInit, OnChanges{
       const icon = L.icon({
         iconUrl: location.iconUrl,
         iconSize: [50, 50]
-      })
-      const marker =  L.marker(location.coordinates as L.LatLngExpression, { icon: icon }).addTo(this.map);
+      });
+      const marker = L.marker(location.coordinates as L.LatLngExpression, { icon: icon }).addTo(this.map);
       location.marker = marker;
       return marker;
-    })
+    });
 
     const routingControl = L.Routing.control({
       waypoints: waypoints.map(marker => marker.getLatLng()),
@@ -81,17 +81,17 @@ export class MapComponent implements AfterViewInit, OnChanges{
       show: false,
       collapsible: true,
     } as any)
-    .on('routesfound', (e: any) => {
-      if(this.locationMarkers.length > 2){
-        const indexDriverMarker = this.locationMarkers.findIndex(location => location.type === RoleType.DRIVER)
-        const routes = e.routes;
-        routes[0].coordinates.forEach((coord: L.LatLng, index: number) => {
-          setTimeout(() => {
-            this.moveMarker(this.locationMarkers[indexDriverMarker].marker, [coord.lat, coord.lng])
-          }, 1000 * index);
-        });
-      }
-    })
+      .on('routesfound', (e: any) => {
+        // if (this.locationMarkers.length > 2) {
+        //   const indexDriverMarker = this.locationMarkers.findIndex(location => location.type === RoleType.DRIVER);
+        //   const routes = e.routes;
+        //   routes[0].coordinates.forEach((coord: L.LatLng, index: number) => {
+        //     setTimeout(() => {
+        //       this.moveMarker(this.locationMarkers[indexDriverMarker].marker, [coord.lat, coord.lng]);
+        //     }, 1000 * index);
+        //   });
+        // }
+      });
 
     if (this.routingControl) {
       this.map.removeControl(this.routingControl);
@@ -101,14 +101,14 @@ export class MapComponent implements AfterViewInit, OnChanges{
     this.routingControl.addTo(this.map);
   }
 
-  handleChangeLocation(type: RoleType ,lat: number, lng: number) {
+  handleChangeLocation(type: RoleType, lat: number, lng: number) {
     const indexMarker = this.locationMarkers.findIndex(location => location.type === type);
-    if(indexMarker !== -1){
+    if (indexMarker !== -1) {
       const newMarker = this.locationMarkers[indexMarker].marker;
-      const coords = [lat, lng]
+      const coords = [lat, lng];
       this.locationMarkers[indexMarker].coordinates = coords;
-      newMarker.setLatLng(coords)
-      this.map.removeLayer(this.locationMarkers[indexMarker].marker)
+      newMarker.setLatLng(coords);
+      this.map.removeLayer(this.locationMarkers[indexMarker].marker);
       this.locationMarkers[indexMarker].marker = newMarker;
     }
   }
@@ -136,33 +136,33 @@ export class MapComponent implements AfterViewInit, OnChanges{
     requestAnimationFrame(animate);
   }
 
-  createMarker () {
+  createMarker() {
     this.locationMarkers.forEach(marker => {
       const icon = L.icon({
         iconUrl: marker.iconUrl,
         iconSize: [50, 50]
-      })
-      const newMarket = L.marker(marker.coordinates  as L.LatLngExpression, { icon: icon }).addTo(this.map);
+      });
+      const newMarket = L.marker(marker.coordinates as L.LatLngExpression, { icon: icon }).addTo(this.map);
       marker.marker = newMarket;
-    })
+    });
   }
 
   searchAddress(lat: number, lng: number) {
     const latlng = {
       lat: lat,
       lng: lng
-    }
-    this.store.dispatch(searchAddress({ latlng: latlng }))
+    };
+    this.store.dispatch(searchAddress({ latlng: latlng }));
     const searchResult = this.store.select(selectAddress)
-    .pipe(
-      filter(res => res.data.results.length > 0)
-    )
-    .subscribe({
-      next: res => this.addressListChange.emit(res.data.results),
-      complete: () => {
-        searchResult.unsubscribe()
-      }
-    })
+      .pipe(
+        filter(res => res.data.results.length > 0)
+      )
+      .subscribe({
+        next: res => this.addressListChange.emit(res.data.results),
+        complete: () => {
+          searchResult.unsubscribe();
+        }
+      });
   }
 
   searchLocation() {

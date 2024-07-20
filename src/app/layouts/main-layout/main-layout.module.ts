@@ -3,6 +3,7 @@ import { NgModule } from '@angular/core';
 
 import { RouterModule } from '@angular/router';
 import { BottomNavbarComponent } from '../layout-components/bottom-navbar/bottom-navbar.component';
+import { HeaderStickyComponent } from "../layout-components/header-sticky/header-sticky.component";
 import { MainFooterComponent } from '../layout-components/main-footer/main-footer.component';
 import { MainHeaderComponent } from '../layout-components/main-header/main-header.component';
 import { MainLayoutComponent } from './main-layout/main-layout.component';
@@ -18,7 +19,8 @@ const plugins = [
   imports: [
     CommonModule,
     RouterModule,
-    plugins
+    plugins,
+    HeaderStickyComponent
   ]
 })
 export class MainLayoutModule { }

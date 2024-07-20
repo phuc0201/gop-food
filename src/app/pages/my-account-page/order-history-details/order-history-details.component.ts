@@ -1,11 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-import { Store } from '@ngrx/store';
+import { ActivatedRoute } from '@angular/router';
 import { LocationMarker } from 'src/app/core/models/geolocation/location.model';
-import { Cart, Quote } from 'src/app/core/models/order/order.model';
-import { FoodItemDTO } from 'src/app/core/models/restaurant/food-items.model';
-import { Modifier } from 'src/app/core/models/restaurant/modifier.model';
+import { Cart, OrderDetails, OrderFoodItems } from 'src/app/core/models/order/order.model';
 import { OrderService } from 'src/app/core/services/order.service';
-import { IconMarker, OrderStatusTrackerType, RoleType } from 'src/app/core/utils/enums/index.enum';
+import { OrderStatusTrackerType } from 'src/app/core/utils/enums/index.enum';
 
 @Component({
   selector: 'app-order-history-details',
@@ -14,7 +12,7 @@ import { IconMarker, OrderStatusTrackerType, RoleType } from 'src/app/core/utils
 })
 export class OrderHistoryDetailsComponent implements OnInit {
   basket = new Cart();
-  quote = new Quote();
+  orderDetails = new OrderDetails();
   locationMarkers: LocationMarker[] = [];
   stepper = [
     {
@@ -23,10 +21,6 @@ export class OrderHistoryDetailsComponent implements OnInit {
     },
     {
       type: OrderStatusTrackerType.RESTAURANT_ACCEPT,
-      status: true
-    },
-    {
-      type: OrderStatusTrackerType.DRIVER_ACCEPT,
       status: true
     },
     {
@@ -39,39 +33,44 @@ export class OrderHistoryDetailsComponent implements OnInit {
     return price.toLocaleString("vi-VN", { style: "currency", currency: "VND" });
   }
 
-  getFoodItemPrice(foodItem: FoodItemDTO<Modifier>): number {
-    const totalModifersPrice = foodItem.modifiers.reduce((total, currValue) => {
+  getFoodItemPrice(foodItem: OrderFoodItems): number {
+    const totalModifersPrice = foodItem.foodDetails.price + foodItem.modifiers.reduce((total, currValue) => {
       return total + currValue.price;
     }, 0);
-    return foodItem.base_price ? (foodItem.base_price + totalModifersPrice) * foodItem.quantity : 0;
+    return totalModifersPrice * foodItem.quantity ?? 0;
   }
 
   createQuote() {
     const order = this.orderSrv.createOrderDTO(this.basket);
-    this.orderSrv.quoteOrder(order).subscribe(data => {
-      this.quote = data;
-    });
   }
 
   ngOnInit(): void {
-    this.basket = this.orderSrv.getCartItems();
+    const id = this.route.snapshot.paramMap.get('id') as string;
 
-    const cusLocation = [...this.basket.cart.delivery_location.coordinates];
-    const resLocation = [...this.basket.cart.restaurant_location];
+    const observe = this.orderSrv.getOrderDetails(id).subscribe({
+      next: data => {
+        this.orderDetails = data;
+        this.stepper.map(item => {
+          if (this.orderDetails.confirm_time == null && item.type === OrderStatusTrackerType.RESTAURANT_ACCEPT) {
+            item.status = false;
+          }
 
-    const restaurantMarker = new LocationMarker(RoleType.RESTAURANT, IconMarker.RESTAURANT, resLocation.reverse());
-    const customerMarker = new LocationMarker(RoleType.CUSTOMER, IconMarker.CUSTOMER, cusLocation.reverse());
-    const driverMarker = new LocationMarker(RoleType.DRIVER, IconMarker.DRIVER, [10.854476409503809, 106.76874765141007]);
+          if (this.orderDetails.complete_time == null) {
+            if (item.type == OrderStatusTrackerType.COMPLETED) {
+              item.status = false;
+            }
+          }
+        });
 
-    this.locationMarkers.push(driverMarker);
-    this.locationMarkers.push(restaurantMarker);
-    this.locationMarkers.push(customerMarker);
-
-    this.createQuote();
+      },
+      complete: () => {
+        observe.unsubscribe();
+      }
+    });
   }
 
   constructor(
     private orderSrv: OrderService,
-    private store: Store,
+    private route: ActivatedRoute,
   ) { }
 }
