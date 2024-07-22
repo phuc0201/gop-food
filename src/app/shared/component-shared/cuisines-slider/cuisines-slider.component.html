@@ -1,5 +1,5 @@
 <div class="relative">
-  <swiper-container init="false" #cuisinesSlider class="cusines-slider w-full flex items-center md:mb-6 sm:mb-3 mb-1">
+  <swiper-container init="false" #cuisinesSlider class="cusines-slider w-full flex items-center md:mb-6 sm:mb-3 mb-3">
     <swiper-slide *ngIf="!listCuisine.length"
       class="w-full h-full flex items-center aspect-video rounded-lg overflow-hidden">
       <img loading="lazy" src="assets/img/banners/banner-1.jpg" class="w-full h-auto object-cover">
@@ -11,13 +11,14 @@
           class="flex flex-col items-center justify-center w-full">
           <div class="flex items-center flex-col">
             <div
-              class="cuisine-item relative flex items-center justify-center max-h-40 aspect-square rounded-[50%] sm:rounded-lg  sm:w-auto sm:aspect-video  sm:overflow-hidden w-16 bg-white border-2 border-transparent">
+              class="cuisine-item relative flex items-center justify-center max-h-40 aspect-square rounded-full md:rounded-lg  md:w-auto md:aspect-video  md:overflow-hidden w-16 bg-white border-2 border-transparent">
               <img appGetImageSrc loading="lazy" [src]="cusine.img" onerror="this.src='assets/img/banners/banner-1.jpg'"
-                class="w-full sm:h-auto h-full object-cover rounded-[50%] sm:rounded-lg">
+                class="w-full md:h-auto h-full object-cover rounded-full md:rounded-lg">
               <i
-                class="fa-solid fa-circle-check absolute top-0 right-0 text-primary !hidden bg-white rounded-[50%] sm:top-1 sm:right-1"></i>
+                class="fa-solid fa-circle-check absolute top-0 right-0 text-primary !hidden bg-white rounded-full md:top-1 md:right-1"></i>
             </div>
-            <span class="text-black text-center lg:font-medium font-normal xs:text-sm text-[10px] mt-2">{{ cusine.name
+            <span class="text-black text-center lg:font-medium font-normal xs:text-sm text-[10px] mt-2 line-clamp-1">{{
+              cusine.name
               }}</span>
           </div>
         </a>

@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, HostListener, OnInit } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { FoodItems } from 'src/app/core/models/restaurant/food-items.model';
 import { RestaurantsRecommended } from 'src/app/core/models/restaurant/restaurant.model';
@@ -18,6 +18,16 @@ export class HomeComponent implements OnInit {
   listFoodCol: number = 6;
   isLoading: boolean = true;
   restaurants = new RestaurantsRecommended();
+  isMobile: boolean = false;
+
+  @HostListener('window:resize', ['$event'])
+  onResize(event: Event) {
+    this.handleMobileScreen();
+  }
+
+  handleMobileScreen() {
+    this.isMobile = window.innerWidth <= 768;
+  }
 
   loadProfile(): void {
     this.geoSrv.currLocation.subscribe(res => this.address = res.address);
@@ -30,9 +40,11 @@ export class HomeComponent implements OnInit {
       .subscribe({
         next: data => {
           this.restaurants = data.restaurants;
-          setTimeout(() => {
-            this.isLoading = false;
-          }, 1600);
+          if (data.restaurants.count > 0 && !data.isLoading) {
+            setTimeout(() => {
+              this.isLoading = false;
+            }, 1000);
+          }
           this.cdRef.markForCheck();
         },
       }
@@ -54,6 +66,7 @@ export class HomeComponent implements OnInit {
 
   ngOnInit(): void {
     this.loadData();
+    this.handleMobileScreen();
   }
 
   constructor(

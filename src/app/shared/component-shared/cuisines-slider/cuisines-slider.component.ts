@@ -39,12 +39,16 @@ export class CuisinesSliderComponent implements AfterViewInit, OnChanges {
     //   pauseOnMouseEnter: true,
     // },
     breakpoints: {
-      992: {
+      768: {
         slidesPerView: 5,
         spaceBetween: 20,
       },
+      720: {
+        slidesPerView: 7,
+        spaceBetween: 10,
+      },
       480: {
-        slidesPerView: 5,
+        slidesPerView: 6,
         spaceBetween: 10,
       },
       350: {

@@ -28,6 +28,10 @@ export class RestaurantComponent implements OnInit {
 
   @HostListener('window:resize', ['$event'])
   onWindowResize() {
+    this.handleMobileScreen();
+  }
+
+  handleMobileScreen(): void {
     if (window.innerWidth < 768) {
       this.isMobile = true;
     } else this.isMobile = false;
@@ -40,6 +44,8 @@ export class RestaurantComponent implements OnInit {
       behavior: "instant",
     });
 
+    this.handleMobileScreen();
+
     const id = this.route.snapshot.paramMap.get('id') as string;
     this.store.dispatch(getRestaurantInfo({ res_id: id }));
     this.store.dispatch(getMenu({ id: id }));
@@ -50,9 +56,11 @@ export class RestaurantComponent implements OnInit {
       )
       .subscribe(data => {
         this.restaurant = data.restaurant;
-        setTimeout(() => {
-          this.isLoading = false;
-        }, 500);
+        if (this.restaurant._id !== '') {
+          setTimeout(() => {
+            this.isLoading = false;
+          }, 500);
+        }
       });
   }
 

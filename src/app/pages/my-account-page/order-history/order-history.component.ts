@@ -1,32 +1,27 @@
-import { CommonModule } from '@angular/common';
-import { Component, OnInit } from '@angular/core';
-import { FormsModule } from '@angular/forms';
-import { RouterModule } from '@angular/router';
+import { Component, HostListener, OnInit } from '@angular/core';
 import { OrderHistory } from 'src/app/core/models/order/order.model';
 import { OrderService } from 'src/app/core/services/order.service';
-import { PageLoaderComponent } from '../loaders/page-loader/page-loader.component';
-import { NoDataComponent } from '../no-data/no-data.component';
-
-const plugins = [
-  CommonModule,
-  NoDataComponent,
-  FormsModule,
-  RouterModule,
-  PageLoaderComponent
-];
 
 @Component({
   selector: 'app-order-history',
   templateUrl: './order-history.component.html',
   styleUrls: ['./order-history.component.scss'],
-  standalone: true,
-  imports: plugins
 })
 export class OrderHistoryComponent implements OnInit {
   orders: OrderHistory[] = [];
   orderForSearch: OrderHistory[] = [];
   searchValue: string = '';
   isLoading: boolean = true;
+  isMobile: boolean = false;
+
+  @HostListener('window:resize', ['$event'])
+  onResize(event: any) {
+    this.hanldeMobileScreen();
+  }
+
+  hanldeMobileScreen(): void {
+    this.isMobile = window.innerWidth <= 768;
+  }
 
   search(name: string) {
     this.orderForSearch = this.orders.filter(order => {
@@ -72,6 +67,7 @@ export class OrderHistoryComponent implements OnInit {
 
   ngOnInit(): void {
     this.loadOrders();
+    this.hanldeMobileScreen();
   };
 
   constructor(

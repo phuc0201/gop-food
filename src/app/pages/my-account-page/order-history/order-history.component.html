@@ -1,4 +1,6 @@
-<app-page-loader [isLoading]="isLoading"></app-page-loader>
+<ng-container *ngIf="isMobile">
+  <app-page-loader [isLoading]="isLoading"></app-page-loader>
+</ng-container>
 
 <app-no-data [isShow]="false"></app-no-data>
 
@@ -30,7 +32,8 @@
   <div class="flex justify-between w-full">
     <div class="flex gap-3">
       <div class="w-20 h-20 min-w-20 aspect-square">
-        <img src="assets/img/icons/cooking.png" class="object-cover w-full h-full rounded-md">
+        <img [src]="order.restaurant.cover_image" onerror="this.src='assets/img/icons/cooking.png'"
+          class="object-cover w-full h-full rounded-md">
       </div>
       <div class="flex flex-col justify-between">
         <div class="flex flex-col">
@@ -45,7 +48,8 @@
     </div>
     <div class="flex flex-col justify-between items-end min-w-28">
       <div class="flex items-center gap-2">
-        <span class="text-primary font-bold">{{ order.total.toLocaleString("vi-VN", {style:"currency", currency: "VND"})
+        <span class="text-primary font-bold">{{ order.total.toLocaleString("vi-VN", {style:"currency", currency:
+          "VND"})
           }}</span>
       </div>
       <a [routerLink]="['details', order._id]"

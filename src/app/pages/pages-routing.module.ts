@@ -17,13 +17,17 @@ const routes: Routes = [
         path: 'restaurant/:id',
         loadChildren: () => import('./restaurant-page/restaurant-page.module').then(m => m.RestaurantPageModule),
       },
-      {
-        path: 'messages',
-        loadChildren: () => import('./home-page/home-page.module').then(m => m.HomePageModule)
-      },
+      // {
+      //   path: 'wallet',
+      //   loadChildren: () => import('./my-account-page/my-account-page.module').then(m => m.MyAccountPageModule)
+      // },
       {
         path: 'order',
         loadChildren: () => import('./order-page/order-page.module').then(m => m.OrderPageModule)
+      },
+      {
+        path: 'user',
+        loadChildren: () => import('./my-account-page/my-account-page.module').then(m => m.MyAccountPageModule)
       },
     ]
 
@@ -32,11 +36,6 @@ const routes: Routes = [
     path: 'cuisines',
     component: HeaderStickyLayoutComponent,
     loadChildren: () => import('./cuisines-page/cuisines-page.module').then(m => m.CuisinesPageModule),
-  },
-  {
-    path: 'user',
-    component: HeaderStickyLayoutComponent,
-    loadChildren: () => import('./my-account-page/my-account-page.module').then(m => m.MyAccountPageModule)
   },
   {
     path: 'wishlist',

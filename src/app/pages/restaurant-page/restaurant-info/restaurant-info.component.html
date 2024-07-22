@@ -5,7 +5,7 @@
       <h1 class="font-bold text-3xl m-0">{{ restaurant.restaurant_name }}</h1>
       <div class="p-1 px-5 bg-primary text-white rounded-md font-bold">Open</div>
     </div>
-    <div class="flex items-center">
+    <div class="flex items-center mt-5">
       <ng-container *ngFor="let item of restaurant.cuisine_categories; let last = last">
         <h4 *ngIf="!isLoading" class="text-gray-500 font-light mb-2 mr-1">{{ !last ? item + ',' : item }}</h4>
       </ng-container>
@@ -45,7 +45,7 @@
   </div>
 
   <!-- MOBILE -->
-  <div class="sectionContainer bg-transparent md:hidden block">
+  <div class="sectionContainer !p-0 bg-transparent md:hidden block">
     <div class="bg-white border border-gray-200 p-4 rounded-lg">
       <div class="border border-gray-200 border-x-0 border-t-0 pb-2">
         <h1 class="font-bold text-2xl">{{ isLoading ? 'Loading...' : restaurant.restaurant_name }}</h1>
@@ -64,10 +64,12 @@
         <img loading="lazy" src="assets/img/icons/icon-delivery-bike.png" class="w-5 h-5">
         <div class="flex flex-col">
           <span>
-            <span class="font-bold">4.1 km</span> (25m)
+            <span class="font-bold">{{ distance }} km</span> ({{ duration }})
           </span>
           <div>
-            <span>Delivery now | 4.0000đ <s class="text-gray-400">19.000đ</s></span>
+            <span>Delivery now | 4.0000đ
+              <!-- <s class="text-gray-400">19.000đ</s> -->
+            </span>
           </div>
         </div>
       </div>

@@ -1,5 +1,5 @@
-<div class="h-[100vh] relative" [ngClass]="isMobile ? '' : ''">
-  <app-main-header></app-main-header>
+<div class="h-[100vh] relative">
+  <app-main-header [isSticky]="isHeaderSticky"></app-main-header>
   <div class="pb-10">
     <router-outlet></router-outlet>
   </div>

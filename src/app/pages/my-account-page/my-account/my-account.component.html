@@ -1,4 +1,5 @@
-<div class="bg-gray-50 h-full">
+<!-- PC -->
+<div *ngIf="!isMobile" class="bg-gray-50 h-full md:block hidden">
   <div class="sectionContainer py-5 h-full ">
     <div nz-row class="h-full bg-white shadow rounded-sm">
       <div nz-col nzSpan="5">
@@ -11,4 +12,11 @@
       </div>
     </div>
   </div>
+</div>
+
+
+
+<!-- MOBILE -->
+<div *ngIf="isMobile" class="">
+  <router-outlet></router-outlet>
 </div>

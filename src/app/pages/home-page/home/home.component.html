@@ -1,7 +1,7 @@
 <app-page-loader [isLoading]="isLoading"></app-page-loader>
 <app-home-sldier></app-home-sldier>
 
-<div class="sectionContainer">
+<div class="" [class.sectionContainer]="!isMobile">
   <div class="relative">
     <app-search-location></app-search-location>
   </div>
