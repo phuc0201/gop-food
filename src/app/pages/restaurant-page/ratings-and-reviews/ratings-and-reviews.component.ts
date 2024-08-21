@@ -34,7 +34,7 @@ export class RatingsAndReviewsComponent implements OnInit, OnChanges {
   }
 
   createReviewModal() {
-    return this.modal.create<CreateReviewComponent, { title: string, id: string; }>({
+    const modaldef = this.modal.create<CreateReviewComponent, { title: string, id: string; }>({
       nzContent: CreateReviewComponent,
       nzClosable: false,
       nzWrapClassName: 'review-modal',
@@ -44,6 +44,16 @@ export class RatingsAndReviewsComponent implements OnInit, OnChanges {
         title: 'How was your food at ' + this.restaurant.restaurant_name,
         id: this.restaurant._id
       }
+    });
+
+    modaldef.afterClose.subscribe(() => {
+      this.loadReviews();
+    });
+  }
+
+  loadReviews(): void {
+    this.reviewSrv.getReviews(this.restaurant._id).subscribe(data => {
+      this.reviews = data;
     });
   }
 
@@ -61,10 +71,8 @@ export class RatingsAndReviewsComponent implements OnInit, OnChanges {
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-    if (changes["restaurant"] && !changes["restaurant"].firstChange) {
-      this.reviewSrv.getReviews(this.restaurant._id).subscribe(data => {
-        this.reviews = data;
-      });
+    if ((changes["restaurant"] && !changes["restaurant"].firstChange) || changes["opened"] && !changes["opened"].firstChange) {
+      this.loadReviews();
     }
   }
 

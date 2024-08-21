@@ -201,24 +201,24 @@ export class FoodDetailsComponent implements OnInit {
   }
 
   getReview() {
-    const id = this.route.snapshot.paramMap.get('id') as string;
-    this.reviewSrv.getReviewForFoodItem(id).subscribe(data => {
-      this.reviews = data;
-    });
+    // const id = this.route.snapshot.paramMap.get('id') as string;
+    // this.reviewSrv.getReviewForFoodItem(id).subscribe(data => {
+    //   this.reviews = data;
+    // });
   }
 
   createReview() {
-    const review = new ReviewDTO();
-    review.content = this.reviewDTO.content;
-    review.food_id = this.foodDetails._id;
-    review.owner_id = '665026167a34fb68fe3a8339';
-    review.rating = this.reviewDTO.rating;
-    this.reviewSrv.createReview(review).subscribe({
-      complete: () => {
-        this.getReview();
-        this.reviewDTO = new ReviewDTO();
-      }
-    });
+    // const review = new ReviewDTO();
+    // review.content = this.reviewDTO.content;
+    // review.food_id = this.foodDetails._id;
+    // review.owner_id = '665026167a34fb68fe3a8339';
+    // review.rating = this.reviewDTO.rating;
+    // this.reviewSrv.createReview(review).subscribe({
+    //   complete: () => {
+    //     this.getReview();
+    //     this.reviewDTO = new ReviewDTO();
+    //   }
+    // });
   }
 
   constructor(

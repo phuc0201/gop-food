@@ -25,7 +25,7 @@ export class ReviewFoodItem {
 }
 
 export class ReviewDTO {
-  food_id: string = '';
+  reviewable_id: string = '';
   owner_id: string = '';
   content: string = '';
   rating: number = 0;

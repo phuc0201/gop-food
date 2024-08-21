@@ -55,6 +55,7 @@ module.exports = {
         'grey1': '#676767',
         'orange1': '#ff7903',
         'black1': '#1E1D23',
+        'yellow1': '#FC8A06',
       },
     },
     screens: {

@@ -1,6 +1,6 @@
 
 const endpoint_deploy = 'https://gop-gateway.purplesand-fad3fa4f.southeastasia.azurecontainerapps.io';
-const endpoint_local = 'http://192.168.43.160:8080';
+const endpoint_local = 'http://localhost:8080';
 const endpoint = endpoint_local;
 export const URLConstant = {
   ROUTE: {

@@ -23,3 +23,23 @@ export class CategorySlider {
     this.image = image;
   }
 }
+
+
+export class Category {
+  type: string;
+  name: string;
+  slug: string;
+  img: string;
+
+  constructor(
+    type: string = '',
+    name: string = '',
+    slug: string = '',
+    img: string
+  ) {
+    this.type = type;
+    this.name = name;
+    this.slug = slug;
+    this.img = img;
+  }
+}

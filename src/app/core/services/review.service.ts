@@ -2,7 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { URLConstant } from '../constants/url.constant';
-import { Review, ReviewDTO, ReviewFoodItem } from '../models/review/review.model';
+import { Review, ReviewDTO } from '../models/review/review.model';
 
 @Injectable({
   providedIn: 'root'
@@ -22,8 +22,8 @@ export class ReviewService {
     return this.http.get<Review[]>(this.baseUrl + `/restaurant/${id}/reviews`);
   }
 
-  getReviewForFoodItem(food_id: string): Observable<ReviewFoodItem[]> {
-    return this.http.get<ReviewFoodItem[]>(this.baseUrl + `/restaurant/reviews/${food_id}`);
-  }
+  // getReviewForFoodItem(food_id: string): Observable<ReviewFoodItem[]> {
+  //   return this.http.get<ReviewFoodItem[]>(this.baseUrl + `/restaurant/reviews/${food_id}`);
+  // }
 
 }

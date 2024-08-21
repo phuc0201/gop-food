@@ -12,8 +12,68 @@
   <app-restaurant-slider [restaurants]="restaurants"></app-restaurant-slider>
 </div>
 
-<div class="w-full md:bg-[#f7f7f7] bg-white">
+
+<div class="sectionContainer pt-20">
+  <div class="relative banner-advertisement-app rounded-xl flex justify-end p-10">
+    <div class="absolute bottom-0 left-0 w-1/2">
+      <img src="assets/img/banners/person-ads.svg">
+    </div>
+
+    <div class="flex flex-col items-center gap-4">
+      <h1 class="text-[#03081F] font-bold text-6xl">Ordering is more</h1>
+      <div class="p-3 px-10 bg-[#03081F] rounded-full">
+        <span class="text-[#FC8A06] font-medium text-4xl underline ">Personalised</span>
+        <span class="text-white font-medium text-4xl"> & instant</span>
+      </div>
+      <span class="text-[#03081F] ">Download the GoP app for faster ordering</span>
+
+      <div class="flex items-center gap-1">
+        <img src="assets/img/quick-add/logo-appstore.svg">
+        <img src="assets/img/quick-add/logo-playstore.svg">
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<div class="sectionContainer !mt-10">
+  <div nz-row nzGutter="20">
+    <div nz-col nzSpan="24" nzLg="12">
+      <div class="relative h-96 rounded-xl overflow-hidden">
+        <div class="absolute top-0 left-0 w-full h-full banner-partner"></div>
+
+        <img src="assets/img/banners/master-chef.jpg" class="object-cover">
+
+        <div class="absolute bottom-10 left-10">
+          <span class="text-yellow1">Signup as a business</span>
+          <h1 class="font-bold text-white">Partner with us</h1>
+          <button class="bg-yellow1 text-white rounded-full p-2 px-8">Get Started</button>
+        </div>
+      </div>
+    </div>
+
+    <div nz-col nzSpan="24" nzLg="12">
+      <div class="relative h-96 rounded-xl overflow-hidden">
+        <div class="absolute top-0 left-0 w-full h-full banner-partner"></div>
+
+        <img src="assets/img/banners/delivery-man.jpg" class="object-cover">
+
+        <div class="absolute bottom-10 left-10">
+          <span class="text-yellow1">Signup as a business</span>
+          <h1 class="font-bold text-white">Partner with us</h1>
+          <button class="bg-yellow1 text-white rounded-full p-2 px-8">Get Started</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<div class="mt-16">
+  <app-our-services></app-our-services>
+</div>
+<!-- <div class="w-full md:bg-[#f7f7f7] bg-white">
   <div class="sectionContainer md:p-5">
     <app-our-menu [foodItems]="foodItems"></app-our-menu>
   </div>
-</div>
+</div> -->

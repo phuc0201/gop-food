@@ -34,7 +34,7 @@ export class CreateReviewComponent {
     if (this.review.rating > 0) {
       this.review.owner_id = this.profileSrv.getProfileInSession()._id;
       this.review.reviewable_id = this.reviewable.id;
-      // this.reviewSrv.createReview(this.review).subscribe();
+      this.reviewSrv.createReview(this.review).subscribe();
       this.#modal.close();
     }
   }

@@ -51,16 +51,15 @@ export class HomeComponent implements OnInit {
       );
   }
 
-  loadFoodItems() {
-    this.resSrv.getFoodItems(1, 100).subscribe(data => {
-      this.foodItems = data.foodItems;
-    });
-  }
+  // loadFoodItems() {
+  //   this.resSrv.getFoodItems(1, 100).subscribe(data => {
+  //     this.foodItems = data.foodItems;
+  //   });
+  // }
 
 
   loadData() {
     this.loadProfile();
-    this.loadFoodItems();
     this.loadRecommendedRestaurants();
   }
 

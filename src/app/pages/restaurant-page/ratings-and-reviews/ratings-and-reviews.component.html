@@ -14,7 +14,7 @@
 
       <div class="h-[1px] w-full bg-gray-200"></div>
 
-      <div class="flex-1 ratings-and-reviews-body w-full overflow-y-scroll p-6">
+      <div *ngIf="reviews.length > 0" class="flex-1 ratings-and-reviews-body w-full overflow-y-scroll p-6">
         <div class="flex flex-col">
           <ng-container *ngIf="isLoading">
             <ng-container *ngFor="let item of [1,2,3,4]">
@@ -30,6 +30,10 @@
             </ng-container>
           </ng-container>
         </div>
+      </div>
+
+      <div *ngIf="reviews.length === 0" class="flex flex-1 justify-center items-center">
+        <img src="assets/img/icons/influencer.png" alt="" class="w-52">
       </div>
     </div>
   </ng-container>

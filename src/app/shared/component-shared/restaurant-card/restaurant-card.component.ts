@@ -18,7 +18,7 @@ const plugins = [
 })
 export class RestaurantCardComponent implements OnChanges, OnInit {
   @Input() restaurant = new Restaurant();
-  @Input() isLoading: boolean = true;
+
   isLoadImg: boolean = true;
   isHome: boolean = false;
   cuisine_cate_name: string[] = ['Loading....'];

@@ -27,12 +27,12 @@ const routes: Routes = [
     children: [
       {
         path: '',
-        component: ListFooditemsComponent,
+        component: ListRestaurantComponent,
         title: 'Cuisines'
       },
       {
-        path: ':cate_id',
-        component: ListFooditemsComponent,
+        path: ':slug',
+        component: ListRestaurantComponent,
         title: 'Cuisines'
       }
     ]
@@ -42,7 +42,7 @@ const plugins = [
   RestaurantCardComponent,
   CuisinesSliderComponent,
   ListRestaurantComponent,
-  CategorySliderComponent
+  CategorySliderComponent,
 ];
 @NgModule({
   declarations: [

@@ -31,7 +31,7 @@
                 All
               </div>
             </a>
-            <a [routerLink]="['/cuisines', item._id]" *ngFor="let item of categories"
+            <a [routerLink]="['/cuisines', item.slug]" *ngFor="let item of categories"
               class="category p-3 py-3 rounded-md" [routerLinkActive]="'active'">
               <div class="text-gray-400 cate-name">
                 {{ item.name }}

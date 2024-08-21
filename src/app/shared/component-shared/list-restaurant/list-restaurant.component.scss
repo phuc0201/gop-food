@@ -1,6 +1,6 @@
 .restaurant-card-wrapper {
-  animation-name: displayContent;
-  animation-duration: 0.7s;
+  opacity: 0;
+  animation: displayContent 0.7s forwards;
 }
 
 @keyframes displayContent {

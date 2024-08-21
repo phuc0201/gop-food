@@ -3,6 +3,7 @@ import { Store } from '@ngrx/store';
 import { filter } from 'rxjs';
 import { FoodItems } from 'src/app/core/models/restaurant/food-items.model';
 import { RestaurantCategory } from 'src/app/core/models/restaurant/restaurant-category.model';
+import { SearchService } from 'src/app/core/services/search.service';
 import { selectMenu } from 'src/app/core/store/restaurant/restaurant.selectors';
 
 @Component({
@@ -18,6 +19,7 @@ export class RestaurantMenuComponent implements OnInit, AfterViewInit {
   @ViewChild('autoCompleteInput') autoCompleteInput!: ElementRef;
   @ViewChild('searchResultContainer', { static: true }) searchResultContainer!: ElementRef;
   menu: RestaurantCategory<FoodItems<string>>[] = [];
+  menuSearching: RestaurantCategory<FoodItems<string>>[] = [];
   selectedCategory: number = 0;
   tabsPosition: number = 0;
   stepScrollTabValue: number = 300;
@@ -27,25 +29,13 @@ export class RestaurantMenuComponent implements OnInit, AfterViewInit {
   searchValue?: string = '';
   filteredOptions: string[] = [];
   foodItems = ['Burns Bay Road', 'Downing Street', 'Wall Street'];
-
-  ngAfterViewInit(): void {
-
-  }
-
-  ngOnInit(): void {
-    this.selectedCategory = 0;
-    this.store.select(selectMenu).pipe(
-      filter(data => data.error == '' && data.isLoading == false)
-    ).subscribe(data => {
-      this.menu = data.menu;
-    });
-  }
+  isLoading: boolean = true;
 
   @HostListener('window:scroll', ['$event'])
   onWindowScroll(event: Event): void {
     if (this.searching)
       return;
-    if(this.tabContent !== undefined){
+    if (this.tabContent !== undefined) {
       if (this.tabContent.nativeElement.getBoundingClientRect().top <= 96) {
         this.renderer.removeClass(this.menuTabMobile.nativeElement, 'hidden');
         this.renderer.addClass(this.menuTabMobile.nativeElement, 'flex');
@@ -65,20 +55,20 @@ export class RestaurantMenuComponent implements OnInit, AfterViewInit {
     }, 100);
   }
 
-  blurAutoComplete(): void {
-    if (this.searchValue == '') {
-      this.searching = false;
-    }
+  resetSearchValue(): void {
+    this.searchValue = '';
+    this.searching = false;
+    this.menuSearching = this.menu;
   }
 
   onChange(value: string): void {
-    this.filteredOptions = this.foodItems.filter(option => option.toLowerCase().indexOf(value.toLowerCase()) !== -1);
-    let menuTabMobileContainerBottom = this.menuTabMobile.nativeElement.getBoundingClientRect().bottom;
-    let tabContentTop = this.tabContent.nativeElement.getBoundingClientRect().top;
+    // this.filteredOptions = this.foodItems.filter(option => option.toLowerCase().indexOf(value.toLowerCase()) !== -1);
+    // let menuTabMobileContainerBottom = this.menuTabMobile.nativeElement.getBoundingClientRect().bottom;
+    // let tabContentTop = this.tabContent.nativeElement.getBoundingClientRect().top;
 
-    setTimeout(() => {
-      window.scrollBy(0, tabContentTop - menuTabMobileContainerBottom);
-    }, 100);
+    // setTimeout(() => {
+    //   window.scrollBy(0, tabContentTop - menuTabMobileContainerBottom);
+    // }, 100);
   }
 
   goBack(): void {
@@ -142,9 +132,9 @@ export class RestaurantMenuComponent implements OnInit, AfterViewInit {
   }
 
   handleButtonTab(step: number): void {
-    if (this.isHandlingButtonTab) {
+    if (this.isHandlingButtonTab)
       return;
-    }
+
     this.isHandlingButtonTab = true;
     let tabNavPos = this.tabsNav.nativeElement.getBoundingClientRect();
     let tabContainerPos = this.tabsContainer.nativeElement.getBoundingClientRect();
@@ -158,13 +148,58 @@ export class RestaurantMenuComponent implements OnInit, AfterViewInit {
     }
     setTimeout(() => {
       this.isHandlingButtonTab = false;
-    }, 300);
+    }, 2000);
+  }
+
+  search(name: string): void {
+    const searchValue = this.searchSrv.normalizeString(name);
+    this.menuSearching = this.menu.map(cate => {
+      const newCate = { ...cate };
+      newCate.food_items = newCate.food_items.filter(food => {
+        const fooditemName = this.searchSrv.normalizeString(food.name);
+        const foodBio = this.searchSrv.normalizeString(food.bio);
+        return fooditemName.includes(searchValue) || foodBio.includes(searchValue);
+      });
+      return newCate;
+    });
+    this.menuSearching = this.menuSearching.filter(cate => cate.food_items.length > 0);
+
+    if (this.searching) {
+      window.scrollTo(0, 0);
+    }
+  }
+
+  loadData(): void {
+    this.isLoading = true;
+    this.store.select(selectMenu).pipe(
+      filter(data => data.error == '' && data.isLoading == false)
+    ).subscribe({
+      next: data => {
+        this.menu = data.menu;
+        this.menuSearching = this.menu.filter(cate => cate.food_items.length > 0);
+        this.isLoading = false;
+      }
+    });
+  }
+
+
+  ngAfterViewInit(): void {
+
+  }
+
+  ngOnInit(): void {
+    this.selectedCategory = 0;
+    this.loadData();
   }
 
   constructor(
     private el: ElementRef,
     private renderer: Renderer2,
-    private store: Store
-  ) { this.filteredOptions = this.foodItems; }
+    private store: Store,
+    private searchSrv: SearchService
+  ) {
+    this.filteredOptions = this.foodItems;
+    this.search = this.searchSrv.debounce(this.search.bind(this), 500);
+  }
 
 }

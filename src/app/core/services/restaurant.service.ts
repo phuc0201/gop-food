@@ -27,11 +27,11 @@ export class RestaurantService {
 
 
   getFoodItems(page: number, limit: number, category_id: string = ''): Observable<FoodItemPagination> {
-    return this.http.get<FoodItemPagination>(this.baseURL + `/admin/fooditems?page=${page}&limit=${limit}&category_id=${category_id}`);
+    return this.http.get<FoodItemPagination>(this.baseURL + `/fooditems?page=${page}&limit=${limit}&category_id=${category_id}`);
   }
 
   getCategories(): Observable<CategorySlider[]> {
-    return this.http.get<CategorySlider[]>(this.baseURL + `/admin/${SystemConstant.MERCHANT_ID}/categories`);
+    return this.http.get<CategorySlider[]>(this.baseURL + `/${SystemConstant.MERCHANT_ID}/categories`);
   }
 
   getRestaurants(): Observable<any> {
