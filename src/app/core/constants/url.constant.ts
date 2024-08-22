@@ -1,7 +1,7 @@
 
-const endpoint_deploy = 'https://gop-gateway.purplesand-fad3fa4f.southeastasia.azurecontainerapps.io';
+const endpoint_deploy = 'https://gop-gateway.onrender.com/';
 const endpoint_local = 'http://localhost:8080';
-const endpoint = endpoint_local;
+const endpoint = endpoint_deploy;
 export const URLConstant = {
   ROUTE: {
     HOMEPAGE: '/',
