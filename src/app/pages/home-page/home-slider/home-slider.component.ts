@@ -8,7 +8,7 @@ const plugins = [
   CommonModule,
 ];
 @Component({
-  selector: 'app-home-sldier',
+  selector: 'app-home-slider',
   templateUrl: './home-slider.component.html',
   styleUrls: ['./home-slider.component.scss'],
   standalone: true,

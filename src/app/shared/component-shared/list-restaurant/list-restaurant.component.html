@@ -1,12 +1,12 @@
-<div nz-row nzGutter="20" class="min-h-[600px]">
-  <ng-container *ngIf="restaurants.count > 0 && !isLoading">
-    <div *ngFor="let item of restaurantsForSearch" nz-col nzSpan="24" nzLg="8" nzMd="8">
+<div nz-row nzGutter="20" class="lg:min-h-[600px]">
+  <ng-container *ngIf="restaurants.data.length > 0 && !isLoading">
+    <div *ngFor="let item of restaurants.data" nz-col nzSpan="24" nzLg="8" nzMd="8" class="restaurant-card-wrapper">
       <app-restaurant-card [restaurant]="item"></app-restaurant-card>
     </div>
   </ng-container>
 
-  <ng-container *ngIf="(restaurants.count == 0 || restaurantsForSearch.length == 0) && !isLoading">
-    <app-no-results></app-no-results>
+  <ng-container *ngIf="restaurants.data.length === 0 && !isLoading">
+
   </ng-container>
 
   <ng-container *ngIf="isLoading">
@@ -18,7 +18,9 @@
   </ng-container>
 </div>
 
-
+<div *ngIf="restaurants.totalPage > 1" class="w-full flex justify-center items-center">
+  <button class="bg-primary text-white font-bold p-5 py-2 rounded-lg">Load more</button>
+</div>
 
 <ng-template #resCardLoadingTpl>
   <div role="status" class="w-full animate-pulse  md:block flex md:gap-0 gap-3">

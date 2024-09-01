@@ -1,10 +1,8 @@
+<app-page-loader [isLoading]="isLoading"></app-page-loader>
 <div class="py-5 min-h-[785px]">
 
   <div class="sectionContainer">
 
-    <!-- <div class="block pt-2">
-      <app-category-slider></app-category-slider>
-    </div> -->
     <!-- <app-cuisine-filter></app-cuisine-filter> -->
 
     <div nz-row nzGutter="20" class="!flex-col-reverse lg:!flex-row">
@@ -20,8 +18,11 @@
             placeholder="search products">
         </div>
 
+        <div class="lg:hidden block lg:mb-0 mb-5">
+          <app-cuisines-slider></app-cuisines-slider>
+        </div>
 
-        <div class="p-3 border border-gray-200 rounded-lg">
+        <div class="p-3 border border-gray-200 rounded-lg lg:block hidden">
           <span class="font-bold text-xl">Categories</span>
 
           <div class="bg-green4 flex flex-col rounded-md overflow-hidden mt-3">
@@ -31,7 +32,7 @@
                 All
               </div>
             </a>
-            <a [routerLink]="['/cuisines', item.slug]" *ngFor="let item of categories"
+            <a [routerLink]="['/cuisines', item.id]" *ngFor="let item of categories"
               class="category p-3 py-3 rounded-md" [routerLinkActive]="'active'">
               <div class="text-gray-400 cate-name">
                 {{ item.name }}

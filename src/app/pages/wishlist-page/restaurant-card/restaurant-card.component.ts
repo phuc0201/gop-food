@@ -1,5 +1,5 @@
 import { Component, Input } from '@angular/core';
-import { Restaurant } from 'src/app/core/models/restaurant/restaurant.model';
+import { RestaurantRecommended } from 'src/app/core/models/restaurant/restaurant.model';
 import { RestaurantService } from 'src/app/core/services/restaurant.service';
 
 @Component({
@@ -8,7 +8,7 @@ import { RestaurantService } from 'src/app/core/services/restaurant.service';
   styleUrls: ['./restaurant-card.component.scss']
 })
 export class RestaurantCardComponent {
-  @Input() restaurant = new Restaurant();
+  @Input() restaurant = new RestaurantRecommended();
   removing: boolean = false;
   removeRestaurant(id: string) {
     this.removing = true;

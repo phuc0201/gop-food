@@ -1,7 +1,7 @@
 
-const endpoint_deploy = 'https://gop-gateway.onrender.com';
-const endpoint_local = 'http://localhost:8080';
-const endpoint = endpoint_deploy;
+const endpoint_deploy = 'https://gop-gateway.onrender.com/api/v1';
+const endpoint_local = 'http://localhost:8080/api/v1';
+const endpoint = endpoint_local;
 export const URLConstant = {
   ROUTE: {
     HOMEPAGE: '/',

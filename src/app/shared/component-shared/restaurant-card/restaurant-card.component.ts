@@ -2,7 +2,7 @@ import { CommonModule } from '@angular/common';
 import { ChangeDetectionStrategy, Component, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
 import { Router, RouterModule } from '@angular/router';
 import { CuisineCategory } from 'src/app/core/mock-data/cuisine-category.data';
-import { Restaurant } from 'src/app/core/models/restaurant/restaurant.model';
+import { RestaurantRecommended } from 'src/app/core/models/restaurant/restaurant.model';
 import { RestaurantService } from 'src/app/core/services/restaurant.service';
 const plugins = [
   CommonModule,
@@ -17,7 +17,7 @@ const plugins = [
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class RestaurantCardComponent implements OnChanges, OnInit {
-  @Input() restaurant = new Restaurant();
+  @Input() restaurant = new RestaurantRecommended();
 
   isLoadImg: boolean = true;
   isHome: boolean = false;

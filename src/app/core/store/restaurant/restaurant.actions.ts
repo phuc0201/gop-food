@@ -1,8 +1,9 @@
 import { createAction, props } from "@ngrx/store";
+import { IPagedResults } from "../../models/common/response-data.model";
 import { FoodItems } from "../../models/restaurant/food-items.model";
 import { ModifierGroups } from "../../models/restaurant/modifier-groups.model";
 import { RestaurantCategory } from "../../models/restaurant/restaurant-category.model";
-import { Restaurant, RestaurantsRecommended } from "../../models/restaurant/restaurant.model";
+import { Restaurant, RestaurantRecommended } from "../../models/restaurant/restaurant.model";
 
 export const GET_RESTAURANT_LIST = '[restaurants] get list';
 export const GET_RESTAURANT_LIST_SUCCESS = '[restaurants] get success';
@@ -22,12 +23,18 @@ export const GET_FOOD_DETAILS_FAILURE = '[food] get failed';
 
 // RECOMMENDED //
 export const getRestaurantList = createAction(
-  GET_RESTAURANT_LIST
+  GET_RESTAURANT_LIST,
+  props<{
+    categoryId: string;
+    searchQuery: string;
+    page: number;
+    limit: number;
+  }>()
 );
 
 export const getRestaurantListSuccess = createAction(
   GET_RESTAURANT_LIST_SUCCESS,
-  props<{ restaurantList: RestaurantsRecommended; }>()
+  props<{ result: IPagedResults<RestaurantRecommended>; }>()
 );
 
 export const getRestaurantListFailure = createAction(

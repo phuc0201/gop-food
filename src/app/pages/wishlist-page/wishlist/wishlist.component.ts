@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Restaurant } from 'src/app/core/models/restaurant/restaurant.model';
+import { RestaurantRecommended } from 'src/app/core/models/restaurant/restaurant.model';
 import { RestaurantService } from 'src/app/core/services/restaurant.service';
 
 @Component({
@@ -8,7 +8,7 @@ import { RestaurantService } from 'src/app/core/services/restaurant.service';
   styleUrls: ['./wishlist.component.scss']
 })
 export class WishlistComponent implements OnInit {
-  wishlist: Restaurant[] = [];
+  wishlist: RestaurantRecommended[] = [];
 
   ngOnInit(): void {
     this.resSrv.currWishlistCount.subscribe(res => {

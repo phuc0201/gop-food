@@ -18,7 +18,8 @@
 .bottom-navbar-wrapper li a {
   @apply text-gray-400;
 }
-.bottom-navbar-wrapper li a.active {
+.bottom-navbar-wrapper li a.active i,
+.bottom-navbar-wrapper li a.active span {
   animation: animation-bottom-nav-active 0.5s forwards;
 }
 

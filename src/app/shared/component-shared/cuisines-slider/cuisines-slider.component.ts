@@ -1,7 +1,8 @@
 import { CommonModule } from '@angular/common';
-import { AfterViewInit, CUSTOM_ELEMENTS_SCHEMA, Component, ElementRef, Input, OnChanges, SimpleChanges, ViewChild } from '@angular/core';
+import { AfterViewInit, CUSTOM_ELEMENTS_SCHEMA, Component, ElementRef, Input, OnChanges, OnInit, SimpleChanges, ViewChild } from '@angular/core';
 import { RouterModule } from '@angular/router';
-import { CuisineCategory } from 'src/app/core/mock-data/cuisine-category.data';
+import { CuisineCategory } from 'src/app/core/models/cuisine/cuisine-category.model';
+import { CuisineService } from 'src/app/core/services/cuisine.service';
 import { register } from 'swiper/element/bundle';
 import { GetImageSrcDirective } from '../../widget/directives/get-image-src.directive';
 register();
@@ -25,10 +26,11 @@ const plugins = [
   imports: plugins,
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
 })
-export class CuisinesSliderComponent implements AfterViewInit, OnChanges {
+export class CuisinesSliderComponent implements AfterViewInit, OnChanges, OnInit {
   @Input() sortListCuisine: any;
   @ViewChild('cuisinesSlider') swiperEl!: ElementRef;
-  listCuisine = [...CuisineCategory];
+  cuisineCategories: CuisineCategory[] = [];
+
   swiperParams = {
     slidesPerView: 3,
     Infinity: true,
@@ -70,16 +72,27 @@ export class CuisinesSliderComponent implements AfterViewInit, OnChanges {
     injectStyles: [':host .swiper-button-next svg, :host .swiper-button-prev svg { display: none; } :host .swiper-pagination-bullet-active {  background-color: #00b14f !important; width:20px; border-radius:5px }'],
   };
 
-  constructor() { }
-
-  ngOnChanges(changes: SimpleChanges): void {
-    if (changes["sortListCuisine"]) {
-      this.listCuisine = [...this.sortListCuisine];
-    }
+  ngOnInit(): void {
+    this.cuisineSrc.getCuisineCategories().subscribe(
+      res => {
+        this.cuisineCategories = res;
+      }
+    );
   }
 
   ngAfterViewInit(): void {
     Object.assign(this.swiperEl.nativeElement, this.swiperParams);
     this.swiperEl.nativeElement.initialize();
   }
+
+  ngOnChanges(changes: SimpleChanges): void {
+    // if (changes["sortListCuisine"]) {
+    //   this.listCuisine = [...this.sortListCuisine];
+    // }
+  }
+
+
+  constructor(
+    private cuisineSrc: CuisineService
+  ) { }
 }

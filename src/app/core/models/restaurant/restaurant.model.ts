@@ -21,8 +21,35 @@ export class Restaurant {
   constructor() { }
 }
 
-export class RestaurantsRecommended {
-  count: number = 0;
-  items: Restaurant[] = [];
-  constructor() { }
+export class RestaurantRecommended {
+  _id: string;
+  restaurant_name: string;
+  cuisine_categories: string[];
+  avatar: string;
+  rating: number;
+  distance: number;
+  duration: number;
+  campaign_count: number;
+  items: any;
+  count: any;
+
+  constructor(
+    _id: string = '',
+    restaurant_name: string = '',
+    cuisine_categories: string[] = [],
+    avatar: string = '',
+    rating: number = 0,
+    distance: number = 0,
+    duration: number = 0,
+    campaign_count: number = 0
+  ) {
+    this._id = _id;
+    this.restaurant_name = restaurant_name;
+    this.cuisine_categories = cuisine_categories;
+    this.avatar = avatar;
+    this.rating = rating;
+    this.distance = distance;
+    this.duration = duration;
+    this.campaign_count = campaign_count;
+  }
 }

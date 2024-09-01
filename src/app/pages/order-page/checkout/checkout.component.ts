@@ -1,4 +1,4 @@
-import { Component, HostListener, OnInit, Type, ViewContainerRef } from '@angular/core';
+import { AfterViewInit, Component, HostListener, OnInit, Type, ViewContainerRef } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { NzDrawerPlacement, NzDrawerRef, NzDrawerService } from 'ng-zorro-antd/drawer';
@@ -28,7 +28,7 @@ import { CampaignsComponent } from '../campaigns/campaigns.component';
   templateUrl: './checkout.component.html',
   styleUrls: ['./checkout.component.scss']
 })
-export class CheckoutComponent implements OnInit {
+export class CheckoutComponent implements OnInit, AfterViewInit {
   basket = new Cart();
   quote = new Quote();
   paymentMethod = PaymentMethodData;
@@ -229,6 +229,9 @@ export class CheckoutComponent implements OnInit {
     this.handleMobileScreen();
   }
 
+  ngAfterViewInit(): void {
+
+  }
 
   constructor(
     private orderSrv: OrderService,
@@ -261,9 +264,6 @@ export class CheckoutComponent implements OnInit {
             }, 1500);
           }
         }
-      },
-      complete: () => {
-        // observe.unsubscribe();
       }
     });
   }

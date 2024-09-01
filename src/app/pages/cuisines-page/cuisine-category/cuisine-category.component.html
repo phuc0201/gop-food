@@ -1,7 +1,7 @@
 <div class="cuisine-categories p-3 border border-solid border-gray-200 rounded-2xl">
   <h2 class="font-bold">Danh mục</h2>
   <div class="flex flex-col bg-green3 rounded-xl">
-    <a *ngFor="let item of cuisineCategory" [routerLink]="['/cuisines', item.slug]" queryParamsHandling="merge"
+    <a *ngFor="let item of cuisineCategory" [routerLink]="['/cuisines', item.id]" queryParamsHandling="merge"
       routerLinkActive="active" class="category py-3 px-5 text-gray-400">{{ item.name }}</a>
   </div>
 </div>

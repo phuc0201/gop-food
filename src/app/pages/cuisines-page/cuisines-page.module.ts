@@ -14,6 +14,7 @@ import { NzSliderModule } from 'ng-zorro-antd/slider';
 import { CategorySliderComponent } from 'src/app/shared/component-shared/category-slider/category-slider.component';
 import { CuisinesSliderComponent } from 'src/app/shared/component-shared/cuisines-slider/cuisines-slider.component';
 import { ListRestaurantComponent } from 'src/app/shared/component-shared/list-restaurant/list-restaurant.component';
+import { PageLoaderComponent } from 'src/app/shared/component-shared/loaders/page-loader/page-loader.component';
 import { RestaurantCardComponent } from 'src/app/shared/component-shared/restaurant-card/restaurant-card.component';
 import { ListFooditemsComponent } from "../../shared/component-shared/list-fooditems/list-fooditems.component";
 import { CuisineCategoryComponent } from './cuisine-category/cuisine-category.component';
@@ -31,7 +32,7 @@ const routes: Routes = [
         title: 'Cuisines'
       },
       {
-        path: ':slug',
+        path: ':id',
         component: ListRestaurantComponent,
         title: 'Cuisines'
       }
@@ -43,6 +44,7 @@ const plugins = [
   CuisinesSliderComponent,
   ListRestaurantComponent,
   CategorySliderComponent,
+  PageLoaderComponent
 ];
 @NgModule({
   declarations: [

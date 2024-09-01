@@ -45,6 +45,10 @@ export class MapSelectorComponent implements OnInit, AfterViewInit {
     this.#modal.close(this.addressSelected);
   }
 
+  closeModal(): void {
+    this.#modal.close(this.addressSelected);
+  }
+
   autoGetLocation() {
     let isNewLocation = false;
     this.geoSrv.autoSetLocation().subscribe({

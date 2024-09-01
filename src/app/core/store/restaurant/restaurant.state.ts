@@ -1,10 +1,11 @@
+import { IPagedResults } from "../../models/common/response-data.model";
 import { FoodItems } from "../../models/restaurant/food-items.model";
 import { ModifierGroups } from "../../models/restaurant/modifier-groups.model";
 import { RestaurantCategory } from "../../models/restaurant/restaurant-category.model";
-import { Restaurant, RestaurantsRecommended } from "../../models/restaurant/restaurant.model";
+import { Restaurant, RestaurantRecommended } from "../../models/restaurant/restaurant.model";
 
 export interface RestaurantListSate {
-  restaurants: RestaurantsRecommended,
+  result: IPagedResults<RestaurantRecommended>,
   error: string,
   isLoading: boolean;
 }
@@ -35,9 +36,9 @@ export const initialMenuState: MenuState = {
   isLoading: false
 };
 export const initialRestaurantListSate: RestaurantListSate = {
-  restaurants: {
-    count: 0,
-    items: []
+  result: {
+    totalPage: 0,
+    data: []
   },
   error: '',
   isLoading: false

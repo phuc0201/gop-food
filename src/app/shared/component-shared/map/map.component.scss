@@ -1,5 +1,5 @@
 .map-container {
-  @apply w-full aspect-video md:h-auto h-[30rem];
+  @apply w-full lg:aspect-video lg:h-[30rem] h-[100vh];
 }
 
 .map-frame {

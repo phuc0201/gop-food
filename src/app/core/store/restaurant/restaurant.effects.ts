@@ -14,8 +14,8 @@ export class RestaurantEffects {
   _getRestaurantList = createEffect(() =>
     this.action$.pipe(
       ofType(restaurantAction.getRestaurantList),
-      switchMap(() => this.restaurantSrv.getRestaurants().pipe(
-        map((resList) => restaurantAction.getRestaurantListSuccess({ restaurantList: resList })),
+      switchMap((dto) => this.restaurantSrv.getRestaurants(dto.categoryId, dto.searchQuery, dto.page, dto.limit).pipe(
+        map((data) => restaurantAction.getRestaurantListSuccess({ result: data })),
         catchError(error => of(restaurantAction.getRestaurantListFailure({ error: error })))
       ))
     )

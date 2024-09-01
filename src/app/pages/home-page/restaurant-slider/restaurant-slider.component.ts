@@ -1,7 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { AfterViewInit, CUSTOM_ELEMENTS_SCHEMA, ChangeDetectionStrategy, Component, ElementRef, Input, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { RouterModule } from '@angular/router';
-import { RestaurantsRecommended } from 'src/app/core/models/restaurant/restaurant.model';
+import { RestaurantRecommended } from 'src/app/core/models/restaurant/restaurant.model';
 import { RestaurantCardComponent } from 'src/app/shared/component-shared/restaurant-card/restaurant-card.component';
 
 const plugin = [
@@ -21,7 +21,7 @@ const plugin = [
 })
 export class RestaurantSliderComponent implements AfterViewInit, OnInit, OnDestroy {
   @ViewChild('restaurantSlider') resSwiper!: ElementRef;
-  @Input() restaurants = new RestaurantsRecommended();
+  @Input() restaurants: RestaurantRecommended[] = [];
   isLoading: boolean = true;
   // private destroy$ = new Subject<void>();
 

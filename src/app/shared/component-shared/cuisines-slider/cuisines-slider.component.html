@@ -1,18 +1,18 @@
 <div class="relative">
   <swiper-container init="false" #cuisinesSlider class="cusines-slider w-full flex items-center md:mb-6 sm:mb-3 mb-3">
-    <swiper-slide *ngIf="!listCuisine.length"
+    <swiper-slide *ngIf="!cuisineCategories.length"
       class="w-full h-full flex items-center aspect-video rounded-lg overflow-hidden">
       <img loading="lazy" src="assets/img/banners/banner-1.jpg" class="w-full h-auto object-cover">
     </swiper-slide>
-    <swiper-slide *ngFor="let cusine of listCuisine"
+    <swiper-slide *ngFor="let cusine of cuisineCategories"
       class="w-full h-full flex items-center justify-center object-cover">
       <div>
-        <a [routerLink]="['/cuisines', cusine.slug]" [queryParamsHandling]="'merge'" [routerLinkActive]="'active'"
+        <a [routerLink]="['/cuisines', cusine.id]" [queryParamsHandling]="'merge'" [routerLinkActive]="'active'"
           class="flex flex-col items-center justify-center w-full">
           <div class="flex items-center flex-col">
             <div
               class="cuisine-item relative flex items-center justify-center max-h-40 aspect-square rounded-full md:rounded-lg  md:w-auto md:aspect-video  md:overflow-hidden w-16 bg-white border-2 border-transparent">
-              <img appGetImageSrc loading="lazy" [src]="cusine.img" onerror="this.src='assets/img/banners/banner-1.jpg'"
+              <img loading="lazy" [src]="cusine.image" onerror="this.src='assets/img/banners/banner-1.jpg'"
                 class="w-full md:h-auto h-full object-cover rounded-full md:rounded-lg">
               <i
                 class="fa-solid fa-circle-check absolute top-0 right-0 text-primary !hidden bg-white rounded-full md:top-1 md:right-1"></i>

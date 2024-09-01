@@ -1,5 +1,5 @@
 <swiper-container init="false" #restaurantSlider>
-  <swiper-slide lazy="true" *ngFor="let item of restaurants.items; trackBy: trackByItemId">
+  <swiper-slide lazy="true" *ngFor="let item of restaurants; trackBy: trackByItemId">
     <app-restaurant-card [isLoading]="isLoading" [restaurant]="item"></app-restaurant-card>
   </swiper-slide>
 </swiper-container>

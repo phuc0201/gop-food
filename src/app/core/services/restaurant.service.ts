@@ -3,11 +3,12 @@ import { Injectable } from "@angular/core";
 import { BehaviorSubject, Observable, switchMap } from "rxjs";
 import { SystemConstant } from "../constants/system.constant";
 import { URLConstant } from "../constants/url.constant";
+import { IPagedResults } from "../models/common/response-data.model";
 import { AddressSelected } from "../models/geolocation/location.model";
 import { FoodItemPagination, FoodItems } from "../models/restaurant/food-items.model";
 import { ModifierGroups } from "../models/restaurant/modifier-groups.model";
 import { CategorySlider, RestaurantCategory } from "../models/restaurant/restaurant-category.model";
-import { Restaurant } from "../models/restaurant/restaurant.model";
+import { Restaurant, RestaurantRecommended } from "../models/restaurant/restaurant.model";
 import { GeolocationService } from "./geolocation.service";
 
 @Injectable({
@@ -34,11 +35,15 @@ export class RestaurantService {
     return this.http.get<CategorySlider[]>(this.baseURL + `/${SystemConstant.MERCHANT_ID}/categories`);
   }
 
-  getRestaurants(): Observable<any> {
+  getRestaurants(categoryId?: string, searchQuery?: string, page: number = 1, limit: number = 10): Observable<IPagedResults<RestaurantRecommended>> {
     return this.geoSrv.currLocation.pipe(
       switchMap((location: AddressSelected) => {
-        return this.http.post<any>(this.baseURL + URLConstant.API.RESTAURANT.GET_LIST, {
-          coordinates: [location.coordinates[1], location.coordinates[0]]
+        return this.http.post<IPagedResults<RestaurantRecommended>>(this.baseURL + URLConstant.API.RESTAURANT.GET_LIST, {
+          coordinates: [location.coordinates[1], location.coordinates[0]],
+          categoryId: categoryId,
+          searchQuery: searchQuery,
+          page: page,
+          limit: limit
         });
       })
     );
@@ -60,7 +65,7 @@ export class RestaurantService {
     return this.http.get<FoodItems<ModifierGroups>>(this.baseURL + URLConstant.API.RESTAURANT.GET_FOOD_DETAILS + id);
   }
 
-  addToWishList(restaurant: Restaurant) {
+  addToWishList(restaurant: RestaurantRecommended) {
     let wl = this.getWishList();
     const index = wl.findIndex(item => item._id === restaurant._id);
 
@@ -87,7 +92,7 @@ export class RestaurantService {
     this.wistlistCount.next(new_wl.length);
   }
 
-  getWishList(): Restaurant[] {
+  getWishList(): RestaurantRecommended[] {
     const wl = localStorage.getItem(SystemConstant.WISH_LIST);
     return wl ? JSON.parse(wl) : [];
   }

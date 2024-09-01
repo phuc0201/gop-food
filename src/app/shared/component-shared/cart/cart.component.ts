@@ -83,7 +83,9 @@ export class CartComponent implements OnChanges, OnInit {
 
   redirecrCheckout() {
     this.closeDrawer();
-    this.router.navigate([URLConstant.ROUTE.ORDER_PAGE.BASE]);
+    this.router.navigate([URLConstant.ROUTE.ORDER_PAGE.BASE]).then(() => {
+      window.scrollTo(0, 0);
+    });
   }
 
   getPrice(foodItems: FoodItemDTO<Modifier>): number {

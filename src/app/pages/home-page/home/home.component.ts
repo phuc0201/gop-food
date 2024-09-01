@@ -1,7 +1,7 @@
 import { ChangeDetectorRef, Component, HostListener, OnInit } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { FoodItems } from 'src/app/core/models/restaurant/food-items.model';
-import { RestaurantsRecommended } from 'src/app/core/models/restaurant/restaurant.model';
+import { RestaurantRecommended } from 'src/app/core/models/restaurant/restaurant.model';
 import { GeolocationService } from 'src/app/core/services/geolocation.service';
 import { RestaurantService } from 'src/app/core/services/restaurant.service';
 import { getRestaurantList } from 'src/app/core/store/restaurant/restaurant.actions';
@@ -17,7 +17,7 @@ export class HomeComponent implements OnInit {
   foodItems: FoodItems<string>[] = [];
   listFoodCol: number = 6;
   isLoading: boolean = true;
-  restaurants = new RestaurantsRecommended();
+  restaurants: RestaurantRecommended[] = [];
   isMobile: boolean = false;
 
   @HostListener('window:resize', ['$event'])
@@ -34,13 +34,18 @@ export class HomeComponent implements OnInit {
   }
 
   loadRecommendedRestaurants() {
-    this.store.dispatch(getRestaurantList());
+    this.store.dispatch(getRestaurantList({
+      categoryId: "",
+      searchQuery: "",
+      page: 1,
+      limit: 10
+    }));
     this.store.select(selectRestaurantList)
       .pipe()
       .subscribe({
-        next: data => {
-          this.restaurants = data.restaurants;
-          if (data.restaurants.count > 0 && !data.isLoading) {
+        next: res => {
+          this.restaurants = res.result.data;
+          if (res.result.data.length > 0 && !res.isLoading) {
             setTimeout(() => {
               this.isLoading = false;
             }, 1000);

@@ -10,11 +10,11 @@ const _getRestaurantList = createReducer(
     };
   }),
 
-  on(restaurantAction.getRestaurantListSuccess, (state, { restaurantList }) => {
+  on(restaurantAction.getRestaurantListSuccess, (state, { result }) => {
     return {
       ...state,
       isLoading: false,
-      restaurants: restaurantList
+      result: result
     };
   }),
 

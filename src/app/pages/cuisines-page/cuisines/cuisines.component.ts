@@ -1,9 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { CuisineCategory } from 'src/app/core/mock-data/cuisine-category.data';
+import { CuisineCategory } from 'src/app/core/models/cuisine/cuisine-category.model';
 import { FoodItems } from 'src/app/core/models/restaurant/food-items.model';
-import { Category } from 'src/app/core/models/restaurant/restaurant-category.model';
-import { Filter } from 'src/app/core/services/filter.service';
+import { CuisineService } from 'src/app/core/services/cuisine.service';
 import { SearchService } from 'src/app/core/services/search.service';
 
 @Component({
@@ -12,12 +11,12 @@ import { SearchService } from 'src/app/core/services/search.service';
   styleUrls: ['./cuisines.component.scss']
 })
 export class CuisinesComponent implements OnInit {
-  listCuisine = [...CuisineCategory];
+  // listCuisine = [...CuisineCategory];
   foodItems: FoodItems<string>[] = [];
   foodForSearch: FoodItems<string>[] = [];
   cate_id: string = '';
-  isLoading: boolean = false;
-  categories: Category[] = CuisineCategory;
+  isLoading: boolean = true;
+  categories: CuisineCategory[] = [];
   searchValue: string = '';
   prices: [number, number] = [20, 100];
   minPrice: number = 0;
@@ -46,24 +45,16 @@ export class CuisinesComponent implements OnInit {
     };
   }
 
-  reloadFoodItems() {
-    this.isLoading = true;
-  }
-
-  filterByPrice(event: [number, number]) {
-    const filter = new Filter();
-    filter.minPrice = this.minPrice;
-    filter.maxPrice = this.maxPrice;
-    filter.searchValue = this.searchValue;
-    filter.prices = event;
-  }
 
   ngOnInit(): void {
-    let index = this.listCuisine.findIndex(item => this.router.url.includes(item.slug));
-    if (index !== -1) {
-      const cuisine = this.listCuisine.splice(index, 1)[0];
-      this.listCuisine.unshift(cuisine);
-    }
+    this.cuisineSrc.getCuisineCategories().subscribe(
+      res => {
+        this.categories = res;
+        setTimeout(() => {
+          this.isLoading = false;
+        }, 600);
+      }
+    );
 
     window.scrollTo({
       top: 0,
@@ -74,7 +65,8 @@ export class CuisinesComponent implements OnInit {
 
   constructor(
     private router: Router,
-    private searchSrc: SearchService
+    private searchSrc: SearchService,
+    private cuisineSrc: CuisineService
   ) {
     this.search = this.debounce(this.search.bind(this), 500);
   }

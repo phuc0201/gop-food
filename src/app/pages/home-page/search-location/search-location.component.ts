@@ -34,17 +34,18 @@ export class SearchLocationComponent implements OnInit {
   }
 
   showMapSelector() {
-    const customerMarker = new LocationMarker(RoleType.CUSTOMER ,IconMarker.CUSTOMER, this.addressSelected.coordinates)
+    const customerMarker = new LocationMarker(RoleType.CUSTOMER, IconMarker.CUSTOMER, this.addressSelected.coordinates);
     const modalRef = this.createModal(MapSelectorComponent, 'map-selector', [customerMarker]);
-    modalRef.afterClose.subscribe((result: AddressSelected) =>{
-      if(result !== undefined && result.coordinates.length > 0 && result.address !== ''){
+
+    modalRef.afterClose.subscribe((result: AddressSelected) => {
+      if (result !== undefined && result.coordinates.length > 0 && result.address !== '') {
         this.addressSelected = result;
       }
-    })
+    });
   }
 
   search(): void {
-    this.router.navigate([URLConstant.ROUTE.CUISINE_PAGE.BASE])
+    this.router.navigate([URLConstant.ROUTE.CUISINE_PAGE.BASE]);
   }
 
   onChange(value: string): void {
@@ -58,25 +59,25 @@ export class SearchLocationComponent implements OnInit {
     const profile = this.profileSrv.getProfileInSession();
     const _location = this.geoSrv.searchLocationByAddress(profile.address).pipe(
       filter(res => res.results.length > 0)
-     ).subscribe({
+    ).subscribe({
       next: res => {
         this.addressSelected.address = profile.address;
         this.addressSelected.coordinates = [
           res.results[0].geometry.location.lat,
           res.results[0].geometry.location.lng,
-        ]
+        ];
       },
       complete: () => {
-        _location.unsubscribe()
+        _location.unsubscribe();
       }
-     })
+    });
   }
 
   ngOnInit(): void {
     this.geoSrv.currLocation.subscribe((location) => {
       this.addressSelected.address = location.address;
-      this.addressSelected.coordinates = location.coordinates
-    })
+      this.addressSelected.coordinates = location.coordinates;
+    });
   }
 
   constructor(

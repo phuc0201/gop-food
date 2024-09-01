@@ -3,9 +3,9 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { NzGridModule } from 'ng-zorro-antd/grid';
-import { filter, map, Subject, switchMap, takeUntil, tap } from 'rxjs';
-import { CuisineCategory } from 'src/app/core/mock-data/cuisine-category.data';
-import { Restaurant, RestaurantsRecommended } from 'src/app/core/models/restaurant/restaurant.model';
+import { map, Subject, switchMap, takeUntil, tap } from 'rxjs';
+import { IPagedResults } from 'src/app/core/models/common/response-data.model';
+import { RestaurantRecommended } from 'src/app/core/models/restaurant/restaurant.model';
 import { SearchService } from 'src/app/core/services/search.service';
 import { getRestaurantList } from 'src/app/core/store/restaurant/restaurant.actions';
 import { selectRestaurantList } from 'src/app/core/store/restaurant/restaurant.selectors';
@@ -27,59 +27,57 @@ const plugin = [
 })
 export class ListRestaurantComponent implements OnInit, OnDestroy {
   private destroy$ = new Subject<void>();
-  slug: string = '';
-  isLoading: boolean = false;
-  restaurants = new RestaurantsRecommended();
-  restaurantsForSearch: Restaurant[] = [];
+  currPage: number = 1;
+  crrCateID: string = '';
+  isLoading: boolean = true;
+  restaurants: IPagedResults<RestaurantRecommended> = {
+    data: [],
+    totalPage: 0
+  };
+  restaurantsForSearch: IPagedResults<RestaurantRecommended> = {
+    data: [],
+    totalPage: 0
+  };
   timeout: any;
 
   loadListOfRestaurants(): void {
     this.route.params.pipe(
-      map(params => params["slug"]),
+      map(params => params["id"]),
       tap(() => { this.isLoading = true; }),
-      switchMap(slug => {
-        this.slug = slug;
+      switchMap(id => {
+        this.crrCateID = id;
+        this.store.dispatch(getRestaurantList({
+          categoryId: this.crrCateID,
+          searchQuery: "",
+          page: this.currPage,
+          limit: 10
+        }));
 
-        this.store.dispatch(getRestaurantList());
         return this.store.select(selectRestaurantList).pipe(
-          filter(res => res.restaurants.count !== 0),
           takeUntil(this.destroy$)
         );
       }),
       takeUntil(this.destroy$)
     ).subscribe({
       next: res => {
+        this.restaurants.data = res.result.data;
+
         clearTimeout(this.timeout);
-        if (res.restaurants.count > 0) {
-
-          if (this.slug !== undefined) {
-            let categories = CuisineCategory.find(cate => cate.slug == this.slug);
-
-            this.restaurants.items = res.restaurants.items.filter((item) => {
-              if (this.slug == '' || item.cuisine_categories.includes(categories?.type ?? ''))
-                return true;
-              return false;
-            });
-
-            this.restaurants.count = this.restaurants.items.length;
-          }
-          else {
-            this.restaurants = res.restaurants;
-          }
-
-          this.restaurantsForSearch = this.restaurants.items;
-
-          this.timeout = setTimeout(() => {
-            this.isLoading = false;
-          }, 600);
-        }
+        this.timeout = setTimeout(() => {
+          this.isLoading = false;
+        }, 600);
       }
     });
   }
 
   observeSearchQuery(): void {
     this.searchSrc.restaurantSearchQuery.subscribe(searchValue => {
-      this.restaurantsForSearch = this.restaurants.items.filter(item => this.searchSrc.normalizeString(item.restaurant_name).includes(this.searchSrc.normalizeString(searchValue)));
+      this.store.dispatch(getRestaurantList({
+        categoryId: this.crrCateID,
+        searchQuery: searchValue,
+        page: this.currPage,
+        limit: 10
+      }));
     });
   }
 
