@@ -18,9 +18,6 @@ export class AuthEffects {
           .pipe(
             map((token) => authActions.loginSuccess({ token })),
             catchError((error) => {
-              alert(
-                'Login failure! '
-              );
               return of(authActions.loginFailure({ error }));
             })
           )
@@ -35,10 +32,6 @@ export class AuthEffects {
         tap((token) => {
           this.authSrv.setToken(token.token);
           this.authSrv.changeLoginStatus(true);
-          alert(
-            'Login Successful! ' +
-            'Welcome, '
-          );
         })
       ),
     { dispatch: false }

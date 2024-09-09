@@ -7,11 +7,8 @@ import { NzButtonModule } from 'ng-zorro-antd/button';
 import { NzModalModule } from 'ng-zorro-antd/modal';
 import { NzRadioModule } from 'ng-zorro-antd/radio';
 import { ToastrService } from 'ngx-toastr';
-import { skip, take } from 'rxjs';
 import { ILoginDTO, SignupDTO } from 'src/app/core/models/auth/auth.model';
 import { AuthService } from 'src/app/core/services/auth.service';
-import { loginRequest } from 'src/app/core/store/auth/auth.actions';
-import { selectToken } from 'src/app/core/store/auth/auth.selectors';
 import { getProfile } from 'src/app/core/store/profile/profile.actions';
 const plugins = [
   CommonModule,
@@ -53,20 +50,26 @@ export class AuthComponent implements OnInit {
   }
 
   handleLogin(): void {
-    this.store.dispatch(loginRequest({ accCred: this.loginFormData }));
-    this.store.select(selectToken).pipe(
-      skip(1),
-      take(1)).subscribe((auth) => {
+    this.authSrv.doLogin(this.loginFormData).subscribe({
+      next: (auth) => {
         if (auth.accessToken != '') {
+          this.authSrv.setToken(auth);
+          this.authSrv.changeLoginStatus(true);
           this.store.dispatch(getProfile());
           this.authSrv.promptLogin(false);
           this.openAuthForm = false;
           this.openAuthFormChange.emit(this.openAuthForm);
+          this.toastrSrv.success('Login successfully', 'Success', {
+            timeOut: 3000,
+          });
         }
-        else {
-          alert('Login failed');
-        }
-      });
+      },
+      error: () => {
+        this.toastrSrv.error('Login failed', 'Error', {
+          timeOut: 3000,
+        });
+      }
+    });
   }
 
   handleSigup(): void {
