@@ -16,7 +16,10 @@ export class ProfileEffects {
       exhaustMap(() => {
         return this.profileSrv.getProfile()
           .pipe(
-            map((profile) => profileAction.getProfileSuccess({ profile: profile })),
+            map((profile) => {
+              this.profileSrv.setProfileIntoSession(profile);
+              return profileAction.getProfileSuccess({ profile: profile });
+            }),
             catchError(error => of(profileAction.getProfileFailure({ error: error })))
           );
       })

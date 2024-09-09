@@ -9,6 +9,7 @@ import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 import { NZ_CONFIG, NzConfig } from 'ng-zorro-antd/core/config';
 import { NZ_I18N, en_US } from 'ng-zorro-antd/i18n';
+import { ToastrModule } from 'ngx-toastr';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { CoreModule } from './core/core.module';
@@ -36,6 +37,7 @@ const plugins = [
     AppRoutingModule,
     BrowserAnimationsModule,
     HttpClientModule,
+    ToastrModule.forRoot(),
     TranslateModule.forRoot({
       loader: {
         provide: TranslateLoader,

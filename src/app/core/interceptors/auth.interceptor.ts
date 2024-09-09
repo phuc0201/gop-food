@@ -11,6 +11,7 @@ import { AuthService } from '../services/auth.service';
 
 @Injectable()
 export class AuthInterceptor implements HttpInterceptor {
+  private isLoggedOut = false;
 
   constructor(
     private inject: Injector
@@ -25,7 +26,8 @@ export class AuthInterceptor implements HttpInterceptor {
 
     return next.handle(authreq).pipe(
       catchError((err) => {
-        if (!authservice.isLogged()) {
+        if (!authservice.isLogged() && !this.isLoggedOut) {
+          this.isLoggedOut = true;
           authservice.doLogout();
           return throwError(() => err);
         }
@@ -48,7 +50,8 @@ export class AuthInterceptor implements HttpInterceptor {
         return next.handle(this.addTokenHeader(request, data.accessToken));
       }),
       catchError((err) => {
-        if (err.status === 401) {
+        if (!this.isLoggedOut) {
+          this.isLoggedOut = true;
           authservice.doLogout();
         }
         return throwError(() => err);

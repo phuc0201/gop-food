@@ -4,6 +4,7 @@ import { BehaviorSubject, Observable, filter } from "rxjs";
 import { SystemConstant } from "../constants/system.constant";
 import { URLConstant } from "../constants/url.constant";
 import { IProfile } from "../models/profile/profile.model";
+import { AuthService } from "./auth.service";
 
 @Injectable({
   providedIn: 'root'
@@ -15,7 +16,8 @@ export class ProfileService {
   currentAddress: Observable<string>;
 
   constructor(
-    private http: HttpClient
+    private http: HttpClient,
+    private authSrv: AuthService
   ) {
     this.address = new BehaviorSubject<string>(this.addressDefault);
     this.currentAddress = this.address.asObservable();
@@ -42,7 +44,7 @@ export class ProfileService {
       avatar: ''
     };
 
-    if (profile == null) {
+    if (profile == null && this.authSrv.isLogged()) {
       this.getProfile()
         .pipe(
           filter(res => res._id !== '')

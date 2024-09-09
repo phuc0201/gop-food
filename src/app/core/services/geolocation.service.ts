@@ -40,27 +40,28 @@ export class GeolocationService {
 
   setLocationByProfile() {
     const profile = this.profileSrv.getProfileInSession();
-    const _location = this.searchLocationByAddress(profile.address)
-      .pipe(
-        filter(res => res.results.length > 0)
-      )
-      .subscribe({
-        next: res => {
-          const location = {
-            address: profile.address,
-            coordinates: [
-              res.results[0].geometry.location.lat,
-              res.results[0].geometry.location.lng
-            ]
-          };
-          this.setLocation(location);
-        },
-        complete: () => {
-          _location.unsubscribe();
-        }
-      });
+    if (profile.address !== '') {
+      const _location = this.searchLocationByAddress(profile.address)
+        .pipe(
+          filter(res => res.results.length > 0)
+        )
+        .subscribe({
+          next: res => {
+            const location = {
+              address: profile.address,
+              coordinates: [
+                res.results[0].geometry.location.lat,
+                res.results[0].geometry.location.lng
+              ]
+            };
+            this.setLocation(location);
+          },
+          complete: () => {
+            _location.unsubscribe();
+          }
+        });
+    }
   }
-
 
   autoSetLocation(): Observable<AddressSelected> {
     return new Observable<AddressSelected>(observer => {

@@ -34,6 +34,7 @@ export class AuthEffects {
         ofType(authActions.loginSuccess),
         tap((token) => {
           this.authSrv.setToken(token.token);
+          this.authSrv.changeLoginStatus(true);
           alert(
             'Login Successful! ' +
             'Welcome, '

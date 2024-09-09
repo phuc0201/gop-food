@@ -1,20 +1,25 @@
 import { CommonModule } from '@angular/common';
-import { Component, EventEmitter, Input, Output } from '@angular/core';
-import { FormsModule } from '@angular/forms';
+import { HttpResponse, HttpStatusCode } from '@angular/common/http';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { FormBuilder, FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Store } from '@ngrx/store';
 import { NzButtonModule } from 'ng-zorro-antd/button';
-import { NzModalModule, NzModalService } from 'ng-zorro-antd/modal';
+import { NzModalModule } from 'ng-zorro-antd/modal';
 import { NzRadioModule } from 'ng-zorro-antd/radio';
+import { ToastrService } from 'ngx-toastr';
 import { skip, take } from 'rxjs';
-import { ILoginDTO } from 'src/app/core/models/auth/auth.model';
+import { ILoginDTO, SignupDTO } from 'src/app/core/models/auth/auth.model';
+import { AuthService } from 'src/app/core/services/auth.service';
 import { loginRequest } from 'src/app/core/store/auth/auth.actions';
 import { selectToken } from 'src/app/core/store/auth/auth.selectors';
+import { getProfile } from 'src/app/core/store/profile/profile.actions';
 const plugins = [
   CommonModule,
   NzModalModule,
   NzButtonModule,
   NzRadioModule,
-  FormsModule
+  FormsModule,
+  ReactiveFormsModule
 ];
 @Component({
   selector: 'app-auth',
@@ -23,16 +28,26 @@ const plugins = [
   standalone: true,
   imports: plugins
 })
-export class AuthComponent {
+export class AuthComponent implements OnInit {
   @Input() openAuthForm: boolean = false;
   @Output() openAuthFormChange = new EventEmitter<boolean>();
   passwordVisible: boolean = false;
   isLoginForm: boolean = true;
-  isMale: boolean = true;
+  isSignupFormSubmited: boolean = false;
   loginFormData: ILoginDTO = {
     email: '',
     password: ''
   };
+
+  signUpForm: FormGroup = new FormGroup({
+    full_name: new FormControl(''),
+    phone: new FormControl(''),
+    address: new FormControl(''),
+    email: new FormControl(''),
+    password: new FormControl(''),
+    gender: new FormControl(true),
+  });;
+
   showModal(): void {
     this.openAuthForm = true;
   }
@@ -43,6 +58,8 @@ export class AuthComponent {
       skip(1),
       take(1)).subscribe((auth) => {
         if (auth.accessToken != '') {
+          this.store.dispatch(getProfile());
+          this.authSrv.promptLogin(false);
           this.openAuthForm = false;
           this.openAuthFormChange.emit(this.openAuthForm);
         }
@@ -53,19 +70,61 @@ export class AuthComponent {
   }
 
   handleSigup(): void {
-    this.openAuthForm = false;
-    this.openAuthFormChange.emit(this.openAuthForm);
+    this.isSignupFormSubmited = true;
+    if (this.signUpForm.valid) {
+      const formData = new SignupDTO();
+      formData.full_name = this.signUpForm.get('full_name')?.value;
+      formData.email = this.signUpForm.get('email')?.value;
+      formData.password = this.signUpForm.get('password')?.value;
+      formData.phone = this.signUpForm.get('phone')?.value;
+      formData.address = this.signUpForm.get('address')?.value;
+      formData.gender = this.signUpForm.get('gender')?.value;
+
+      this.authSrv.doSignup(formData).subscribe(
+        (res: HttpResponse<any>) => {
+          if (res.status == HttpStatusCode.Created) {
+            this.toastrSrv.success('Signup successfully', 'Success', {
+              timeOut: 3000,
+            });
+
+            this.isLoginForm = true;
+          }
+          else {
+            this.toastrSrv.error('Signup failed', 'Error', {
+              timeOut: 3000,
+            });
+          }
+        }
+      );
+    } else {
+      this.toastrSrv.warning('Please re-enter the required information to proceed', 'Failed', {
+        timeOut: 3000,
+      });
+    }
   }
 
   handleCancel(): void {
+    this.authSrv.promptLogin(false);
     this.openAuthForm = false;
     this.isLoginForm = true;
     this.openAuthFormChange.emit(this.openAuthForm);
   }
 
+  ngOnInit(): void {
+    this.signUpForm = this.fb.group({
+      phone: ['', [Validators.required, Validators.pattern('^[0-9]{10}$')]],
+      email: ['', [Validators.required, Validators.email]],
+      password: ['', [Validators.required, Validators.pattern('^(?=.*[A-Za-z])(?=.*\\d)[A-Za-z\\d]{8,20}$')]],
+      full_name: ['', Validators.required],
+      address: ['', Validators.required],
+      gender: [true, Validators.required]
+    });
+  }
 
   constructor(
-    private modal: NzModalService,
-    private store: Store
+    private store: Store,
+    private authSrv: AuthService,
+    private fb: FormBuilder,
+    private toastrSrv: ToastrService
   ) { }
 }

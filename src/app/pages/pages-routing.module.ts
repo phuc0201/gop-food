@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
+import { authGuard } from '../core/guards/auth.guard';
 import { HeaderStickyLayoutComponent } from '../layouts/header-sticky-layout/header-sticky-layout/header-sticky-layout.component';
 import { MainLayoutComponent } from '../layouts/main-layout/main-layout/main-layout.component';
 
@@ -23,11 +24,13 @@ const routes: Routes = [
       // },
       {
         path: 'order',
-        loadChildren: () => import('./order-page/order-page.module').then(m => m.OrderPageModule)
+        loadChildren: () => import('./order-page/order-page.module').then(m => m.OrderPageModule),
+        canActivate: [authGuard]
       },
       {
         path: 'user',
-        loadChildren: () => import('./my-account-page/my-account-page.module').then(m => m.MyAccountPageModule)
+        loadChildren: () => import('./my-account-page/my-account-page.module').then(m => m.MyAccountPageModule),
+        canActivate: [authGuard]
       },
     ]
 

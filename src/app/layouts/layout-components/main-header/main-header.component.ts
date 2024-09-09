@@ -6,13 +6,11 @@ import { Store } from '@ngrx/store';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { NzBadgeModule } from 'ng-zorro-antd/badge';
 import { NzSelectModule } from 'ng-zorro-antd/select';
-import { skip, take } from 'rxjs';
 import { Cart } from 'src/app/core/models/order/order.model';
 import { AuthService } from 'src/app/core/services/auth.service';
 import { OrderService } from 'src/app/core/services/order.service';
 import { ProfileService } from 'src/app/core/services/profile.service';
 import { RestaurantService } from 'src/app/core/services/restaurant.service';
-import { selectToken } from 'src/app/core/store/auth/auth.selectors';
 import { selectProfile } from 'src/app/core/store/profile/profile.selectors';
 import { AuthComponent } from 'src/app/shared/component-shared/auth/auth.component';
 import { CartComponent } from 'src/app/shared/component-shared/cart/cart.component';
@@ -59,21 +57,23 @@ export class MainHeaderComponent implements OnInit {
   ngOnInit(): void {
     this.currLang = localStorage.getItem('language')?.toString();
 
-    if (this.authSrv.isLogged()) {
-      this.isLogged = true;
-    }
-
-    this.store.select(selectToken).pipe(
-      skip(1),
-      take(1)).subscribe((auth) => {
-        this.isLogged = auth.accessToken != '';
-      });
-
-    this.store.select(selectProfile).subscribe(res => {
-      if (res.profile._id === '') {
-        this.customerAvt = this.profileSrv.getProfileInSession().avatar;
-      } else this.customerAvt = res.profile.avatar;
+    this.authSrv.requireLogin$.subscribe({
+      next: res => {
+        this.openAuthForm = res;
+      }
     });
+
+    this.authSrv.currLoginStatus$.subscribe(status => this.isLogged = status);
+
+    this.store.select(selectProfile)
+      .subscribe({
+        next: res => {
+          if (res.profile._id !== '') {
+            this.customerAvt = res.profile.avatar;
+            this.isLogged = true;
+          }
+        }
+      });
 
     this.orderSrv.basket.subscribe(basket => {
       this.basket = basket;

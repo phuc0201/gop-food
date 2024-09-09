@@ -11,7 +11,6 @@ import { SearchService } from 'src/app/core/services/search.service';
   styleUrls: ['./cuisines.component.scss']
 })
 export class CuisinesComponent implements OnInit {
-  // listCuisine = [...CuisineCategory];
   foodItems: FoodItems<string>[] = [];
   foodForSearch: FoodItems<string>[] = [];
   cate_id: string = '';

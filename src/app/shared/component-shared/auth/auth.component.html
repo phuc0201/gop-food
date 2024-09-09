@@ -43,15 +43,32 @@
 </ng-template>
 
 <ng-template #signupTemplate>
-  <form>
+  <form [formGroup]="signUpForm">
     <div class="form-group">
       <div class="form-group flex flex-col mb-3">
         <label for="fullname">
           <span class="text-red">*</span>
           Fullname
         </label>
-        <input id="fullname" type="text" placeholder="GoPFood"
+        <input formControlName="full_name" id="fullname" type="text" placeholder="GoPFood"
           class="border-gray-400 focus:border-primary outline-none focus:ring-green2 rounded-lg">
+
+        <div *ngIf="isSignupFormSubmited" class="text-red">
+          <small *ngIf="signUpForm.get('full_name')?.errors?.['required']">Fullname is required</small>
+        </div>
+      </div>
+
+      <div class="form-group flex flex-col mb-3">
+        <label for="email">
+          <span class="text-red">*</span>
+          Phone
+        </label>
+        <input formControlName="phone" id="phone" type="text" placeholder="0987654321"
+          class="border-gray-400 focus:border-primary outline-none focus:ring-green2 rounded-lg">
+
+        <div *ngIf="isSignupFormSubmited" class="text-red">
+          <small *ngIf="signUpForm.get('phone')?.errors?.['required']">Phone is required</small>
+        </div>
       </div>
 
       <div class="form-group flex flex-col mb-3">
@@ -59,8 +76,12 @@
           <span class="text-red">*</span>
           Email
         </label>
-        <input id="email" type="text" placeholder="food@gop.com"
+        <input formControlName="email" id="email" type="text" placeholder="food@gop.com"
           class="border-gray-400 focus:border-primary outline-none focus:ring-green2 rounded-lg">
+
+        <div *ngIf="isSignupFormSubmited" class="text-red">
+          <small *ngIf="signUpForm.get('email')?.errors?.['required']">Email is required</small>
+        </div>
       </div>
 
       <div class="form-group flex flex-col mb-3">
@@ -69,12 +90,20 @@
           Password
         </label>
         <div class="relative">
-          <input id="password" [type]="passwordVisible ? 'text' : 'password'" placeholder=""
+          <input formControlName="password" id="password" [type]="passwordVisible ? 'text' : 'password'" placeholder=""
             class="w-full border-gray-400 focus:border-primary outline-none focus:ring-green2 rounded-lg">
           <i (click)="passwordVisible=!passwordVisible"
             class="fa-regular absolute text-xl cursor-pointer top-[50%] right-3 -translate-y-[50%]"
             [ngClass]="passwordVisible ? 'fa-eye-slash' : 'fa-eye'"></i>
         </div>
+
+        <div *ngIf="isSignupFormSubmited" class="text-red">
+          <small *ngIf="signUpForm.get('password')?.errors?.['required']">Password is required</small>
+          <small *ngIf="signUpForm.get('password')?.errors?.['pattern']">Password must 8-20 characters and contain both
+            letters and
+            numbers</small>
+        </div>
+
       </div>
 
       <div class="form-group flex flex-col mb-3">
@@ -82,8 +111,12 @@
           <span class="text-red">*</span>
           Address
         </label>
-        <input id="address" type="text" placeholder="HCMUTE"
+        <input formControlName="address" id="address" type="text" placeholder="HCMUTE"
           class="border-gray-400 focus:border-primary outline-none focus:ring-green2 rounded-lg">
+
+        <div *ngIf="isSignupFormSubmited" class="text-red">
+          <small *ngIf="signUpForm.get('address')?.errors?.['required']">Address is required</small>
+        </div>
       </div>
 
       <div class="form-group flex flex-col">
@@ -92,7 +125,7 @@
           Gender
         </label>
 
-        <nz-radio-group [(ngModel)]="isMale">
+        <nz-radio-group formControlName="gender">
           <label nz-radio [nzValue]="true">Male</label>
           <label nz-radio [nzValue]="false">Female</label>
         </nz-radio-group>

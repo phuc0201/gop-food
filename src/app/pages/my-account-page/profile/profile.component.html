@@ -43,7 +43,7 @@
     <div class="profile-content mt-20 px-5">
       <ng-container [ngTemplateOutlet]="profileTemplate"></ng-container>
 
-      <button class="w-full bg-primary text-white font-bold p-3 rounded-lg mt-10">Log out</button>
+      <button (click)="doLogout()" class="w-full bg-primary text-white font-bold p-3 rounded-lg mt-10">Log out</button>
     </div>
   </div>
 </div>
