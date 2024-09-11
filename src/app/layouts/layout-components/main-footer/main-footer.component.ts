@@ -1,8 +1,10 @@
 import { CommonModule } from '@angular/common';
 import { Component, HostListener, OnInit } from '@angular/core';
+import { NzGridModule } from 'ng-zorro-antd/grid';
 
 const plugins = [
-  CommonModule
+  CommonModule,
+  NzGridModule
 ];
 @Component({
   selector: 'app-main-footer',

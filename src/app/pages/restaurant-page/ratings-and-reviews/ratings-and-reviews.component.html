@@ -44,7 +44,8 @@
   <div class="mb-10">
     <div class="flex flex-col">
       <div class="flex items-center">
-        <img src="assets/img/avatars/user.png" class="object-cover w-12 h-12 mr-5">
+        <img [src]="review.customer.avatar" onerror="this.src='assets/img/avatars/user.png'"
+          class="object-cover w-12 h-12 mr-5 rounded-full">
         <span class="font-bold text-lg">{{ review.customer.full_name }}</span>
         <span class="w-1 h-1 bg-gray-500 rounded-full mx-2"></span>
         <span>{{ formatDate(review.createdAt) }}</span>

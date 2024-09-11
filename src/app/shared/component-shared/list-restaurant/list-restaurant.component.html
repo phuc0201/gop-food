@@ -1,12 +1,14 @@
-<div nz-row nzGutter="20" class="lg:min-h-[600px]">
+<div nz-row nzGutter="20" class="lg:min-h-[600px] h-full">
   <ng-container *ngIf="restaurants.data.length > 0 && !isLoading">
     <div *ngFor="let item of restaurants.data" nz-col nzSpan="24" nzLg="8" nzMd="8" class="restaurant-card-wrapper">
       <app-restaurant-card [restaurant]="item"></app-restaurant-card>
     </div>
   </ng-container>
 
-  <ng-container *ngIf="restaurants.data.length === 0 && !isLoading">
-
+  <ng-container *ngIf="isNoData">
+    <div class="w-full h-full flex justify-center items-center p-5">
+      <img src="assets/img/icons/ilus-basket-empty.svg" alt="" class="w-full max-w-96">
+    </div>
   </ng-container>
 
   <ng-container *ngIf="isLoading">

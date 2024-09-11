@@ -37,6 +37,11 @@ export class RestaurantCardComponent implements OnChanges, OnInit {
     });
   }
 
+
+  roundUpNumber(number: Number): number {
+    return parseFloat(number.toFixed(1));
+  }
+
   checkIsWishLish(id: string): boolean {
     const wl = this.resSrv.getWishList();
     const index = wl.findIndex(item => item._id === id);

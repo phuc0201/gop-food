@@ -1,5 +1,5 @@
-import { Component, OnInit, Type, ViewContainerRef } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
+import { Component, HostListener, OnInit, Type, ViewContainerRef } from '@angular/core';
+import { Router } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
 import { NzModalService } from 'ng-zorro-antd/modal';
 import { filter } from 'rxjs';
@@ -7,6 +7,7 @@ import { URLConstant } from 'src/app/core/constants/url.constant';
 import { AddressSelected, LocationMarker } from 'src/app/core/models/geolocation/location.model';
 import { GeolocationService } from 'src/app/core/services/geolocation.service';
 import { ProfileService } from 'src/app/core/services/profile.service';
+import { SearchService } from 'src/app/core/services/search.service';
 import { IconMarker, RoleType } from 'src/app/core/utils/enums/index.enum';
 import { MapSelectorComponent } from 'src/app/shared/component-shared/map-selector/map-selector.component';
 
@@ -21,6 +22,22 @@ export class SearchLocationComponent implements OnInit {
   filteredAddress: string[] = [];
   address = ['Số 1 VVN', 'UFM', '92 Hoàng Diệu', 'IIG Tp.HCM'];
   addressSelected = new AddressSelected();
+  searchValue: string = '';
+  isShowPopover: boolean = false;
+
+  @HostListener('window:resize', ['$event'])
+  onResize(event?: Event) {
+    this.handleResize();
+  }
+
+  @HostListener('window:scroll', ['$event'])
+  onScroll(event: Event): void {
+    this.isShowPopover = false;
+  }
+
+  handleResize(): void {
+    this.isShowPopover = !(window.innerWidth <= 768);
+  }
 
   createModal<T>(component: Type<T>, className: string, data: LocationMarker[]) {
     return this.modal.create<T, LocationMarker[]>({
@@ -45,6 +62,7 @@ export class SearchLocationComponent implements OnInit {
   }
 
   search(): void {
+    this.searchSrv.setRestaurantSearchQuery(this.searchValue);
     this.router.navigate([URLConstant.ROUTE.CUISINE_PAGE.BASE]);
   }
 
@@ -74,6 +92,7 @@ export class SearchLocationComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.handleResize();
     this.geoSrv.currLocation.subscribe((location) => {
       this.addressSelected.address = location.address;
       this.addressSelected.coordinates = location.coordinates;
@@ -82,7 +101,7 @@ export class SearchLocationComponent implements OnInit {
 
   constructor(
     private translate: TranslateService,
-    private route: ActivatedRoute,
+    private searchSrv: SearchService,
     private modal: NzModalService,
     private router: Router,
     private profileSrv: ProfileService,

@@ -11,6 +11,11 @@
   background-color: white;
   background-image: none;
 }
+
+#header.scrolled .search-bar,
+#header.header-stick .search-bar {
+  @apply border-gray-300;
+}
 /* #header.scrolled.header-sticky {
   box-shadow: none;
 } */

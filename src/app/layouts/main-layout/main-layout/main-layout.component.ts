@@ -13,6 +13,7 @@ export class MainLayoutComponent implements OnInit {
   isHiddenFooter: boolean = true;
   stickyRoutes = ['user', 'order'];
   hiddenFooterRoutes = ['order'];
+
   @HostListener('window:resize', ['$event'])
   onResize(event?: Event) {
     this.isMobile = window.innerWidth <= 768;
@@ -20,6 +21,7 @@ export class MainLayoutComponent implements OnInit {
 
   handleHeaderSticky(): void {
     this.isHeaderSticky = false;
+    this.isHiddenFooter = false;
     if (this.router.url != '/') {
       const url = this.router.url.split('/')[1];
       this.isHeaderSticky = this.stickyRoutes.includes(url);

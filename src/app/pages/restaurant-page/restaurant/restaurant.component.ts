@@ -1,10 +1,9 @@
 import { Component, HostListener, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Store } from '@ngrx/store';
-import { filter } from 'rxjs';
 import { Restaurant } from 'src/app/core/models/restaurant/restaurant.model';
-import { getMenu, getRestaurantInfo } from 'src/app/core/store/restaurant/restaurant.actions';
-import { selectRestaurantInfo } from 'src/app/core/store/restaurant/restaurant.selectors';
+import { RestaurantService } from 'src/app/core/services/restaurant.service';
+import { getMenu } from 'src/app/core/store/restaurant/restaurant.actions';
 @Component({
   selector: 'app-restaurant',
   templateUrl: './restaurant.component.html',
@@ -47,25 +46,22 @@ export class RestaurantComponent implements OnInit {
     this.handleMobileScreen();
 
     const id = this.route.snapshot.paramMap.get('id') as string;
-    this.store.dispatch(getRestaurantInfo({ res_id: id }));
-    this.store.dispatch(getMenu({ id: id }));
-
-    this.store.select(selectRestaurantInfo)
-      .pipe(
-        filter(res => res.restaurant._id !== '')
-      )
-      .subscribe(data => {
-        this.restaurant = data.restaurant;
+    this.restaurantSrv.getRestaurantInfo(id).subscribe({
+      next: data => {
+        this.restaurant = data;
         if (this.restaurant._id !== '') {
           setTimeout(() => {
             this.isLoading = false;
           }, 500);
         }
-      });
+      }
+    });
+    this.store.dispatch(getMenu({ id: id }));
   }
 
   constructor(
     private store: Store,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private restaurantSrv: RestaurantService
   ) { }
 }

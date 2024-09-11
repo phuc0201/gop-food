@@ -13,6 +13,7 @@ export class OrderHistoryComponent implements OnInit {
   searchValue: string = '';
   isLoading: boolean = true;
   isMobile: boolean = false;
+  isNoData: boolean = false;
 
   @HostListener('window:resize', ['$event'])
   onResize(event: any) {
@@ -31,11 +32,16 @@ export class OrderHistoryComponent implements OnInit {
         return true;
       return false;
     });
+
+    this.isNoData = this.orderForSearch.length == 0;
   }
 
 
   normalizeString(str: string): string {
-    return str.normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+    return str
+      .normalize('NFD')
+      .replace(/[\u0300-\u036f]/g, '')
+      .toLowerCase();
   }
 
   debounce(func: Function, wait: number) {
@@ -52,6 +58,7 @@ export class OrderHistoryComponent implements OnInit {
 
   loadOrders() {
     this.isLoading = true;
+    this.isNoData = false;
     this.orderSrv.getHistory().subscribe({
       next: data => {
         this.orders = data;
@@ -60,6 +67,9 @@ export class OrderHistoryComponent implements OnInit {
       complete: () => {
         setTimeout(() => {
           this.isLoading = false;
+          if (this.orderForSearch.length == 0) {
+            this.isNoData = true;
+          }
         }, 1000);
       }
     });

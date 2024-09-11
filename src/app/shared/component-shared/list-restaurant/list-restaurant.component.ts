@@ -6,9 +6,9 @@ import { NzGridModule } from 'ng-zorro-antd/grid';
 import { map, Subject, switchMap, takeUntil, tap } from 'rxjs';
 import { IPagedResults } from 'src/app/core/models/common/response-data.model';
 import { RestaurantRecommended } from 'src/app/core/models/restaurant/restaurant.model';
+import { RestaurantService } from 'src/app/core/services/restaurant.service';
 import { SearchService } from 'src/app/core/services/search.service';
 import { getRestaurantList } from 'src/app/core/store/restaurant/restaurant.actions';
-import { selectRestaurantList } from 'src/app/core/store/restaurant/restaurant.selectors';
 import { RestaurantCardComponent } from 'src/app/shared/component-shared/restaurant-card/restaurant-card.component';
 import { NoResultsComponent } from '../no-results/no-results.component';
 
@@ -34,6 +34,7 @@ export class ListRestaurantComponent implements OnInit, OnDestroy {
     data: [],
     totalPage: 0
   };
+  isNoData: boolean = false;
   restaurantsForSearch: IPagedResults<RestaurantRecommended> = {
     data: [],
     totalPage: 0
@@ -43,29 +44,28 @@ export class ListRestaurantComponent implements OnInit, OnDestroy {
   loadListOfRestaurants(): void {
     this.route.params.pipe(
       map(params => params["id"]),
-      tap(() => { this.isLoading = true; }),
+      tap(() => { this.isLoading = true; this.isNoData = false; }),
       switchMap(id => {
         this.crrCateID = id;
-        this.store.dispatch(getRestaurantList({
-          categoryId: this.crrCateID,
-          searchQuery: "",
-          page: this.currPage,
-          limit: 10
-        }));
-
-        return this.store.select(selectRestaurantList).pipe(
-          takeUntil(this.destroy$)
+        return this.restaurantSrv.getRestaurants(
+          this.crrCateID,
+          "",
+          this.currPage,
+          10
         );
       }),
       takeUntil(this.destroy$)
     ).subscribe({
       next: res => {
-        this.restaurants.data = res.result.data;
-
+        this.restaurants.data = res.data;
         clearTimeout(this.timeout);
         this.timeout = setTimeout(() => {
           this.isLoading = false;
+          this.isNoData = this.restaurants.data.length === 0;
         }, 600);
+      },
+      complete: () => {
+
       }
     });
   }
@@ -94,7 +94,8 @@ export class ListRestaurantComponent implements OnInit, OnDestroy {
   constructor(
     private route: ActivatedRoute,
     private store: Store,
-    private searchSrc: SearchService
+    private searchSrc: SearchService,
+    private restaurantSrv: RestaurantService
   ) { }
 
 }

@@ -1,16 +1,18 @@
 import { CommonModule } from '@angular/common';
 import { Component, Input, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { RouterModule } from '@angular/router';
+import { Router, RouterModule } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { NzBadgeModule } from 'ng-zorro-antd/badge';
 import { NzSelectModule } from 'ng-zorro-antd/select';
+import { URLConstant } from 'src/app/core/constants/url.constant';
 import { Cart } from 'src/app/core/models/order/order.model';
 import { AuthService } from 'src/app/core/services/auth.service';
+import { GeolocationService } from 'src/app/core/services/geolocation.service';
 import { OrderService } from 'src/app/core/services/order.service';
-import { ProfileService } from 'src/app/core/services/profile.service';
 import { RestaurantService } from 'src/app/core/services/restaurant.service';
+import { SearchService } from 'src/app/core/services/search.service';
 import { selectProfile } from 'src/app/core/store/profile/profile.selectors';
 import { AuthComponent } from 'src/app/shared/component-shared/auth/auth.component';
 import { CartComponent } from 'src/app/shared/component-shared/cart/cart.component';
@@ -46,12 +48,20 @@ export class MainHeaderComponent implements OnInit {
   customerAvt: string = '';
   basket = new Cart();
   wishlist: number = 0;
+  searchValue: string = '';
+  showSearchBar: boolean = false;
+  address: string = '';
 
   switchLanguage() {
     localStorage.setItem('language', this.currLang ?? 'vi');
     if (this.currLang !== this.translate.currentLang) {
       window.location.reload();
     }
+  }
+
+  search(): void {
+    this.searchSrv.setRestaurantSearchQuery(this.searchValue);
+    this.router.navigate([URLConstant.ROUTE.CUISINE_PAGE.BASE]);
   }
 
   ngOnInit(): void {
@@ -81,6 +91,14 @@ export class MainHeaderComponent implements OnInit {
 
     this.resSrv.currWishlistCount.subscribe(wl => this.wishlist = wl);
 
+    if (this.router.url == '/') {
+      this.showSearchBar = true;
+    }
+
+    this.geoSrv.currLocation.subscribe(location => {
+      this.address = location.address;
+    });
+
   }
 
   constructor(
@@ -88,8 +106,10 @@ export class MainHeaderComponent implements OnInit {
     private resSrv: RestaurantService,
     private store: Store,
     private authSrv: AuthService,
-    private profileSrv: ProfileService,
-    private orderSrv: OrderService
+    private orderSrv: OrderService,
+    private searchSrv: SearchService,
+    private router: Router,
+    private geoSrv: GeolocationService
   ) {
     translate.use(localStorage.getItem('language')?.toString() ?? 'vi');
   }

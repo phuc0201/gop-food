@@ -5,3 +5,11 @@
     rgba(192, 229, 246, 1) 64%
   );
 }
+
+::ng-deep .popover-select-location .ant-popover-inner {
+  @apply bg-white rounded-xl;
+}
+
+::ng-deep .popover-select-location .ant-popover-arrow-content::before {
+  @apply bg-white;
+}

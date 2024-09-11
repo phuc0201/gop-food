@@ -51,7 +51,7 @@
           <div class="flex md:gap-3 gap-2 max-w-full">
             <div class="restaurant-rate flex items-center md:gap-2 gap-1">
               <i class="fa-solid fa-star text-yellow-400 md:text-base text-xs"></i>
-              <div class="text-grey1 md:text-base text-xs">{{restaurant.rating}}</div>
+              <div class="text-grey1 md:text-base text-xs">{{ roundUpNumber(restaurant.rating) }}</div>
             </div>
             <div class="restaurant-duration flex items-center md:gap-2 gap-1">
               <i class="fa-regular fa-clock text-grey1 md:text-base text-xs"></i>

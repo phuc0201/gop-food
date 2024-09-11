@@ -1,6 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { AfterViewInit, CUSTOM_ELEMENTS_SCHEMA, Component, ElementRef, Input, OnChanges, OnInit, SimpleChanges, ViewChild } from '@angular/core';
-import { RouterModule } from '@angular/router';
+import { Router, RouterModule } from '@angular/router';
 import { CuisineCategory } from 'src/app/core/models/cuisine/cuisine-category.model';
 import { CuisineService } from 'src/app/core/services/cuisine.service';
 import { register } from 'swiper/element/bundle';
@@ -69,15 +69,30 @@ export class CuisinesSliderComponent implements AfterViewInit, OnChanges, OnInit
       slideChange: () => { },
       activeIndexChange: () => { },
     },
-    injectStyles: [':host .swiper-button-next svg, :host .swiper-button-prev svg { display: none; } :host .swiper-pagination-bullet-active {  background-color: #00b14f !important; width:20px; border-radius:5px }'],
+    injectStyles: [':host .swiper-button-next svg, :host .swiper-button-prev svg { display: none; } :host .swiper-button-prev { display: none } :host .swiper-pagination-bullet-active {  background-color: #00b14f !important; width:20px; border-radius:5px }'],
   };
 
-  ngOnInit(): void {
-    this.cuisineSrc.getCuisineCategories().subscribe(
-      res => {
-        this.cuisineCategories = res;
+  private handleCuisineRoute(url: string): void {
+    const segments = url.split('/');
+    if (segments.includes('cuisines') && segments.length > 2) {
+      const cuisineId = segments[2];
+      const index = this.cuisineCategories.findIndex(cuisines => cuisines.id == cuisineId);
+      if (index > -1) {
+        const [cuisine] = this.cuisineCategories.splice(index, 1);
+        this.cuisineCategories.unshift(cuisine);
       }
-    );
+    }
+  }
+
+  ngOnInit(): void {
+    this.cuisineSrc.getCuisineCategories().subscribe({
+      next: res => {
+        this.cuisineCategories = res;
+      },
+      complete: () => {
+        this.handleCuisineRoute(this.router.url);
+      }
+    });
   }
 
   ngAfterViewInit(): void {
@@ -93,6 +108,7 @@ export class CuisinesSliderComponent implements AfterViewInit, OnChanges, OnInit
 
 
   constructor(
-    private cuisineSrc: CuisineService
+    private cuisineSrc: CuisineService,
+    private router: Router
   ) { }
 }

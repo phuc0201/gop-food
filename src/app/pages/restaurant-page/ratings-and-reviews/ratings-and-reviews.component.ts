@@ -67,7 +67,7 @@ export class RatingsAndReviewsComponent implements OnInit, OnChanges {
   }
 
   ngOnInit(): void {
-
+    this.checkMobileScreen();
   }
 
   ngOnChanges(changes: SimpleChanges): void {

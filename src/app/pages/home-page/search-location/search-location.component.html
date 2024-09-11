@@ -13,8 +13,7 @@
           <i class="fa-solid fa-compass text-lg cursor-pointer text-red absolute  left-3 top-1/2 -translate-y-1/2"></i>
           <!-- shadow-[rgba(208,211,213,1)_0px_0px_5px_1px] -->
           <input nz-input [placeholder]="langData + 'NHAP_DIA_CHI' | translate" [(ngModel)]="addressSelected.address"
-            (ngModelChange)="onChange($event)" (keyup.enter)="search()"
-            class="outline-none py-3 px-10  rounded-lg grow max-w-full w-full" />
+            (ngModelChange)="onChange($event)" class="outline-none py-3 px-10  rounded-lg grow max-w-full w-full" />
           <!-- <nz-autocomplete #auto nzBackfill="true">
             <nz-auto-option *ngFor="let option of filteredAddress" (click)="search()" (nzSelect)="search()"
               [nzValue]="option">
@@ -22,8 +21,13 @@
             </nz-auto-option>
           </nz-autocomplete> -->
 
-          <i (click)="showMapSelector()"
-            class="fa-solid fa-location-crosshairs text-lg text-primary cursor-pointer absolute right-3 top-1/2 -translate-y-1/2"></i>
+          <button (click)="showMapSelector()" nzPopoverPlacement="left" nz-popover nzType="primary"
+            nzPopoverContent="Click here to select location" [nzPopoverVisible]="isShowPopover"
+            nzPopoverOverlayClassName="popover-select-location" class="absolute top-1/2 -translate-y-1/2 right-4">
+            <i class="fa-solid fa-location-crosshairs text-lg text-primary"></i>
+          </button>
+          <!-- <i (click)="showMapSelector()"
+            class="fa-solid fa-location-crosshairs text-lg text-primary cursor-pointer absolute right-3 top-1/2 -translate-y-1/2"></i> -->
         </div>
       </div>
     </div>
@@ -38,8 +42,8 @@
       <span class="max-w-52 line-clamp-1 font-bold text-xl">{{ addressSelected.address }}</span>
     </div>
     <div class="absolute top-full left-0 right-0 -translate-y-1/2  px-5">
-      <input nz-input class="outline-none border w-full py-4 pl-16 px-5  rounded-md"
-        placeholder="What shall we deliver?" />
+      <input (keydown.enter)="search()" [(ngModel)]="searchValue" nz-input
+        class="outline-none border w-full py-4 pl-16 px-5  rounded-md" placeholder="What shall we deliver?" />
 
       <div class="absolute top-1/2 left-10 -translate-y-1/2">
         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"

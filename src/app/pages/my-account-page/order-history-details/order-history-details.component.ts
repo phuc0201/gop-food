@@ -14,6 +14,8 @@ export class OrderHistoryDetailsComponent implements OnInit {
   basket = new Cart();
   orderDetails = new OrderDetails();
   locationMarkers: LocationMarker[] = [];
+  isLoading: boolean = true;
+
   stepper = [
     {
       type: OrderStatusTrackerType.PLACE_ORDER_SUCCESS,
@@ -46,7 +48,7 @@ export class OrderHistoryDetailsComponent implements OnInit {
 
   ngOnInit(): void {
     const id = this.route.snapshot.paramMap.get('id') as string;
-
+    this.isLoading = true;
     const observe = this.orderSrv.getOrderDetails(id).subscribe({
       next: data => {
         this.orderDetails = data;
@@ -61,10 +63,12 @@ export class OrderHistoryDetailsComponent implements OnInit {
             }
           }
         });
-
       },
       complete: () => {
-        observe.unsubscribe();
+        setTimeout(() => {
+          this.isLoading = false;
+          observe.unsubscribe();
+        }, 1000);
       }
     });
   }

@@ -50,7 +50,7 @@ export class CategorySliderComponent implements AfterViewInit, OnChanges, OnInit
       slideChange: () => { },
       activeIndexChange: () => { },
     },
-    injectStyles: [':host .swiper-button-next svg, :host .swiper-button-prev svg { display: none; } :host .swiper-pagination-bullet-active {  background-color: #00b14f !important; width:20px; border-radius:5px }'],
+    injectStyles: [':host .swiper-button-next svg, :host .swiper-button-prev svg { display: none; } :host .swiper-button-prev { display: none } :host .swiper-pagination-bullet-active {  background-color: #00b14f !important; width:20px; border-radius:5px }'],
   };
 
 
@@ -58,7 +58,6 @@ export class CategorySliderComponent implements AfterViewInit, OnChanges, OnInit
     this.restaurantSrv.getCategories().subscribe(data => {
       this.categories = data;
       console.log(this.categories);
-
     });
   }
 
@@ -72,6 +71,6 @@ export class CategorySliderComponent implements AfterViewInit, OnChanges, OnInit
   }
 
   constructor(
-    private restaurantSrv: RestaurantService
+    private restaurantSrv: RestaurantService,
   ) { }
 }

@@ -1,5 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
 import { CuisineCategory } from 'src/app/core/models/cuisine/cuisine-category.model';
 import { FoodItems } from 'src/app/core/models/restaurant/food-items.model';
 import { CuisineService } from 'src/app/core/services/cuisine.service';
@@ -21,8 +20,8 @@ export class CuisinesComponent implements OnInit {
   minPrice: number = 0;
   maxPrice: number = 100;
 
-  search(name: string) {
-    this.searchSrc.setRestaurantSearchQuery(name);
+  search() {
+    this.searchSrv.setRestaurantSearchQuery(this.searchValue);
   }
 
   normalizeString(str: string): string {
@@ -46,7 +45,7 @@ export class CuisinesComponent implements OnInit {
 
 
   ngOnInit(): void {
-    this.cuisineSrc.getCuisineCategories().subscribe(
+    this.cuisineSrv.getCuisineCategories().subscribe(
       res => {
         this.categories = res;
         setTimeout(() => {
@@ -54,6 +53,13 @@ export class CuisinesComponent implements OnInit {
         }, 600);
       }
     );
+
+    const searchObserve$ = this.searchSrv.restaurantSearchQuery.subscribe({
+      next: value => {
+        this.searchValue = value;
+      }
+    });
+    searchObserve$.unsubscribe();
 
     window.scrollTo({
       top: 0,
@@ -63,10 +69,9 @@ export class CuisinesComponent implements OnInit {
   }
 
   constructor(
-    private router: Router,
-    private searchSrc: SearchService,
-    private cuisineSrc: CuisineService
+    private searchSrv: SearchService,
+    private cuisineSrv: CuisineService
   ) {
-    this.search = this.debounce(this.search.bind(this), 500);
+    this.search = this.debounce(this.search.bind(this), 300);
   }
 }

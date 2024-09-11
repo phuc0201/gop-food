@@ -1,11 +1,11 @@
-<div class="relative flex justify-between w-full h-32 mb-5 bg-white p-3 rounded-md">
+<div class="relative flex justify-between w-full h-32 mb-5 bg-white lg:px-3 px-0 p-3  rounded-md">
   <a [routerLink]="['/restaurant', restaurant._id]"
     class="absolute right-3 bottom-3 p-2 px-4 bg-primary text-white font-bold rounded-md hover:text-white hover:opacity-90">
     Start Grabbing Food
   </a>
 
   <div class="flex gap-2">
-    <img [src]="restaurant.avatar" alt="" class="w-24 h-24 object-cover rounded-md">
+    <img [src]="restaurant.avatar" alt="" class="w-24 h-24 min-w-24 object-cover rounded-md">
     <div>
       <h3 class="font-bold">{{ restaurant.restaurant_name }}</h3>
       <!-- <p class="text-gray-400 line-clamp-2">{{ restaurant.bio }}</p> -->
