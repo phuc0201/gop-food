@@ -1,11 +1,12 @@
 import { CommonModule } from '@angular/common';
 import { Component, Input, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { Router, RouterModule } from '@angular/router';
+import { NavigationEnd, Router, RouterModule } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { NzBadgeModule } from 'ng-zorro-antd/badge';
 import { NzSelectModule } from 'ng-zorro-antd/select';
+import { filter, tap } from 'rxjs';
 import { URLConstant } from 'src/app/core/constants/url.constant';
 import { Cart } from 'src/app/core/models/order/order.model';
 import { AuthService } from 'src/app/core/services/auth.service';
@@ -95,6 +96,18 @@ export class MainHeaderComponent implements OnInit {
       this.showSearchBar = true;
     }
 
+    this.router.events
+      .pipe(
+        filter(event => event instanceof NavigationEnd),
+        tap(() => { this.showSearchBar = false; }),
+      )
+      .subscribe((event: any) => {
+        if (this.router.url == '/') {
+          this.showSearchBar = true;
+        }
+      });
+
+
     this.geoSrv.currLocation.subscribe(location => {
       this.address = location.address;
     });
@@ -109,7 +122,7 @@ export class MainHeaderComponent implements OnInit {
     private orderSrv: OrderService,
     private searchSrv: SearchService,
     private router: Router,
-    private geoSrv: GeolocationService
+    private geoSrv: GeolocationService,
   ) {
     translate.use(localStorage.getItem('language')?.toString() ?? 'vi');
   }
