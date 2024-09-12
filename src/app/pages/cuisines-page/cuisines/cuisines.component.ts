@@ -72,6 +72,6 @@ export class CuisinesComponent implements OnInit {
     private searchSrv: SearchService,
     private cuisineSrv: CuisineService
   ) {
-    this.search = this.debounce(this.search.bind(this), 300);
+    this.search = this.debounce(this.search.bind(this), 500);
   }
 }

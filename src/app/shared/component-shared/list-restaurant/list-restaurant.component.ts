@@ -8,7 +8,6 @@ import { IPagedResults } from 'src/app/core/models/common/response-data.model';
 import { RestaurantRecommended } from 'src/app/core/models/restaurant/restaurant.model';
 import { RestaurantService } from 'src/app/core/services/restaurant.service';
 import { SearchService } from 'src/app/core/services/search.service';
-import { getRestaurantList } from 'src/app/core/store/restaurant/restaurant.actions';
 import { RestaurantCardComponent } from 'src/app/shared/component-shared/restaurant-card/restaurant-card.component';
 import { NoResultsComponent } from '../no-results/no-results.component';
 
@@ -41,7 +40,7 @@ export class ListRestaurantComponent implements OnInit, OnDestroy {
   };
   timeout: any;
 
-  loadListOfRestaurants(): void {
+  loadListOfRestaurants(searchValue: string = ''): void {
     this.route.params.pipe(
       map(params => params["id"]),
       tap(() => { this.isLoading = true; this.isNoData = false; }),
@@ -49,7 +48,7 @@ export class ListRestaurantComponent implements OnInit, OnDestroy {
         this.crrCateID = id;
         return this.restaurantSrv.getRestaurants(
           this.crrCateID,
-          "",
+          searchValue,
           this.currPage,
           10
         );
@@ -72,12 +71,13 @@ export class ListRestaurantComponent implements OnInit, OnDestroy {
 
   observeSearchQuery(): void {
     this.searchSrc.restaurantSearchQuery.subscribe(searchValue => {
-      this.store.dispatch(getRestaurantList({
-        categoryId: this.crrCateID,
-        searchQuery: searchValue,
-        page: this.currPage,
-        limit: 10
-      }));
+      // this.store.dispatch(getRestaurantList({
+      //   categoryId: this.crrCateID,
+      //   searchQuery: searchValue,
+      //   page: this.currPage,
+      //   limit: 10
+      // }));
+      this.loadListOfRestaurants(searchValue);
     });
   }
 
