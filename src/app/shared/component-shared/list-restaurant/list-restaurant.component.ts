@@ -82,7 +82,7 @@ export class ListRestaurantComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    this.loadListOfRestaurants();
+    // this.loadListOfRestaurants();
     this.observeSearchQuery();
   }
 
