@@ -1,7 +1,7 @@
 import { CommonModule } from '@angular/common';
-import { Component, HostListener, Input, OnInit } from '@angular/core';
+import { Component, HostListener, Input, OnDestroy, OnInit } from '@angular/core';
 import { Store } from '@ngrx/store';
-import { NzDrawerPlacement, NzDrawerRef, NzDrawerService } from 'ng-zorro-antd/drawer';
+import { NzDrawerPlacement, NzDrawerService } from 'ng-zorro-antd/drawer';
 import { Subscription } from 'rxjs';
 import { FoodItems } from 'src/app/core/models/restaurant/food-items.model';
 import { ModifierGroups } from 'src/app/core/models/restaurant/modifier-groups.model';
@@ -22,27 +22,38 @@ const plugins = [
   standalone: true,
   imports: plugins
 })
-export class FoodCardComponent implements OnInit {
+export class FoodCardComponent implements OnInit, OnDestroy {
   @Input() foodInfor = new FoodItems<string>();
   foodDetails = new FoodItems<ModifierGroups>();
-  drawerRef?: NzDrawerRef<any, any>;
+  drawerRef?: any;
   foodDetailsSubscription?: Subscription;
   isAddToCard: boolean = false;
-
   placementDrawer: NzDrawerPlacement = 'right';
 
 
-  @HostListener('window:resize', ['event'])
+  @HostListener('window:resize', ['$event'])
   onResize(event: any) {
     this.handleMobileScreen();
   }
 
   handleMobileScreen() {
-    if (window.innerWidth <= 768) {
-      this.placementDrawer = 'bottom';
+    const previousPlacement = this.placementDrawer;
+    this.placementDrawer = window.innerWidth <= 768 ? 'bottom' : 'right';
+
+    if (previousPlacement !== this.placementDrawer && this.drawerRef) {
+      this.updateDrawerPlacement();
     }
-    else this.placementDrawer = 'right';
   }
+
+  updateDrawerPlacement() {
+    this.drawerRef.nzPlacement = this.placementDrawer;
+    this.drawerRef.nzVisible = false;
+    setTimeout(() => {
+      this.drawerRef.nzVisible = true;
+    }, 0);
+  }
+
+
 
   showDetails() {
     if (!this.isAddToCard) {
@@ -69,6 +80,12 @@ export class FoodCardComponent implements OnInit {
 
   ngOnInit(): void {
     this.handleMobileScreen();
+  }
+
+  ngOnDestroy(): void {
+    if (this.drawerRef) {
+      this.drawerRef.close();
+    }
   }
 
   constructor(

@@ -48,7 +48,7 @@
   <div class="relative w-full aspect-video overflow-hidden flex justify-center items-center bg-gray-100"
     [ngClass]="isLoading ? 'animate-pulse' : ''">
     <img *ngIf="isLoading === false" loading="lazy" [src]="foodDetails.image"
-      onerror="this.src='assets/img/foods/food-default.webp'" class="mb-5 object-cover w-full animation-fadeIn">
+      onerror="this.src='assets/img/foods/food-default.webp'" class="object-cover w-full h-full animation-fadeIn">
     <app-img-loader [isLoading]="isLoading"></app-img-loader>
 
     <div class="absolute top-2 left-2 bg-black opacity-15 rounded-full w-14 h-14">
@@ -60,6 +60,10 @@
         <path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12" />
       </svg>
     </button>
+  </div>
+
+  <div class="px-6 py-4 pb-0">
+    <h3 class="">{{ foodDetails.name }}</h3>
   </div>
 
   <div class="px-6 py-4 pb-0">

@@ -23,7 +23,7 @@ export class RestaurantCardComponent implements OnChanges, OnInit {
   isHome: boolean = false;
   cuisine_cate_name: string[] = ['Loading....'];
   distance: number = 0;
-  duration: number = 0;
+  duration: string = '0m';
   hasPromotion: boolean = true;
   checkInWishList: boolean = false;
 
@@ -63,7 +63,8 @@ export class RestaurantCardComponent implements OnChanges, OnInit {
 
       if (this.restaurant.distance && this.restaurant.duration) {
         this.distance = parseFloat((this.restaurant.distance / 1000).toFixed(2));
-        this.duration = parseFloat((this.restaurant.duration / 60000).toFixed(0));
+        let duration = parseFloat((this.distance / (40 / 60)).toFixed(0));
+        this.duration = duration < 60 ? duration + 'm' : (parseFloat((duration / 60).toFixed(0)) + 'h');
       }
     }
   }
