@@ -127,3 +127,6 @@ export class GeolocationService {
     return this.http.get<AddressSearchResult>(apiUrl);
   }
 }
+
+
+// https://rsapi.goong.io/Place/AutoComplete?api_key=fIDyXkoHiaj9o2MkHjXzm7LogENx4cw7xnyWhxll&input=cho%20an%20phu%20dong

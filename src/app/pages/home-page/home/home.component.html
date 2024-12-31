@@ -1,4 +1,4 @@
-<app-page-loader [isLoading]="isLoading"></app-page-loader>
+<!-- <app-page-loader [isLoading]="isLoading"></app-page-loader> -->
 <app-home-slider></app-home-slider>
 
 <div class="" [class.sectionContainer]="!isMobile">
@@ -9,17 +9,18 @@
 
 <div class="md:min-h-[500px] sectionContainer md:py-10 py-0">
   <app-cuisines-slider></app-cuisines-slider>
-  <app-restaurant-slider [restaurants]="restaurants"></app-restaurant-slider>
-  <a [routerLink]="['cuisines']">
-    <button class="uppercase border border-gray-500 rounded-lg w-full text-gray-500 font-medium p-3">See All
-      Restaurant</button>
-  </a>
+  <div class="lg:py-5 py-4">
+    <app-restaurant-slider [restaurants]="restaurants"></app-restaurant-slider>
+    <a [routerLink]="['cuisines']">
+      <button class="uppercase border border-gray-500 rounded-lg w-full text-gray-500 font-medium p-3">See All
+        Restaurant</button>
+    </a>
+  </div>
 </div>
-
 
 <div class="sectionContainer pt-0">
   <div
-    class="relative banner-advertisement-app rounded-xl lg:flex-row flex-col flex justify-end p-5 md:p-10 lg:p-20 pb-0 mt-10">
+    class="relative banner-advertisement-app rounded-xl lg:flex-row flex-col flex justify-end p-5 md:p-10 lg:p-20 pb-0 lg:mt-20 mt-5">
 
     <div class="flex flex-col items-center gap-4">
       <h1 class="text-[#03081F] font-bold lg:text-6xl sm:text-4xl text-2xl text-center">Ordering is more</h1>
@@ -42,7 +43,7 @@
   </div>
 </div>
 
-<div class="sectionContainer !mt-10">
+<div class="sectionContainer md:!mt-10 !mt-5">
   <div nz-row nzGutter="20">
     <div nz-col nzSpan="24" nzLg="12" class="lg:mb-0 mb-5">
       <div class="relative aspect-video rounded-xl overflow-hidden">

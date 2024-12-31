@@ -47,10 +47,10 @@ a {
   @apply text-black hover:text-black;
 }
 .sectionContainer {
-  max-width: 1280px;
+  max-width: 1440px;
   width: 100%;
   margin: 0 auto;
-  @apply md:px-10 px-5;
+  @apply lg:px-10 md:px-7 px-4;
 }
 
 h1 {

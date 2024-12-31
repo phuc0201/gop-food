@@ -1,7 +1,7 @@
 
 const endpoint_deploy = 'https://gop-server.vercel.app/api/v1';
-const endpoint_local = 'http://localhost:8080/api/v1';
-const endpoint = endpoint_deploy;
+const endpoint_local = 'http://192.168.1.28:8080/api/v1';
+const endpoint = endpoint_local;
 export const URLConstant = {
   ROUTE: {
     HOMEPAGE: '/',

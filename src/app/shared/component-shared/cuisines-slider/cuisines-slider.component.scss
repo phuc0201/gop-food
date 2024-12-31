@@ -1,6 +1,28 @@
-.active .cuisine-item {
+.slider-item .active {
   @apply border-primary;
 }
-.active .cuisine-item i {
-  display: block !important;
+
+.cuisine-overlay {
+  background: linear-gradient(
+    23deg,
+    rgb(3, 8, 31) 0%,
+    transparent,
+    transparent
+  );
+}
+
+.cuisine-slider {
+  scroll-snap-type: x mandatory;
+  display: flex;
+  -webkit-overflow-scrolling: touch;
+  overflow-x: scroll;
+  scroll-behavior: smooth;
+}
+
+.cuisine-slider .slider-item {
+  scroll-snap-align: center;
+}
+
+.cuisine-slider::-webkit-scrollbar {
+  display: none; /* Hide scrollbar */
 }

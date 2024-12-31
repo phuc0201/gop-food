@@ -1,28 +1,45 @@
-<div class="relative">
-  <swiper-container init="false" #cuisinesSlider class="cusines-slider w-full flex items-center md:mb-6 sm:mb-3 mb-3">
-    <swiper-slide *ngIf="!cuisineCategories.length"
-      class="w-full h-full flex items-center aspect-video rounded-lg overflow-hidden">
-      <img loading="lazy" src="assets/img/banners/banner-1.jpg" class="w-full h-auto object-cover">
-    </swiper-slide>
-    <swiper-slide *ngFor="let cusine of cuisineCategories"
-      class="w-full h-full flex items-center justify-center object-cover">
-      <div>
-        <a [routerLink]="['/cuisines', cusine.id]" [queryParamsHandling]="'merge'" [routerLinkActive]="'active'"
-          class="flex flex-col items-center justify-center w-full">
-          <div class="flex items-center flex-col">
-            <div
-              class="cuisine-item relative flex items-center justify-center max-h-40 aspect-square rounded-full md:rounded-lg  md:w-auto md:aspect-video  md:overflow-hidden w-16 bg-white border-2 border-transparent">
+<ng-container *ngIf="isLoading">
+  <div class="cuisine-slider flex items-start justify-start md:gap-4 gap-3">
+    <div *ngFor="let item of [1,2,3,4,5,6,7,8,9,10]"
+      class="w-16 min-w-16 aspect-square sm:w-32 sm:min-w-32 md:w-52 md:min-w-52 sm:aspect-video animate-pulse bg-gray-300 sm:rounded-lg rounded-full">
+    </div>
+  </div>
+</ng-container>
+
+<ng-container *ngIf="!isLoading">
+  <div class="w-full relative cursor-pointer">
+    <button (click)="scrollLeft()"
+      class="hidden md:flex absolute z-30 top-1/2 left-2 -translate-y-1/2 w-10 h-10 rounded-full bg-black bg-opacity-20 text-white text-base  items-center justify-center">
+      <i class="fa-solid fa-angle-left"></i>
+    </button>
+    <button (click)="scrollRight()"
+      class="absolute hidden md:flex z-30 top-1/2 right-2 -translate-y-1/2 w-10 h-10 rounded-full bg-black bg-opacity-20 text-white text-base items-center justify-center">
+      <i class="fa-solid fa-angle-right"></i>
+    </button>
+    <div class="relative w-full">
+      <div #cuisinesSlider id="cuisine-list" class="cuisine-slider flex items-start justify-start md:gap-4 gap-3">
+        <ng-container *ngFor="let cusine of cuisineCategories">
+          <div class="slider-item flex flex-col items-center">
+            <a [routerLink]="['/cuisines', cusine.id]" [queryParamsHandling]="'merge'" [routerLinkActive]="'active'"
+              class="relative border-2 border-transparent transition-all duration-300 w-16 min-w-16 aspect-square sm:w-32 sm:min-w-32 md:w-52 md:min-w-52 sm:aspect-video overflow-hidden rounded-full sm:rounded-lg">
+              <div
+                class="sm:block hidden z-10 absolute top-0 left-0 right-0 bottom-0 cuisine-overlay sm:rounded-lg rounded-full">
+              </div>
+
               <img loading="lazy" [src]="cusine.image" onerror="this.src='assets/img/banners/banner-1.jpg'"
-                class="w-full md:h-auto h-full object-cover rounded-full md:rounded-lg">
-              <i
-                class="fa-solid fa-circle-check absolute top-0 right-0 text-primary !hidden bg-white rounded-full md:top-1 md:right-1"></i>
-            </div>
-            <span class="text-black text-center lg:font-medium font-normal xs:text-sm text-[10px] mt-2 line-clamp-1">{{
+                class="w-full md:h-auto h-full object-cover">
+
+              <span
+                class="absolute z-20 bottom-2 left-3 sm:block hidden text-white text-center lg:font-medium font-normal text-sm mt-2 line-clamp-1">{{
+                cusine.name
+                }}</span>
+            </a>
+            <span class="sm:hidden block text-black text-center text-xs lg:font-medium mt-2 line-clamp-1">{{
               cusine.name
               }}</span>
           </div>
-        </a>
+        </ng-container>
       </div>
-    </swiper-slide>
-  </swiper-container>
-</div>
+    </div>
+  </div>
+</ng-container>
