@@ -10,11 +10,7 @@
 <div class="md:min-h-[500px] sectionContainer md:py-10 py-0">
   <app-cuisines-slider></app-cuisines-slider>
   <div class="lg:py-5 py-4">
-    <app-restaurant-slider [restaurants]="restaurants"></app-restaurant-slider>
-    <a [routerLink]="['cuisines']">
-      <button class="uppercase border border-gray-500 rounded-lg w-full text-gray-500 font-medium p-3">See All
-        Restaurant</button>
-    </a>
+    <app-list-restaurant [limit]="isMobile ? 12 : 8"></app-list-restaurant>
   </div>
 </div>
 

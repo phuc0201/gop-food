@@ -1,8 +1,21 @@
 #cuisine-filter {
-  @apply lg:pt-5 pt-0 pb-5;
+  @apply lg:py-5 py-3;
+  scroll-snap-type: x mandatory;
+  display: flex;
+  -webkit-overflow-scrolling: touch;
+  overflow-x: scroll;
+  scroll-behavior: smooth;
   button {
-    @apply bg-gray-100 hover:bg-gray-200 py-1 px-3 rounded-2xl mr-2 text-black1;
+    @apply bg-gray-100 hover:bg-gray-200 py-1 px-3 rounded-2xl text-black1 text-nowrap;
   }
+}
+
+#cuisine-filter .filter-item {
+  scroll-snap-align: center;
+}
+
+#cuisine-filter::-webkit-scrollbar {
+  display: none; /* Hide scrollbar */
 }
 
 .active .radio {

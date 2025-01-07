@@ -27,7 +27,7 @@
             <div *ngFor="let item of menuSearching; let i = index" (click)="selectResCate(i)" role="tab"
               [ngClass]="{'active': selectedCategory === i}"
               class="tab py-3 px-6 hover:text-primary cursor-pointer text-[16px] text-gray-500 text-center uppercase inline-block whitespace-nowrap select-none">
-              {{ item.name ? item.name : 'Loadind....' }}
+              {{ item.name ? item.name + ' (' + item.food_items.length + ')' : 'Loadind....' }}
             </div>
           </ng-container>
         </div>

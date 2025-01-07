@@ -29,7 +29,7 @@ export class RestaurantRecommended {
   rating: number;
   distance: number;
   duration: number;
-  campaign_count: number;
+  hasCampaign: boolean;
   items: any;
   count: any;
 
@@ -41,7 +41,7 @@ export class RestaurantRecommended {
     rating: number = 0,
     distance: number = 0,
     duration: number = 0,
-    campaign_count: number = 0
+    hasCampaign: boolean = false
   ) {
     this._id = _id;
     this.restaurant_name = restaurant_name;
@@ -50,6 +50,6 @@ export class RestaurantRecommended {
     this.rating = rating;
     this.distance = distance;
     this.duration = duration;
-    this.campaign_count = campaign_count;
+    this.hasCampaign = hasCampaign;
   }
 }

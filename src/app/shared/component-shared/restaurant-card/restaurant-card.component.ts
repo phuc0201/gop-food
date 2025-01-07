@@ -20,7 +20,6 @@ export class RestaurantCardComponent implements OnChanges, OnInit {
   @Input() restaurant = new RestaurantRecommended();
 
   isLoadImg: boolean = true;
-  isHome: boolean = false;
   cuisine_cate_name: string[] = ['Loading....'];
   distance: number = 0;
   duration: string = '0m';
@@ -63,7 +62,7 @@ export class RestaurantCardComponent implements OnChanges, OnInit {
 
       if (this.restaurant.distance && this.restaurant.duration) {
         this.distance = parseFloat((this.restaurant.distance / 1000).toFixed(2));
-        let duration = parseFloat((this.distance / (40 / 60)).toFixed(0));
+        let duration = parseFloat((this.distance / (40 / 60)).toFixed(0)); // 40km/h
         this.duration = duration < 60 ? duration + 'm' : (parseFloat((duration / 60).toFixed(0)) + 'h');
       }
     }
@@ -78,8 +77,6 @@ export class RestaurantCardComponent implements OnChanges, OnInit {
   constructor(
     private route: Router,
     private resSrv: RestaurantService
-  ) {
-    this.isHome = this.route.url == '/' ? true : false;
-  }
+  ) { }
 
 }

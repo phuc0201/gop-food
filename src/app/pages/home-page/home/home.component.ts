@@ -3,7 +3,7 @@ import { Store } from '@ngrx/store';
 import { FoodItems } from 'src/app/core/models/restaurant/food-items.model';
 import { RestaurantRecommended } from 'src/app/core/models/restaurant/restaurant.model';
 import { GeolocationService } from 'src/app/core/services/geolocation.service';
-import { RestaurantService } from 'src/app/core/services/restaurant.service';
+import { SearchService } from 'src/app/core/services/search.service';
 import { getRestaurantList } from 'src/app/core/store/restaurant/restaurant.actions';
 import { selectRestaurantList } from 'src/app/core/store/restaurant/restaurant.selectors';
 
@@ -19,7 +19,6 @@ export class HomeComponent implements OnInit {
   isLoading: boolean = true;
   restaurants: RestaurantRecommended[] = [];
   isMobile: boolean = false;
-
   @HostListener('window:resize', ['$event'])
   onResize(event: Event) {
     this.handleMobileScreen();
@@ -65,19 +64,20 @@ export class HomeComponent implements OnInit {
 
   loadData() {
     this.loadProfile();
-    this.loadRecommendedRestaurants();
+    // this.loadRecommendedRestaurants();
   }
 
   ngOnInit(): void {
+    this.searchSrv.setRestaurantSearchQuery('');
     this.loadData();
     this.handleMobileScreen();
   }
 
   constructor(
     private geoSrv: GeolocationService,
-    private resSrv: RestaurantService,
+    private searchSrv: SearchService,
     private store: Store,
-    private cdRef: ChangeDetectorRef
+    private cdRef: ChangeDetectorRef,
   ) { }
 }
 

@@ -1,30 +1,18 @@
-<app-page-loader [isLoading]="isLoading"></app-page-loader>
 <div class="py-5 min-h-[785px]">
 
   <div class="sectionContainer">
 
     <!-- <app-cuisine-filter></app-cuisine-filter> -->
 
-    <div nz-row nzGutter="20" class="!flex-col-reverse lg:!flex-row">
-
-      <div nz-col nzSpan="24" nzLg="18">
-        <router-outlet></router-outlet>
-      </div>
-
-      <div nz-col nzLg="6">
-        <div class="mb-5">
-          <input type="text" [(ngModel)]="searchValue" (ngModelChange)="search()"
-            class="border rounded-lg border-gray-300 text-sm font-normal outline-none ring-0 w-full px-5 py-3 focus:ring-green2 focus:border-primary"
-            placeholder="search products">
-        </div>
-
-        <div class="lg:hidden block lg:mb-0 mb-5">
+    <div>
+      <div>
+        <div>
           <app-cuisines-slider></app-cuisines-slider>
+          <app-cuisine-filter></app-cuisine-filter>
         </div>
 
-        <div class="p-3 border border-gray-200 rounded-lg lg:block hidden">
+        <!-- <div class="p-3 border border-gray-200 rounded-lg lg:block hidden">
           <span class="font-bold text-xl">Categories</span>
-
           <div class="bg-green4 flex flex-col rounded-md overflow-hidden mt-3">
             <a [routerLink]="['/cuisines']" class="category p-3 py-3 rounded-md" [routerLinkActive]="'active'"
               [routerLinkActiveOptions]="{ exact: true }">
@@ -39,7 +27,7 @@
               </div>
             </a>
           </div>
-        </div>
+        </div> -->
 
 
 
@@ -54,6 +42,9 @@
         </div> -->
       </div>
 
+      <div>
+        <router-outlet></router-outlet>
+      </div>
     </div>
   </div>
 </div>

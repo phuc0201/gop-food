@@ -44,11 +44,17 @@ export class MapComponent implements AfterViewInit, OnChanges {
       zoom: this.zoomValue
     });
 
-    const tiles = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+    // const tiles = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+    //   maxZoom: 18,
+    //   minZoom: 3,
+    //   attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+    // });
+
+    const tiles = L.tileLayer(`https://maps.vietmap.vn/tm/{z}/{x}/{y}.png?apikey=${'b00c56c4751ac6eb19dd72a48d9c8630d203e6aa8bbb104a'}`, {
+      attribution: '© Vietmap',
       maxZoom: 18,
-      minZoom: 3,
-      attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
-    });
+      minZoom: 5
+    }).addTo(this.map);
 
     tiles.addTo(this.map);
 

@@ -33,9 +33,11 @@ export class ListFooditemsComponent implements OnInit {
   filter: ICuisineFilter = {
     sortby: '',
     promo: false,
-    deliveryFee: '',
+    under: 1800,
+    bestOverall: false,
     price: [0, 100]
   };
+
   isLoading: boolean = false;
   searchValue: string = '';
   currPage: number = 1;

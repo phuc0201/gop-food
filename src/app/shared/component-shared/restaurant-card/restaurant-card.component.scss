@@ -1,15 +1,15 @@
-.responsive.restaurant-card {
-  @apply md:flex-col flex-row md:gap-0 gap-3;
-}
 .responsive .restaurant-banner {
   @apply md:aspect-video aspect-square w-24 md:w-auto;
 }
 .restaurant-img {
   @apply aspect-video;
+  opacity: 0;
+  animation: fadeIn 0.5s forwards;
+  animation-delay: 300ms;
 }
 
-.restaurant-card {
-  @apply flex-col;
+.restaurant-content {
+  animation: fadeIn 0.5s forwards;
 }
 
 @keyframes fadeIn {
@@ -42,7 +42,7 @@
   width: var(--icon-size);
   height: auto;
   fill: var(--icon-secondary-color);
-  stroke: #000;
+  stroke: #877d7d;
   cursor: pointer;
   -webkit-transition: 0.2s;
   -o-transition: 0.2s;

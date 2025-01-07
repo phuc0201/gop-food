@@ -29,6 +29,7 @@ export class CuisinesSliderComponent implements OnInit {
   @ViewChild('cuisinesSlider', { static: true }) cuisineList!: ElementRef;
   cuisineCategories: CuisineCategory[] = [];
   isLoading: boolean = true;
+  isImageLoaded: boolean = false;
 
   constructor(
     private cuisineSrc: CuisineService,
@@ -36,10 +37,17 @@ export class CuisinesSliderComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
+    this.loadCuisines();
+  }
+
+  loadCuisines(): void {
     this.cuisineSrc.getCuisineCategories().subscribe({
       next: (res: CuisineCategory[]) => {
         this.cuisineCategories = res;
-        setTimeout(() => { this.isLoading = false; }, 500);
+        setTimeout(() => {
+          this.isLoading = false;
+          this.onImageLoad();
+        }, 200);
       },
       error: (error: any) => {
         console.error('Error fetching cuisine categories:', error);
@@ -48,6 +56,12 @@ export class CuisinesSliderComponent implements OnInit {
         this.handleCuisineRoute(this.router.url);
       }
     });
+  }
+
+  onImageLoad(): void {
+    setTimeout(() => {
+      this.isImageLoaded = true;
+    }, 500);
   }
 
   handleCuisineRoute(url: string): void {

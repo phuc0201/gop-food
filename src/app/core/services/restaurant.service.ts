@@ -1,4 +1,4 @@
-import { HttpClient } from "@angular/common/http";
+import { HttpClient, HttpParams } from "@angular/common/http";
 import { Injectable } from "@angular/core";
 import { BehaviorSubject, Observable, switchMap } from "rxjs";
 import { SystemConstant } from "../constants/system.constant";
@@ -35,16 +35,25 @@ export class RestaurantService {
     return this.http.get<CategorySlider[]>(this.baseURL + `/${SystemConstant.MERCHANT_ID}/categories`);
   }
 
-  getRestaurants(categoryId?: string, searchQuery?: string, page: number = 1, limit: number = 10): Observable<IPagedResults<RestaurantRecommended>> {
+  getRestaurants(
+    cuisineId?: string,
+    searchQuery?: string,
+    page: number = 1,
+    limit: number = 10
+  ): Observable<IPagedResults<RestaurantRecommended>> {
     return this.geoSrv.currLocation.pipe(
       switchMap((location: AddressSelected) => {
-        return this.http.post<IPagedResults<RestaurantRecommended>>(this.baseURL + URLConstant.API.RESTAURANT.GET_LIST, {
-          coordinates: [location.coordinates[1], location.coordinates[0]],
-          categoryId: categoryId,
-          searchQuery: searchQuery,
-          page: page,
-          limit: limit
-        });
+        const params = new HttpParams()
+          .set('coordinates', `${location.coordinates[1]},${location.coordinates[0]}`)
+          .set('page', page.toString())
+          .set('limit', limit.toString())
+          .set('cuisineId', cuisineId || '')
+          .set('searchQuery', searchQuery || '');
+
+        return this.http.get<IPagedResults<RestaurantRecommended>>(
+          this.baseURL + URLConstant.API.RESTAURANT.GET_LIST,
+          { params }
+        );
       })
     );
   }
@@ -52,7 +61,10 @@ export class RestaurantService {
   getRestaurantInfo(id: string): Observable<Restaurant> {
     return this.geoSrv.currLocation.pipe(
       switchMap((location: AddressSelected) => {
-        return this.http.post<Restaurant>(this.baseURL + URLConstant.API.RESTAURANT.GET_INFO + '/' + id, { coordinates: [location.coordinates[1], location.coordinates[0]] });
+        const params = new HttpParams()
+          .set('coordinates', `${location.coordinates[1]},${location.coordinates[0]}`)
+          .set('id', id);
+        return this.http.get<Restaurant>(this.baseURL + URLConstant.API.RESTAURANT.GET_INFO, { params });
       })
     );
   }

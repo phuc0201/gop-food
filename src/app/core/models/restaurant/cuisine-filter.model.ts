@@ -1,6 +1,7 @@
 export interface ICuisineFilter {
   sortby: string,
   promo: boolean,
-  deliveryFee: string,
-  price: number[]
+  under: number,
+  bestOverall: boolean,
+  price: number[];
 }

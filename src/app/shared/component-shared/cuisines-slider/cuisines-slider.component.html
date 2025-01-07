@@ -1,13 +1,21 @@
 <ng-container *ngIf="isLoading">
-  <div class="cuisine-slider flex items-start justify-start md:gap-4 gap-3">
+  <div class="cuisine-slider flex items-start justify-start lg:gap-4 gap-3">
     <div *ngFor="let item of [1,2,3,4,5,6,7,8,9,10]"
-      class="w-16 min-w-16 aspect-square sm:w-32 sm:min-w-32 md:w-52 md:min-w-52 sm:aspect-video animate-pulse bg-gray-300 sm:rounded-lg rounded-full">
+      class="relative w-16 min-w-16 aspect-square sm:w-32 sm:min-w-32 lg:w-52 lg:min-w-52 sm:aspect-video p-[2px]">
+      <div class="flex justify-center w-full h-full  sm:rounded-md rounded-full items-center animate-pulse bg-gray-300">
+        <svg class="md:w-5 md:h-5 w-2 h-2 text-gray-100" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
+          fill="currentColor" viewBox="0 0 16 20">
+          <path
+            d="M14.066 0H7v5a2 2 0 0 1-2 2H0v11a1.97 1.97 0 0 0 1.934 2h12.132A1.97 1.97 0 0 0 16 18V2a1.97 1.97 0 0 0-1.934-2ZM10.5 6a1.5 1.5 0 1 1 0 2.999A1.5 1.5 0 0 1 10.5 6Zm2.221 10.515a1 1 0 0 1-.858.485h-8a1 1 0 0 1-.9-1.43L5.6 10.039a.978.978 0 0 1 .936-.57 1 1 0 0 1 .9.632l1.181 2.981.541-1a.945.945 0 0 1 .883-.522 1 1 0 0 1 .879.529l1.832 3.438a1 1 0 0 1-.031.988Z" />
+          <path d="M5 5V.13a2.96 2.96 0 0 0-1.293.749L.879 3.707A2.98 2.98 0 0 0 .13 5H5Z" />
+        </svg>
+      </div>
     </div>
   </div>
 </ng-container>
 
-<ng-container *ngIf="!isLoading">
-  <div class="w-full relative cursor-pointer">
+<ng-container>
+  <div [hidden]="isLoading" class="w-full relative cursor-pointer">
     <button (click)="scrollLeft()"
       class="hidden md:flex absolute z-30 top-1/2 left-2 -translate-y-1/2 w-10 h-10 rounded-full bg-black bg-opacity-20 text-white text-base  items-center justify-center">
       <i class="fa-solid fa-angle-left"></i>
@@ -17,17 +25,29 @@
       <i class="fa-solid fa-angle-right"></i>
     </button>
     <div class="relative w-full">
-      <div #cuisinesSlider id="cuisine-list" class="cuisine-slider flex items-start justify-start md:gap-4 gap-3">
+      <div #cuisinesSlider id="cuisine-list" class="cuisine-slider flex items-start justify-start lg:gap-4 gap-3">
         <ng-container *ngFor="let cusine of cuisineCategories">
           <div class="slider-item flex flex-col items-center">
             <a [routerLink]="['/cuisines', cusine.id]" [queryParamsHandling]="'merge'" [routerLinkActive]="'active'"
-              class="relative border-2 border-transparent transition-all duration-300 w-16 min-w-16 aspect-square sm:w-32 sm:min-w-32 md:w-52 md:min-w-52 sm:aspect-video overflow-hidden rounded-full sm:rounded-lg">
-              <div
-                class="sm:block hidden z-10 absolute top-0 left-0 right-0 bottom-0 cuisine-overlay sm:rounded-lg rounded-full">
+              class="relative border-2 border-transparent transition-all duration-300 w-16 min-w-16 aspect-square sm:w-32 sm:min-w-32 lg:w-52 lg:min-w-52 sm:aspect-video overflow-hidden rounded-full sm:rounded-lg">
+
+              <div *ngIf="isImageLoaded"
+                class="sm:block hidden z-10 absolute top-0 left-0 right-0 bottom-0 sm:rounded-lg cuisine-overlay rounded-full">
+              </div>
+
+              <div [class.opacity-100]="!isImageLoaded" [class.opacity-0]="isImageLoaded"
+                [class.pointer-events-none]="isImageLoaded"
+                class="z-10 transition-all duration-500 absolute top-0 left-0 right-0 bottom-0 sm:rounded-md bg-gray-300 rounded-full flex justify-center items-center">
+                <svg class="md:w-5 md:h-5 w-2 h-2 text-gray-100" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
+                  fill="currentColor" viewBox="0 0 16 20">
+                  <path
+                    d="M14.066 0H7v5a2 2 0 0 1-2 2H0v11a1.97 1.97 0 0 0 1.934 2h12.132A1.97 1.97 0 0 0 16 18V2a1.97 1.97 0 0 0-1.934-2ZM10.5 6a1.5 1.5 0 1 1 0 2.999A1.5 1.5 0 0 1 10.5 6Zm2.221 10.515a1 1 0 0 1-.858.485h-8a1 1 0 0 1-.9-1.43L5.6 10.039a.978.978 0 0 1 .936-.57 1 1 0 0 1 .9.632l1.181 2.981.541-1a.945.945 0 0 1 .883-.522 1 1 0 0 1 .879.529l1.832 3.438a1 1 0 0 1-.031.988Z" />
+                  <path d="M5 5V.13a2.96 2.96 0 0 0-1.293.749L.879 3.707A2.98 2.98 0 0 0 .13 5H5Z" />
+                </svg>
               </div>
 
               <img loading="lazy" [src]="cusine.image" onerror="this.src='assets/img/banners/banner-1.jpg'"
-                class="w-full md:h-auto h-full object-cover">
+                (load)="onImageLoad()" class="w-full md:h-auto h-full object-cover">
 
               <span
                 class="absolute z-20 bottom-2 left-3 sm:block hidden text-white text-center lg:font-medium font-normal text-sm mt-2 line-clamp-1">{{

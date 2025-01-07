@@ -1,6 +1,7 @@
-<div id="cuisine-filter" class="sm:block hidden">
+<div id="cuisine-filter" class="flex items-start justify-start gap-2">
   <!--  -->
-  <button nz-dropdown nzTrigger="click" [nzDropdownMenu]="sortBy" [(nzVisible)]="dropDownForSortBy">
+  <button nz-dropdown nzTrigger="click" [nzDropdownMenu]="sortBy" [(nzVisible)]="dropDownForSortBy"
+    class="filter-item text-nowrap">
     <i class="fa-solid fa-arrows-up-down"></i>
     Sort by
   </button>
@@ -11,7 +12,8 @@
   </nz-dropdown-menu>
 
   <!--  -->
-  <a [routerLink]="[filterURL]" [queryParams]="{promo: !filter.promo}" queryParamsHandling="merge" class="relative">
+  <a [routerLink]="[filterURL]" [queryParams]="{promo: !filter.promo}" queryParamsHandling="merge"
+    class="relative filter-item">
     <button>
       Promo
     </button>
@@ -20,34 +22,45 @@
   </a>
 
   <!--  -->
-  <!-- <button nz-dropdown nzTrigger="click" [nzDropdownMenu]="deliveryFee" [(nzVisible)]="dropDownForDeleivery">
-    <i class="fa-solid fa-motorcycle"></i>
-    Delivery fee
-  </button>
-  <nz-dropdown-menu #deliveryFee="nzDropdownMenu">
-    <div class="shadow-2xl rounded-md overflow-hidden">
-      <ng-container [ngTemplateOutlet]="deliveryFeeTempalte"></ng-container>
-    </div>
-  </nz-dropdown-menu> -->
+  <a [routerLink]="[filterURL]" [queryParams]="{under: filter.under}" queryParamsHandling="merge"
+    class="relative filter-item">
+    <button>
+      Under 30m
+    </button>
+    <i *ngIf="filter.promo"
+      class="fa-solid fa-circle-check text-xs text-primary absolute top-0 right-0 -translate-x-2 -translate-y-2"></i>
+  </a>
 
   <!--  -->
-  <button nz-dropdown nzTrigger="click" [nzDropdownMenu]="price" [(nzVisible)]="dropDownForPrice">Price
+  <a [routerLink]="[filterURL]" [queryParams]="{bestOverall: !filter.bestOverall}" queryParamsHandling="merge"
+    class="relative filter-item">
+    <button>
+      Best Overall
+    </button>
+    <i *ngIf="filter.promo"
+      class="fa-solid fa-circle-check text-xs text-primary absolute top-0 right-0 -translate-x-2 -translate-y-2"></i>
+  </a>
+
+  <!--  -->
+  <button nz-dropdown nzTrigger="click" [nzDropdownMenu]="price" [(nzVisible)]="dropDownForPrice"
+    class="filter-item">Price
   </button>
   <nz-dropdown-menu #price="nzDropdownMenu">
     <div class="shadow-2xl rounded-md overflow-hidden">
       <ng-container [ngTemplateOutlet]="priceTemplate"></ng-container>
     </div>
-
   </nz-dropdown-menu>
+
   <!--  -->
-  <a [routerLink]="[filterURL]">
+  <a [routerLink]="[filterURL]" class="filter-item">
     <button (click)="resetFilter()">
       <span class="capitalize"> reset </span>
     </button>
   </a>
 </div>
+
 <!-- MOBILE -->
-<div class="sm:hidden block lg:pt-5 pt-0 pb-5">
+<!-- <div class="sm:hidden block lg:pt-5 pt-0 pb-5">
   <button class="bg-gray-100 hover:bg-gray-200 py-1 px-4 rounded-2xl mr-2 text-black1" (click)="openFilterDrawer()">
     <i class="fa-solid fa-sliders"></i>
   </button>
@@ -95,7 +108,7 @@
 
     </ng-container>
   </nz-drawer>
-</div>
+</div> -->
 
 <ng-template #sortTemplate>
   <div class="w-full bg-white px-4">
@@ -129,7 +142,7 @@
 </ng-template>
 
 <ng-template #deliveryFeeTempalte>
-  <div class="w-full bg-white px-4">
+  <!-- <div class="w-full bg-white px-4">
     <ng-container *ngFor="let group of [filter, filterMobile]">
       <nz-radio-group [(ngModel)]="group.deliveryFee"
         [ngClass]="{'w-full sm:!block !hidden': group === filter, 'w-full sm:!hidden block': group === filterMobile}">
@@ -155,7 +168,7 @@
         </div>
       </nz-radio-group>
     </ng-container>
-  </div>
+  </div> -->
 </ng-template>
 
 <ng-template #priceTemplate>

@@ -77,7 +77,8 @@ export class CuisineFilterComponent implements OnInit {
     this.filter = {
       sortby: 'recommended',
       promo: false,
-      deliveryFee: 'any',
+      under: 1800,
+      bestOverall: false,
       price: [0, 100]
     };
     this.filterMobile = { ...this.filter };
@@ -98,8 +99,13 @@ export class CuisineFilterComponent implements OnInit {
       if (params["sortby"])
         this.filter.sortby = params["sortby"];
 
-      if (params["deliveryFee"])
-        this.filter.deliveryFee = params["deliveryFee"];
+      if (params["under"]) {
+        this.filter.under = Number(params["under"]);
+      }
+
+      if (params["bestOverall"]) {
+        this.filter.bestOverall = JSON.parse(params["bestOverall"]);
+      }
 
       if (params["price"]) {
         this.filter.price = params['price'].split('-').map((str: string) => (Number(str) / this.priceMax) * 100);

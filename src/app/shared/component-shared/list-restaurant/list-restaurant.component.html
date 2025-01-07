@@ -1,32 +1,31 @@
-<div nz-row nzGutter="20" class="lg:min-h-[600px] h-full">
-  <ng-container *ngIf="restaurants.data.length > 0 && !isLoading">
-    <div *ngFor="let item of restaurants.data" nz-col nzSpan="24" nzLg="8" nzMd="8" class="restaurant-card-wrapper">
+<div nz-row [nzGutter]="20">
+  <ng-container *ngIf="restaurants.data.length > 0">
+    <div *ngFor="let item of restaurants.data" nz-col nzSpan="24" [nzSm]='columnConfig.sm' [nzMd]="columnConfig.md"
+      [nzLg]="columnConfig.lg" class="">
       <app-restaurant-card [restaurant]="item"></app-restaurant-card>
     </div>
   </ng-container>
 
-  <ng-container *ngIf="isNoData">
-    <div class="w-full h-full flex justify-center items-center p-5">
-      <img src="assets/img/icons/ilus-basket-empty.svg" alt="" class="w-full max-w-96">
-    </div>
-  </ng-container>
-
   <ng-container *ngIf="isLoading">
-    <ng-container *ngFor="let item of [1,2,3]">
-      <div nz-col nzSpan="24" nzLg="8" nzMd="8">
+    <ng-container *ngFor="let item of getListOfRestaurantsSkeleteon()">
+      <div nz-col nzSpan="24" [nzSm]='columnConfig.sm' [nzMd]="columnConfig.md" [nzLg]="columnConfig.lg"
+        class="restaurant-card-wrapper mb-5">
         <ng-container [ngTemplateOutlet]="resCardLoadingTpl"></ng-container>
       </div>
     </ng-container>
   </ng-container>
 </div>
 
-<div *ngIf="restaurants.totalPage > 1" class="w-full flex justify-center items-center">
-  <button class="bg-primary text-white font-bold p-5 py-2 rounded-lg">Load more</button>
-</div>
+<ng-container *ngIf="isNoData">
+  <div class="w-full h-full flex justify-center items-center p-5">
+    <img src="assets/img/icons/ilus-basket-empty.svg" alt="" class="w-full max-w-96">
+  </div>
+</ng-container>
 
 <ng-template #resCardLoadingTpl>
   <div role="status" class="w-full animate-pulse  md:block flex md:gap-0 gap-3">
-    <div class="flex items-center justify-center md:h-48 md:w-full min-w-20 w-20 h-20 mb-4 bg-gray-200 rounded-xl ">
+    <div
+      class="flex items-center justify-center md:aspect-[2/1] md:w-full min-w-24 w-24 aspect-square mb-4 bg-gray-200 rounded-lg">
       <svg class="md:w-10 md:h-10 w-5 h-5 text-gray-100" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
         fill="currentColor" viewBox="0 0 16 20">
         <path
@@ -40,5 +39,6 @@
       <div class="h-2 bg-gray-200 rounded-full  mb-2.5 w-full"></div>
     </div>
   </div>
-
 </ng-template>
+
+<div #sentinel></div>

@@ -29,16 +29,17 @@ const routes: Routes = [
       {
         path: '',
         component: ListRestaurantComponent,
-        title: 'Cuisines'
+        title: 'Cuisines',
       },
       {
         path: ':id',
         component: ListRestaurantComponent,
-        title: 'Cuisines'
+        title: 'Cuisines',
       }
     ]
   },
 ];
+
 const plugins = [
   RestaurantCardComponent,
   CuisinesSliderComponent,
