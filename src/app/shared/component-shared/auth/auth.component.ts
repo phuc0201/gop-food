@@ -9,7 +9,7 @@ import { NzRadioModule } from 'ng-zorro-antd/radio';
 import { ToastrService } from 'ngx-toastr';
 import { ILoginDTO, SignupDTO } from 'src/app/core/models/auth/auth.model';
 import { AuthService } from 'src/app/core/services/auth.service';
-import { getProfile } from 'src/app/core/store/profile/profile.actions';
+import { getProfile } from 'src/app/core/store/profile/profile.action';
 const plugins = [
   CommonModule,
   NzModalModule,

@@ -1,4 +1,4 @@
-import { OrderType } from "../../utils/enums/index.enum";
+import { OrderType } from "../common/enums/index.enum";
 
 export class Review {
   owner_id: string = '';

@@ -1,4 +1,4 @@
-import { PaymentMethod } from "../../utils/enums/index.enum";
+import { PaymentMethod } from "../common/enums/index.enum";
 
 export class PaymentMethodType {
   image: string;

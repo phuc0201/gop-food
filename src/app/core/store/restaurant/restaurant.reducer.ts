@@ -1,5 +1,5 @@
 import { createReducer, on } from "@ngrx/store";
-import * as restaurantAction from './restaurant.actions';
+import * as restaurantAction from './restaurant.action';
 import { initialFoodDetails, initialMenuState, initialRestaurantInfo, initialRestaurantListSate } from "./restaurant.state";
 const _getRestaurantList = createReducer(
   initialRestaurantListSate,
@@ -14,7 +14,11 @@ const _getRestaurantList = createReducer(
     return {
       ...state,
       isLoading: false,
-      result: result
+      result: result.currPage === 1 ? result : {
+        ...state.result,
+        ...result,
+        data: [...state.result.data, ...result.data]
+      }
     };
   }),
 

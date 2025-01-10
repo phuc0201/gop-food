@@ -1,5 +1,5 @@
 import { createReducer, on } from "@ngrx/store";
-import * as profileAction from './profile.actions';
+import * as profileAction from './profile.action';
 import { inititalProfileState } from "./profile.state";
 const _getProfileReducer = createReducer(
   inititalProfileState,

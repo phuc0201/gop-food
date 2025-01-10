@@ -4,9 +4,9 @@ import { Store } from "@ngrx/store";
 import { Observable } from "rxjs";
 import { URLConstant } from "../constants/url.constant";
 import { Campaign } from "../models/campaign/campain.model";
+import { CampaignDiscountType, CampaignScopeType } from "../models/common/enums/index.enum";
 import { Cart } from "../models/order/order.model";
-import { selectCampaigns } from "../store/campaign/campaign.selectors";
-import { CampaignDiscountType, CampaignScopeType } from "../utils/enums/index.enum";
+import { selectCampaigns } from "../store/campaign/campaign.selector";
 import { OrderService } from "./order.service";
 import { ProfileService } from "./profile.service";
 
@@ -20,26 +20,26 @@ export class CampaignService {
     private store: Store,
     private profileSrv: ProfileService,
     private orderSrv: OrderService
-  ){}
+  ) { }
 
   fetchAllCampaign(): Observable<Campaign[]> {
     return this.http.get<Campaign[]>(this.baseUrl + URLConstant.API.CAMPAIGN.GET_ALL);
   }
 
-  caculateDiscountValue (delivery_fare: number): number{
+  caculateDiscountValue(delivery_fare: number): number {
     let campaigns: Campaign[] = [];
     const campaignSelector$ = this.store.select(selectCampaigns).subscribe({
       next: data => campaigns = data.campaigns,
-      complete: () => { campaignSelector$.unsubscribe() }
-    })
+      complete: () => { campaignSelector$.unsubscribe(); }
+    });
 
     const cus_id = this.profileSrv.getProfileInSession()._id;
-    const discount_value = this.validateAndApplyCampaign(cus_id, campaigns, this.orderSrv.getCartItems(), delivery_fare)
+    const discount_value = this.validateAndApplyCampaign(cus_id, campaigns, this.orderSrv.getCartItems(), delivery_fare);
 
     return discount_value;
   }
 
-  isValidCampaign(customer_id: string, campaign: Campaign, subtotal: number){
+  isValidCampaign(customer_id: string, campaign: Campaign, subtotal: number) {
     const currDate = new Date();
 
     return campaign &&
@@ -50,10 +50,10 @@ export class CampaignService {
       subtotal >= campaign.conditions.minBasketAmount;
   }
 
-  validateAndApplyCampaign(customer_id: string, campaigns: Campaign[], order: Cart, delivery_fare: number): number{
+  validateAndApplyCampaign(customer_id: string, campaigns: Campaign[], order: Cart, delivery_fare: number): number {
     let total_discount_value = 0;
     for (const campaign_id of order.cart.campaign_ids) {
-      const index = campaigns.findIndex(cp => cp._id === campaign_id)
+      const index = campaigns.findIndex(cp => cp._id === campaign_id);
       const campaign = campaigns[index];
 
       if (this.isValidCampaign(customer_id, campaign, order.subtotal)) {
@@ -63,10 +63,10 @@ export class CampaignService {
             break;
 
           case CampaignDiscountType.NET:
-            switch(campaign.discount.scope.type) {
+            switch (campaign.discount.scope.type) {
               case CampaignScopeType.ORDER:
                 const discount_value = order.subtotal - campaign.discount.value;
-                total_discount_value += discount_value > 0 ? campaign.discount.value : order.subtotal
+                total_discount_value += discount_value > 0 ? campaign.discount.value : order.subtotal;
                 break;
               case CampaignScopeType.CATEGORY:
                 break;
@@ -76,12 +76,12 @@ export class CampaignService {
             break;
 
           case CampaignDiscountType.PERCENTAGE:
-            switch(campaign.discount.scope.type){
+            switch (campaign.discount.scope.type) {
               case CampaignScopeType.ORDER:
-                const discount_value = order.subtotal * (campaign.discount.value / 100)
-                if(discount_value <= campaign.discount.cap) {
-                  total_discount_value += discount_value
-                } else total_discount_value += campaign.discount.cap
+                const discount_value = order.subtotal * (campaign.discount.value / 100);
+                if (discount_value <= campaign.discount.cap) {
+                  total_discount_value += discount_value;
+                } else total_discount_value += campaign.discount.cap;
                 break;
               case CampaignScopeType.CATEGORY:
                 break;
@@ -92,11 +92,11 @@ export class CampaignService {
 
           case CampaignDiscountType.TRANSPORT:
             const discount_value = order.subtotal - campaign.discount.value;
-            total_discount_value += discount_value > 0 ? campaign.discount.value : order.subtotal
+            total_discount_value += discount_value > 0 ? campaign.discount.value : order.subtotal;
             break;
 
           default:
-            break
+            break;
         }
       }
     }

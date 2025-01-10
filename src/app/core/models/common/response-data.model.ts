@@ -5,6 +5,7 @@ export interface IToken {
 
 
 export interface IPagedResults<T> {
+  currPage: number;
   totalPage: number;
   data: T[];
 }

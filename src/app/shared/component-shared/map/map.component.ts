@@ -5,11 +5,11 @@ import { Store } from '@ngrx/store';
 import * as L from 'leaflet';
 import 'leaflet-routing-machine';
 import { filter } from 'rxjs';
+import { IconMarker, RoleType } from 'src/app/core/models/common/enums/index.enum';
 import { Address, LocationMarker } from 'src/app/core/models/geolocation/location.model';
 import { GeolocationService } from 'src/app/core/services/geolocation.service';
-import { searchAddress } from 'src/app/core/store/geolocation/geolocation.actions';
-import { selectAddress } from 'src/app/core/store/geolocation/geolocation.selectors';
-import { IconMarker, RoleType } from 'src/app/core/utils/enums/index.enum';
+import { searchAddress } from 'src/app/core/store/geolocation/geolocation.action';
+import { selectAddress } from 'src/app/core/store/geolocation/geolocation.selector';
 const plugins = [
   CommonModule,
   LeafletModule

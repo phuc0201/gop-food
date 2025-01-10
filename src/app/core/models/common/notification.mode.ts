@@ -1,4 +1,4 @@
-import { NotificationType } from "../../utils/enums/index.enum";
+import { NotificationType } from "./enums/index.enum";
 
 export class Notification {
   type: NotificationType = NotificationType.SUCCESS;
@@ -9,7 +9,7 @@ export class Notification {
   contentColor: string = '';
   iconColor: string = '';
 
-  constructor(type: NotificationType, title: string, content: string, iconUrl: string, titleColor: string, contentColor: string, iconColor: string){
+  constructor(type: NotificationType, title: string, content: string, iconUrl: string, titleColor: string, contentColor: string, iconColor: string) {
     this.type = type;
     this.title = title;
     this.content = content;

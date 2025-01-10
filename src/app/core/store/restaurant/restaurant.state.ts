@@ -37,6 +37,7 @@ export const initialMenuState: MenuState = {
 };
 export const initialRestaurantListSate: RestaurantListSate = {
   result: {
+    currPage: 1,
     totalPage: 0,
     data: []
   },

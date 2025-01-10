@@ -19,8 +19,8 @@ import { Restaurant } from 'src/app/core/models/restaurant/restaurant.model';
 import { GeolocationService } from 'src/app/core/services/geolocation.service';
 import { OrderService } from 'src/app/core/services/order.service';
 import { ProfileService } from 'src/app/core/services/profile.service';
-import { getRestaurantInfo } from 'src/app/core/store/restaurant/restaurant.actions';
-import { selectFoodDetails, selectRestaurantInfo } from 'src/app/core/store/restaurant/restaurant.selectors';
+import { getRestaurantInfo } from 'src/app/core/store/restaurant/restaurant.action';
+import { selectFoodDetails, selectRestaurantInfo } from 'src/app/core/store/restaurant/restaurant.selector';
 import { DotsLoaderComponent } from '../loaders/dots-loader/dots-loader.component';
 import { ImgLoaderComponent } from '../loaders/img-loader/img-loader.component';
 export const plugins = [

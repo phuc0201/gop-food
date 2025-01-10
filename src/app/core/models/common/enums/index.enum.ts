@@ -110,3 +110,7 @@ export enum IconMarker {
   CUSTOMER = 'assets/img/icons/pin-map.png'
 }
 
+export enum SortStatus {
+  RECOMMENDED = 'recommended',
+  RATING = 'rating',
+}

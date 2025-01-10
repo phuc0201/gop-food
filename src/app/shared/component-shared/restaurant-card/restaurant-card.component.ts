@@ -18,7 +18,6 @@ const plugins = [
 })
 export class RestaurantCardComponent implements OnChanges, OnInit {
   @Input() restaurant = new RestaurantRecommended();
-
   isLoadImg: boolean = true;
   cuisine_cate_name: string[] = ['Loading....'];
   distance: number = 0;
@@ -62,7 +61,7 @@ export class RestaurantCardComponent implements OnChanges, OnInit {
 
       if (this.restaurant.distance && this.restaurant.duration) {
         this.distance = parseFloat((this.restaurant.distance / 1000).toFixed(2));
-        let duration = parseFloat((this.distance / (40 / 60)).toFixed(0)); // 40km/h
+        let duration = parseFloat((this.restaurant.duration / 60).toFixed(0));
         this.duration = duration < 60 ? duration + 'm' : (parseFloat((duration / 60).toFixed(0)) + 'h');
       }
     }

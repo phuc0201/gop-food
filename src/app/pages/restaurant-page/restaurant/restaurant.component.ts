@@ -3,7 +3,7 @@ import { ActivatedRoute } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { Restaurant } from 'src/app/core/models/restaurant/restaurant.model';
 import { RestaurantService } from 'src/app/core/services/restaurant.service';
-import { getMenu } from 'src/app/core/store/restaurant/restaurant.actions';
+import { getMenu } from 'src/app/core/store/restaurant/restaurant.action';
 @Component({
   selector: 'app-restaurant',
   templateUrl: './restaurant.component.html',

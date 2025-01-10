@@ -1,9 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
+import { OrderStatusTrackerType } from 'src/app/core/models/common/enums/index.enum';
 import { LocationMarker } from 'src/app/core/models/geolocation/location.model';
 import { Cart, OrderDetails, OrderFoodItems } from 'src/app/core/models/order/order.model';
 import { OrderService } from 'src/app/core/services/order.service';
-import { OrderStatusTrackerType } from 'src/app/core/utils/enums/index.enum';
 
 @Component({
   selector: 'app-order-history-details',

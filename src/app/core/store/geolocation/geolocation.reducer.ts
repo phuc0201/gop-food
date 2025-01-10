@@ -1,5 +1,5 @@
 import { createReducer, on } from "@ngrx/store";
-import * as geolocaitonAction from './geolocation.actions';
+import * as geolocaitonAction from './geolocation.action';
 import { initialSearchState } from "./geolocation.state";
 
 const _searchAddress = createReducer(
@@ -8,24 +8,24 @@ const _searchAddress = createReducer(
     return {
       ...state,
       isLoading: true
-    }
+    };
   }),
-  on(geolocaitonAction.searchAddressSuccess, (state, { data })=>{
+  on(geolocaitonAction.searchAddressSuccess, (state, { data }) => {
     return {
       ...state,
       data: data,
       isLoading: false
-    }
+    };
   }),
-  on(geolocaitonAction.searchAddressFailure, (state, { error })=>{
+  on(geolocaitonAction.searchAddressFailure, (state, { error }) => {
     return {
       ...state,
       error: error,
       isLoading: false
-    }
+    };
   })
-)
+);
 
-export function searchAddressReducer(state: any, action: any){
+export function searchAddressReducer(state: any, action: any) {
   return _searchAddress(state, action);
 }

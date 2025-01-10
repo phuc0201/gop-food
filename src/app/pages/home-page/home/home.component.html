@@ -10,7 +10,7 @@
 <div class="md:min-h-[500px] sectionContainer md:py-10 py-0">
   <app-cuisines-slider></app-cuisines-slider>
   <div class="lg:py-5 py-4">
-    <app-list-restaurant [limit]="isMobile ? 12 : 8"></app-list-restaurant>
+    <app-list-restaurant [(restaurants)]="restaurants" [limit]="isMobile ? 12 : 8"></app-list-restaurant>
   </div>
 </div>
 

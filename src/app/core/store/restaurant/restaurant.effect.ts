@@ -2,7 +2,7 @@ import { Injectable } from "@angular/core";
 import { Actions, createEffect, ofType } from "@ngrx/effects";
 import { catchError, map, of, switchMap } from "rxjs";
 import { RestaurantService } from "../../services/restaurant.service";
-import * as restaurantAction from './restaurant.actions';
+import * as restaurantAction from './restaurant.action';
 
 @Injectable()
 export class RestaurantEffects {

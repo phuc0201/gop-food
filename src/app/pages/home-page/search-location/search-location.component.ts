@@ -4,11 +4,11 @@ import { TranslateService } from '@ngx-translate/core';
 import { NzModalService } from 'ng-zorro-antd/modal';
 import { filter } from 'rxjs';
 import { URLConstant } from 'src/app/core/constants/url.constant';
+import { IconMarker, RoleType } from 'src/app/core/models/common/enums/index.enum';
 import { AddressSelected, LocationMarker } from 'src/app/core/models/geolocation/location.model';
 import { GeolocationService } from 'src/app/core/services/geolocation.service';
 import { ProfileService } from 'src/app/core/services/profile.service';
 import { SearchService } from 'src/app/core/services/search.service';
-import { IconMarker, RoleType } from 'src/app/core/utils/enums/index.enum';
 import { MapSelectorComponent } from 'src/app/shared/component-shared/map-selector/map-selector.component';
 
 @Component({

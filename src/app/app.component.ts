@@ -2,12 +2,12 @@ import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { initFlowbite } from 'flowbite';
 import { NotificationColor } from './core/mock-data/notification-color.data';
+import { NotificationType } from './core/models/common/enums/index.enum';
 import { Notification } from './core/models/common/notification.mode';
 import { AuthService } from './core/services/auth.service';
 import { GeolocationService } from './core/services/geolocation.service';
 import { ProfileService } from './core/services/profile.service';
-import { getProfile } from './core/store/profile/profile.actions';
-import { NotificationType } from './core/utils/enums/index.enum';
+import { getProfile } from './core/store/profile/profile.action';
 import { NotificationComponent } from './shared/component-shared/notification/notification.component';
 @Component({
   selector: 'app-root',

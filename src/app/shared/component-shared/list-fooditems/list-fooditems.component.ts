@@ -35,7 +35,7 @@ export class ListFooditemsComponent implements OnInit {
     promo: false,
     under: 1800,
     bestOverall: false,
-    price: [0, 100]
+    deliveryFee: 'any'
   };
 
   isLoading: boolean = false;

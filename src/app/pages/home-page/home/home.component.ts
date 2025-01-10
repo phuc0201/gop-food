@@ -1,11 +1,13 @@
-import { ChangeDetectorRef, Component, HostListener, OnInit } from '@angular/core';
+import { Component, HostListener, OnInit } from '@angular/core';
 import { Store } from '@ngrx/store';
+import { Subscription } from 'rxjs';
+import { IPagedResults } from 'src/app/core/models/common/response-data.model';
 import { FoodItems } from 'src/app/core/models/restaurant/food-items.model';
 import { RestaurantRecommended } from 'src/app/core/models/restaurant/restaurant.model';
 import { GeolocationService } from 'src/app/core/services/geolocation.service';
 import { SearchService } from 'src/app/core/services/search.service';
-import { getRestaurantList } from 'src/app/core/store/restaurant/restaurant.actions';
-import { selectRestaurantList } from 'src/app/core/store/restaurant/restaurant.selectors';
+import { getRestaurantList } from 'src/app/core/store/restaurant/restaurant.action';
+import { selectRestaurantList } from 'src/app/core/store/restaurant/restaurant.selector';
 
 @Component({
   selector: 'app-home',
@@ -17,8 +19,22 @@ export class HomeComponent implements OnInit {
   foodItems: FoodItems<string>[] = [];
   listFoodCol: number = 6;
   isLoading: boolean = true;
-  restaurants: RestaurantRecommended[] = [];
+  // restaurants: IPagedResults<RestaurantRecommended> = { data: [], totalPage: 0 };
   isMobile: boolean = false;
+  restaurantsSubscription: Subscription = new Subscription();
+
+  constructor(
+    private geoSrv: GeolocationService,
+    private searchSrv: SearchService,
+    private store: Store,
+  ) { }
+
+  ngOnInit(): void {
+    this.searchSrv.setRestaurantSearchQuery('');
+    this.loadData();
+    this.handleMobileScreen();
+  }
+
   @HostListener('window:resize', ['$event'])
   onResize(event: Event) {
     this.handleMobileScreen();
@@ -31,53 +47,42 @@ export class HomeComponent implements OnInit {
   loadProfile(): void {
     this.geoSrv.currLocation.subscribe(res => this.address = res.address);
   }
-
+  restaurants: IPagedResults<RestaurantRecommended> = { data: [], totalPage: 0, currPage: 1 };
   loadRecommendedRestaurants() {
-    this.store.dispatch(getRestaurantList({
-      categoryId: "",
-      searchQuery: "",
-      page: 1,
-      limit: 10
-    }));
-    this.store.select(selectRestaurantList)
-      .pipe()
-      .subscribe({
-        next: res => {
-          this.restaurants = res.result.data;
-          if (res.result.data.length > 0 && !res.isLoading) {
-            setTimeout(() => {
-              this.isLoading = false;
-            }, 1000);
-          }
-          this.cdRef.markForCheck();
-        },
+    this.restaurantsSubscription = this.store.select(selectRestaurantList).subscribe({
+      next: res => {
+        if (res.result.data.length > 0) {
+          this.restaurants = res.result;
+        }
       }
-      );
+    });
+
+    if (this.restaurants.data.length == 0) {
+      this.restaurantsSubscription.unsubscribe();
+      this.store.dispatch(getRestaurantList({
+        categoryId: "",
+        searchQuery: "",
+        page: 1,
+        limit: 8
+      }));
+
+      this.restaurantsSubscription = this.store.select(selectRestaurantList)
+        .pipe()
+        .subscribe({
+          next: res => {
+            this.restaurants = res.result;
+          },
+          complete: () => {
+            this.restaurantsSubscription.unsubscribe();
+          }
+        }
+        );
+    }
   }
-
-  // loadFoodItems() {
-  //   this.resSrv.getFoodItems(1, 100).subscribe(data => {
-  //     this.foodItems = data.foodItems;
-  //   });
-  // }
-
 
   loadData() {
     this.loadProfile();
-    // this.loadRecommendedRestaurants();
+    this.loadRecommendedRestaurants();
   }
-
-  ngOnInit(): void {
-    this.searchSrv.setRestaurantSearchQuery('');
-    this.loadData();
-    this.handleMobileScreen();
-  }
-
-  constructor(
-    private geoSrv: GeolocationService,
-    private searchSrv: SearchService,
-    private store: Store,
-    private cdRef: ChangeDetectorRef,
-  ) { }
 }
 

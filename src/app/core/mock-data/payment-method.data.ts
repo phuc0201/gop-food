@@ -1,5 +1,5 @@
+import { PaymentMethod } from "../models/common/enums/index.enum";
 import { PaymentMethodType } from "../models/payment/payment.model";
-import { PaymentMethod } from "../utils/enums/index.enum";
 
 
 export const PaymentMethodData = [

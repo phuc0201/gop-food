@@ -8,7 +8,7 @@ import { CampaignService } from 'src/app/core/services/campaign.service';
 import { FormatService } from 'src/app/core/services/common/format.serive';
 import { OrderService } from 'src/app/core/services/order.service';
 import { ProfileService } from 'src/app/core/services/profile.service';
-import { selectCampaigns } from 'src/app/core/store/campaign/campaign.selectors';
+import { selectCampaigns } from 'src/app/core/store/campaign/campaign.selector';
 
 @Component({
   selector: 'app-campaigns',

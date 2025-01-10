@@ -14,7 +14,7 @@ import { GeolocationService } from 'src/app/core/services/geolocation.service';
 import { OrderService } from 'src/app/core/services/order.service';
 import { RestaurantService } from 'src/app/core/services/restaurant.service';
 import { SearchService } from 'src/app/core/services/search.service';
-import { selectProfile } from 'src/app/core/store/profile/profile.selectors';
+import { selectProfile } from 'src/app/core/store/profile/profile.selector';
 import { AuthComponent } from 'src/app/shared/component-shared/auth/auth.component';
 import { CartComponent } from 'src/app/shared/component-shared/cart/cart.component';
 import { ScrollDirective } from 'src/app/shared/widget/directives/scroll.directive';

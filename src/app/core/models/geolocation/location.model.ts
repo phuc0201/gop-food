@@ -1,4 +1,4 @@
-import { RoleType } from "../../utils/enums/index.enum";
+import { RoleType } from "../common/enums/index.enum";
 
 export interface ILocation {
   type: string,
@@ -58,7 +58,7 @@ export class LocationMarker {
   iconUrl: string = '';
   coordinates: number[] = [];
   marker: any;
-  constructor(type: RoleType ,iconUrl: string, coordinates: number[]){
+  constructor(type: RoleType, iconUrl: string, coordinates: number[]) {
     this.type = type;
     this.iconUrl = iconUrl;
     this.coordinates = coordinates;

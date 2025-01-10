@@ -1,12 +1,16 @@
 import { CommonModule } from '@angular/common';
-import { AfterViewInit, Component, ElementRef, HostListener, Input, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, EventEmitter, HostListener, Input, OnChanges, OnDestroy, OnInit, Output, SimpleChanges, ViewChild } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
+import { Store } from '@ngrx/store';
 import { NzGridModule } from 'ng-zorro-antd/grid';
 import { combineLatest, map, Subject, switchMap, takeUntil, tap } from 'rxjs';
+import { SortStatus } from 'src/app/core/models/common/enums/index.enum';
 import { IPagedResults } from 'src/app/core/models/common/response-data.model';
+import { ICuisineFilter } from 'src/app/core/models/restaurant/cuisine-filter.model';
 import { RestaurantRecommended } from 'src/app/core/models/restaurant/restaurant.model';
 import { RestaurantService } from 'src/app/core/services/restaurant.service';
 import { SearchService } from 'src/app/core/services/search.service';
+import { getRestaurantList } from 'src/app/core/store/restaurant/restaurant.action';
 import { RestaurantCardComponent } from 'src/app/shared/component-shared/restaurant-card/restaurant-card.component';
 
 const plugin = [
@@ -14,6 +18,7 @@ const plugin = [
   RestaurantCardComponent,
   NzGridModule,
 ];
+
 @Component({
   selector: 'app-list-restaurant',
   templateUrl: './list-restaurant.component.html',
@@ -21,8 +26,10 @@ const plugin = [
   standalone: true,
   imports: plugin
 })
-export class ListRestaurantComponent implements OnInit, OnDestroy, AfterViewInit {
+export class ListRestaurantComponent implements OnInit, OnDestroy, AfterViewInit, OnChanges {
   @ViewChild('sentinel', { static: false }) sentinel!: ElementRef;
+  @Input() restaurants: IPagedResults<RestaurantRecommended> = { currPage: 1, data: [], totalPage: -1 };
+  @Output() restaurantsChange = new EventEmitter<IPagedResults<RestaurantRecommended>>();
 
   private destroy$ = new Subject<void>();
   @Input() columnConfig = {
@@ -32,50 +39,48 @@ export class ListRestaurantComponent implements OnInit, OnDestroy, AfterViewInit
     lg: 6,
   };
 
-  currPage: number = 1;
-  currSearchValue: string = '';
-  crrCateID: string = '';
-  isLoading: boolean = true;
-  restaurants: IPagedResults<RestaurantRecommended> = {
-    data: [],
-    totalPage: 0
-  };
-  isNoData: boolean = false;
-  restaurantsForSearch: IPagedResults<RestaurantRecommended> = {
-    data: [],
-    totalPage: 0
-  };
-  timeout: any;
-  @Input() limit: number = 12;
+  isObserveRoute = false;
+  currPage = 1;
+  currSearchValue = '';
+  crrCateID = '';
+  isLoading = true;
+  isNoData = false;
+  @Input() limit = 12;
+
+  filter!: ICuisineFilter;
 
   constructor(
     private route: ActivatedRoute,
     private searchSrc: SearchService,
-    private restaurantSrv: RestaurantService
+    private restaurantSrv: RestaurantService,
+    private store: Store
   ) { }
 
-  ngAfterViewInit(): void {
-    this.setupIntersectionObserver();
-  }
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes['restaurants'] && changes['restaurants'].currentValue) {
+      if (this.restaurants.totalPage === 0) {
+        this.isObserveRoute = false;
+      }
 
-  @HostListener('window:resize', ['$event'])
-  getListOfRestaurantsSkeleteon(): number[] {
-    if (window.screen.width > 992) {
-      return Array(24 / this.columnConfig.lg).fill(0);
+      if (this.restaurants.data.length === 0) {
+        this.observeRoute();
+      }
+      else {
+        this.isLoading = false;
+        this.currPage = this.restaurants.currPage;
+      }
     }
-    else if (window.screen.width > 768) {
-      return Array(24 / this.columnConfig.md).fill(0);
-    }
-    return Array(4).fill(0);
   }
 
   ngOnInit(): void {
-    this.loadListOfRestaurants();
-    this.route.data.subscribe(data => {
-      if (data['columnConfig']) {
-        this.columnConfig = data['columnConfig'];
-      }
-    });
+    if (this.restaurants.totalPage === -1) {
+      this.observeRoute();
+      this.isObserveRoute = true;
+    }
+  }
+
+  ngAfterViewInit(): void {
+    this.setupIntersectionObserver();
   }
 
   ngOnDestroy(): void {
@@ -83,20 +88,35 @@ export class ListRestaurantComponent implements OnInit, OnDestroy, AfterViewInit
     this.destroy$.complete();
   }
 
+  resetFilter(): void {
+    this.filter = {
+      sortby: SortStatus.RECOMMENDED,
+      promo: false,
+      bestOverall: false,
+    };
+  }
+
+  @HostListener('window:resize', ['$event'])
+  getListOfRestaurantsSkeleteon(): number[] {
+    if (window.screen.width > 992) {
+      return Array(8).fill(0);
+    } else if (window.screen.width > 768) {
+      return Array(6).fill(0);
+    }
+
+    return Array(4).fill(0);
+  }
+
   setupIntersectionObserver(): void {
     const observer = new IntersectionObserver(
-      (entries) => {
+      entries => {
         entries.forEach(entry => {
           if (entry.isIntersecting && !this.isLoading) {
             this.loadMoreData();
           }
         });
       },
-      {
-        root: null,
-        rootMargin: '0px',
-        threshold: 0.1
-      }
+      { root: null, rootMargin: '0px', threshold: 0.1 }
     );
 
     if (this.sentinel?.nativeElement) {
@@ -105,10 +125,30 @@ export class ListRestaurantComponent implements OnInit, OnDestroy, AfterViewInit
   }
 
   loadMoreData(): void {
-    if (this.currPage < this.restaurants.totalPage) {
+    if (this.restaurants.currPage < this.restaurants.totalPage) {
       this.currPage += 1;
-      this.loadListOfRestaurants();
+      if (!this.isObserveRoute) {
+        this.isLoading = true;
+        this.store.dispatch(getRestaurantList({ categoryId: this.crrCateID, searchQuery: this.currSearchValue, page: this.currPage, limit: this.limit }));
+      }
+      else {
+        this.loadListOfRestaurants();
+      }
     }
+  }
+
+  observeRoute(): void {
+    this.route.queryParams
+      .pipe(tap(() => {
+        this.resetFilter();
+        this.resetRestaurants();
+      }))
+      .subscribe({
+        next: () => {
+          this.handleQueryParams(this.route.snapshot.queryParams);
+        },
+        error: err => this.handleError(err),
+      });
   }
 
   loadListOfRestaurants(): void {
@@ -116,48 +156,59 @@ export class ListRestaurantComponent implements OnInit, OnDestroy, AfterViewInit
       this.route.params.pipe(map(params => params["id"])),
       this.searchSrc.restaurantSearchQuery
     ]).pipe(
-      tap(([id, search]) => {
-        this.isLoading = true;
-        this.isNoData = false;
-
-        if (this.crrCateID !== id) {
-          this.restaurants = { data: [], totalPage: 0 };
-          this.currPage = 1;
-        }
-
-        if (this.crrCateID == id && this.currSearchValue !== search) {
-          this.restaurants = { data: [], totalPage: 0 };
-          this.currPage = 1;
-        }
-
-        this.crrCateID = id;
-        this.currSearchValue = search;
-      }),
-      switchMap(([id, search]) =>
-        this.restaurantSrv.getRestaurants(
-          this.crrCateID,
-          search,
-          this.currPage,
-          this.limit
-        )
-      ),
+      tap(([id, search]) => this.handleSearchParams(id, search)),
+      switchMap(([id, search]) => this.restaurantSrv.getRestaurants(id, search, this.currPage, this.limit, this.filter)),
       takeUntil(this.destroy$)
     ).subscribe({
-      next: (res: IPagedResults<RestaurantRecommended>) => {
-        this.restaurants.data = [
-          ...this.restaurants.data,
-          ...res.data
-        ];
-
-        this.isLoading = false;
-        this.isNoData = this.restaurants.data.length === 0;
-        this.restaurants.totalPage = res.totalPage;
-      },
-      error: (err: any) => {
-        this.isLoading = false;
-        this.isNoData = true;
-        console.error('Error loading restaurants', err);
-      }
+      next: res => this.handleRestaurantResponse(res),
+      error: err => this.handleError(err)
     });
+  }
+
+  private handleQueryParams(params: any): void {
+    const { sortby, promo, under, bestOverall, deliveryFee } = params;
+
+    this.filter = {
+      sortby: sortby || SortStatus.RECOMMENDED,
+      promo: promo === 'true' || false,
+      bestOverall: bestOverall === 'true' || false,
+      deliveryFee: deliveryFee || 'any'
+    };
+    if (under) {
+      this.filter.under = Number(under);
+    }
+
+    this.loadListOfRestaurants();
+  }
+
+  private handleSearchParams(id: string, search: string): void {
+    this.isLoading = true;
+    this.isNoData = false;
+
+    if (this.crrCateID !== id || this.currSearchValue !== search) {
+      this.resetRestaurants();
+    }
+
+    this.crrCateID = id;
+    this.currSearchValue = search;
+  }
+
+  private handleRestaurantResponse(res: IPagedResults<RestaurantRecommended>): void {
+    const newData = res.data.filter(newItem => !this.restaurants.data.some(existingItem => existingItem._id === newItem._id));
+    this.restaurants = { currPage: res.currPage, totalPage: res.totalPage, data: [...this.restaurants.data, ...newData] };
+    this.isLoading = false;
+    this.isNoData = this.restaurants.data.length === 0;
+    this.restaurantsChange.emit(this.restaurants);
+  }
+
+  private handleError(err: any): void {
+    this.isLoading = false;
+    this.isNoData = true;
+    console.error('Error loading restaurants', err);
+  }
+
+  private resetRestaurants(): void {
+    this.restaurants = { data: [], totalPage: 0, currPage: 1 };
+    this.currPage = 1;
   }
 }

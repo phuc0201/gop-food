@@ -1,4 +1,4 @@
-import { CampaignDiscountType, CampaignScopeType, CampaignUserGroup, CurrencyCode } from "../../utils/enums/index.enum";
+import { CampaignDiscountType, CampaignScopeType, CampaignUserGroup, CurrencyCode } from "../common/enums/index.enum";
 
 export class CampaignSelected {
   _id: string = '';
@@ -8,7 +8,7 @@ export class CampaignSelected {
 
 class CampaignScope {
   type: CampaignScopeType = CampaignScopeType.ORDER;
-  object_ids: string[] = []
+  object_ids: string[] = [];
 }
 
 class CampaignQuotas {
@@ -19,14 +19,14 @@ class CampaignQuotas {
 class CampaignDiscount {
   type: CampaignDiscountType = CampaignDiscountType.NET;
   cap: number = 0;
-  value: number = 0
+  value: number = 0;
   scope = new CampaignScope();
 }
 
 class CampaignCondition {
   start_time: Date = new Date();
   end_time: Date = new Date();
-  user_group: CampaignUserGroup = CampaignUserGroup.ALL_CUSTOMER
+  user_group: CampaignUserGroup = CampaignUserGroup.ALL_CUSTOMER;
   minBasketAmount: number = 0;
 }
 

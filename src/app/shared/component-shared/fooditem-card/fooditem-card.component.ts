@@ -7,7 +7,7 @@ import { NzDrawerRef, NzDrawerService } from 'ng-zorro-antd/drawer';
 import { NzRateModule } from 'ng-zorro-antd/rate';
 import { FoodItems } from 'src/app/core/models/restaurant/food-items.model';
 import { ModifierGroups } from 'src/app/core/models/restaurant/modifier-groups.model';
-import { getFoodDetails } from 'src/app/core/store/restaurant/restaurant.actions';
+import { getFoodDetails } from 'src/app/core/store/restaurant/restaurant.action';
 import { FoodDetailsComponent } from '../food-details/food-details.component';
 import { DotSpinnerComponent } from '../loaders/dot-spinner/dot-spinner.component';
 

@@ -5,13 +5,15 @@ import { StoreModule } from '@ngrx/store';
 import { ScrollDirective } from '../shared/widget/directives/scroll.directive';
 import { AuthEffects } from './store/auth/auth.effects';
 import { loginReducer } from './store/auth/auth.reducer';
-import { CampaignEffects } from './store/campaign/campaign.effects';
+import { CampaignEffects } from './store/campaign/campaign.effect';
 import { getAllCampaignReducer } from './store/campaign/campaign.reducer';
-import { GeolocationEffects } from './store/geolocation/geolocation.effects';
+import { CuisineEffects } from './store/cuisine/cuisine.effect';
+import { cuisinesReducer } from './store/cuisine/cuisine.reducer';
+import { GeolocationEffects } from './store/geolocation/geolocation.effect';
 import { searchAddressReducer } from './store/geolocation/geolocation.reducer';
-import { ProfileEffects } from './store/profile/profile.effects';
+import { ProfileEffects } from './store/profile/profile.effect';
 import { getProfileReducer } from './store/profile/profile.reducer';
-import { RestaurantEffects } from './store/restaurant/restaurant.effects';
+import { RestaurantEffects } from './store/restaurant/restaurant.effect';
 import { getFoodDetailsReducer, getMenuReducer, getRestaurantInfoReducer, getRestaurantListReducer } from './store/restaurant/restaurant.reducer';
 
 
@@ -29,13 +31,16 @@ import { getFoodDetailsReducer, getMenuReducer, getRestaurantInfoReducer, getRes
       get_menu: getMenuReducer,
       getFoodDetails: getFoodDetailsReducer,
       search_address: searchAddressReducer,
-      get_campaigns: getAllCampaignReducer }),
+      get_campaigns: getAllCampaignReducer,
+      cuisines: cuisinesReducer,
+    }),
     EffectsModule.forRoot([
       AuthEffects,
       ProfileEffects,
       RestaurantEffects,
       GeolocationEffects,
-      CampaignEffects
+      CampaignEffects,
+      CuisineEffects
     ])
   ]
 })

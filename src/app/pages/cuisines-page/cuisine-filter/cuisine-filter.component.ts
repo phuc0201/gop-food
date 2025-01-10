@@ -1,6 +1,7 @@
 import { Component, HostListener, OnInit, ViewEncapsulation } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
+import { tap } from 'rxjs';
 import { ICuisineFilter } from 'src/app/core/models/restaurant/cuisine-filter.model';
 
 
@@ -22,7 +23,6 @@ export class CuisineFilterComponent implements OnInit {
   isMobileScreen: boolean = false;
   loaderApplyFilter: boolean = false;
   priceMax: number = 250000;
-
 
   @HostListener('window:resize', ['$event'])
   onResize(event: any) {
@@ -64,7 +64,6 @@ export class CuisineFilterComponent implements OnInit {
       this.filter = { ...this.filterMobile };
       let queryParams = { ...this.route.snapshot.queryParams };
       queryParams = { ...this.filterMobile };
-      queryParams['price'] = this.filterMobile.price[0] + '-' + this.filterMobile.price[1];
       this.router.navigate([], {
         relativeTo: this.route,
         queryParams,
@@ -77,9 +76,9 @@ export class CuisineFilterComponent implements OnInit {
     this.filter = {
       sortby: 'recommended',
       promo: false,
-      under: 1800,
+      under: null,
       bestOverall: false,
-      price: [0, 100]
+      deliveryFee: 'any'
     };
     this.filterMobile = { ...this.filter };
   }
@@ -94,27 +93,28 @@ export class CuisineFilterComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.resetFilter();
-    this.route.queryParams.subscribe(params => {
-      if (params["sortby"])
-        this.filter.sortby = params["sortby"];
+    this.route.queryParams
+      .pipe(
+        tap(() => { this.resetFilter(); })).subscribe(params => {
+          if (params["sortby"])
+            this.filter.sortby = params["sortby"];
 
-      if (params["under"]) {
-        this.filter.under = Number(params["under"]);
-      }
+          if (params["under"]) {
+            this.filter.under = Number(params["under"]);
+          }
 
-      if (params["bestOverall"]) {
-        this.filter.bestOverall = JSON.parse(params["bestOverall"]);
-      }
+          if (params["bestOverall"]) {
+            this.filter.bestOverall = JSON.parse(params["bestOverall"]);
+          }
 
-      if (params["price"]) {
-        this.filter.price = params['price'].split('-').map((str: string) => (Number(str) / this.priceMax) * 100);
-      }
+          if (params["deliveryFee"]) {
+            this.filter.deliveryFee = params["deliveryFee"];
+          }
 
-      if (params["promo"]) {
-        this.filter.promo = JSON.parse(params['promo']);
-      }
-    });
+          if (params["promo"]) {
+            this.filter.promo = JSON.parse(params['promo']);
+          }
+        });
   }
 
   constructor(

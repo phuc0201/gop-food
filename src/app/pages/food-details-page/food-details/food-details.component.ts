@@ -13,7 +13,7 @@ import { GeolocationService } from 'src/app/core/services/geolocation.service';
 import { OrderService } from 'src/app/core/services/order.service';
 import { RestaurantService } from 'src/app/core/services/restaurant.service';
 import { ReviewService } from 'src/app/core/services/review.service';
-import { selectRestaurantInfo } from 'src/app/core/store/restaurant/restaurant.selectors';
+import { selectRestaurantInfo } from 'src/app/core/store/restaurant/restaurant.selector';
 
 @Component({
   selector: 'app-food-details',

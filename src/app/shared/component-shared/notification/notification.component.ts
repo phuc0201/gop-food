@@ -1,13 +1,13 @@
 import { CommonModule } from '@angular/common';
 import { Component, TemplateRef, ViewChild } from '@angular/core';
 import { NzNotificationModule, NzNotificationService } from 'ng-zorro-antd/notification';
+import { NotificationType } from 'src/app/core/models/common/enums/index.enum';
 import { Notification } from 'src/app/core/models/common/notification.mode';
-import { NotificationType } from 'src/app/core/utils/enums/index.enum';
 
 const plugins = [
   CommonModule,
   NzNotificationModule
-]
+];
 @Component({
   selector: 'app-notification',
   templateUrl: './notification.component.html',
@@ -17,7 +17,7 @@ const plugins = [
 })
 export class NotificationComponent {
   @ViewChild('notificationTemplate', { static: true }) notificationTemplate!: TemplateRef<{}>;
-  notification = new Notification(NotificationType.SUCCESS,'','','','','','');
+  notification = new Notification(NotificationType.SUCCESS, '', '', '', '', '', '');
 
 
   public createNotification(notification: Notification): void {
@@ -31,5 +31,5 @@ export class NotificationComponent {
 
   constructor(
     private notificationSrv: NzNotificationService
-  ) {}
+  ) { }
 }

@@ -5,13 +5,20 @@
   -webkit-overflow-scrolling: touch;
   overflow-x: scroll;
   scroll-behavior: smooth;
-  button {
-    @apply bg-gray-100 hover:bg-gray-200 py-1 px-3 rounded-2xl text-black1 text-nowrap;
-  }
+}
+
+#cuisine-filter button {
+  @apply bg-gray-100 hover:bg-gray-200 py-1 px-3 rounded-2xl text-black1 text-nowrap;
+  white-space: nowrap;
+}
+
+#cuisine-filter button.active {
+  @apply bg-gray-800 text-white py-1 px-3 rounded-2xl text-nowrap;
 }
 
 #cuisine-filter .filter-item {
   scroll-snap-align: center;
+  white-space: nowrap;
 }
 
 #cuisine-filter::-webkit-scrollbar {

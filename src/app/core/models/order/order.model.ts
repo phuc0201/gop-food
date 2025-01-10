@@ -1,4 +1,4 @@
-import { BillStatus, OrderStatus, PaymentMethod } from "../../utils/enums/index.enum";
+import { BillStatus, OrderStatus, PaymentMethod } from "../common/enums/index.enum";
 import { FoodItemDTO } from "../restaurant/food-items.model";
 import { Modifier } from "../restaurant/modifier.model";
 

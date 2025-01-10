@@ -1,7 +1,7 @@
 <ng-container *ngIf="isLoading">
-  <div class="cuisine-slider flex items-start justify-start lg:gap-4 gap-3">
+  <div class="cuisine-slider flex items-start justify-start lg:gap-3 gap-2">
     <div *ngFor="let item of [1,2,3,4,5,6,7,8,9,10]"
-      class="relative w-16 min-w-16 aspect-square sm:w-32 sm:min-w-32 lg:w-52 lg:min-w-52 sm:aspect-video p-[2px]">
+      class="relative w-16 min-w-16 aspect-square sm:w-32 sm:min-w-32 lg:w-44 lg:min-w-44 sm:aspect-video p-[2px]">
       <div class="flex justify-center w-full h-full  sm:rounded-md rounded-full items-center animate-pulse bg-gray-300">
         <svg class="md:w-5 md:h-5 w-2 h-2 text-gray-100" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
           fill="currentColor" viewBox="0 0 16 20">
@@ -25,11 +25,11 @@
       <i class="fa-solid fa-angle-right"></i>
     </button>
     <div class="relative w-full">
-      <div #cuisinesSlider id="cuisine-list" class="cuisine-slider flex items-start justify-start lg:gap-4 gap-3">
+      <div #cuisinesSlider id="cuisine-list" class="cuisine-slider flex items-start justify-start lg:gap-3 gap-3">
         <ng-container *ngFor="let cusine of cuisineCategories">
           <div class="slider-item flex flex-col items-center">
             <a [routerLink]="['/cuisines', cusine.id]" [queryParamsHandling]="'merge'" [routerLinkActive]="'active'"
-              class="relative border-2 border-transparent transition-all duration-300 w-16 min-w-16 aspect-square sm:w-32 sm:min-w-32 lg:w-52 lg:min-w-52 sm:aspect-video overflow-hidden rounded-full sm:rounded-lg">
+              class="relative border-2 border-transparent transition-all duration-300 w-16 min-w-16 aspect-square sm:w-32 sm:min-w-32 lg:w-44 lg:min-w-44 sm:aspect-video overflow-hidden rounded-full sm:rounded-lg">
 
               <div *ngIf="isImageLoaded"
                 class="sm:block hidden z-10 absolute top-0 left-0 right-0 bottom-0 sm:rounded-lg cuisine-overlay rounded-full">

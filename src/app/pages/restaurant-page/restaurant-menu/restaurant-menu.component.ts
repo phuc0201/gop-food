@@ -4,7 +4,7 @@ import { filter } from 'rxjs';
 import { FoodItems } from 'src/app/core/models/restaurant/food-items.model';
 import { RestaurantCategory } from 'src/app/core/models/restaurant/restaurant-category.model';
 import { SearchService } from 'src/app/core/services/search.service';
-import { selectMenu } from 'src/app/core/store/restaurant/restaurant.selectors';
+import { selectMenu } from 'src/app/core/store/restaurant/restaurant.selector';
 
 @Component({
   selector: 'app-restaurant-menu',

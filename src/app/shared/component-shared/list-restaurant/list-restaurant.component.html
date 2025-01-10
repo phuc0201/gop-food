@@ -9,7 +9,7 @@
   <ng-container *ngIf="isLoading">
     <ng-container *ngFor="let item of getListOfRestaurantsSkeleteon()">
       <div nz-col nzSpan="24" [nzSm]='columnConfig.sm' [nzMd]="columnConfig.md" [nzLg]="columnConfig.lg"
-        class="restaurant-card-wrapper mb-5">
+        class="restaurant-card-wrapper lg:mb-8 md:mb-6 sm:mb-4 mb-3">
         <ng-container [ngTemplateOutlet]="resCardLoadingTpl"></ng-container>
       </div>
     </ng-container>
@@ -23,9 +23,9 @@
 </ng-container>
 
 <ng-template #resCardLoadingTpl>
-  <div role="status" class="w-full animate-pulse  md:block flex md:gap-0 gap-3">
+  <div role="status" class="w-full animate-pulse md:block flex md:gap-0 gap-3">
     <div
-      class="flex items-center justify-center md:aspect-[2/1] md:w-full min-w-24 w-24 aspect-square mb-4 bg-gray-200 rounded-lg">
+      class="flex items-center justify-center md:aspect-[2/1] md:w-full min-w-24 w-24 aspect-square md:mb-3 bg-gray-200 rounded-lg">
       <svg class="md:w-10 md:h-10 w-5 h-5 text-gray-100" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
         fill="currentColor" viewBox="0 0 16 20">
         <path
@@ -34,7 +34,7 @@
       </svg>
     </div>
     <div class="w-full">
-      <div class="md:block hidden h-2.5 bg-gray-200 rounded-full w-full mb-4"></div>
+      <div class="md:block hidden h-2.5 bg-gray-200 rounded-full w-full mb-2"></div>
       <div class="h-2 bg-gray-200 rounded-full  mb-2.5 w-full"></div>
       <div class="h-2 bg-gray-200 rounded-full  mb-2.5 w-full"></div>
     </div>

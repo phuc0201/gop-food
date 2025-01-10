@@ -1,8 +1,12 @@
 import { CommonModule } from '@angular/common';
-import { CUSTOM_ELEMENTS_SCHEMA, Component, ElementRef, Input, OnInit, ViewChild } from '@angular/core';
+import { Component, CUSTOM_ELEMENTS_SCHEMA, ElementRef, Input, OnInit, ViewChild } from '@angular/core';
 import { Router, RouterModule } from '@angular/router';
+import { Store } from '@ngrx/store';
+import { catchError, distinctUntilChanged, EMPTY, finalize, Subscription, tap } from 'rxjs';
 import { CuisineCategory } from 'src/app/core/models/cuisine/cuisine-category.model';
-import { CuisineService } from 'src/app/core/services/cuisine.service';
+import { getCuisines } from 'src/app/core/store/cuisine/cuisine.action';
+import { selectCuisines } from 'src/app/core/store/cuisine/cuisine.selector';
+import { CuisinesState } from 'src/app/core/store/cuisine/cuisine.state';
 import { register } from 'swiper/element/bundle';
 register();
 
@@ -30,9 +34,10 @@ export class CuisinesSliderComponent implements OnInit {
   cuisineCategories: CuisineCategory[] = [];
   isLoading: boolean = true;
   isImageLoaded: boolean = false;
+  cuisineSubscription: Subscription = new Subscription();
 
   constructor(
-    private cuisineSrc: CuisineService,
+    private store: Store,
     private router: Router
   ) { }
 
@@ -41,21 +46,34 @@ export class CuisinesSliderComponent implements OnInit {
   }
 
   loadCuisines(): void {
-    this.cuisineSrc.getCuisineCategories().subscribe({
-      next: (res: CuisineCategory[]) => {
-        this.cuisineCategories = res;
-        setTimeout(() => {
-          this.isLoading = false;
-          this.onImageLoad();
-        }, 200);
-      },
-      error: (error: any) => {
-        console.error('Error fetching cuisine categories:', error);
-      },
-      complete: () => {
-        this.handleCuisineRoute(this.router.url);
-      }
+    this.cuisineSubscription = this.store.select(selectCuisines).subscribe((res: CuisinesState) => {
+      this.cuisineCategories = res.result;
+      this.isLoading = res.isLoading;
+      this.isImageLoaded = true;
     });
+
+    if (this.cuisineCategories.length == 0) {
+      this.store.dispatch(getCuisines());
+      this.cuisineSubscription.unsubscribe();
+      this.cuisineSubscription = this.store.select(selectCuisines).pipe(
+        distinctUntilChanged(),
+        tap((res: CuisinesState) => {
+          if (res.result.length > 0) {
+            this.cuisineCategories = res.result;
+            this.isLoading = res.isLoading;
+            this.onImageLoad();
+          }
+        }),
+        catchError((error) => {
+          console.error('Error fetching cuisine categories:', error);
+          this.isLoading = false;
+          return EMPTY;
+        }),
+        finalize(() => {
+          this.handleCuisineRoute(this.router.url);
+        })
+      ).subscribe();
+    }
   }
 
   onImageLoad(): void {

@@ -1,4 +1,4 @@
-import { NotificationType } from "../utils/enums/index.enum";
+import { NotificationType } from "../models/common/enums/index.enum";
 
 export const NotificationColor = [
   {
