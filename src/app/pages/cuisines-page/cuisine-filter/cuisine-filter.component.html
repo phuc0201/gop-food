@@ -13,7 +13,8 @@
   </button>
   <nz-dropdown-menu #sortBy="nzDropdownMenu">
     <div class="shadow-2xl rounded-md overflow-hidden">
-      <ng-container [ngTemplateOutlet]="sortTemplate"></ng-container>
+      <ng-container [ngTemplateOutlet]="sortTemplate"
+        [ngTemplateOutletContext]="{dropDownForDrawer: false}"></ng-container>
     </div>
   </nz-dropdown-menu>
 
@@ -50,7 +51,8 @@
   </button>
   <nz-dropdown-menu #deliveryFee="nzDropdownMenu">
     <div class="shadow-2xl rounded-md overflow-hidden">
-      <ng-container [ngTemplateOutlet]="deliveryFeeTempalte"></ng-container>
+      <ng-container [ngTemplateOutlet]="deliveryFeeTempalte"
+        [ngTemplateOutletContext]="{deleveryForDrawer: false}"></ng-container>
     </div>
   </nz-dropdown-menu>
 
@@ -71,7 +73,8 @@
       <div class="filterMobile pb-[120px]">
         <div>
           <h3 class="filter-title">Sort By</h3>
-          <ng-container [ngTemplateOutlet]="sortTemplate"></ng-container>
+          <ng-container [ngTemplateOutlet]="sortTemplate"
+            [ngTemplateOutletContext]="{dropDownForDrawer: true}"></ng-container>
         </div>
 
         <div>
@@ -81,12 +84,8 @@
 
         <div>
           <h3 class="filter-title">Delivery Fee</h3>
-          <ng-container [ngTemplateOutlet]="deliveryFeeTempalte"></ng-container>
-        </div>
-
-        <div>
-          <h3 class="filter-title">Price</h3>
-          <ng-container [ngTemplateOutlet]="priceTemplate"></ng-container>
+          <ng-container [ngTemplateOutlet]="deliveryFeeTempalte"
+            [ngTemplateOutletContext]="{deleveryForDrawer: true}"></ng-container>
         </div>
       </div>
 
@@ -110,24 +109,22 @@
   </nz-drawer>
 </div>
 
-<ng-template #sortTemplate>
+<ng-template #sortTemplate let-dropDownForDrawer="dropDownForDrawer">
   <div class="w-full bg-white px-4">
-
-    <ng-container *ngFor="let group of [filter, filterMobile]">
-      <nz-radio-group [(ngModel)]="group.sortby"
-        [ngClass]="{'w-full sm:block hidden': group === filter, 'w-full sm:!hidden block': group === filterMobile}">
+    <ng-container *ngFor="let group of [filter]">
+      <nz-radio-group [(ngModel)]="group.sortby" class="w-full">
         <div class="flex flex-col rounded-sm overflow-auto">
           <ng-container *ngFor="let item of ['recommended', 'rating']">
-            <ng-container *ngIf="group === filter; else sortByForMobile">
+            <ng-container *ngIf="dropDownForDrawer == false; else sortByForDrawer">
               <a nz-radio [nzValue]="item" [routerLink]="[filterURL]" [queryParams]="{sortby: item}"
                 queryParamsHandling="merge"
-                class="sm:!flex !hidden items-center !py-4 text-black hover:text-black !m-0 hover:bg-green3 border border-gray-200 border-x-0 border-t-0 last:border-0"
+                class="items-center !py-4 text-black hover:text-black !m-0 hover:bg-green3 border border-gray-200 border-x-0 border-t-0 last:border-0"
                 (click)="dropDownForSortBy=false">
                 <span class="capitalize">{{ item }}</span>
               </a>
             </ng-container>
 
-            <ng-template #sortByForMobile>
+            <ng-template #sortByForDrawer>
               <div nz-radio [nzValue]="item"
                 class="sm:!hidden !flex items-center !py-4 text-black hover:text-black !m-0 hover:bg-green3 border border-gray-200 border-x-0 border-t-0 last:border-0">
                 <span class="capitalize">{{ item }}</span>
@@ -141,14 +138,13 @@
   </div>
 </ng-template>
 
-<ng-template #deliveryFeeTempalte>
+<ng-template #deliveryFeeTempalte let-deleveryForDrawer="deleveryForDrawer">
   <div class="w-full bg-white px-4">
-    <ng-container *ngFor="let group of [filter, filterMobile]">
-      <nz-radio-group [(ngModel)]="group.deliveryFee"
-        [ngClass]="{'w-full sm:!block !hidden': group === filter, 'w-full sm:!hidden block': group === filterMobile}">
+    <ng-container *ngFor="let group of [filter]">
+      <nz-radio-group [(ngModel)]="group.deliveryFee" class="w-full">
         <div class="flex flex-col rounded-sm overflow-auto">
           <ng-container *ngFor="let item of [ 'any', '15000', '25000', '35000' ]">
-            <ng-container *ngIf="group === filter; else deleveryForMobile">
+            <ng-container *ngIf="!deleveryForDrawer; else deleveryForMobile">
               <a nz-radio [nzValue]=item [routerLink]="[filterURL]" [queryParams]="{deliveryFee: item}"
                 queryParamsHandling="merge" routerLinkActive="active"
                 class="!py-4 text-black hover:text-black !m-0 hover:bg-green3 border border-gray-200 border-x-0 border-t-0 last:border-0"
@@ -173,38 +169,30 @@
   </div>
 </ng-template>
 
-<ng-template #priceTemplate>
-  <!-- <div class="sm:w-96 w-full p-4 h-auto rounded-sm bg-white">
-
-    <div class="flex items-center justify-between">
-      <div class="flex items-center justify-center w-32 h-6 border border-gray-300">
-        <div>{{ isMobileScreen ? filterMobile.price[0] : filter.price[0] }}</div>
-      </div>
-      <div class="flex-1 h-[2px] bg-gray-200">
-
-      </div>
-      <div class="flex items-center justify-center w-32 h-6 border border-gray-300">
-        <div>{{ ((isMobileScreen ? filterMobile.price[1] : filter.price[1])/100) * priceMax | number:'1.0-0':'vi' }} VND
-        </div>
-      </div>
-    </div>
-
-    <nz-slider nzRange [(ngModel)]="filter.price" class="sm:block hidden"></nz-slider>
-    <nz-slider nzRange [(ngModel)]="filterMobile.price" class="sm:hidden block"></nz-slider>
-
-    <div class="sm:flex hidden flex-col items-end w-full">
-      <button class="px-4 py-2 rounded-sm bg-primary text-white font-bold"
-        (click)="applyFilter('price', filter.price[0] + '-' + (filter.price[1]/100)*priceMax)">Xem kết quả</button>
-    </div>
-  </div> -->
-</ng-template>
-
 <ng-template #restaurntOptionTemplate>
-  <div class="p-4 bg-white">
+  <div class="p-4 bg-white border-0 border-b-[1px] border-gray-200">
     <label for="restaurant-option-checkbox"
       class="flex items-center justify-between text-sm font-medium text-gray-900 dark:text-gray-300">
       <span>Promo</span>
-      <input id="restaurant-option-checkbox" type="checkbox" [(ngModel)]="filterMobile.promo"
+      <input id="restaurant-option-checkbox" type="checkbox" [(ngModel)]="filter.promo"
+        class="w-4 h-4 text-primary focus:ring-0 rounded-sm border-gray-400">
+    </label>
+  </div>
+
+  <div class="p-4 bg-white border-0 border-b-[1px] border-gray-200">
+    <label for="restaurant-option-checkbox"
+      class="flex items-center justify-between text-sm font-medium text-gray-900 dark:text-gray-300">
+      <span>Under 30 min</span>
+      <input id="restaurant-option-checkbox" type="checkbox" [(ngModel)]="filter.under"
+        class="w-4 h-4 text-primary focus:ring-0 rounded-sm border-gray-400">
+    </label>
+  </div>
+
+  <div class="p-4 bg-white">
+    <label for="restaurant-option-checkbox"
+      class="flex items-center justify-between text-sm font-medium text-gray-900 dark:text-gray-300">
+      <span>Best Overall</span>
+      <input id="restaurant-option-checkbox" type="checkbox" [(ngModel)]="filter.bestOverall"
         class="w-4 h-4 text-primary focus:ring-0 rounded-sm border-gray-400">
     </label>
   </div>

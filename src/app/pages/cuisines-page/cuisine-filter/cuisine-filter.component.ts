@@ -18,7 +18,6 @@ export class CuisineFilterComponent implements OnInit {
   dropDownForDeleivery: boolean = false;
   dropDownForPrice: boolean = false;
   filter!: ICuisineFilter;
-  filterMobile!: ICuisineFilter;
   visibleFilterDrawer: boolean = false;
   isMobileScreen: boolean = false;
   loaderApplyFilter: boolean = false;
@@ -59,16 +58,15 @@ export class CuisineFilterComponent implements OnInit {
   applyFilterMobile(): void {
     this.loaderApplyFilter = true;
     setTimeout(() => {
-      this.closeFilterDrawer();
       this.loaderApplyFilter = false;
-      this.filter = { ...this.filterMobile };
       let queryParams = { ...this.route.snapshot.queryParams };
-      queryParams = { ...this.filterMobile };
+      queryParams = { ...this.filter };
       this.router.navigate([], {
         relativeTo: this.route,
         queryParams,
         queryParamsHandling: 'merge',
       });
+      this.closeFilterDrawer();
     }, 500);
   }
 
@@ -80,12 +78,10 @@ export class CuisineFilterComponent implements OnInit {
       bestOverall: false,
       deliveryFee: 'any'
     };
-    this.filterMobile = { ...this.filter };
   }
 
   openFilterDrawer(): void {
     this.visibleFilterDrawer = true;
-    this.filterMobile = { ...this.filter };
   }
 
   closeFilterDrawer(): void {

@@ -35,6 +35,9 @@ a {
   @apply text-black hover:text-black;
 }
 
+.ant-radio {
+  @apply top-0;
+}
 .ant-radio-checked .ant-radio-inner {
   @apply border-primary;
 }
