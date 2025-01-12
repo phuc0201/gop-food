@@ -80,6 +80,10 @@ export class CuisineFilterComponent implements OnInit {
     };
   }
 
+  changeUnderMinutes(value: number): void {
+    this.filter.under = value ? 1800 : null;
+  }
+
   openFilterDrawer(): void {
     this.visibleFilterDrawer = true;
   }

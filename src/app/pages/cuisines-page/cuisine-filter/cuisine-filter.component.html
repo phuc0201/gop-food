@@ -171,28 +171,29 @@
 
 <ng-template #restaurntOptionTemplate>
   <div class="p-4 bg-white border-0 border-b-[1px] border-gray-200">
-    <label for="restaurant-option-checkbox"
+    <label for="restaurant-option-promo-checkbox"
       class="flex items-center justify-between text-sm font-medium text-gray-900 dark:text-gray-300">
       <span>Promo</span>
-      <input id="restaurant-option-checkbox" type="checkbox" [(ngModel)]="filter.promo"
+      <input id="restaurant-option-promo-checkbox" type="checkbox" [(ngModel)]="filter.promo"
         class="w-4 h-4 text-primary focus:ring-0 rounded-sm border-gray-400">
     </label>
   </div>
 
   <div class="p-4 bg-white border-0 border-b-[1px] border-gray-200">
-    <label for="restaurant-option-checkbox"
+    <label for="restaurant-option-under-checkbox"
       class="flex items-center justify-between text-sm font-medium text-gray-900 dark:text-gray-300">
       <span>Under 30 min</span>
-      <input id="restaurant-option-checkbox" type="checkbox" [(ngModel)]="filter.under"
+      <input id="restaurant-option-under-checkbox" type="checkbox" [ngModel]="filter.under == 1800"
+        (ngModelChange)="changeUnderMinutes($event)"
         class="w-4 h-4 text-primary focus:ring-0 rounded-sm border-gray-400">
     </label>
   </div>
 
   <div class="p-4 bg-white">
-    <label for="restaurant-option-checkbox"
+    <label for="restaurant-option-bestOverall-checkbox"
       class="flex items-center justify-between text-sm font-medium text-gray-900 dark:text-gray-300">
       <span>Best Overall</span>
-      <input id="restaurant-option-checkbox" type="checkbox" [(ngModel)]="filter.bestOverall"
+      <input id="restaurant-option-bestOverall-checkbox" type="checkbox" [(ngModel)]="filter.bestOverall"
         class="w-4 h-4 text-primary focus:ring-0 rounded-sm border-gray-400">
     </label>
   </div>
