@@ -10,7 +10,6 @@ import { NzInputModule } from 'ng-zorro-antd/input';
 import { NzRadioModule } from 'ng-zorro-antd/radio';
 import { NzSkeletonModule } from 'ng-zorro-antd/skeleton';
 import { Observable, filter, of, switchMap, take, tap } from 'rxjs';
-import { SystemConstant } from 'src/app/core/constants/system.constant';
 import { Cart } from 'src/app/core/models/order/order.model';
 import { FoodItemDTO, FoodItems } from 'src/app/core/models/restaurant/food-items.model';
 import { ModifierGroups } from 'src/app/core/models/restaurant/modifier-groups.model';
@@ -19,7 +18,6 @@ import { Restaurant } from 'src/app/core/models/restaurant/restaurant.model';
 import { GeolocationService } from 'src/app/core/services/geolocation.service';
 import { OrderService } from 'src/app/core/services/order.service';
 import { ProfileService } from 'src/app/core/services/profile.service';
-import { getRestaurantInfo } from 'src/app/core/store/restaurant/restaurant.action';
 import { selectFoodDetails, selectRestaurantInfo } from 'src/app/core/store/restaurant/restaurant.selector';
 import { DotsLoaderComponent } from '../loaders/dots-loader/dots-loader.component';
 import { ImgLoaderComponent } from '../loaders/img-loader/img-loader.component';
@@ -54,8 +52,6 @@ export class FoodDetailsComponent implements OnInit {
   isUpdate: boolean = false;
 
   initial(): void {
-    this.store.dispatch(getRestaurantInfo({ res_id: SystemConstant.MERCHANT_ID }));
-
     this.store.select(selectFoodDetails)
       .pipe(
         filter(data => !data.isLoading && data.foodDetails._id !== ''),

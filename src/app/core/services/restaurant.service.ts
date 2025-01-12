@@ -42,7 +42,7 @@ export class RestaurantService {
   }
 
   getCategories(): Observable<CategorySlider[]> {
-    return this.http.get<CategorySlider[]>(this.constructUrl(`/${SystemConstant.MERCHANT_ID}/categories`))
+    return this.http.get<CategorySlider[]>(this.constructUrl(`categories`))
       .pipe(catchError(this.handleError<CategorySlider[]>()));
   }
 
