@@ -11,14 +11,15 @@ const _getRestaurantList = createReducer(
   }),
 
   on(restaurantAction.getRestaurantListSuccess, (state, { result }) => {
+    const updatedResult = result.currPage === 1 ? result : {
+      ...state.result,
+      ...result,
+      data: result.currPage === state.result.currPage ? state.result.data : [...state.result.data, ...result.data]
+    };
     return {
       ...state,
       isLoading: false,
-      result: result.currPage === 1 ? result : {
-        ...state.result,
-        ...result,
-        data: [...state.result.data, ...result.data]
-      }
+      result: updatedResult
     };
   }),
 
