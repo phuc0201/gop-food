@@ -41,4 +41,5 @@
   </div>
 </ng-template>
 
-<div #sentinel></div>
+<div infiniteScroll [infiniteScrollDistance]="2" [infiniteScrollThrottle]="50" (scrolled)="loadMoreData()">
+</div>

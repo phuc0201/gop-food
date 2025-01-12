@@ -92,10 +92,6 @@ export class MainHeaderComponent implements OnInit {
 
     this.resSrv.currWishlistCount.subscribe(wl => this.wishlist = wl);
 
-    if (this.router.url == '/') {
-      this.showSearchBar = true;
-    }
-
     this.router.events
       .pipe(
         filter(event => event instanceof NavigationEnd),
