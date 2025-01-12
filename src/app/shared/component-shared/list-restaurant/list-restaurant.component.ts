@@ -45,7 +45,7 @@ export class ListRestaurantComponent implements OnInit, OnDestroy, AfterViewInit
   crrCateID = '';
   isLoading = true;
   isNoData = false;
-  @Input() limit = 12;
+  @Input() limit = 8;
 
   filter!: ICuisineFilter;
 
@@ -129,7 +129,12 @@ export class ListRestaurantComponent implements OnInit, OnDestroy, AfterViewInit
       this.currPage += 1;
       if (!this.isObserveRoute) {
         this.isLoading = true;
-        this.store.dispatch(getRestaurantList({ categoryId: this.crrCateID, searchQuery: this.currSearchValue, page: this.currPage, limit: this.limit }));
+        this.store.dispatch(getRestaurantList({
+          categoryId: this.crrCateID,
+          searchQuery: this.currSearchValue,
+          page: this.currPage,
+          limit: this.limit,
+        }));
       }
       else {
         this.loadListOfRestaurants();

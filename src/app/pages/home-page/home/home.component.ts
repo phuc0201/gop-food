@@ -19,9 +19,10 @@ export class HomeComponent implements OnInit {
   foodItems: FoodItems<string>[] = [];
   listFoodCol: number = 6;
   isLoading: boolean = true;
-  // restaurants: IPagedResults<RestaurantRecommended> = { data: [], totalPage: 0 };
+  restaurants: IPagedResults<RestaurantRecommended> = { data: [], totalPage: 0, currPage: 1 };
   isMobile: boolean = false;
   restaurantsSubscription: Subscription = new Subscription();
+  limit = 12;
 
   constructor(
     private geoSrv: GeolocationService,
@@ -30,9 +31,9 @@ export class HomeComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
+    this.handleMobileScreen();
     this.searchSrv.setRestaurantSearchQuery('');
     this.loadData();
-    this.handleMobileScreen();
   }
 
   @HostListener('window:resize', ['$event'])
@@ -41,13 +42,13 @@ export class HomeComponent implements OnInit {
   }
 
   handleMobileScreen() {
-    this.isMobile = window.innerWidth <= 768;
+    this.isMobile = window.innerWidth < 576;
   }
 
   loadProfile(): void {
     this.geoSrv.currLocation.subscribe(res => this.address = res.address);
   }
-  restaurants: IPagedResults<RestaurantRecommended> = { data: [], totalPage: 0, currPage: 1 };
+
   loadRecommendedRestaurants() {
     this.restaurantsSubscription = this.store.select(selectRestaurantList).subscribe({
       next: res => {
@@ -63,7 +64,7 @@ export class HomeComponent implements OnInit {
         categoryId: "",
         searchQuery: "",
         page: 1,
-        limit: 8
+        limit: this.limit
       }));
 
       this.restaurantsSubscription = this.store.select(selectRestaurantList)
