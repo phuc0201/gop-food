@@ -9,13 +9,13 @@
 </ng-container>
 
 <ng-container>
-  <div [hidden]="!isMobile" class="h-[100vh] relative flex flex-col justify-between">
+  <div [hidden]="!isMobile" class="h-svh relative flex flex-col justify-between">
     <div #webbodyMobile class="webbody-mobile flex-1">
       <ng-container *ngIf="isMobile">
         <app-mobile-header *ngIf="isHiddenMobileHeader" [scrollTopValue]="scrollTopValue"></app-mobile-header>
         <router-outlet></router-outlet>
       </ng-container>
     </div>
-    <app-bottom-navbar *ngIf="isMobile"></app-bottom-navbar>
+    <app-bottom-navbar></app-bottom-navbar>
   </div>
 </ng-container>
