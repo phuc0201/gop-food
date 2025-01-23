@@ -4,7 +4,7 @@ import { BehaviorSubject, catchError, Observable, of, switchMap } from "rxjs";
 import { SystemConstant } from "../constants/system.constant";
 import { URLConstant } from "../constants/url.constant";
 import { IPagedResults } from "../models/common/response-data.model";
-import { AddressSelected } from "../models/geolocation/location.model";
+import { SelectedAddress } from "../models/geolocation/location.model";
 import { ICuisineFilter } from "../models/restaurant/cuisine-filter.model";
 import { FoodItemPagination, FoodItems } from "../models/restaurant/food-items.model";
 import { ModifierGroups } from "../models/restaurant/modifier-groups.model";
@@ -54,7 +54,7 @@ export class RestaurantService {
     filter: ICuisineFilter = {}
   ): Observable<IPagedResults<RestaurantRecommended>> {
     return this.geoSrv.currLocation.pipe(
-      switchMap((location: AddressSelected) => {
+      switchMap((location: SelectedAddress) => {
         let params = new HttpParams()
           .set('coordinates', `${location.coordinates[1]},${location.coordinates[0]}`)
           .set('page', page.toString())
@@ -77,7 +77,7 @@ export class RestaurantService {
 
   getRestaurantInfo(id: string): Observable<Restaurant> {
     return this.geoSrv.currLocation.pipe(
-      switchMap((location: AddressSelected) => {
+      switchMap((location: SelectedAddress) => {
         const params = new HttpParams()
           .set('coordinates', `${location.coordinates[1]},${location.coordinates[0]}`)
           .set('id', id);

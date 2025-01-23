@@ -23,13 +23,13 @@ export class ProfileService {
     this.currentAddress = this.address.asObservable();
   }
 
-  setAddressSelected(address: string) {
+  setSelectedAddress(address: string) {
     this.address.next(address);
   }
 
   setProfileIntoSession(profile: IProfile) {
     sessionStorage.setItem(SystemConstant.CURRENT_PROFILE, JSON.stringify(profile));
-    this.setAddressSelected(profile.address);
+    this.setSelectedAddress(profile.address);
   }
 
   getProfileInSession(): IProfile {

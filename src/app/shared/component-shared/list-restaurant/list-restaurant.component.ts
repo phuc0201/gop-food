@@ -1,9 +1,8 @@
 import { CommonModule } from '@angular/common';
-import { AfterViewInit, Component, EventEmitter, HostListener, Input, OnChanges, OnDestroy, OnInit, Output, SimpleChanges } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, EventEmitter, HostListener, Input, OnChanges, OnDestroy, OnInit, Output, SimpleChanges, ViewChild } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { NzGridModule } from 'ng-zorro-antd/grid';
-import { InfiniteScrollModule } from 'ngx-infinite-scroll';
 import { combineLatest, map, Subject, switchMap, takeUntil, tap } from 'rxjs';
 import { SortStatus } from 'src/app/core/models/common/enums/index.enum';
 import { IPagedResults } from 'src/app/core/models/common/response-data.model';
@@ -18,7 +17,6 @@ const plugin = [
   CommonModule,
   RestaurantCardComponent,
   NzGridModule,
-  InfiniteScrollModule
 ];
 
 @Component({
@@ -29,9 +27,11 @@ const plugin = [
   imports: plugin
 })
 export class ListRestaurantComponent implements OnInit, OnDestroy, AfterViewInit, OnChanges {
+
   @Input() restaurants: IPagedResults<RestaurantRecommended> = { currPage: 1, data: [], totalPage: -1 };
   @Output() restaurantsChange = new EventEmitter<IPagedResults<RestaurantRecommended>>();
-
+  @ViewChild('sentinel', { static: false }) sentinel!: ElementRef;
+  private observer!: IntersectionObserver;
   private destroy$ = new Subject<void>();
   @Input() columnConfig = {
     xs: 12,
@@ -81,12 +81,15 @@ export class ListRestaurantComponent implements OnInit, OnDestroy, AfterViewInit
   }
 
   ngAfterViewInit(): void {
-    // this.setupIntersectionObserver();
+    this.setupIntersectionObserver();
   }
 
   ngOnDestroy(): void {
     this.destroy$.next();
     this.destroy$.complete();
+    if (this.observer && this.sentinel) {
+      this.observer.unobserve(this.sentinel.nativeElement);
+    }
   }
 
   resetFilter(): void {
@@ -106,6 +109,20 @@ export class ListRestaurantComponent implements OnInit, OnDestroy, AfterViewInit
     }
 
     return Array(4).fill(0);
+  }
+
+  private setupIntersectionObserver(): void {
+    this.observer = new IntersectionObserver(entries => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          this.loadMoreData();
+        }
+      });
+    });
+
+    if (this.sentinel) {
+      this.observer.observe(this.sentinel.nativeElement);
+    }
   }
 
   loadMoreData(): void {

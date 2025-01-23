@@ -5,3 +5,7 @@
     rgba(192, 229, 246, 1) 64%
   );
 }
+
+#mobile-header .scrolled span {
+  @apply hidden;
+}

@@ -7,7 +7,7 @@ import { filter, tap } from 'rxjs';
 import { URLConstant } from 'src/app/core/constants/url.constant';
 import { PaymentMethodData } from 'src/app/core/mock-data/payment-method.data';
 import { IconMarker, PaymentMethod, RoleType } from 'src/app/core/models/common/enums/index.enum';
-import { AddressSelected, LocationMarker } from 'src/app/core/models/geolocation/location.model';
+import { LocationMarker, SelectedAddress } from 'src/app/core/models/geolocation/location.model';
 import { Cart, Quote } from 'src/app/core/models/order/order.model';
 import { PaymentMethodType } from 'src/app/core/models/payment/payment.model';
 import { FoodItemDTO } from 'src/app/core/models/restaurant/food-items.model';
@@ -35,7 +35,7 @@ export class CheckoutComponent implements OnInit, AfterViewInit {
   isSelectPaymentMethod: boolean = false;
   paymentMethodSelected: PaymentMethodType = this.paymentMethod[0];
   discount_value: number = 0;
-  addressSelected = new AddressSelected();
+  addressSelected = new SelectedAddress();
   isShowFoodDetails: boolean = false;
   drawerRef?: NzDrawerRef<any, any>;
   phone: string = '';
@@ -110,7 +110,7 @@ export class CheckoutComponent implements OnInit, AfterViewInit {
     const restaurantMarker = new LocationMarker(RoleType.RESTAURANT, IconMarker.RESTAURANT, resLocation);
     const customerMarker = new LocationMarker(RoleType.CUSTOMER, IconMarker.CUSTOMER, cusLocation);
     const modalRef = this.createModal(MapSelectorComponent, 'map-selector', [restaurantMarker, customerMarker]);
-    modalRef.afterClose.subscribe((result: AddressSelected) => {
+    modalRef.afterClose.subscribe((result: SelectedAddress) => {
       if (result !== undefined && result.coordinates.length > 0 && result.address !== '') {
         this.createQuote();
       }
@@ -124,7 +124,7 @@ export class CheckoutComponent implements OnInit, AfterViewInit {
     this.orderSrv.updateCart(this.basket);
   }
 
-  updateLocation(address: string, coordinates: number[]) {
+  updateLocation(address: string, coordinates: [number, number]) {
     this.addressSelected.address = address;
     this.addressSelected.coordinates = coordinates;
     this.basket.cart.delivery_location.address = address;

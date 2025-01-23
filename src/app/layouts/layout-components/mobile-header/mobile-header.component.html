@@ -1,0 +1,26 @@
+<div id="mobile-header" class="w-full sectionContainer bg-white z-30 transition-all py-4 sticky top-0">
+  <div class="relative flex items-center justify-between h-10">
+    <div (click)="showMapSelector()">
+      <div class="flex items-center cursor-pointer" [ngClass]="{'opacity-0' : isScroll}">
+        <span class="max-w-[60%] line-clamp-1">
+          {{addressSelected.address}}
+        </span>
+        <i class="fa-solid fa-angle-down"></i>
+      </div>
+    </div>
+    <div>
+      <ng-container>
+        <nz-badge (click)="openDrawer = true" [nzCount]="basket.cart.items.length" class="badge-cart-mobile">
+          <button class="w-5 h-5">
+            <img loading="lazy" src="assets/img/icons/icon-cart-black.svg" class="w-7 h-7 m-auto">
+          </button>
+        </nz-badge>
+      </ng-container>
+    </div>
+  </div>
+  <div class="transition-all duration-300" [ngClass]="{'-mt-10 w-[calc(100%-32px)]' : isScroll}">
+    <input type="text" placeholder="What shall we deliver ?"
+      class="outline-none border-none focus:ring-0 bg-gray-100 px-5 placeholder:text-sm placeholder:text-gray-600 rounded-full w-full">
+  </div>
+</div>
+<app-cart [(opened)]="openDrawer"></app-cart>

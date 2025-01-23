@@ -1,67 +1,104 @@
-<section class="flex flex-col">
-
-  <div class="lg:hidden fixed top-3 left-3 right-3 z-[1000]">
-    <div class="relative bg-white rounded-lg flex justify-between gap-1 px-3 py-2">
-      <button (click)="closeModal()" class="border-none outline-none">
-        <i class="fa-solid fa-chevron-left text-gray-400" placeholder="your location"></i>
+<ng-container *ngIf="!isMapVisible; else map">
+  <div class="bg-white rounded-md w-full p-4 h-full flex flex-col">
+    <div class="flex items-center gap-4">
+      <button class="outline-none border-none">
+        <i (click)="closeModal()" class="fa-solid fa-arrow-left text-xl"></i>
       </button>
+      <div class="border-gray-200 flex border w-full rounded-md h-10 items-center bg-white">
+        <div class="px-5">
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+            stroke="currentColor" class="size-6">
+            <path stroke-linecap="round" stroke-linejoin="round"
+              d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z" />
+          </svg>
+        </div>
 
-      <input type="text" class="flex-1 border-none outline-none focus:ring-0" [value]="addressSelected.address">
+        <input (input)="searchByAddress($event)" class="outline-none bg-white border-none w-full h-full py-4 rounded-md"
+          [placeholder]="'Deliver to ?'" />
+      </div>
+    </div>
 
-      <button>
-        <i class="fa-solid fa-circle-xmark text-gray-400"></i>
-      </button>
+    <section class="mt-5 flex-1 relative">
+      <div>
+        <div class="text-md font-medium">Current address</div>
+        <div class="flex gap-3 items-center">
+          <i class="fa-solid fa-street-view"></i>
+          <span class="line-clamp-2 text-gray-500">{{ selectedAddress.address }}</span>
+        </div>
+      </div>
 
-      <div class="shadow-5x rounded-b-lg overflow-hidden absolute left-0 right-0 top-full translate-y-1">
-        <ng-container *ngFor="let item of addressList">
-          <div (click)="selectAddress(item)" class="px-2 py-2 cursor-pointer hover:bg-gray-100 bg-white">
-            <p class="line-clamp-1">{{ item.formatted_address }}</p>
+      <div *ngIf="addressList.length > 0" class="w-full h-fit max-h-[500px] overflow-y-auto">
+        <div class="text-md font-medium">Result: </div>
+        <ng-container *ngFor="let item of addressList; let last=last">
+          <div (click)="selectAddress(item)" class="flex gap-3 items-center py-3 cursor-pointer"
+            [ngClass]="{'border-0 border-b-[1px] border-gray-200' : !last}">
+            <i class="fa-solid fa-street-view"></i>
+            <span class="line-clamp-2 text-gray-500">{{ item.formatted_address }}</span>
           </div>
         </ng-container>
       </div>
-    </div>
+
+
+      <button (click)="isMapVisible = true" *ngIf="addressList.length === 0"
+        class="md:relative absolute bottom-0 left-0 right-0 bg-primary text-white w-full mt-5 py-3 rounded-md">
+        <i class="fa-regular fa-map mr-2"></i>
+        Choose from map
+      </button>
+    </section>
   </div>
+</ng-container>
 
-  <div class="lg:hidden fixed bottom-0 left-0 right-0 z-[1000] ">
-    <button (click)="confirm()" class="p-3 bg-primary w-full text-white font-bold text-xl rounded-t-2xl">
-      Apply
-    </button>
-  </div>
-
-  <app-map [enableSelectLocation]="true" [locationMarkers]="locationMarkers" [(addressList)]="addressList"
-    [location]="location" [zoomValue]="14">
-  </app-map>
-
-  <div class="lg:flex hidden flex-col flex-1 justify-between">
-    <div class="p-5">
-      <h2 class="font-bold text-gray-700 mb-3">Select your location</h2>
-      <div class="flex flex-col relative z-10">
-        <input type="text" placeholder="your location"
-          class=" outline-none px-0 py-3 text-gray-500 border-x-0 border-t-0 focus:ring-0 focus:border-primary"
-          [value]="addressSelected.address">
-        <div class="shadow-5x rounded-b-lg absolute left-0 right-0 top-full translate-y-1">
-          <ng-container *ngFor="let item of addressList">
-            <div (click)="selectAddress(item)" class="px-2 py-1 cursor-pointer hover:bg-gray-100 bg-white">
-              <p class="line-clamp-1">{{ item.formatted_address }}</p>
-            </div>
-          </ng-container>
+<ng-template #map>
+  <div #mapContainer class="relative md:h-[80vh] h-full">
+    <div class="absolute z-[401] top-4 left-4 right-4 flex items-center gap-4">
+      <button (click)="closeMap()" class="w-10 h-10 rounded-full bg-white shadow-3x flex">
+        <i class="fa-solid fa-arrow-left text-xl m-auto"></i>
+      </button>
+      <button (click)="closeMap()"
+        class="rounded-full flex-1 h-10 bg-white shadow-3x flex items-center justify-start px-4">
+        <div class="w-4 h-4 bg-red1 rounded-full flex">
+          <div class="w-1 h-1 bg-white rounded-full m-auto"></div>
         </div>
-      </div>
+
+        <div class="font-medium text-gray-400 ml-4">Deliver to</div>
+      </button>
     </div>
 
-    <div class="lg:block hidden p-5 z-0">
-      <button (click)="confirm()" class="w-full p-3 rounded-lg bg-primary text-white font-bold mb-3">
-        Confirm Location
+    <app-map [locationMarkers]="locationMarkers" [addressList]="addressList"
+      (addressListChange)="onMapSelectAddress($event)" [location]="location" [zoomValue]="14">
+    </app-map>
+
+    <button (click)="autoDetectLocation()"
+      class="absolute right-4 top-2/3 w-10 h-10 flex rounded-full bg-white shadow-3x z-[400]">
+      <i class="fa-solid fa-location-crosshairs m-auto text-lg"></i>
+    </button>
+
+    <div (click)="selectAddress(addressList[selectedAddressIndex])"
+      class="absolute z-[403] bottom-0 left-0 right-0 p-4 bg-white shadow-3x">
+      <button class="bg-primary w-full text-white py-3 rounded-md">
+        Choose this location
+      </button>
+    </div>
+
+    <div #resultsDrawer (touchstart)="onTouchStart($event)" (touchmove)="onTouchMove($event)"
+      (touchend)="onTouchEnd($event)" id="resultsDrawer"
+      class="absolute h-full top-full bottom-0 left-0 right-0 z-[402] bg-white rounded-tl-3xl rounded-tr-3xl"
+      [ngClass]="{'animate-dragging' : isAnimateDragging}"
+      [ngStyle]="{ transform: 'translateY(' + resultsDrawerTranslateY + 'px)' }">
+      <button (mousemove)="onMouseMoveResultsDrawer($event)" (mouseup)="onMouseUpResultsDrawer($event)"
+        (mousedown)="onMouseDownResultsDrawer($event)" (mouseleave)="onMouseUpResultsDrawer($event)"
+        class="flex justify-center w-full py-4">
+        <div class="bg-gray-400 w-12 h-1 rounded-full"></div>
       </button>
 
-      <button (click)="autoGetLocation()" class="w-full p-3 rounded-lg bg-gray-200 text-gray-600 font-bold">
-        Auto
-      </button>
+      <ng-container *ngFor="let item of addressList; let last=last; let index = index">
+        <div (click)="selectedAddressIndex = index" class="flex gap-3 items-center py-3 px-4 cursor-pointer"
+          [ngClass]="{'border-0 border-b-[1px] border-gray-200' : !last}"
+          [ngClass]="{'bg-primary bg-opacity-10' : selectedAddressIndex == index}">
+          <i class="fa-solid fa-street-view"></i>
+          <span class="line-clamp-2 text-gray-500">{{ item.formatted_address }}</span>
+        </div>
+      </ng-container>
     </div>
   </div>
-</section>
-
-
-<ng-template #resultSelectTemplate>
-
 </ng-template>

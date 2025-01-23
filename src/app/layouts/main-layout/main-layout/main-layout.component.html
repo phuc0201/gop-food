@@ -1,13 +1,21 @@
-<div class="h-[100vh] relative">
-  <app-main-header [isSticky]="isHeaderSticky"></app-main-header>
-  <div class="pb-10">
-    <router-outlet></router-outlet>
-  </div>
-  <ng-container *ngIf="!isHiddenFooter">
+<ng-container *ngIf="!isMobile">
+  <div class="h-[100vh] relative">
+    <app-main-header [isSticky]="isHeaderSticky"></app-main-header>
+    <div class="pb-10">
+      <router-outlet></router-outlet>
+    </div>
     <app-main-footer></app-main-footer>
-  </ng-container>
+  </div>
+</ng-container>
 
-  <ng-container *ngIf="isMobile">
-    <app-bottom-navbar></app-bottom-navbar>
-  </ng-container>
-</div>
+<ng-container>
+  <div [hidden]="!isMobile" class="h-[100vh] relative flex flex-col justify-between">
+    <div #webbodyMobile class="webbody-mobile flex-1">
+      <ng-container *ngIf="isMobile">
+        <app-mobile-header *ngIf="isHiddenMobileHeader" [scrollTopValue]="scrollTopValue"></app-mobile-header>
+        <router-outlet></router-outlet>
+      </ng-container>
+    </div>
+    <app-bottom-navbar *ngIf="isMobile"></app-bottom-navbar>
+  </div>
+</ng-container>

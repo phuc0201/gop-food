@@ -1,8 +1,8 @@
 <!-- <app-page-loader [isLoading]="isLoading"></app-page-loader> -->
 <app-home-slider></app-home-slider>
 
-<div class="" [class.sectionContainer]="!isMobile">
-  <div class="relative">
+<div [class.sectionContainer]="!isMobile">
+  <div class="relative md:block hidden">
     <app-search-location></app-search-location>
   </div>
 </div>
@@ -14,7 +14,7 @@
   </div>
 </div>
 
-<div class="sectionContainer pt-0">
+<div class="sectionContainer pt-0 md:block hidden">
   <div
     class="relative banner-advertisement-app rounded-xl lg:flex-row flex-col flex justify-end p-5 md:p-10 lg:p-20 pb-0 lg:mt-20 mt-5">
 
@@ -39,7 +39,7 @@
   </div>
 </div>
 
-<div class="sectionContainer md:!mt-10 !mt-5">
+<div class="sectionContainer md:!mt-10 !mt-5 md:block hidden">
   <div nz-row nzGutter="20">
     <div nz-col nzSpan="24" nzLg="12" class="lg:mb-0 mb-5">
       <div class="relative aspect-video rounded-xl overflow-hidden">
@@ -72,11 +72,6 @@
 </div>
 
 
-<div class="mt-16">
+<div class="mt-16 md:block hidden">
   <app-our-services></app-our-services>
 </div>
-<!-- <div class="w-full md:bg-[#f7f7f7] bg-white">
-  <div class="sectionContainer md:p-5">
-    <app-our-menu [foodItems]="foodItems"></app-our-menu>
-  </div>
-</div> -->

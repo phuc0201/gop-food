@@ -1,15 +1,12 @@
 import { CommonModule } from '@angular/common';
-import { AfterViewInit, Component, EventEmitter, Input, OnChanges, Output, SimpleChanges } from '@angular/core';
+import { AfterViewInit, Component, EventEmitter, HostListener, Input, OnChanges, Output, SimpleChanges } from '@angular/core';
 import { LeafletModule } from '@asymmetrik/ngx-leaflet';
 import { Store } from '@ngrx/store';
 import * as L from 'leaflet';
 import 'leaflet-routing-machine';
-import { filter } from 'rxjs';
-import { IconMarker, RoleType } from 'src/app/core/models/common/enums/index.enum';
+import { IconMarker } from 'src/app/core/models/common/enums/index.enum';
 import { Address, LocationMarker } from 'src/app/core/models/geolocation/location.model';
 import { GeolocationService } from 'src/app/core/services/geolocation.service';
-import { searchAddress } from 'src/app/core/store/geolocation/geolocation.action';
-import { selectAddress } from 'src/app/core/store/geolocation/geolocation.selector';
 const plugins = [
   CommonModule,
   LeafletModule
@@ -25,121 +22,92 @@ export class MapComponent implements AfterViewInit, OnChanges {
   @Input() address: string = '';
   @Input() enableSelectLocation: boolean = true;
   @Input() zoomValue: number = 13;
-  @Input() location: number[] = [0, 0];
+  @Input() location: [number, number] = [0, 0];
   @Input() addressList: Address[] = [];
   @Input() locationMarkers: LocationMarker[] = [];
   @Output() addressListChange = new EventEmitter<Address[]>();
+  selectedCoordinate: [number, number] = [0, 0];
   map!: L.Map;
   currMarker!: L.Marker;
   pinIcon = L.icon({
     iconUrl: IconMarker.CUSTOMER,
     iconSize: [50, 50]
   });
-
+  isMobile: boolean = false;
   routingControl!: L.Routing.Control;
+  isDragging: boolean = false;
+  isZooming: boolean = false;
+
+  constructor(
+    private geoSrv: GeolocationService,
+    private store: Store,
+  ) { }
+
+  ngAfterViewInit(): void {
+    this.isMobile = window.innerWidth < 768;
+    this.initMap();
+    if (this.map) {
+      this.handleControlMap();
+    }
+
+  }
+
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes['location'] && !changes['location'].isFirstChange()) {
+      const newLocation = changes['location'].currentValue;
+      if (this.map) {
+        this.map.setView(newLocation as L.LatLngExpression, this.zoomValue);
+        this.selectedCoordinate = newLocation;
+      }
+    }
+  }
+
+  @HostListener('window:resize', ['$event'])
+  onResize(event?: Event) {
+    this.isMobile = window.innerWidth < 768;
+  }
 
   initMap(): void {
     this.map = L.map('map', {
       center: this.location as L.LatLngExpression,
-      zoom: this.zoomValue
+      zoom: this.zoomValue,
+      scrollWheelZoom: 'center',
+      zoomControl: false,
     });
+    this.selectedCoordinate = this.location;
 
-    // const tiles = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-    //   maxZoom: 18,
-    //   minZoom: 3,
-    //   attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
-    // });
-
-    const tiles = L.tileLayer(`https://maps.vietmap.vn/tm/{z}/{x}/{y}.png?apikey=${'b00c56c4751ac6eb19dd72a48d9c8630d203e6aa8bbb104a'}`, {
+    const tiles = L.tileLayer(`https://maps.vietmap.vn/api/tm/{z}/{x}/{y}@2x.png?apikey=${'b00c56c4751ac6eb19dd72a48d9c8630d203e6aa8bbb104a'}`, {
       attribution: '© Vietmap',
       maxZoom: 18,
-      minZoom: 5
+      minZoom: 5,
     }).addTo(this.map);
 
     tiles.addTo(this.map);
-
-    this.handleTracking();
-
-    if (this.enableSelectLocation) {
-      this.map.on('click', (event: any) => {
-        this.searchAddress(event.latlng.lat, event.latlng.lng);
-        this.handleChangeLocation(RoleType.CUSTOMER, event.latlng.lat, event.latlng.lng);
-        this.handleTracking();
-      });
-    }
   }
 
-  handleTracking() {
-    const waypoints = this.locationMarkers.map(location => {
-      const icon = L.icon({
-        iconUrl: location.iconUrl,
-        iconSize: [50, 50]
-      });
-      const marker = L.marker(location.coordinates as L.LatLngExpression, { icon: icon }).addTo(this.map);
-      location.marker = marker;
-      return marker;
+  handleControlMap(): void {
+    this.map.on('zoomstart', () => {
+      this.isZooming = true;
     });
 
-    const routingControl = L.Routing.control({
-      waypoints: waypoints.map(marker => marker.getLatLng()),
-      routeWhileDragging: true,
-      createMarker: () => null,
-      show: false,
-      collapsible: true,
-    } as any)
-      .on('routesfound', (e: any) => {
-        // if (this.locationMarkers.length > 2) {
-        //   const indexDriverMarker = this.locationMarkers.findIndex(location => location.type === RoleType.DRIVER);
-        //   const routes = e.routes;
-        //   routes[0].coordinates.forEach((coord: L.LatLng, index: number) => {
-        //     setTimeout(() => {
-        //       this.moveMarker(this.locationMarkers[indexDriverMarker].marker, [coord.lat, coord.lng]);
-        //     }, 1000 * index);
-        //   });
-        // }
-      });
+    this.map.on('zoomend', () => {
+      this.isZooming = false;
+    });
 
-    if (this.routingControl) {
-      this.map.removeControl(this.routingControl);
-    }
-    this.routingControl = routingControl;
+    this.map.on('dragstart', () => {
+      this.isDragging = true;
+    });
 
-    this.routingControl.addTo(this.map);
+    this.map.on('dragend', () => {
+      this.map.setView([this.map.getCenter().lat, this.map.getCenter().lng]);
+      this.searchAddress(this.map.getCenter().lat, this.map.getCenter().lng);
+      this.isDragging = false;
+    });
   }
 
-  handleChangeLocation(type: RoleType, lat: number, lng: number) {
-    const indexMarker = this.locationMarkers.findIndex(location => location.type === type);
-    if (indexMarker !== -1) {
-      const newMarker = this.locationMarkers[indexMarker].marker;
-      const coords = [lat, lng];
-      this.locationMarkers[indexMarker].coordinates = coords;
-      newMarker.setLatLng(coords);
-      this.map.removeLayer(this.locationMarkers[indexMarker].marker);
-      this.locationMarkers[indexMarker].marker = newMarker;
-    }
-  }
-
-
-  moveMarker(marker: any, newLatLng: number[]): void {
-    const duration = 1000;
-    const startLatLng = marker.getLatLng();
-    const startTime = performance.now();
-
-    const animate = (currentTime: number) => {
-      const elapsedTime = currentTime - startTime;
-      const progress = Math.min(elapsedTime / duration, 1);
-
-      const newLat = startLatLng.lat + (newLatLng[0] - startLatLng.lat) * progress;
-      const newLng = startLatLng.lng + (newLatLng[1] - startLatLng.lng) * progress;
-
-      marker.setLatLng([newLat, newLng]);
-
-      if (progress < 1) {
-        requestAnimationFrame(animate);
-      }
-    };
-
-    requestAnimationFrame(animate);
+  handleCenterLocation() {
+    const center = this.map.getCenter();
+    this.locationMarkers[0].coordinates = [center.lat, center.lng];
   }
 
   createMarker() {
@@ -154,37 +122,14 @@ export class MapComponent implements AfterViewInit, OnChanges {
   }
 
   searchAddress(lat: number, lng: number) {
-    const latlng = {
-      lat: lat,
-      lng: lng
-    };
-    this.store.dispatch(searchAddress({ latlng: latlng }));
-    const searchResult = this.store.select(selectAddress)
-      .pipe(
-        filter(res => res.data.results.length > 0)
-      )
-      .subscribe({
-        next: res => this.addressListChange.emit(res.data.results),
-        complete: () => {
-          searchResult.unsubscribe();
-        }
-      });
+    this.geoSrv.searchAddressByLocation(lat, lng).subscribe({
+      next: (res) => {
+        this.addressListChange.emit(res.results);
+      }
+    });
   }
 
   searchLocation() {
 
   }
-
-  ngAfterViewInit(): void {
-    this.initMap();
-  }
-
-  ngOnChanges(changes: SimpleChanges): void {
-
-  }
-
-  constructor(
-    private geoSrv: GeolocationService,
-    private store: Store,
-  ) { }
 }

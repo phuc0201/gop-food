@@ -1,5 +1,5 @@
 .map-container {
-  @apply w-full lg:aspect-video lg:h-[30rem] h-[100vh];
+  @apply w-full md:h-full h-[100vh];
 }
 
 .map-frame {
@@ -20,4 +20,39 @@
 
 ::ng-deep .leaflet-routing-container {
   display: none !important;
+}
+
+.ripple-dot {
+  @apply bg-primary rounded-full;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%) translateZ(20px);
+  z-index: 400;
+  animation: rippleDot 1.5s infinite;
+}
+
+.animation-reveal {
+  transform: translate(-50%, -12px) translateZ(20px);
+  animation: reveal 0.3s both;
+}
+
+@keyframes rippleDot {
+  from {
+    transform: translate(-50%, -50%) rotateX(60deg) scale(0.1);
+    opacity: 0.2;
+  }
+  to {
+    opacity: 0;
+    transform: translate(-50%, -50%) rotateX(60deg) scale(1);
+  }
+}
+
+@keyframes reveal {
+  from {
+    transform: translate(-50%, -12px) scaleX(0.5);
+  }
+  to {
+    transform: translate(-50%, -12px) scaleX(1);
+  }
 }

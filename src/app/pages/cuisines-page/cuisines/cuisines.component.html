@@ -1,18 +1,12 @@
-<div class="py-5 min-h-[785px]">
-
+<div class="md:py-5 min-h-[785px]">
   <div class="sectionContainer">
-
-    <!-- <app-cuisine-filter></app-cuisine-filter> -->
+    <div>
+      <app-cuisines-slider></app-cuisines-slider>
+      <app-cuisine-filter></app-cuisine-filter>
+    </div>
 
     <div>
-      <div>
-        <app-cuisines-slider></app-cuisines-slider>
-        <app-cuisine-filter></app-cuisine-filter>
-      </div>
-
-      <div>
-        <router-outlet></router-outlet>
-      </div>
+      <router-outlet></router-outlet>
     </div>
   </div>
 </div>

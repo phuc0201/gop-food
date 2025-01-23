@@ -1,0 +1,7 @@
+.webbody-mobile {
+  scroll-behavior: smooth;
+  overflow-y: auto;
+}
+.webbody-mobile::-webkit-scrollbar {
+  width: 0px;
+}

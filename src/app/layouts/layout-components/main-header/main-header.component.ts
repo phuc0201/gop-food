@@ -1,12 +1,11 @@
 import { CommonModule } from '@angular/common';
 import { Component, Input, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { NavigationEnd, Router, RouterModule } from '@angular/router';
+import { Router, RouterModule } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { NzBadgeModule } from 'ng-zorro-antd/badge';
 import { NzSelectModule } from 'ng-zorro-antd/select';
-import { filter, tap } from 'rxjs';
 import { URLConstant } from 'src/app/core/constants/url.constant';
 import { Cart } from 'src/app/core/models/order/order.model';
 import { AuthService } from 'src/app/core/services/auth.service';
@@ -53,16 +52,17 @@ export class MainHeaderComponent implements OnInit {
   showSearchBar: boolean = false;
   address: string = '';
 
-  switchLanguage() {
-    localStorage.setItem('language', this.currLang ?? 'vi');
-    if (this.currLang !== this.translate.currentLang) {
-      window.location.reload();
-    }
-  }
-
-  search(): void {
-    this.searchSrv.setRestaurantSearchQuery(this.searchValue);
-    this.router.navigate([URLConstant.ROUTE.CUISINE_PAGE.BASE]);
+  constructor(
+    private translate: TranslateService,
+    private resSrv: RestaurantService,
+    private store: Store,
+    private authSrv: AuthService,
+    private orderSrv: OrderService,
+    private searchSrv: SearchService,
+    private router: Router,
+    private geoSrv: GeolocationService,
+  ) {
+    translate.use(localStorage.getItem('language')?.toString() ?? 'vi');
   }
 
   ngOnInit(): void {
@@ -92,34 +92,22 @@ export class MainHeaderComponent implements OnInit {
 
     this.resSrv.currWishlistCount.subscribe(wl => this.wishlist = wl);
 
-    this.router.events
-      .pipe(
-        filter(event => event instanceof NavigationEnd),
-        tap(() => { this.showSearchBar = false; }),
-      )
-      .subscribe((event: any) => {
-        if (this.router.url == '/') {
-          this.showSearchBar = true;
-        }
-      });
-
-
     this.geoSrv.currLocation.subscribe(location => {
       this.address = location.address;
     });
 
   }
 
-  constructor(
-    private translate: TranslateService,
-    private resSrv: RestaurantService,
-    private store: Store,
-    private authSrv: AuthService,
-    private orderSrv: OrderService,
-    private searchSrv: SearchService,
-    private router: Router,
-    private geoSrv: GeolocationService,
-  ) {
-    translate.use(localStorage.getItem('language')?.toString() ?? 'vi');
+  switchLanguage() {
+    localStorage.setItem('language', this.currLang ?? 'vi');
+    if (this.currLang !== this.translate.currentLang) {
+      window.location.reload();
+    }
   }
+
+  search(): void {
+    this.searchSrv.setRestaurantSearchQuery(this.searchValue);
+    this.router.navigate([URLConstant.ROUTE.CUISINE_PAGE.BASE]);
+  }
+
 }

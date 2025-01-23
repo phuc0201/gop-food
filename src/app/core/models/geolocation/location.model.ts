@@ -5,9 +5,9 @@ export interface ILocation {
   coordinates: number[]; // long lat
 }
 
-export class AddressSelected {
+export class SelectedAddress {
   address: string = '';
-  coordinates: number[] = [];
+  coordinates: [number, number] = [0, 0];
 }
 
 

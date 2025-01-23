@@ -2,7 +2,7 @@ import { HttpClient } from "@angular/common/http";
 import { Injectable } from "@angular/core";
 import { BehaviorSubject, Observable, filter, switchMap, tap } from "rxjs";
 import { SystemConstant } from "../constants/system.constant";
-import { AddressSearchResult, AddressSelected } from "../models/geolocation/location.model";
+import { AddressSearchResult, SelectedAddress } from "../models/geolocation/location.model";
 import { ProfileService } from "./profile.service";
 
 @Injectable({
@@ -10,24 +10,24 @@ import { ProfileService } from "./profile.service";
 })
 export class GeolocationService {
 
-  defaultLocation: AddressSelected = {
+  defaultLocation: SelectedAddress = {
     address: 'Trường Đại học Sư phạm Kỹ thuật Tp.HCM',
     coordinates: [10.850663501572672, 106.77190584520183]
   };
 
   private locationBehavior;
-  currLocation: Observable<AddressSelected>;
+  currLocation: Observable<SelectedAddress>;
 
   constructor(
     private http: HttpClient,
     private profileSrv: ProfileService
   ) {
-    this.locationBehavior = new BehaviorSubject<AddressSelected>(this.defaultLocation);
+    this.locationBehavior = new BehaviorSubject<SelectedAddress>(this.defaultLocation);
     this.currLocation = this.locationBehavior.asObservable();
   }
 
-  setLocation(location: AddressSelected) {
-    this.profileSrv.setAddressSelected(location.address);
+  setLocation(location: SelectedAddress) {
+    this.profileSrv.setSelectedAddress(location.address);
     this.locationBehavior.next(location);
     localStorage.setItem(
       SystemConstant.LOCATION,
@@ -47,12 +47,12 @@ export class GeolocationService {
         )
         .subscribe({
           next: res => {
-            const location = {
+            const location: SelectedAddress = {
               address: profile.address,
               coordinates: [
                 res.results[0].geometry.location.lat,
                 res.results[0].geometry.location.lng
-              ]
+              ] as [number, number]
             };
             this.setLocation(location);
           },
@@ -63,14 +63,14 @@ export class GeolocationService {
     }
   }
 
-  autoSetLocation(): Observable<AddressSelected> {
-    return new Observable<AddressSelected>(observer => {
+  autoSetLocation(): Observable<SelectedAddress> {
+    return new Observable<SelectedAddress>(observer => {
       this.loadCoordinate()
         .pipe(
           switchMap(coords => this.searchAddressByLocation(coords[0], coords[1])),
           filter(res => res.results.length > 0),
           tap(res => {
-            const address: AddressSelected = {
+            const address: SelectedAddress = {
               address: res.results[0].formatted_address,
               coordinates: [
                 res.results[0].geometry.location.lat,

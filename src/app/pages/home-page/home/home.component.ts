@@ -42,7 +42,7 @@ export class HomeComponent implements OnInit {
   }
 
   handleMobileScreen() {
-    this.isMobile = window.innerWidth < 576;
+    this.isMobile = window.innerWidth < 768;
   }
 
   loadProfile(): void {

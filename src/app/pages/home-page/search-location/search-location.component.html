@@ -8,28 +8,18 @@
     <!--  -->
 
     <div>
-      <div class="mb-3">
-        <div class="search-form relative border md:border-gray-300 border-transparent rounded-lg">
+      <button (click)="showMapSelector()" class="mb-3 w-full">
+        <div class="search-form cursor-pointer relative border md:border-gray-300 border-transparent rounded-lg">
           <i class="fa-solid fa-compass text-lg cursor-pointer text-red absolute  left-3 top-1/2 -translate-y-1/2"></i>
-          <!-- shadow-[rgba(208,211,213,1)_0px_0px_5px_1px] -->
-          <input nz-input [placeholder]="langData + 'NHAP_DIA_CHI' | translate" [(ngModel)]="addressSelected.address"
-            (ngModelChange)="onChange($event)" class="outline-none py-3 px-10  rounded-lg grow max-w-full w-full" />
-          <!-- <nz-autocomplete #auto nzBackfill="true">
-            <nz-auto-option *ngFor="let option of filteredAddress" (click)="search()" (nzSelect)="search()"
-              [nzValue]="option">
-              {{ option }}
-            </nz-auto-option>
-          </nz-autocomplete> -->
+          <input nz-input [placeholder]="langData + 'NHAP_DIA_CHI' | translate" [(ngModel)]="selectedAddress.address"
+            (ngModelChange)="onChange($event)"
+            class="outline-none cursor-pointer py-3 px-10  rounded-lg grow max-w-full w-full" readonly />
 
-          <button (click)="showMapSelector()" nzPopoverPlacement="left" nz-popover nzType="primary"
-            nzPopoverContent="Click here to select location" [nzPopoverVisible]="isShowPopover"
-            nzPopoverOverlayClassName="popover-select-location" class="absolute top-1/2 -translate-y-1/2 right-4">
+          <button class="absolute top-1/2 -translate-y-1/2 right-4">
             <i class="fa-solid fa-location-crosshairs text-lg text-primary"></i>
           </button>
-          <!-- <i (click)="showMapSelector()"
-            class="fa-solid fa-location-crosshairs text-lg text-primary cursor-pointer absolute right-3 top-1/2 -translate-y-1/2"></i> -->
         </div>
-      </div>
+      </button>
     </div>
   </div>
 </div>
@@ -39,7 +29,7 @@
   <div class="relative w-full h-28 bg-premium px-5 pt-5">
     <div (click)="showMapSelector()" class="text-black flex flex-col">
       <span>DELIVERY TO</span>
-      <span class="max-w-52 line-clamp-1 font-bold text-xl">{{ addressSelected.address }}</span>
+      <span class="max-w-52 line-clamp-1 font-bold text-xl">{{ selectedAddress.address }}</span>
     </div>
     <div class="absolute top-full left-0 right-0 -translate-y-1/2  px-4">
       <input (keydown.enter)="search()" [(ngModel)]="searchValue" nz-input

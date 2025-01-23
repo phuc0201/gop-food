@@ -3,14 +3,15 @@ import { NgModule } from '@angular/core';
 
 import { RouterModule } from '@angular/router';
 import { BottomNavbarComponent } from '../layout-components/bottom-navbar/bottom-navbar.component';
-import { HeaderStickyComponent } from "../layout-components/header-sticky/header-sticky.component";
 import { MainFooterComponent } from '../layout-components/main-footer/main-footer.component';
 import { MainHeaderComponent } from '../layout-components/main-header/main-header.component';
+import { MobileHeaderComponent } from '../layout-components/mobile-header/mobile-header.component';
 import { MainLayoutComponent } from './main-layout/main-layout.component';
 const plugins = [
   MainHeaderComponent,
   MainFooterComponent,
-  BottomNavbarComponent
+  BottomNavbarComponent,
+  MobileHeaderComponent
 ];
 @NgModule({
   declarations: [
@@ -20,7 +21,6 @@ const plugins = [
     CommonModule,
     RouterModule,
     plugins,
-    HeaderStickyComponent
   ]
 })
 export class MainLayoutModule { }
