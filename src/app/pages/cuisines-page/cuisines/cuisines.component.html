@@ -1,10 +1,22 @@
-<div class="md:py-5 min-h-[785px]">
-  <div class="sectionContainer">
+<div class="md:py-5 md:min-h-[785px]">
+  <div class="sectionContainer sticky md:relative top-0 bg-white z-30">
+    <div class="md:hidden py-5 flex items-center gap-4">
+      <a [routerLink]="'/'">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"
+          class="size-6">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M10.5 19.5 3 12m0 0 7.5-7.5M3 12h18" />
+        </svg>
+      </a>
+      <input [ngModel]="searchValue" (ngModelChange)="search($event)" type="text" placeholder="What shall we deliver ?"
+        class="h-10 outline-none border flex-1 border-gray-300 focus:ring-0 focus:border-primary bg-white px-5 placeholder:text-sm placeholder:text-gray-600 rounded-md w-full">
+    </div>
     <div>
       <app-cuisines-slider></app-cuisines-slider>
       <app-cuisine-filter></app-cuisine-filter>
     </div>
+  </div>
 
+  <div class="sectionContainer">
     <div>
       <router-outlet></router-outlet>
     </div>

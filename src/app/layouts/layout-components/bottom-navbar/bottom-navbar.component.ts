@@ -4,10 +4,8 @@ import { NavigationEnd, Router, RouterModule } from '@angular/router';
 import { NzBadgeModule } from 'ng-zorro-antd/badge';
 import { filter } from 'rxjs';
 import { OrderService } from 'src/app/core/services/order.service';
-import { CartComponent } from 'src/app/shared/component-shared/cart/cart.component';
 const plugins = [
   CommonModule,
-  CartComponent,
   RouterModule,
   NzBadgeModule
 ];
@@ -32,15 +30,6 @@ export class BottomNavbarComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    // this.orderSrv.basket.subscribe(data => {
-    //   if (data.cart.items.length > 0) {
-    //     this.isShowCartBtn = true;
-    //     this.foodCount = data.cart.items.length;
-    //   }
-    //   else {
-    //     this.isShowCartBtn = false;
-    //   }
-    // });
     this.handleBottomNavActive();
     this.router.events.pipe(
       filter(event => event instanceof NavigationEnd)

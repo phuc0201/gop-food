@@ -11,7 +11,7 @@ import { getMenu } from 'src/app/core/store/restaurant/restaurant.action';
 })
 export class RestaurantComponent implements OnInit {
   isMobile: boolean = false;
-  hiddenBanner: boolean = false;
+  hiddenBanner: boolean = true;
   isLoading: boolean = true;
   restaurant = new Restaurant();
 

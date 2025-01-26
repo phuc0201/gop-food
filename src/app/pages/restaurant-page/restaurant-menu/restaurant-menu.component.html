@@ -140,8 +140,7 @@
         <div nz-row [nzGutter]="{md:12, lg:20}" class="product-list">
           <div *ngFor="let food of item.food_items; let last = last" nz-col nzSpan="24" nzLg="8" nzMd="12"
             class="md:mb-3 ld:mb-5">
-            <div class="md:border-0 border border-x-0 border-t-0 border-gray-200"
-              [ngClass]="{'border-transparent': last}">
+            <div class="md:border-0 border-0 border-b-[1px] border-gray-100" [ngClass]="{'border-transparent': last}">
               <app-food-card [foodInfor]="food"></app-food-card>
             </div>
           </div>

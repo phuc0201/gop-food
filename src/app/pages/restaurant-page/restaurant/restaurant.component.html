@@ -1,10 +1,10 @@
 <!-- PC LAYOUT -->
 <ng-container *ngIf="!isMobile">
-  <div class="min-h-96 bg-white md:block hidden">
-    <div class="w-full h-[550px] md:block hidden">
+  <div class="sectionContainer py-2 pb-8 bg-white md:block hidden">
+    <div class="w-full h-[350px] rounded-lg overflow-hidden md:block hidden">
       <img [hidden]="isLoading" loading="lazy" [src]="restaurant.cover_image"
         onerror="this.src='assets/img/banners/banner-1.jpg'"
-        class="animation-fadeIn w-full h-full object-cover md:block hidden">
+        class="animation-fadeIn w-full h-full object-cover md:block hidden rounded-lg">
       <div *ngIf="isLoading" class="w-full h-full bg-gray-100 flex">
         <div class="m-auto"><app-img-loader></app-img-loader></div>
       </div>

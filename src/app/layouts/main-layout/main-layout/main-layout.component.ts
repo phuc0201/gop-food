@@ -13,7 +13,7 @@ export class MainLayoutComponent implements OnInit, AfterViewInit, OnDestroy {
   isHeaderSticky: boolean = false;
   isHiddenFooter: boolean = true;
   isHiddenMobileHeader: boolean = true;
-  stickyRoutes = ['user', 'order', 'cuisines', 'wishlist'];
+  stickyRoutes = ['user', 'order', 'cuisines', 'wishlist', 'restaurant'];
   hiddenFooterRoutes = ['order'];
   hiddenMobileHeaderRoutes = ['restaurant'];
   scrollTopValue: number = 0;

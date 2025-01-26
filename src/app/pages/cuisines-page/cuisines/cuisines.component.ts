@@ -20,29 +20,12 @@ export class CuisinesComponent implements OnInit {
   minPrice: number = 0;
   maxPrice: number = 100;
 
-  search() {
-    this.searchSrv.setRestaurantSearchQuery(this.searchValue);
+  constructor(
+    private searchSrv: SearchService,
+    private cuisineSrv: CuisineService
+  ) {
+    this.search = this.debounce(this.search.bind(this), 500);
   }
-
-  normalizeString(str: string): string {
-    return str
-      .normalize('NFD')
-      .replace(/[\u0300-\u036f]/g, '')
-      .toLowerCase();
-  }
-
-  debounce(func: Function, wait: number) {
-    let timeout: any;
-    return (...args: any[]) => {
-      const later = () => {
-        clearTimeout(timeout);
-        func.apply(this, args);
-      };
-      clearTimeout(timeout);
-      timeout = setTimeout(later, wait);
-    };
-  }
-
 
   ngOnInit(): void {
     this.cuisineSrv.getCuisineCategories().subscribe(
@@ -68,10 +51,26 @@ export class CuisinesComponent implements OnInit {
     });
   }
 
-  constructor(
-    private searchSrv: SearchService,
-    private cuisineSrv: CuisineService
-  ) {
-    this.search = this.debounce(this.search.bind(this), 500);
+  search(searchValue: string) {
+    this.searchSrv.setRestaurantSearchQuery(searchValue);
+  }
+
+  normalizeString(str: string): string {
+    return str
+      .normalize('NFD')
+      .replace(/[\u0300-\u036f]/g, '')
+      .toLowerCase();
+  }
+
+  debounce(func: Function, wait: number) {
+    let timeout: any;
+    return (...args: any[]) => {
+      const later = () => {
+        clearTimeout(timeout);
+        func.apply(this, args);
+      };
+      clearTimeout(timeout);
+      timeout = setTimeout(later, wait);
+    };
   }
 }

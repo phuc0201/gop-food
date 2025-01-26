@@ -109,5 +109,4 @@ export class MainHeaderComponent implements OnInit {
     this.searchSrv.setRestaurantSearchQuery(this.searchValue);
     this.router.navigate([URLConstant.ROUTE.CUISINE_PAGE.BASE]);
   }
-
 }

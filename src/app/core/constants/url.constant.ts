@@ -1,7 +1,5 @@
+import { environment } from "src/environments/environment.development";
 
-const endpoint_deploy = 'https://gop-server.vercel.app/api/v1';
-const endpoint_local = 'http://localhost:8080/api/v1';
-const endpoint = endpoint_deploy;
 export const URLConstant = {
   ROUTE: {
     HOMEPAGE: '/',
@@ -20,8 +18,8 @@ export const URLConstant = {
     }
   },
   API: {
-    FILE: endpoint + 'rest/file',
-    ENDPOINT: endpoint,
+    FILE: environment.endpoint + 'rest/file',
+    ENDPOINT: environment.endpoint,
     AUTH: {
       SIGNIN: '/auth/customer/signin',
       SIGNUP: '/auth/customer/signup',
@@ -46,8 +44,8 @@ export const URLConstant = {
       METHOD: {
         VNPAY: '/bill/vnpay'
       },
-      RETURN_URL: 'http://localhost:4200/user/wallet',
-      RETURN_URL_PAY_FOR_BILL: 'http://localhost:4200/order/checkout'
+      RETURN_URL: environment.endpoint + '/user/wallet',
+      RETURN_URL_PAY_FOR_BILL: environment.endpoint + '/order/checkout'
     }
   }
 };
