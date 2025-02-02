@@ -62,11 +62,7 @@ export class ListRestaurantComponent implements OnInit, OnDestroy, AfterViewInit
       if (this.restaurants.totalPage === 0) {
         this.isObserveRoute = false;
       }
-
-      if (this.restaurants.data.length === 0) {
-        this.observeRoute();
-      }
-      else {
+      else if (this.restaurants.totalPage > 0) {
         this.isLoading = false;
         this.currPage = this.restaurants.currPage;
       }

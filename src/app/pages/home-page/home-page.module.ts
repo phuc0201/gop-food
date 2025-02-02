@@ -17,14 +17,14 @@ import { ListRestaurantComponent } from 'src/app/shared/component-shared/list-re
 import { PageLoaderComponent } from 'src/app/shared/component-shared/loaders/page-loader/page-loader.component';
 import { MapComponent } from 'src/app/shared/component-shared/map/map.component';
 import { CuisinesSliderComponent } from "../../shared/component-shared/cuisines-slider/cuisines-slider.component";
-import { HomeSliderComponent } from './home-slider/home-slider.component';
+import { HomeSliderComponent } from './components/home-slider/home-slider.component';
+import { NewAndEventsComponent } from './components/new-and-events/new-and-events.component';
+import { OurMenuComponent } from './components/our-menu/our-menu.component';
+import { OurServicesComponent } from './components/our-services/our-services.component';
+import { PromoSliderComponent } from './components/promo-slider/promo-slider.component';
+import { RestaurantSliderComponent } from './components/restaurant-slider/restaurant-slider.component';
+import { SearchLocationComponent } from './components/search-location/search-location.component';
 import { HomeComponent } from './home/home.component';
-import { NewAndEventsComponent } from './new-and-events/new-and-events.component';
-import { OurMenuComponent } from './our-menu/our-menu.component';
-import { OurServicesComponent } from './our-services/our-services.component';
-import { PromoSliderComponent } from './promo-slider/promo-slider.component';
-import { RestaurantSliderComponent } from './restaurant-slider/restaurant-slider.component';
-import { SearchLocationComponent } from './search-location/search-location.component';
 const routes: Routes = [
   {
     path: '',

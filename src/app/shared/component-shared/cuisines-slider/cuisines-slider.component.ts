@@ -79,9 +79,7 @@ export class CuisinesSliderComponent implements OnInit {
   }
 
   onImageLoad(): void {
-    setTimeout(() => {
-      this.isImageLoaded = true;
-    }, 500);
+    this.isImageLoaded = true;
   }
 
   handleCuisineRoute(): void {

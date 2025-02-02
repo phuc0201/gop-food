@@ -82,7 +82,7 @@ export class HomeComponent implements OnInit {
   }
 
   loadData() {
-    this.loadProfile();
+    // this.loadProfile();
     this.loadRecommendedRestaurants();
   }
 }

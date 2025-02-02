@@ -1,7 +1,7 @@
 import { createReducer, on } from "@ngrx/store";
 import * as restaurantAction from './restaurant.action';
 import { initialFoodDetails, initialMenuState, initialRestaurantInfo, initialRestaurantListSate } from "./restaurant.state";
-const _getRestaurantList = createReducer(
+export const getRestaurantListReducer = createReducer(
   initialRestaurantListSate,
   on(restaurantAction.getRestaurantList, (state) => {
     return {
@@ -32,7 +32,7 @@ const _getRestaurantList = createReducer(
   })
 );
 
-const _getRestaurantInfoReducer = createReducer(
+export const getRestaurantInfoReducer = createReducer(
   initialRestaurantInfo,
   on(restaurantAction.getRestaurantInfo, (state) => {
     return {
@@ -58,7 +58,7 @@ const _getRestaurantInfoReducer = createReducer(
   })
 );
 
-const _getMenuReducer = createReducer(
+export const getMenuReducer = createReducer(
   initialMenuState,
   on(restaurantAction.getMenu, (state) => {
     return {
@@ -84,7 +84,7 @@ const _getMenuReducer = createReducer(
   })
 );
 
-const _getFoodDetailsReducer = createReducer(
+export const getFoodDetailsReducer = createReducer(
   initialFoodDetails,
   on(restaurantAction.getFoodDetails, (state) => {
     return {
@@ -107,19 +107,3 @@ const _getFoodDetailsReducer = createReducer(
     };
   })
 );
-
-export function getRestaurantListReducer(state: any, action: any) {
-  return _getRestaurantList(state, action);
-};
-
-export function getRestaurantInfoReducer(state: any, action: any) {
-  return _getRestaurantInfoReducer(state, action);
-}
-
-export function getMenuReducer(state: any, action: any) {
-  return _getMenuReducer(state, action);
-}
-
-export function getFoodDetailsReducer(state: any, action: any) {
-  return _getFoodDetailsReducer(state, action);
-}

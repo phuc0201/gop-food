@@ -1,6 +1,6 @@
 <!--  -->
 <div id="restaurant-infor" class="sectionContainer min-h-44">
-  <div class="md:block hidden">
+  <!-- <div class="md:block hidden">
     <div [hidden]="isLoading" class="flex items-center gap-5">
       <h1 class="font-bold text-3xl m-0">{{ restaurant.restaurant_name }}</h1>
       <div class="p-1 px-5 bg-primary text-white rounded-md font-bold">Open</div>
@@ -26,26 +26,16 @@
       </div>
     </div>
 
-    <!-- <div [hidden]="isLoading" class="flex items-center mb-2">
-      <h4 class="text-gray-500 font-normal mr-10">Giờ mở cửa</h4>
-      <h4 class="text-gray-500 font-light">Hôm nay 09:30-13:30 17:00-20:00</h4>
-    </div> -->
-    <!--
-    <div [hidden]="isLoading" class="flex items-center gap-4">
-      <i class="fa-solid fa-tag text-primary rotate-90"></i>
-      <h4 class="text-gray-600 font-light m-0 text-center"> Ưu đãi đến 46.000 đ</h4>
-    </div> -->
-
     <div [hidden]="isLoading" class="flex items-center mt-3 group">
       <div (click)="isShowRatingsAndReviews = true"
         class="text-gray-600 cursor-pointer font-light m-0 text-center underline group-hover:hover:text-primary group-hover:underline select-none">
         Ratings and
         reviews</div>
     </div>
-  </div>
+  </div> -->
 
   <!-- MOBILE -->
-  <div class="sectionContainer !p-0 bg-transparent md:hidden block">
+  <!-- <div class="sectionContainer !p-0 bg-transparent md:hidden block">
     <div class="bg-white border border-gray-200 p-4 rounded-lg">
       <div class="border border-gray-200 border-x-0 border-t-0 pb-2">
         <h1 class="font-bold text-2xl">{{ isLoading ? 'Loading...' : restaurant.restaurant_name }}</h1>
@@ -67,9 +57,7 @@
             <span class="font-bold">{{ distance }} km</span> ({{ duration }})
           </span>
           <div>
-            <span>Delivery now
-              <!-- <s class="text-gray-400">19.000đ</s> -->
-            </span>
+            <span>Delivery now</span>
           </div>
         </div>
       </div>
@@ -95,10 +83,10 @@
         <i class="fa-solid fa-circle-arrow-right text-white"></i>
       </div>
     </div>
-  </div>
+  </div> -->
 
   <!-- INFO IS LOADING ON PC -->
-  <ng-container *ngIf="isLoading">
+  <!-- <ng-container *ngIf="isLoading">
     <div class="md:block hidden">
       <div role="status" class="max-w-sm animate-pulse">
         <div class="h-2 bg-gray-200 rounded-full w-56 mb-3"></div>
@@ -136,9 +124,5 @@
         </ng-container>
       </div>
     </div>
-  </ng-container>
+  </ng-container> -->
 </div>
-
-
-<app-ratings-and-reviews [(opened)]="isShowRatingsAndReviews" [restaurant]="restaurant"
-  [restaurant]="restaurant"></app-ratings-and-reviews>

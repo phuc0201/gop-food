@@ -17,8 +17,8 @@ import { ListRestaurantComponent } from 'src/app/shared/component-shared/list-re
 import { PageLoaderComponent } from 'src/app/shared/component-shared/loaders/page-loader/page-loader.component';
 import { RestaurantCardComponent } from 'src/app/shared/component-shared/restaurant-card/restaurant-card.component';
 import { ListFooditemsComponent } from "../../shared/component-shared/list-fooditems/list-fooditems.component";
-import { CuisineCategoryComponent } from './cuisine-category/cuisine-category.component';
-import { CuisineFilterComponent } from './cuisine-filter/cuisine-filter.component';
+import { CuisineCategoryComponent } from './components/cuisine-category/cuisine-category.component';
+import { CuisineFilterComponent } from './components/cuisine-filter/cuisine-filter.component';
 import { CuisinesComponent } from './cuisines/cuisines.component';
 const routes: Routes = [
   {

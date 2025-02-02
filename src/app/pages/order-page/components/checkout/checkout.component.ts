@@ -20,7 +20,7 @@ import { ProfileService } from 'src/app/core/services/profile.service';
 import { getAllCampaign } from 'src/app/core/store/campaign/campaign.action';
 import { getFoodDetails } from 'src/app/core/store/restaurant/restaurant.action';
 import { FoodDetailsComponent } from 'src/app/shared/component-shared/food-details/food-details.component';
-import { MapSelectorComponent } from '../../../shared/component-shared/map-selector/map-selector.component';
+import { MapSelectorComponent } from '../../../../shared/component-shared/map-selector/map-selector.component';
 import { CampaignsComponent } from '../campaigns/campaigns.component';
 
 @Component({

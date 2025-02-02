@@ -1,9 +1,8 @@
 import { Component, HostListener, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Store } from '@ngrx/store';
-import { Restaurant } from 'src/app/core/models/restaurant/restaurant.model';
+import { Restaurant, RestaurantRecommended } from 'src/app/core/models/restaurant/restaurant.model';
 import { RestaurantService } from 'src/app/core/services/restaurant.service';
-import { getMenu } from 'src/app/core/store/restaurant/restaurant.action';
 @Component({
   selector: 'app-restaurant',
   templateUrl: './restaurant.component.html',
@@ -11,30 +10,14 @@ import { getMenu } from 'src/app/core/store/restaurant/restaurant.action';
 })
 export class RestaurantComponent implements OnInit {
   isMobile: boolean = false;
-  hiddenBanner: boolean = true;
   isLoading: boolean = true;
   restaurant = new Restaurant();
-
-
-  @HostListener('window:scroll', ['$event'])
-  onWindowScroll() {
-    if (window.scrollY >= 256) {
-      this.hiddenBanner = true;
-    } else {
-      this.hiddenBanner = false;
-    }
-  }
-
-  @HostListener('window:resize', ['$event'])
-  onWindowResize() {
-    this.handleMobileScreen();
-  }
-
-  handleMobileScreen(): void {
-    if (window.innerWidth < 768) {
-      this.isMobile = true;
-    } else this.isMobile = false;
-  }
+  isInWishlist: boolean = false;
+  constructor(
+    private store: Store,
+    private route: ActivatedRoute,
+    private restaurantSrv: RestaurantService
+  ) { }
 
   ngOnInit(): void {
     window.scrollTo({
@@ -50,18 +33,38 @@ export class RestaurantComponent implements OnInit {
       next: data => {
         this.restaurant = data;
         if (this.restaurant._id !== '') {
-          setTimeout(() => {
-            this.isLoading = false;
-          }, 500);
+          this.isLoading = false;
         }
       }
     });
-    this.store.dispatch(getMenu({ id: id }));
+    // this.store.dispatch(getMenu({ id: id }));
   }
 
-  constructor(
-    private store: Store,
-    private route: ActivatedRoute,
-    private restaurantSrv: RestaurantService
-  ) { }
+  @HostListener('window:resize', ['$event'])
+  onWindowResize() {
+    this.handleMobileScreen();
+  }
+
+  handleMobileScreen(): void {
+    if (window.innerWidth < 768) {
+      this.isMobile = true;
+    } else this.isMobile = false;
+  }
+
+  toggleWishlist() {
+    const restaurant = new RestaurantRecommended(
+      this.restaurant._id,
+      this.restaurant.restaurant_name,
+      this.restaurant.cuisine_categories,
+      this.restaurant.avatar,
+      this.restaurant.rating,
+      this.restaurant.distance,
+      this.restaurant.duration,
+      false,
+    );
+    const index = this.restaurantSrv.getWishList().findIndex(res => res._id == restaurant._id);
+
+    this.isInWishlist = index === -1;
+    this.restaurantSrv.addToWishList(restaurant);
+  }
 }

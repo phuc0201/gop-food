@@ -11,9 +11,9 @@ import { NzResultModule } from 'ng-zorro-antd/result';
 import { CreateReviewComponent } from 'src/app/shared/component-shared/create-review/create-review.component';
 import { MapComponent } from 'src/app/shared/component-shared/map/map.component';
 import { NotificationComponent } from 'src/app/shared/component-shared/notification/notification.component';
-import { CampaignsComponent } from './campaigns/campaigns.component';
-import { CheckoutComponent } from './checkout/checkout.component';
-import { OrderStatusTrackerComponent } from './order-status-tracker/order-status-tracker.component';
+import { CampaignsComponent } from './components/campaigns/campaigns.component';
+import { CheckoutComponent } from './components/checkout/checkout.component';
+import { OrderStatusTrackerComponent } from './components/order-status-tracker/order-status-tracker.component';
 const routes: Routes = [
   {
     path: 'checkout',

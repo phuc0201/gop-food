@@ -36,6 +36,4 @@ export class RestaurantInfoComponent implements OnInit, OnChanges {
       }
     }
   }
-
-  constructor() { }
 }
