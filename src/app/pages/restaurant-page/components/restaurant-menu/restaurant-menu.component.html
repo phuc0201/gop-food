@@ -1,5 +1,5 @@
 <!-- SEARCH-ON-PC -->
-<div class="md:block hidden sectionContainer !mt-4 pb-8">
+<div class="md:block hidden sectionContainer py-4">
   <div class="relative bg-gray-100 h-[2.375rem] flex items-center rounded-lg">
     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"
       class="w-5 h-5 absolute top-[50%] left-3 -translate-y-[50%]">
@@ -16,142 +16,144 @@
   </div>
 </div>
 
-<!-- MENU-TAB -->
-<div *ngIf="menuSearching.length > 0" class="sticky z-50 top-20 -translate-y-[2px] bg-white hidden md:block shadow-sm">
-  <div class="sectionContainer h-[3.125rem]">
-    <div class="px-8 relative">
-      <div #tabsContainer class="tabs-contanter flex relative h-fit items-center overflow-hidden">
-        <div #tabsNav class="tabs-nav" [ngStyle]="{'transform': 'translateX(' + tabsPosition + 'px)'}"
-          class="flex items-center transition-all duration-300">
-          <ng-container *ngIf="menuSearching.length > 0">
-            <div *ngFor="let item of menuSearching; let i = index" (click)="selectResCate(i)" role="tab"
-              [ngClass]="{'active': selectedCategory === i}"
-              class="tab py-3 px-6 hover:text-primary cursor-pointer text-[16px] text-gray-500 text-center uppercase inline-block whitespace-nowrap select-none">
-              {{ item.name ? item.name + ' (' + item.food_items.length + ')' : 'Loadind....' }}
-            </div>
-          </ng-container>
+<div class="min-h-[500px]">
+  <!-- MENU-TAB -->
+  <div *ngIf="menuSearching.length > 0"
+    class="sticky z-50 top-20 -translate-y-[2px] bg-white hidden md:block shadow-sm">
+    <div class="sectionContainer h-[3.125rem]">
+      <div class="px-8 relative">
+        <div #tabsContainer class="tabs-contanter flex relative h-fit items-center overflow-hidden">
+          <div #tabsNav class="tabs-nav" [ngStyle]="{'transform': 'translateX(' + tabsPosition + 'px)'}"
+            class="flex items-center transition-all duration-300">
+            <ng-container *ngIf="menuSearching.length > 0">
+              <div *ngFor="let item of menuSearching; let i = index" (click)="selectResCate(i)" role="tab"
+                [ngClass]="{'active': selectedCategory === i}"
+                class="tab py-3 px-6 hover:text-primary cursor-pointer text-[16px] text-gray-500 text-center uppercase inline-block whitespace-nowrap select-none">
+                {{ item.name ? item.name + ' (' + item.food_items.length + ')' : 'Loadind....' }}
+              </div>
+            </ng-container>
+          </div>
         </div>
-      </div>
 
-      <button (click)="handleButtonTab(-stepScrollTabValue)"
-        class="hover:text-primary w-8 h-8 text-gray-400 absolute left-0 top-[50%] -translate-y-[50%] bg-white">
-        <i class="fa-solid fa-chevron-left"></i>
-      </button>
-
-      <button (click)="handleButtonTab(stepScrollTabValue)"
-        class="hover:text-primary w-8 h-8 text-gray-400 absolute right-0  top-[50%] -translate-y-[50%] bg-white">
-        <i class="fa-solid fa-chevron-right"></i>
-      </button>
-    </div>
-  </div>
-</div>
-
-<!-- MENU-TAB-MOBILE -->
-<ng-container>
-  <div #menuTabMobile
-    class="sectionContainer h-24 items-center shadow-md fixed top-0 left-0 right-0 z-50 bg-white md:hidden hidden">
-    <div class="w-full">
-
-      <div class="flex items-center mb-3">
-        <i (click)="goBack()" class="fa-solid fa-chevron-left font-bold mr-5 pl-2"></i>
-        <h3 *ngIf="menuSearching.length > 0" class="font-bold capitalize m-0 line-clamp-1">
-          {{ menuSearching[selectedCategory].name }}
-        </h3>
-        <h3 *ngIf="menuSearching.length == 0" class="font-bold capitalize m-0 line-clamp-1">
-          Not found
-        </h3>
-      </div>
-
-
-      <div class="flex items-center w-full gap-2">
-
-        <button *ngIf="menuSearching.length > 0" (click)="openCuisineDrawer()" [ngClass]="{'hidden' : searching}"
-          id="dropdown-cuisine"
-          class="text-black bg-gray-100 py-2 px-5 flex text-center items-center justify-between rounded-2xl flex-1 line-clamp-1"
-          type="button">
-          {{ menuSearching[selectedCategory].name }}
-          <svg class="w-2.5 h-2.5 ms-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none"
-            viewBox="0 0 10 6">
-            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-              d="m1 1 4 4 4-4" />
-          </svg>
+        <button (click)="handleButtonTab(-stepScrollTabValue)"
+          class="hover:text-primary w-8 h-8 text-gray-400 absolute left-0 top-[50%] -translate-y-[50%] bg-white">
+          <i class="fa-solid fa-chevron-left"></i>
         </button>
 
-        <div class="autocomplete-input flex-1" [ngClass]="searching ? 'block' : 'hidden'">
-          <div class="relative bg-gray-100 h-[2.375rem] flex items-center rounded-lg">
-            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
-              stroke="currentColor" class="w-5 h-5 absolute top-[50%] left-3 -translate-y-[50%]">
-              <path stroke-linecap="round" stroke-linejoin="round"
-                d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z" />
-            </svg>
-
-            <input #autoCompleteInput placeholder='Have you craving ?' nz-input [(ngModel)]="searchValue"
-              (ngModelChange)="search($event)" class="outline-none bg-transparent w-full px-10" />
-
-            <div (click)="resetSearchValue()" [ngClass]="{'hidden' : searchValue==''}" class="cursor-pointer">
-              <i class="fa-solid fa-circle-xmark text-gray-400 absolute top-[50%] right-3 -translate-y-[50%]"></i>
-            </div>
-          </div>
-        </div>
-
-        <div [ngClass]="searching ? 'hidden' : 'block'">
-          <button (click)="openSearchInput()"
-            class="text-black bg-gray-100 py-2 px-5 flex text-center items-center justify-between rounded-2xl ">
-            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
-              stroke="currentColor" class="w-5 h-5 mr-2">
-              <path stroke-linecap="round" stroke-linejoin="round"
-                d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z" />
-            </svg>
-            Seacrch
-          </button>
-        </div>
-
+        <button (click)="handleButtonTab(stepScrollTabValue)"
+          class="hover:text-primary w-8 h-8 text-gray-400 absolute right-0  top-[50%] -translate-y-[50%] bg-white">
+          <i class="fa-solid fa-chevron-right"></i>
+        </button>
       </div>
     </div>
-
-    <nz-drawer [nzClosable]="false" [nzVisible]="visibleCuisineDrawer" [nzWrapClassName]="'cuisine-drawer'"
-      nzPlacement="bottom" nzHeight="60%" (nzOnClose)="closeCuisineDrawer()">
-      <ng-container *nzDrawerContent>
-        <div class="absolute top-2 left-[50%] -translate-x-[50%] bg-gray-500 w-12 h-[6px] rounded-[1.25rem]"></div>
-        <div class="">
-          <ul class="cuisine-list">
-            <li (click)="selectResCate(index)" *ngFor="let item of menuSearching; let last = last; let index = index"
-              class="cuisine-item py-3 border border-x-0 border-t-0 border-gray-100 font-bold line-clamp-1"
-              [ngClass]="{'border-0' : last, 'active' : index == selectedCategory}">
-              {{ item.name }}
-            </li>
-          </ul>
-        </div>
-      </ng-container>
-    </nz-drawer>
   </div>
-</ng-container>
+
+  <!-- MENU-TAB-MOBILE -->
+  <ng-container>
+    <div #menuTabMobile
+      class="sectionContainer h-24 items-center shadow-md fixed top-0 left-0 right-0 z-50 bg-white md:hidden hidden">
+      <div class="w-full">
+
+        <div class="flex items-center mb-3">
+          <i (click)="goBack()" class="fa-solid fa-chevron-left font-bold mr-5 pl-2"></i>
+          <h3 *ngIf="menuSearching.length > 0" class="font-bold capitalize m-0 line-clamp-1">
+            {{ menuSearching[selectedCategory].name }}
+          </h3>
+          <h3 *ngIf="menuSearching.length == 0" class="font-bold capitalize m-0 line-clamp-1">
+            Not found
+          </h3>
+        </div>
 
 
-<!-- MENU TAB CONTENT -->
+        <div class="flex items-center w-full gap-2">
 
-<div *ngIf="menuSearching.length > 0 && !isLoading" #tabContent id="restaurant-menu"
-  class="tab-content md:bg-[#f7f7f7] bg-white md:pt-16">
-  <div class="sectionContainer">
-    <ng-container *ngIf="menuSearching.length > 0">
-      <section *ngFor="let item of menuSearching let i = index" [id]="'section' + (i + 1)"
-        class="md:mb-16 md:py-0 px-0 py-5">
-        <h1 class="mb-0 md:mb-3 lg:mb-6 font-bold text-lg md:text-2xl lg:text-4xl leading-[3rem]">{{item.name}}</h1>
-        <div nz-row [nzGutter]="{md:12, lg:20}" class="product-list">
-          <div *ngFor="let food of item.food_items; let last = last" nz-col nzSpan="24" nzLg="8" nzMd="12"
-            class="md:mb-3 ld:mb-5">
-            <div class="md:border-0 border-0 border-b-[1px] border-gray-100" [ngClass]="{'border-transparent': last}">
-              <app-food-card [foodInfor]="food"></app-food-card>
+          <button *ngIf="menuSearching.length > 0" (click)="openCuisineDrawer()" [ngClass]="{'hidden' : searching}"
+            id="dropdown-cuisine"
+            class="text-black bg-gray-100 py-2 px-5 flex text-center items-center justify-between rounded-2xl flex-1 line-clamp-1"
+            type="button">
+            {{ menuSearching[selectedCategory].name }}
+            <svg class="w-2.5 h-2.5 ms-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none"
+              viewBox="0 0 10 6">
+              <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                d="m1 1 4 4 4-4" />
+            </svg>
+          </button>
+
+          <div class="autocomplete-input flex-1" [ngClass]="searching ? 'block' : 'hidden'">
+            <div class="relative bg-gray-100 h-[2.375rem] flex items-center rounded-lg">
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                stroke="currentColor" class="w-5 h-5 absolute top-[50%] left-3 -translate-y-[50%]">
+                <path stroke-linecap="round" stroke-linejoin="round"
+                  d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z" />
+              </svg>
+
+              <input #autoCompleteInput placeholder='Have you craving ?' nz-input [(ngModel)]="searchValue"
+                (ngModelChange)="search($event)" class="outline-none bg-transparent w-full px-10" />
+
+              <div (click)="resetSearchValue()" [ngClass]="{'hidden' : searchValue==''}" class="cursor-pointer">
+                <i class="fa-solid fa-circle-xmark text-gray-400 absolute top-[50%] right-3 -translate-y-[50%]"></i>
+              </div>
             </div>
           </div>
-        </div>
-      </section>
-    </ng-container>
-  </div>
-</div>
 
-<ng-container *ngIf="menuSearching.length == 0 && !isLoading">
-  <div class="m-auto aspect-square p-10 sectionContainer lg:w-[500px] w-96 opacity-70">
-    <img src="assets/img/icons/ilus-basket-empty.svg" alt="Img" class="object-cover m-auto">
+          <div [ngClass]="searching ? 'hidden' : 'block'">
+            <button (click)="openSearchInput()"
+              class="text-black bg-gray-100 py-2 px-5 flex text-center items-center justify-between rounded-2xl ">
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                stroke="currentColor" class="w-5 h-5 mr-2">
+                <path stroke-linecap="round" stroke-linejoin="round"
+                  d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z" />
+              </svg>
+              Seacrch
+            </button>
+          </div>
+
+        </div>
+      </div>
+
+      <nz-drawer [nzClosable]="false" [nzVisible]="visibleCuisineDrawer" [nzWrapClassName]="'cuisine-drawer'"
+        nzPlacement="bottom" nzHeight="60%" (nzOnClose)="closeCuisineDrawer()">
+        <ng-container *nzDrawerContent>
+          <div class="absolute top-2 left-[50%] -translate-x-[50%] bg-gray-500 w-12 h-[6px] rounded-[1.25rem]"></div>
+          <div class="">
+            <ul class="cuisine-list">
+              <li (click)="selectResCate(index)" *ngFor="let item of menuSearching; let last = last; let index = index"
+                class="cuisine-item py-3 border border-x-0 border-t-0 border-gray-100 font-bold line-clamp-1"
+                [ngClass]="{'border-0' : last, 'active' : index == selectedCategory}">
+                {{ item.name }}
+              </li>
+            </ul>
+          </div>
+        </ng-container>
+      </nz-drawer>
+    </div>
+  </ng-container>
+
+
+  <!-- MENU TAB CONTENT -->
+  <div *ngIf="menuSearching.length > 0 && !isLoading" #tabContent id="restaurant-menu"
+    class="tab-content md:bg-[#f7f7f7] bg-white md:pt-16">
+    <div class="sectionContainer">
+      <ng-container *ngIf="menuSearching.length > 0">
+        <section *ngFor="let item of menuSearching let i = index" [id]="'section' + (i + 1)"
+          class="md:mb-16 md:py-0 px-0 py-5">
+          <h1 class="mb-0 md:mb-3 lg:mb-6 font-bold text-lg md:text-2xl lg:text-3xl leading-[3rem]">{{item.name}}</h1>
+          <div nz-row [nzGutter]="{md:12, lg:20}" class="product-list">
+            <div *ngFor="let food of item.food_items; let last = last" nz-col nzSpan="24" nzLg="8" nzMd="12"
+              class="md:mb-3 ld:mb-5">
+              <div class="md:border-0 border-0 border-b-[1px] border-gray-100" [ngClass]="{'border-transparent': last}">
+                <app-food-card [foodInfor]="food"></app-food-card>
+              </div>
+            </div>
+          </div>
+        </section>
+      </ng-container>
+    </div>
   </div>
-</ng-container>
+
+  <ng-container *ngIf="menuSearching.length == 0 && !isLoading">
+    <div class="m-auto aspect-square p-10 sectionContainer lg:w-[500px] w-96 opacity-70">
+      <img src="assets/img/icons/ilus-basket-empty.svg" alt="Img" class="object-cover m-auto">
+    </div>
+  </ng-container>
+</div>

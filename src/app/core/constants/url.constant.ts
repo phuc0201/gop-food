@@ -38,7 +38,7 @@ export const URLConstant = {
       QUOTE: '/order/quote/delivery'
     },
     CAMPAIGN: {
-      GET_ALL: '/customer/campaigns'
+      GET_ALL: '/customer/campaigns',
     },
     PAYMENT: {
       METHOD: {

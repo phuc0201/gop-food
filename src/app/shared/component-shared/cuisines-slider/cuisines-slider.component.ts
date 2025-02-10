@@ -83,14 +83,16 @@ export class CuisinesSliderComponent implements OnInit {
   }
 
   handleCuisineRoute(): void {
-    const cuisineId = this.router.url.split('/')[2];
-    if (cuisineId) {
-      const index = this.cuisineCategories.findIndex(cuisine => cuisine.id == cuisineId);
-      if (index > -1) {
-        const cuisineCategoriesCopy = [...this.sortedCuisineCategories];
-        const [cuisine] = cuisineCategoriesCopy.splice(index, 1);
-        this.sortedCuisineCategories = cuisineCategoriesCopy;
-        this.sortedCuisineCategories.unshift(cuisine);
+    if (this.router.url.split('/').length > 1) {
+      const cuisineId = this.router.url.split('/')[2];
+      if (cuisineId) {
+        const index = this.cuisineCategories.findIndex(cuisine => cuisine.id == cuisineId);
+        if (index > -1) {
+          const cuisineCategoriesCopy = [...this.sortedCuisineCategories];
+          const [cuisine] = cuisineCategoriesCopy.splice(index, 1);
+          this.sortedCuisineCategories = cuisineCategoriesCopy;
+          this.sortedCuisineCategories.unshift(cuisine);
+        }
       }
     }
   }

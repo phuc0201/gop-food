@@ -1,0 +1,11 @@
+.horizontal-scroll-slider {
+  scroll-snap-type: x mandatory;
+  display: flex;
+  -webkit-overflow-scrolling: touch;
+  overflow-x: scroll;
+  scroll-behavior: smooth;
+}
+
+.horizontal-scroll-slider::-webkit-scrollbar {
+  display: none;
+}

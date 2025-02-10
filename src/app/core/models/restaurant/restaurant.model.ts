@@ -7,11 +7,11 @@ export class Restaurant {
   restaurant_categories: string[] = [];
   status: string = '';
   bio: string = '';
-  address: string = '';
   tier: string = '';
   location: ILocation = {
     type: 'Point',
-    coordinates: [0, 0]
+    coordinates: [0, 0],
+    address: ''
   };
   avatar: string = '';
   cover_image: string = '';

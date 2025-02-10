@@ -1,0 +1,45 @@
+<div class="w-full relative">
+  <button (click)="closeModal()"
+    class="md:absolute fixed top-4 left-4 z-[401] w-10 h-10 bg-black bg-opacity-30 rounded-full text-white">
+    <i class="fa-solid fa-xmark"></i>
+  </button>
+  <div class="w-full h-64">
+    <app-map [enableZoom]="true" [zoomValue]="11" [locationMarkers]="locationMarkers"
+      [location]="customerLocation"></app-map>
+  </div>
+  <div class="p-4">
+    <h1>{{restaurant.restaurant_name}}</h1>
+    <div class="flex items-center gap-2 w-full">
+      <ng-container *ngFor="let item of restaurant.cuisine_categories; let last = last">
+        <div class="text-gray-500"> {{item}} </div>
+        <div *ngIf="!last" class="w-1 h-1 bg-gray-500 rounded-full"></div>
+      </ng-container>
+    </div>
+
+    <div class="text-gray-500 my-4">
+      {{restaurant.bio}}
+    </div>
+
+    <div class="flex items-center gap-4 border-0 border-y-[1px] border-gray-200 py-4 my-4 text-gray-500">
+      <i class="fa-solid fa-location-dot"></i>
+      <div>{{restaurant.location.address}}</div>
+    </div>
+
+    <div class="border-0 border-b-[1px] border-gray-200 cursor-pointer pb-4 mb-4 text-gray-500">
+      <div class="flex items-center justify-between">
+        <div class="flex items-center gap-4 ">
+          <i class="fa-regular fa-clock"></i>
+          <div>Available at 7:00 AM</div>
+        </div>
+        <div>
+          <i class="fa-solid fa-angle-down"></i>
+        </div>
+      </div>
+    </div>
+
+    <div class="text-gray-500">
+      Thanks to your support, some items may be temporarily unavailable in your area. We appreciate your patience as we
+      work to restock. Stay tuned!
+    </div>
+  </div>
+</div>

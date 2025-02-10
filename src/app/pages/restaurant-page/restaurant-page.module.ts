@@ -10,11 +10,18 @@ import { NzSkeletonModule } from 'ng-zorro-antd/skeleton';
 import { CreateReviewComponent } from 'src/app/shared/component-shared/create-review/create-review.component';
 import { FoodCardComponent } from 'src/app/shared/component-shared/food-card/food-card.component';
 import { FoodDetailsComponent } from 'src/app/shared/component-shared/food-details/food-details.component';
+import { HorizontalScrollSliderComponent } from 'src/app/shared/component-shared/horizontal-scroll-slider/horizontal-scroll-slider.component';
 import { ImgLoaderComponent } from 'src/app/shared/component-shared/loaders/img-loader/img-loader.component';
+import { MapComponent } from 'src/app/shared/component-shared/map/map.component';
 import { NoDataComponent } from 'src/app/shared/component-shared/no-data/no-data.component';
-import { RatingsAndReviewsComponent } from './components/ratings-and-reviews/ratings-and-reviews.component';
+import { CampaignDrawerComponent } from './components/campaign-drawer/campaign-drawer.component';
+import { CampaignSliderComponent } from './components/campaign-slider/campaign-slider.component';
+import { RestaurantInfoDetailsComponent } from './components/restaurant-info-details/restaurant-info-details.component';
 import { RestaurantInfoComponent } from './components/restaurant-info/restaurant-info.component';
 import { RestaurantMenuComponent } from './components/restaurant-menu/restaurant-menu.component';
+import { ReviewCardComponent } from './components/review-card/review-card.component';
+import { ReviewDrawerComponent } from './components/review-drawer/review-drawer.component';
+import { ReviewSliderComponent } from './components/review-slider/review-slider.component';
 import { RestaurantComponent } from './restaurant/restaurant.component';
 const routes: Routes = [
   {
@@ -24,25 +31,32 @@ const routes: Routes = [
   }
 ];
 
-const pluggin = [
+const plugins = [
   FoodCardComponent,
   ImgLoaderComponent,
   FoodDetailsComponent,
   NoDataComponent,
-  CreateReviewComponent
+  CreateReviewComponent,
+  HorizontalScrollSliderComponent,
+  MapComponent
 ];
 @NgModule({
   declarations: [
     RestaurantComponent,
     RestaurantInfoComponent,
     RestaurantMenuComponent,
-    RatingsAndReviewsComponent
+    ReviewCardComponent,
+    ReviewSliderComponent,
+    ReviewDrawerComponent,
+    CampaignSliderComponent,
+    CampaignDrawerComponent,
+    RestaurantInfoDetailsComponent
   ],
   imports: [
     CommonModule,
     NzRateModule,
     NzSkeletonModule,
-    pluggin,
+    plugins,
     NzDrawerModule,
     NzAutocompleteModule,
     FormsModule,

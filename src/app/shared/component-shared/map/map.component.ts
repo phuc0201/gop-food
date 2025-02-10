@@ -1,7 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { AfterViewInit, Component, EventEmitter, HostListener, Input, OnChanges, Output, SimpleChanges } from '@angular/core';
 import { LeafletModule } from '@asymmetrik/ngx-leaflet';
-import { Store } from '@ngrx/store';
 import * as L from 'leaflet';
 import 'leaflet-routing-machine';
 import { IconMarker } from 'src/app/core/models/common/enums/index.enum';
@@ -22,10 +21,11 @@ export class MapComponent implements AfterViewInit, OnChanges {
   @Input() address: string = '';
   @Input() enableSelectLocation: boolean = true;
   @Input() zoomValue: number = 13;
-  @Input() location: [number, number] = [0, 0];
+  @Input() location: [number, number] = [10.850663501572672, 106.77190584520183];
   @Input() addressList: Address[] = [];
   @Input() locationMarkers: LocationMarker[] = [];
   @Output() addressListChange = new EventEmitter<Address[]>();
+  @Input() enableZoom: boolean = true;
   selectedCoordinate: [number, number] = [0, 0];
   map!: L.Map;
   currMarker!: L.Marker;
@@ -40,7 +40,6 @@ export class MapComponent implements AfterViewInit, OnChanges {
 
   constructor(
     private geoSrv: GeolocationService,
-    private store: Store,
   ) { }
 
   ngAfterViewInit(): void {
@@ -48,8 +47,10 @@ export class MapComponent implements AfterViewInit, OnChanges {
     this.initMap();
     if (this.map) {
       this.handleControlMap();
+      if (this.locationMarkers.length > 0) {
+        this.createRouting();
+      }
     }
-
   }
 
   ngOnChanges(changes: SimpleChanges): void {
@@ -71,8 +72,10 @@ export class MapComponent implements AfterViewInit, OnChanges {
     this.map = L.map('map', {
       center: this.location as L.LatLngExpression,
       zoom: this.zoomValue,
-      scrollWheelZoom: 'center',
+      scrollWheelZoom: this.enableZoom,
       zoomControl: false,
+      touchZoom: this.enableZoom,
+      doubleClickZoom: this.enableZoom
     });
     this.selectedCoordinate = this.location;
 
@@ -83,6 +86,8 @@ export class MapComponent implements AfterViewInit, OnChanges {
     }).addTo(this.map);
 
     tiles.addTo(this.map);
+
+
   }
 
   handleControlMap(): void {
@@ -99,8 +104,10 @@ export class MapComponent implements AfterViewInit, OnChanges {
     });
 
     this.map.on('dragend', () => {
-      this.map.setView([this.map.getCenter().lat, this.map.getCenter().lng]);
-      this.searchAddress(this.map.getCenter().lat, this.map.getCenter().lng);
+      if (this.locationMarkers.length === 0) {
+        this.map.setView([this.map.getCenter().lat, this.map.getCenter().lng]);
+        this.searchAddress(this.map.getCenter().lat, this.map.getCenter().lng);
+      }
       this.isDragging = false;
     });
   }
@@ -111,6 +118,10 @@ export class MapComponent implements AfterViewInit, OnChanges {
   }
 
   createMarker() {
+    if (!this.map) {
+      console.error('Map is not initialized');
+      return;
+    }
     this.locationMarkers.forEach(marker => {
       const icon = L.icon({
         iconUrl: marker.iconUrl,
@@ -131,5 +142,19 @@ export class MapComponent implements AfterViewInit, OnChanges {
 
   searchLocation() {
 
+  }
+
+  createRouting(): void {
+    if (this.routingControl) {
+      this.map.removeControl(this.routingControl);
+    }
+
+    this.routingControl = L.Routing.control({
+      waypoints: this.locationMarkers.map(marker => marker.coordinates),
+      show: false,
+      collapsible: true,
+      routeWhileDragging: true,
+      createMarker: () => this.createMarker(),
+    } as any).addTo(this.map);
   }
 }

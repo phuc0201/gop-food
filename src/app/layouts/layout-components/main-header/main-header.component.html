@@ -36,27 +36,29 @@
         </div>
       </div>
 
-      <ng-container *ngIf="basket.subtotal <= 0">
-        <div (click)="openDrawer = true"
-          class="w-10 h-10 gap-2 group rounded hidden md:flex justify-center items-center bg-white border border-solid border-gray-200 cursor-pointer ">
-          <img loading="lazy" src="assets/img/icons/icon-cart-black.svg" class="w-4 h-4">
-        </div>
-      </ng-container>
-
-      <ng-container *ngIf="basket.subtotal > 0">
-        <nz-badge nzPlacement="left" [nzCount]="basket.cart.items.length" [nzOverflowCount]="10" class="badge-cart">
-          <div class="h-10 select-none bg-primary rounded hidden md:flex justify-center items-center cursor-pointer"
-            (click)="openDrawer = true">
-            <div class="px-3 gap-2 group flex justify-center items-center cursor-pointer ">
-              <img loading="lazy" src="assets/img/icons/icon-cart-white.svg" class="w-4 h-4">
-              <span class="font-medium text-white">{{ basket.subtotal.toLocaleString('vi', {style : 'currency',
-                currency
-                : 'VND'})
-                }}</span>
-            </div>
+      <div id="header__basket--button">
+        <ng-container *ngIf="basket.subtotal <= 0">
+          <div (click)="openDrawer = true"
+            class="w-10 h-10 gap-2 group rounded hidden md:flex justify-center items-center bg-white border border-solid border-gray-200 cursor-pointer ">
+            <img loading="lazy" src="assets/img/icons/icon-cart-black.svg" class="w-4 h-4">
           </div>
-        </nz-badge>
-      </ng-container>
+        </ng-container>
+
+        <ng-container *ngIf="basket.subtotal > 0">
+          <nz-badge nzPlacement="left" [nzCount]="basket.cart.items.length" [nzOverflowCount]="10" class="badge-cart">
+            <div class="h-10 select-none bg-primary rounded hidden md:flex justify-center items-center cursor-pointer"
+              (click)="openDrawer = true">
+              <div class="px-3 gap-2 group flex justify-center items-center cursor-pointer ">
+                <img loading="lazy" src="assets/img/icons/icon-cart-white.svg" class="w-4 h-4">
+                <span class="font-medium text-white">{{ basket.subtotal.toLocaleString('vi', {style : 'currency',
+                  currency
+                  : 'VND'})
+                  }}</span>
+              </div>
+            </div>
+          </nz-badge>
+        </ng-container>
+      </div>
 
       <a [routerLink]="['/wishlist']"
         class="wishlist h-full cursor-pointer aspect-square bg-transparent relative rounded-full">

@@ -112,8 +112,8 @@
 
 <ng-template #foodOptionItemTemplate let-data>
   <div class="w-full flex items-center justify-between text-gray-600 font-light text-[1rem]">
-    <span>{{ data.name }}</span>
-    <span>
+    <span class="lg:text-base text-sm">{{ data.name }}</span>
+    <span class="lg:text-base text-sm">
       + {{ data.price.toLocaleString("vi-VN", { style: "currency", currency: "VND" }) }}
     </span>
   </div>

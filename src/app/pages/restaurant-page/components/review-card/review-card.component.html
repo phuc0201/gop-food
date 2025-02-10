@@ -1,0 +1,19 @@
+<div class="py-2">
+  <div class="relative overflow-hidden shadow-6x p-4 pb-2 bg-white w-80 h-24 rounded-lg">
+    <div class="flex flex-col justify-between h-full">
+      <div class="text-gray-500 line-clamp-1 max-w-64">
+        {{review.content}}
+      </div>
+      <div class="flex gap-2 items-center">
+        <div class="flex items-center">
+          <i class="fa-solid fa-star mr-1 text-yellow-300 text-xs"></i>
+          <div class="text-gray-500">{{review.rating}}</div>
+        </div>
+        <div class="w-1 h-1 rounded-full bg-gray-400"></div>
+        <div class="text-gray-400 text-xs">{{review.customer?.full_name}}</div>
+      </div>
+    </div>
+    <div class="absolute right-0 bottom-0 top-4 translate-x-1/2 rounded-full bg-indigo-50 w-52 h-52">
+    </div>
+  </div>
+</div>

@@ -74,10 +74,8 @@ export class FoodDetailsComponent implements OnInit {
       .subscribe({
         next: data => {
           this.foodDetails = data.foodDetails;
-          setTimeout(() => {
-            this.isLoading = false;
-            this.isAddToCart = false;
-          }, 500);
+          this.isLoading = false;
+          this.isAddToCart = false;
         }
       });
   }
@@ -187,10 +185,8 @@ export class FoodDetailsComponent implements OnInit {
 
       this.orderSrv.updateCart(basket);
 
-      setTimeout(() => {
-        this.isAddToCart = false;
-        this.drawerRef.close();
-      }, 700);
+      this.isAddToCart = false;
+      this.drawerRef.close();
     }
   }
 
@@ -227,10 +223,8 @@ export class FoodDetailsComponent implements OnInit {
         return total_price + itemTotal;
       }, 0);
       this.orderSrv.addToCart(cartItems);
-      setTimeout(() => {
-        this.isAddToCart = false;
-        this.drawerRef.close();
-      }, 700);
+      this.isAddToCart = false;
+      this.drawerRef.close();
     }
   }
 

@@ -1,0 +1,20 @@
+::ng-deep .campaign-drawer .ant-drawer-body {
+  padding: 0 !important;
+  background-color: #fff;
+}
+.campaign-drawer-body {
+  scroll-behavior: smooth;
+  will-change: transform;
+}
+.campaign-drawer-body::-webkit-scrollbar {
+  width: 4px;
+}
+
+.campaign-drawer-body::-webkit-scrollbar-track {
+  box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.2);
+}
+
+.campaign-drawer-body::-webkit-scrollbar-thumb {
+  background-color: #afacac;
+  outline: 1px solid transparent;
+}

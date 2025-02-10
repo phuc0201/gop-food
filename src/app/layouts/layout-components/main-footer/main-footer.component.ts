@@ -16,13 +16,12 @@ const plugins = [
 export class MainFooterComponent implements OnInit {
   isMobile: boolean = false;
 
-  @HostListener('window:resize', ['$event'])
-  onResize(event?: Event) {
+  ngOnInit(): void {
     this.isMobile = window.innerWidth <= 768;
   }
 
-
-  ngOnInit(): void {
+  @HostListener('window:resize', ['$event'])
+  onResize(event?: Event) {
     this.isMobile = window.innerWidth <= 768;
   }
 }

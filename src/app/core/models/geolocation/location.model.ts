@@ -3,6 +3,7 @@ import { RoleType } from "../common/enums/index.enum";
 export interface ILocation {
   type: string,
   coordinates: number[]; // long lat
+  address: string;
 }
 
 export class SelectedAddress {

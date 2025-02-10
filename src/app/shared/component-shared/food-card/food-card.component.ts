@@ -5,7 +5,6 @@ import { NzDrawerPlacement, NzDrawerService } from 'ng-zorro-antd/drawer';
 import { Subscription } from 'rxjs';
 import { FoodItems } from 'src/app/core/models/restaurant/food-items.model';
 import { ModifierGroups } from 'src/app/core/models/restaurant/modifier-groups.model';
-import { RestaurantService } from 'src/app/core/services/restaurant.service';
 import { getFoodDetails } from 'src/app/core/store/restaurant/restaurant.action';
 import { FoodDetailsComponent } from '../food-details/food-details.component';
 import { DotSpinnerComponent } from '../loaders/dot-spinner/dot-spinner.component';
@@ -28,7 +27,22 @@ export class FoodCardComponent implements OnInit, OnDestroy {
   foodDetailsSubscription?: Subscription;
   isAddToCard: boolean = false;
   placementDrawer: NzDrawerPlacement = 'right';
+  height: number = 0;
 
+  constructor(
+    private store: Store,
+    private drawerSrv: NzDrawerService,
+  ) { }
+
+  ngOnInit(): void {
+    this.handleMobileScreen();
+  }
+
+  ngOnDestroy(): void {
+    if (this.drawerRef) {
+      this.drawerRef.close();
+    }
+  }
 
   @HostListener('window:resize', ['$event'])
   onResize(event: any) {
@@ -52,16 +66,14 @@ export class FoodCardComponent implements OnInit, OnDestroy {
     }, 0);
   }
 
-
-
   showDetails() {
     if (!this.isAddToCard) {
       this.isAddToCard = true;
+      this.store.dispatch(getFoodDetails({ id: this.foodInfor._id }));
       setTimeout(() => {
         this.createFoodDetailsDrawer();
-        this.store.dispatch(getFoodDetails({ id: this.foodInfor._id }));
         this.isAddToCard = false;
-      }, 500);
+      }, 200);
     }
   }
 
@@ -70,26 +82,10 @@ export class FoodCardComponent implements OnInit, OnDestroy {
       nzClosable: false,
       nzPlacement: this.placementDrawer,
       nzWidth: '600px',
-      nzHeight: '100%',
+      nzHeight: window.innerHeight + 'px',
       nzWrapClassName: 'food-detail-drawer',
       nzKeyboard: true,
       nzContent: FoodDetailsComponent,
     });
   }
-
-  ngOnInit(): void {
-    this.handleMobileScreen();
-  }
-
-  ngOnDestroy(): void {
-    if (this.drawerRef) {
-      this.drawerRef.close();
-    }
-  }
-
-  constructor(
-    private store: Store,
-    private drawerSrv: NzDrawerService,
-    private restaurantSrv: RestaurantService
-  ) { }
 }

@@ -1,0 +1,29 @@
+<div *ngIf="campaigns.length > 0" class="px-1 mb-5">
+  <div class="w-full h-[1px] bg-gray-100 my-4"></div>
+  <h1 class="font-medium text-gray-700 text-base m-0">Available deals</h1>
+
+  <app-horizontal-scroll-slider [isDisplayButton]="true">
+    <ng-container *ngFor="let item of campaigns">
+      <div class="py-1">
+        <div class="flex rounded-lg shadow-6x min-w-80 h-32 overflow-hidden">
+          <div class="w-2/5 h-full">
+            <img [src]="item.image" alt="" class="object-cover">
+          </div>
+          <div class="w-3/5 h-full p-4 flex flex-col justify-between">
+            <div>
+              <div class="font-medium line-clamp-3"> {{item.name}}</div>
+              <div class="text-xs text-gray-400">Ends {{formatDate(item.conditions.end_time)}}</div>
+            </div>
+            <div *ngIf="item.discount.type === 'PERCENTAGE'" class="text-gray-600">
+              Max {{item.discount.cap.toLocaleString('vi-VN', {style: 'currency', currency: 'VND'})}}
+            </div>
+            <div *ngIf="item.discount.type === 'NET'">
+              <s class="text-gray-600">{{item.discount.value.toLocaleString('vi-VN', {style: 'currency', currency:
+                'VND'})}}</s>
+            </div>
+          </div>
+        </div>
+      </div>
+    </ng-container>
+  </app-horizontal-scroll-slider>
+</div>

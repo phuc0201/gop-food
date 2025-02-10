@@ -1,0 +1,51 @@
+<nz-drawer #cartDrawer [nzVisible]="isVisible" [nzPlacement]="'bottom'" [nzWidth]="'600px'" nzKeyboard="true"
+  [nzBodyStyle]="{ overflow: 'auto' }" [nzHeight]="'100%'" (nzOnClose)="closeDrawer()" nzClosable="false"
+  [nzWrapClassName]="'campaign-drawer'">
+  <ng-container *nzDrawerContent>
+    <div class="flex flex-col h-full w-full overflow-hidden">
+      <div class="h-16 relative flex justify-end items-center pr-5">
+        <button class="absolute border-none outline-none top-5 left-5" (click)="closeDrawer()">
+          <i class="fa-solid fa-xmark text-[25px] text-gray-500"></i>
+        </button>
+      </div>
+
+      <div class="h-[1px] w-full bg-gray-200"></div>
+
+      <div class="flex-1 campaign-drawer-body w-full overflow-y-scroll p-4">
+        <div class="flex flex-col gap-2">
+          <!-- <ng-container *ngIf="isLoading">
+            <ng-container *ngFor="let item of [1,2,3,4]">
+              <div class="mb-10">
+                <nz-skeleton [nzActive]="true" [nzAvatar]="true" [nzParagraph]="{ rows: 4 }"></nz-skeleton>
+              </div>
+            </ng-container>
+          </ng-container> -->
+
+          <ng-container *ngFor="let item of campaigns">
+            <div
+              class="promo-card-wrapper py-3 pl-3 pr-5 border bg-white h-24 rounded-lg overflow-hidden flex items-center justify-between">
+              <div class="h-full flex flex-1 gap-3">
+                <div class="h-full aspect-square bg-gray-200 rounded-lg">
+                  <img [src]="''" onerror="this.src='assets/img/promo/promotion.jpg'" class="object-cover rounded-lg">
+                </div>
+                <div class="max-w-[85%] flex flex-col justify-between">
+                  <h3 class="font-bold text-gray-700 line-clamp-1 max-w-xs">
+                    {{item.name}}
+                  </h3>
+                  <span *ngIf="item.conditions.minBasketAmount > 0" class="text-gray-500 font-medium text-xs">
+                    Min basket amount {{item.conditions.minBasketAmount.toLocaleString('vi-VN', {style: 'currency',
+                    currency: 'VND'})}}
+                  </span>
+                  <span class="text-gray-700 font-medium text-xs">
+                    {{formatDate(item.conditions.end_time)}}
+                  </span>
+                </div>
+              </div>
+              <div> </div>
+            </div>
+          </ng-container>
+        </div>
+      </div>
+    </div>
+  </ng-container>
+</nz-drawer>

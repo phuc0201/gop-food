@@ -5,20 +5,22 @@
   </div>
 </div>
 
-<div class="ripple-dot w-20 h-20" [ngClass]="{'hidden' : isDragging}"></div>
+<ng-container *ngIf="locationMarkers.length == 0">
+  <div class="ripple-dot w-20 h-20" [ngClass]="{'hidden' : isDragging}"></div>
 
-<div class="absolute transition-all duration-300 bottom-1/2 left-1/2 -translate-x-1/2 z-[400]"
-  [ngClass]="isDragging ? '-translate-y-3 h-9 w-5' : 'w-fit h-11'">
-  <div class="absolute left-0 bg-gray-800"
-    [ngClass]="isDragging ? 'top-0 right-0 rounded-full h-5' : 'bottom-0 whitespace-nowrap rounded-md animation-reveal'">
-    <span class="text-white text-xs p-2" [ngClass]="isDragging ? 'hidden' : 'inline-block'">Delivery
-      location</span>
-    <div class="top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-white w-1 h-1 rounded-full"
-      [ngClass]="isDragging ? 'absolute' : 'hidden'"></div>
+  <div class="absolute transition-all duration-300 bottom-1/2 left-1/2 -translate-x-1/2 z-[400]"
+    [ngClass]="isDragging ? '-translate-y-3 h-9 w-5' : 'w-fit h-11'">
+    <div class="absolute left-0 bg-gray-800"
+      [ngClass]="isDragging ? 'top-0 right-0 rounded-full h-5' : 'bottom-0 whitespace-nowrap rounded-md animation-reveal'">
+      <span class="text-white text-xs p-2" [ngClass]="isDragging ? 'hidden' : 'inline-block'">Delivery
+        location</span>
+      <div class="top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-white w-1 h-1 rounded-full"
+        [ngClass]="isDragging ? 'absolute' : 'hidden'"></div>
+    </div>
+    <div class="absolute bottom-0 top-5 left-1/2 -translate-x-1/2 bg-gray-800 w-1">
+    </div>
   </div>
-  <div class="absolute bottom-0 top-5 left-1/2 -translate-x-1/2 bg-gray-800 w-1">
-  </div>
-</div>
 
-<div class="transition-all absolute bottom-1/2 left-1/2 rounded-full -translate-x-1/2 w-1 h-1 bg-gray-500 z-[400]"
-  [ngClass]="isDragging ? 'opacity-100' : 'opacity-0'"></div>
+  <div class="transition-all absolute bottom-1/2 left-1/2 rounded-full -translate-x-1/2 w-1 h-1 bg-gray-500 z-[400]"
+    [ngClass]="isDragging ? 'opacity-100' : 'opacity-0'"></div>
+</ng-container>

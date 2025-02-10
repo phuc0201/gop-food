@@ -1,0 +1,11 @@
+::ng-deep .restaurant-info-details-modal .ant-modal-body {
+  @apply p-0;
+}
+
+::ng-deep .restaurant-info-details-modal .ant-modal-content {
+  @apply md:rounded-xl overflow-hidden h-[100vh] md:h-auto;
+}
+
+::ng-deep .restaurant-info-details-modal .ant-modal {
+  @apply top-0 md:top-[100px] my-0 md:min-w-[520px] min-w-full p-0;
+}

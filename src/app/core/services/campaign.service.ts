@@ -26,6 +26,10 @@ export class CampaignService {
     return this.http.get<Campaign[]>(this.baseUrl + URLConstant.API.CAMPAIGN.GET_ALL);
   }
 
+  getCampaignsByRestaurantId(restaurantId: string): Observable<Campaign[]> {
+    return this.http.get<Campaign[]>(`${this.baseUrl}/restaurant/${restaurantId}/campaigns`);
+  }
+
   caculateDiscountValue(delivery_fare: number): number {
     let campaigns: Campaign[] = [];
     const campaignSelector$ = this.store.select(selectCampaigns).subscribe({

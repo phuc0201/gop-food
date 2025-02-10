@@ -1,34 +1,35 @@
-import { Component, HostListener, OnInit } from '@angular/core';
+import { AfterViewInit, Component, HostListener, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { Restaurant, RestaurantRecommended } from 'src/app/core/models/restaurant/restaurant.model';
 import { RestaurantService } from 'src/app/core/services/restaurant.service';
+import { getMenu } from 'src/app/core/store/restaurant/restaurant.action';
 @Component({
   selector: 'app-restaurant',
   templateUrl: './restaurant.component.html',
   styleUrls: ['./restaurant.component.scss']
 })
-export class RestaurantComponent implements OnInit {
+export class RestaurantComponent implements OnInit, AfterViewInit {
   isMobile: boolean = false;
   isLoading: boolean = true;
   restaurant = new Restaurant();
   isInWishlist: boolean = false;
+
   constructor(
     private store: Store,
     private route: ActivatedRoute,
-    private restaurantSrv: RestaurantService
+    private restaurantSrv: RestaurantService,
   ) { }
 
   ngOnInit(): void {
-    window.scrollTo({
-      top: 0,
-      left: 0,
-      behavior: "instant",
-    });
-
     this.handleMobileScreen();
 
     const id = this.route.snapshot.paramMap.get('id') as string;
+    const index = this.restaurantSrv.getWishList().findIndex(res => res._id == id);
+    this.isInWishlist = index !== -1;
+
+
+    this.store.dispatch(getMenu({ id: id }));
     this.restaurantSrv.getRestaurantInfo(id).subscribe({
       next: data => {
         this.restaurant = data;
@@ -37,7 +38,28 @@ export class RestaurantComponent implements OnInit {
         }
       }
     });
-    // this.store.dispatch(getMenu({ id: id }));
+
+    if (this.isMobile) {
+      const webbodyMobile = document.getElementById('webbody-mobile');
+      if (webbodyMobile) {
+        webbodyMobile.scroll({
+          top: 0,
+          left: 0,
+          behavior: "instant",
+        });
+      }
+    }
+    else {
+      window.scroll({
+        top: 0,
+        left: 0,
+        behavior: "instant",
+      });
+    }
+  }
+
+  ngAfterViewInit(): void {
+
   }
 
   @HostListener('window:resize', ['$event'])
@@ -62,9 +84,14 @@ export class RestaurantComponent implements OnInit {
       this.restaurant.duration,
       false,
     );
+
     const index = this.restaurantSrv.getWishList().findIndex(res => res._id == restaurant._id);
 
     this.isInWishlist = index === -1;
     this.restaurantSrv.addToWishList(restaurant);
+  }
+
+  goBack() {
+    window.history.back();
   }
 }

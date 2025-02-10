@@ -4,7 +4,6 @@ import { TranslateService } from '@ngx-translate/core';
 import { NzModalService } from 'ng-zorro-antd/modal';
 import { filter } from 'rxjs';
 import { URLConstant } from 'src/app/core/constants/url.constant';
-import { IconMarker, RoleType } from 'src/app/core/models/common/enums/index.enum';
 import { LocationMarker, SelectedAddress } from 'src/app/core/models/geolocation/location.model';
 import { GeolocationService } from 'src/app/core/services/geolocation.service';
 import { ProfileService } from 'src/app/core/services/profile.service';
@@ -36,8 +35,8 @@ export class SearchLocationComponent implements OnInit {
   }
 
   showMapSelector() {
-    const customerMarker = new LocationMarker(RoleType.CUSTOMER, IconMarker.CUSTOMER, this.selectedAddress.coordinates);
-    const modalRef = this.createModal(MapSelectorComponent, 'map-selector', [customerMarker]);
+    // const customerMarker = new LocationMarker(RoleType.CUSTOMER, IconMarker.CUSTOMER, this.selectedAddress.coordinates);
+    const modalRef = this.createModal(MapSelectorComponent, 'map-selector', []);
 
     modalRef.afterClose.subscribe((result: SelectedAddress) => {
       if (result !== undefined && result.coordinates.length > 0 && result.address !== '') {

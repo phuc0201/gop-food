@@ -7,14 +7,11 @@
         <button class="absolute border-none outline-none top-5 left-5" (click)="closeDrawer()">
           <i class="fa-solid fa-xmark text-[25px] text-gray-500"></i>
         </button>
-
-        <button (click)="createReviewModal()" class="bg-primary text-white font-bold p-2 px-5 rounded-md">Written
-          reviews</button>
       </div>
 
       <div class="h-[1px] w-full bg-gray-200"></div>
 
-      <div *ngIf="reviews.length > 0" class="flex-1 ratings-and-reviews-body w-full overflow-y-scroll p-6">
+      <div *ngIf="reviews.length > 0" class="flex-1 ratings-and-reviews-body w-full overflow-y-scroll p-4">
         <div class="flex flex-col">
           <ng-container *ngIf="isLoading">
             <ng-container *ngFor="let item of [1,2,3,4]">
@@ -46,9 +43,10 @@
       <div class="flex items-center">
         <img [src]="review.customer.avatar" onerror="this.src='assets/img/avatars/user.png'"
           class="object-cover w-12 h-12 mr-5 rounded-full">
-        <span class="font-bold text-lg">{{ review.customer.full_name }}</span>
-        <span class="w-1 h-1 bg-gray-500 rounded-full mx-2"></span>
-        <span>{{ formatDate(review.createdAt) }}</span>
+        <div>
+          <span class="font-medium text-lg">{{ review.customer.full_name }}</span>
+          <div class="text-xs pb-[4px] text-gray-500 font-light">{{ formatDate(review.createdAt) }}</div>
+        </div>
       </div>
 
       <div>
