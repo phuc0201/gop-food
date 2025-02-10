@@ -15,6 +15,7 @@ export class RestaurantMenuComponent implements OnInit, AfterViewInit {
   @ViewChild('tabsNav') tabsNav!: ElementRef;
   @ViewChild('tabsContainer') tabsContainer!: ElementRef;
   @ViewChild('menuTabMobile') menuTabMobile!: ElementRef;
+  @ViewChild('menuTabPC') menuTabPC!: ElementRef;
   @ViewChild('tabContent') tabContent!: ElementRef;
   @ViewChild('autoCompleteInput') autoCompleteInput!: ElementRef;
   @ViewChild('searchResultContainer', { static: true }) searchResultContainer!: ElementRef;
@@ -31,25 +32,70 @@ export class RestaurantMenuComponent implements OnInit, AfterViewInit {
   foodItems = ['Burns Bay Road', 'Downing Street', 'Wall Street'];
   isLoading: boolean = true;
 
-  @HostListener('window:scroll', ['$event'])
-  onWindowScroll(event: Event): void {
-    if (this.searching)
-      return;
-    if (this.tabContent !== undefined) {
-      if (this.tabContent.nativeElement.getBoundingClientRect().top <= 96) {
-        this.renderer.removeClass(this.menuTabMobile.nativeElement, 'hidden');
-        this.renderer.addClass(this.menuTabMobile.nativeElement, 'flex');
-      }
-      else {
-        this.renderer.removeClass(this.menuTabMobile.nativeElement, 'flex');
-        this.renderer.addClass(this.menuTabMobile.nativeElement, 'hidden');
-      }
+  constructor(
+    private el: ElementRef,
+    private renderer: Renderer2,
+    private store: Store,
+    private searchSrv: SearchService
+  ) {
+    this.filteredOptions = this.foodItems;
+    this.search = this.searchSrv.debounce(this.search.bind(this), 500);
+  }
+
+  ngAfterViewInit(): void {
+
+  }
+
+  ngOnInit(): void {
+    this.selectedCategory = 0;
+    this.loadData();
+
+    const webbodyMobile = document.getElementById('webbody-mobile');
+    if (webbodyMobile) {
+      webbodyMobile.addEventListener('scroll', (i) => {
+        const top = webbodyMobile.scrollTop;
+        if (top > 0) {
+          if (this.tabContent !== undefined) {
+            const tabContentTop = this.tabContent.nativeElement.getBoundingClientRect().top;
+            const isTabContentVisible = tabContentTop <= 96 || this.searchValue !== '';
+            const action = isTabContentVisible ? 'addClass' : 'removeClass';
+            const oppositeAction = isTabContentVisible ? 'removeClass' : 'addClass';
+
+            this.renderer[action](this.menuTabMobile.nativeElement, 'flex');
+            this.renderer[oppositeAction](this.menuTabMobile.nativeElement, 'hidden');
+
+            const contentElement = document.querySelectorAll('#restaurant-menu.tab-content section');
+
+            contentElement.forEach((section, index) => {
+              if (section.getBoundingClientRect().top <= 96 && section.getBoundingClientRect().bottom > 96) {
+                this.selectedCategory = index;
+              }
+            });
+          }
+        }
+      });
+    }
+  }
+
+  onChange(value: string): void {
+
+  }
+
+  @HostListener('window:scroll', [])
+  onWindowScroll(): void {
+    const contentElement = document.querySelectorAll('#restaurant-menu.tab-content section');
+    const menuTabPcBottom = this.tabsContainer.nativeElement.getBoundingClientRect().bottom;
+    if (contentElement && menuTabPcBottom) {
+      contentElement.forEach((section, index) => {
+        if (section.getBoundingClientRect().top <= menuTabPcBottom + 50 && section.getBoundingClientRect().bottom > menuTabPcBottom + 50) {
+          this.selectedCategory = index;
+        }
+      });
     }
   }
 
   openSearchInput(): void {
     this.searching = true;
-    this.searchValue = '';
     setTimeout(() => {
       this.autoCompleteInput.nativeElement.focus();
     }, 100);
@@ -58,17 +104,7 @@ export class RestaurantMenuComponent implements OnInit, AfterViewInit {
   resetSearchValue(): void {
     this.searchValue = '';
     this.searching = false;
-    this.menuSearching = this.menu;
-  }
-
-  onChange(value: string): void {
-    // this.filteredOptions = this.foodItems.filter(option => option.toLowerCase().indexOf(value.toLowerCase()) !== -1);
-    // let menuTabMobileContainerBottom = this.menuTabMobile.nativeElement.getBoundingClientRect().bottom;
-    // let tabContentTop = this.tabContent.nativeElement.getBoundingClientRect().top;
-
-    // setTimeout(() => {
-    //   window.scrollBy(0, tabContentTop - menuTabMobileContainerBottom);
-    // }, 100);
+    this.menuSearching = this.menu.filter(cate => cate.food_items.length > 0);
   }
 
   goBack(): void {
@@ -84,18 +120,19 @@ export class RestaurantMenuComponent implements OnInit, AfterViewInit {
   }
 
   selectResCate(index: number): void {
+    const webbodyMobile = document.getElementById('webbody-mobile');
+
     this.selectedCategory = index;
 
-    if (this.visibleCuisineDrawer) {
+    if (this.visibleCuisineDrawer && webbodyMobile) {
       this.visibleCuisineDrawer = false;
-      const contentElement = this.el.nativeElement.querySelector(`#section${index + 1}`);
+      const contentElement = this.el.nativeElement.querySelector
+        (`#section${index + 1}`);
+
       if (contentElement) {
-        const contentOffsetTop = contentElement.offsetTop;
         const menuTabMobileContainerBottom = this.menuTabMobile.nativeElement.getBoundingClientRect().bottom;
-        const scrollPosition = contentOffsetTop - menuTabMobileContainerBottom;
-        setTimeout(() => {
-          window.scrollTo({ top: scrollPosition, behavior: 'smooth' });
-        }, 350);
+        const offsetTop = contentElement.getBoundingClientRect().top - menuTabMobileContainerBottom + webbodyMobile.scrollTop;
+        webbodyMobile.scrollTo({ top: offsetTop, behavior: 'smooth' });
       }
     }
     else {
@@ -164,8 +201,15 @@ export class RestaurantMenuComponent implements OnInit, AfterViewInit {
     });
     this.menuSearching = this.menuSearching.filter(cate => cate.food_items.length > 0);
 
+
     if (this.searching) {
       window.scrollTo(0, 0);
+      const webbodyMobile = document.getElementById('webbody-mobile');
+      if (webbodyMobile) {
+        const tabContentTop = this.tabContent.nativeElement.getBoundingClientRect().top;
+
+        webbodyMobile.scrollTo({ top: webbodyMobile.scrollTop + tabContentTop - 96, behavior: 'smooth' });
+      }
     }
   }
 
@@ -181,25 +225,4 @@ export class RestaurantMenuComponent implements OnInit, AfterViewInit {
       }
     });
   }
-
-
-  ngAfterViewInit(): void {
-
-  }
-
-  ngOnInit(): void {
-    this.selectedCategory = 0;
-    this.loadData();
-  }
-
-  constructor(
-    private el: ElementRef,
-    private renderer: Renderer2,
-    private store: Store,
-    private searchSrv: SearchService
-  ) {
-    this.filteredOptions = this.foodItems;
-    this.search = this.searchSrv.debounce(this.search.bind(this), 500);
-  }
-
 }

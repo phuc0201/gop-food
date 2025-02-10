@@ -18,7 +18,7 @@
 
 <div class="min-h-[500px]">
   <!-- MENU-TAB -->
-  <div *ngIf="menuSearching.length > 0"
+  <div #menuTabPC *ngIf="menuSearching.length > 0"
     class="sticky z-50 top-20 -translate-y-[2px] bg-white hidden md:block shadow-sm">
     <div class="sectionContainer h-[3.125rem]">
       <div class="px-8 relative">
@@ -51,7 +51,7 @@
   <!-- MENU-TAB-MOBILE -->
   <ng-container>
     <div #menuTabMobile
-      class="sectionContainer h-24 items-center shadow-md fixed top-0 left-0 right-0 z-50 bg-white md:hidden hidden">
+      class="sectionContainer h-24 items-center shadow-md fixed top-0 left-0 right-0 z-50 bg-white hidden">
       <div class="w-full">
 
         <div class="flex items-center mb-3">
@@ -80,7 +80,7 @@
           </button>
 
           <div class="autocomplete-input flex-1" [ngClass]="searching ? 'block' : 'hidden'">
-            <div class="relative bg-gray-100 h-[2.375rem] flex items-center rounded-lg">
+            <div class="relative bg-gray-100 h-[37px] flex items-center rounded-lg">
               <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
                 stroke="currentColor" class="w-5 h-5 absolute top-[50%] left-3 -translate-y-[50%]">
                 <path stroke-linecap="round" stroke-linejoin="round"
@@ -88,9 +88,10 @@
               </svg>
 
               <input #autoCompleteInput placeholder='Have you craving ?' nz-input [(ngModel)]="searchValue"
-                (ngModelChange)="search($event)" class="outline-none bg-transparent w-full px-10" />
+                (ngModelChange)="search($event)" class="outline-none bg-transparent w-full px-10"
+                (blur)="searching=false" />
 
-              <div (click)="resetSearchValue()" [ngClass]="{'hidden' : searchValue==''}" class="cursor-pointer">
+              <div (mousedown)="resetSearchValue()" [ngClass]="{'hidden' : searchValue==''}" class="cursor-pointer">
                 <i class="fa-solid fa-circle-xmark text-gray-400 absolute top-[50%] right-3 -translate-y-[50%]"></i>
               </div>
             </div>
