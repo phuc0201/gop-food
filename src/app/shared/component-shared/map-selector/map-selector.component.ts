@@ -36,6 +36,7 @@ export class MapSelectorComponent implements OnInit, AfterViewInit {
   startY: number = 0;
   currentY: number = 0;
   isAnimateDragging: boolean = false;
+
   constructor(
     private geoSrv: GeolocationService,
     private searchSrv: SearchService

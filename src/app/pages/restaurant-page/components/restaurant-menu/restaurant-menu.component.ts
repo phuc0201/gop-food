@@ -31,6 +31,7 @@ export class RestaurantMenuComponent implements OnInit, AfterViewInit {
   filteredOptions: string[] = [];
   foodItems = ['Burns Bay Road', 'Downing Street', 'Wall Street'];
   isLoading: boolean = true;
+  isAutoScrolling: boolean = false;
 
   constructor(
     private el: ElementRef,
@@ -67,7 +68,7 @@ export class RestaurantMenuComponent implements OnInit, AfterViewInit {
             const contentElement = document.querySelectorAll('#restaurant-menu.tab-content section');
 
             contentElement.forEach((section, index) => {
-              if (section.getBoundingClientRect().top <= 96 && section.getBoundingClientRect().bottom > 96) {
+              if (section.getBoundingClientRect().top <= 96 && section.getBoundingClientRect().bottom > 96 && !this.isAutoScrolling) {
                 this.selectedCategory = index;
               }
             });
@@ -84,13 +85,15 @@ export class RestaurantMenuComponent implements OnInit, AfterViewInit {
   @HostListener('window:scroll', [])
   onWindowScroll(): void {
     const contentElement = document.querySelectorAll('#restaurant-menu.tab-content section');
-    const menuTabPcBottom = this.tabsContainer.nativeElement.getBoundingClientRect().bottom;
-    if (contentElement && menuTabPcBottom) {
-      contentElement.forEach((section, index) => {
-        if (section.getBoundingClientRect().top <= menuTabPcBottom + 50 && section.getBoundingClientRect().bottom > menuTabPcBottom + 50) {
-          this.selectedCategory = index;
-        }
-      });
+    if (this.tabsContainer) {
+      const menuTabPcBottom = this.tabsContainer.nativeElement.getBoundingClientRect().bottom;
+      if (contentElement && menuTabPcBottom && !this.isAutoScrolling) {
+        contentElement.forEach((section, index) => {
+          if (section.getBoundingClientRect().top <= menuTabPcBottom + 50 && section.getBoundingClientRect().bottom > menuTabPcBottom + 50) {
+            this.selectedCategory = index;
+          }
+        });
+      }
     }
   }
 
@@ -121,8 +124,7 @@ export class RestaurantMenuComponent implements OnInit, AfterViewInit {
 
   selectResCate(index: number): void {
     const webbodyMobile = document.getElementById('webbody-mobile');
-
-    this.selectedCategory = index;
+    this.isAutoScrolling = true;
 
     if (this.visibleCuisineDrawer && webbodyMobile) {
       this.visibleCuisineDrawer = false;
@@ -133,6 +135,10 @@ export class RestaurantMenuComponent implements OnInit, AfterViewInit {
         const menuTabMobileContainerBottom = this.menuTabMobile.nativeElement.getBoundingClientRect().bottom;
         const offsetTop = contentElement.getBoundingClientRect().top - menuTabMobileContainerBottom + webbodyMobile.scrollTop;
         webbodyMobile.scrollTo({ top: offsetTop, behavior: 'smooth' });
+        setTimeout(() => {
+          this.selectedCategory = index;
+          this.isAutoScrolling = false;
+        }, 500);
       }
     }
     else {
@@ -163,9 +169,13 @@ export class RestaurantMenuComponent implements OnInit, AfterViewInit {
           const scrollPosition = contentOffsetTop - tabsContainerBottom;
           window.scrollTo({ top: scrollPosition - 40, behavior: 'smooth' });
         }
+
+        setTimeout(() => {
+          this.selectedCategory = index;
+          this.isAutoScrolling = false;
+        }, 500);
       }
     }
-
   }
 
   handleButtonTab(step: number): void {

@@ -1,13 +1,14 @@
 import { CommonModule } from '@angular/common';
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnInit, ViewContainerRef } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { Router, RouterModule } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { NzBadgeModule } from 'ng-zorro-antd/badge';
+import { NzModalService } from 'ng-zorro-antd/modal';
 import { NzSelectModule } from 'ng-zorro-antd/select';
 import { URLConstant } from 'src/app/core/constants/url.constant';
-import { Cart } from 'src/app/core/models/order/order.model';
+import { Basket } from 'src/app/core/models/order/order.model';
 import { AuthService } from 'src/app/core/services/auth.service';
 import { GeolocationService } from 'src/app/core/services/geolocation.service';
 import { OrderService } from 'src/app/core/services/order.service';
@@ -21,7 +22,6 @@ import { ScrollDirective } from 'src/app/shared/widget/directives/scroll.directi
 const plugins = [
   CommonModule,
   CartComponent,
-  AuthComponent,
   NzBadgeModule,
   TranslateModule,
   NzSelectModule,
@@ -35,7 +35,10 @@ const plugins = [
   templateUrl: './main-header.component.html',
   styleUrls: ['./main-header.component.scss'],
   standalone: true,
-  imports: plugins
+  imports: plugins,
+  providers: [
+    NzModalService
+  ]
 })
 export class MainHeaderComponent implements OnInit {
   @Input() isSticky: boolean = false;
@@ -46,7 +49,7 @@ export class MainHeaderComponent implements OnInit {
   isLogged: boolean = false;
   openAuthForm: boolean = false;
   customerAvt: string = '';
-  basket = new Cart();
+  basket = new Basket();
   wishlist: number = 0;
   searchValue: string = '';
   showSearchBar: boolean = false;
@@ -61,8 +64,10 @@ export class MainHeaderComponent implements OnInit {
     private searchSrv: SearchService,
     private router: Router,
     private geoSrv: GeolocationService,
+    private viewContainerRef: ViewContainerRef,
+    private modal: NzModalService,
   ) {
-    translate.use(localStorage.getItem('language')?.toString() ?? 'vi');
+    translate.use(localStorage.getItem('language')?.toString() ?? 'en');
   }
 
   ngOnInit(): void {
@@ -108,5 +113,16 @@ export class MainHeaderComponent implements OnInit {
   search(): void {
     this.searchSrv.setRestaurantSearchQuery(this.searchValue);
     this.router.navigate([URLConstant.ROUTE.CUISINE_PAGE.BASE]);
+  }
+
+  createAuthModal() {
+    return this.modal.create<AuthComponent, any>({
+      nzContent: AuthComponent,
+      nzClosable: false,
+      nzWrapClassName: 'auth-form',
+      nzViewContainerRef: this.viewContainerRef,
+      nzFooter: null,
+      nzData: '',
+    });
   }
 }

@@ -11,10 +11,8 @@ export class MainLayoutComponent implements OnInit, AfterViewInit, OnDestroy {
   isLoading = false;
   isMobile: boolean = false;
   isHeaderSticky: boolean = false;
-  isHiddenFooter: boolean = true;
   isHiddenMobileHeader: boolean = true;
   stickyRoutes = ['user', 'order', 'cuisines', 'wishlist'];
-  hiddenFooterRoutes = ['order'];
   hiddenMobileHeaderRoutes = ['restaurant'];
   scrollTopValue: number = 0;
   private destroy$ = new Subject<void>();
@@ -24,12 +22,15 @@ export class MainLayoutComponent implements OnInit, AfterViewInit, OnDestroy {
   ) { }
 
   ngOnInit(): void {
+    this.onActivate();
     this.isMobile = window.innerWidth < 768;
     this.handleHeaderSticky();
+
     this.router.events.pipe(
       filter(event => event instanceof NavigationEnd)
     ).subscribe((event: any) => {
       this.handleHeaderSticky();
+      this.onActivate();
     });
   }
 
@@ -47,6 +48,19 @@ export class MainLayoutComponent implements OnInit, AfterViewInit, OnDestroy {
     this.destroy$.complete();
   }
 
+  onActivate() {
+    window.scrollTo({
+      top: 0,
+      behavior: 'instant'
+    });
+    if (this.webbodyMobile) {
+      this.webbodyMobile.nativeElement.scrollTo({
+        top: 0,
+        behavior: 'instant'
+      });
+    }
+  }
+
   @HostListener('window:resize', ['$event'])
   onResize(event?: Event) {
     this.isMobile = window.innerWidth < 768;
@@ -54,12 +68,10 @@ export class MainLayoutComponent implements OnInit, AfterViewInit, OnDestroy {
 
   handleHeaderSticky(): void {
     this.isHeaderSticky = false;
-    this.isHiddenFooter = false;
     this.isHiddenMobileHeader = true;
     if (this.router.url != '/') {
       const url = this.router.url.split('/')[1];
       this.isHeaderSticky = this.stickyRoutes.includes(url);
-      this.isHiddenFooter = this.hiddenFooterRoutes.includes(url);
       this.isHiddenMobileHeader = !this.hiddenMobileHeaderRoutes.includes(url);
     }
   }

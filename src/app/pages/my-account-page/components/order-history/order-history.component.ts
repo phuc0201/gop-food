@@ -65,12 +65,10 @@ export class OrderHistoryComponent implements OnInit {
         this.orderForSearch = data;
       },
       complete: () => {
-        setTimeout(() => {
-          this.isLoading = false;
-          if (this.orderForSearch.length == 0) {
-            this.isNoData = true;
-          }
-        }, 1000);
+        this.isLoading = false;
+        if (this.orderForSearch.length == 0) {
+          this.isNoData = true;
+        }
       }
     });
   }

@@ -76,15 +76,18 @@ export class RestaurantService {
   }
 
   getRestaurantInfo(id: string): Observable<Restaurant> {
-    return this.geoSrv.currLocation.pipe(
-      switchMap((location: SelectedAddress) => {
-        const params = new HttpParams()
-          .set('coordinates', `${location.coordinates[1]},${location.coordinates[0]}`)
-          .set('id', id);
-        return this.http.get<Restaurant>(this.constructUrl(URLConstant.API.RESTAURANT.GET_INFO), { params })
-          .pipe(catchError(this.handleError<Restaurant>()));
-      })
-    );
+    if (id !== '') {
+      return this.geoSrv.currLocation.pipe(
+        switchMap((location: SelectedAddress) => {
+          const params = new HttpParams()
+            .set('coordinates', `${location.coordinates[1]},${location.coordinates[0]}`)
+            .set('id', id);
+          return this.http.get<Restaurant>(this.constructUrl(URLConstant.API.RESTAURANT.GET_INFO), { params })
+            .pipe(catchError(this.handleError<Restaurant>()));
+        })
+      );
+    }
+    else return of(new Restaurant());
   }
 
   getMenu(id: string): Observable<RestaurantCategory<FoodItems<string>>[]> {

@@ -31,16 +31,44 @@ class CampaignCondition {
 }
 
 export class Campaign {
-  _id: string = '';
-  restaurant_id: string = '';
-  name: string = '';
-  description: string = '';
-  conditions: CampaignCondition = new CampaignCondition();
-  discount: CampaignDiscount = new CampaignDiscount();
-  quotas: CampaignQuotas = new CampaignQuotas();
-  unavailable_users: string[] = [];
-  currency_code: CurrencyCode = CurrencyCode.VND;
-  image: string = '';
-  checked: boolean = false;
-  disabled: boolean = false;
+  _id: string;
+  restaurant_id: string;
+  name: string;
+  description: string;
+  conditions: CampaignCondition;
+  discount: CampaignDiscount;
+  quotas: CampaignQuotas;
+  unavailable_users: string[];
+  currency_code: CurrencyCode;
+  image: string;
+  checked: boolean;
+  disabled: boolean;
+
+  constructor(
+    _id: string = '',
+    restaurant_id: string = '',
+    name: string = '',
+    description: string = '',
+    conditions: CampaignCondition = new CampaignCondition(),
+    discount: CampaignDiscount = new CampaignDiscount(),
+    quotas: CampaignQuotas = new CampaignQuotas(),
+    unavailable_users: string[] = [],
+    currency_code: CurrencyCode = CurrencyCode.VND,
+    image: string = '',
+    checked: boolean = false,
+    disabled: boolean = false
+  ) {
+    this._id = _id;
+    this.restaurant_id = restaurant_id;
+    this.name = name;
+    this.description = description;
+    this.conditions = conditions;
+    this.discount = discount;
+    this.quotas = quotas;
+    this.unavailable_users = unavailable_users;
+    this.currency_code = currency_code;
+    this.image = image;
+    this.checked = checked;
+    this.disabled = disabled;
+  }
 }

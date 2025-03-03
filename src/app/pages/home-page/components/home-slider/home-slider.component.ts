@@ -25,7 +25,6 @@ export class HomeSliderComponent implements OnInit {
   currBannerImg = '';
 
   ngOnInit(): void {
-    const random = Math.floor(Math.random() * 4 + 1);
-    this.currBannerImg = `assets/img/banners/banner-${random}.jpg`;
+    this.currBannerImg = `assets/img/banners/banner-1.jpg`;
   }
 }

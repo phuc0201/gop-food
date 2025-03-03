@@ -3,7 +3,7 @@ import * as campaignAction from './campaign.action';
 import { initialCampaignsState } from "./campaign.state";
 const _getAllCampaign = createReducer(
   initialCampaignsState,
-  on(campaignAction.getAllCampaign, (state) => {
+  on(campaignAction.getCampaignAvailableForRestaurant, (state) => {
     return {
       ...state,
       isLoading: true

@@ -5,7 +5,7 @@ import { Observable } from "rxjs";
 import { URLConstant } from "../constants/url.constant";
 import { Campaign } from "../models/campaign/campain.model";
 import { CampaignDiscountType, CampaignScopeType } from "../models/common/enums/index.enum";
-import { Cart } from "../models/order/order.model";
+import { Basket } from "../models/order/order.model";
 import { selectCampaigns } from "../store/campaign/campaign.selector";
 import { OrderService } from "./order.service";
 import { ProfileService } from "./profile.service";
@@ -24,6 +24,10 @@ export class CampaignService {
 
   fetchAllCampaign(): Observable<Campaign[]> {
     return this.http.get<Campaign[]>(this.baseUrl + URLConstant.API.CAMPAIGN.GET_ALL);
+  }
+
+  getCampaignAvailableForRestaurant(restaurantId: string = ''): Observable<Campaign[]> {
+    return this.http.get<Campaign[]>(this.baseUrl + '/campaign?restaurantId=' + restaurantId);
   }
 
   getCampaignsByRestaurantId(restaurantId: string): Observable<Campaign[]> {
@@ -54,7 +58,7 @@ export class CampaignService {
       subtotal >= campaign.conditions.minBasketAmount;
   }
 
-  validateAndApplyCampaign(customer_id: string, campaigns: Campaign[], order: Cart, delivery_fare: number): number {
+  validateAndApplyCampaign(customer_id: string, campaigns: Campaign[], order: Basket, delivery_fare: number): number {
     let total_discount_value = 0;
     for (const campaign_id of order.cart.campaign_ids) {
       const index = campaigns.findIndex(cp => cp._id === campaign_id);

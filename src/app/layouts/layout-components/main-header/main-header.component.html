@@ -1,4 +1,4 @@
-<div appScroll id="header" class="w-full py-3 md:py-5 top-0 left-0 z-50 md:fixed sticky hidden md:block"
+<div appScroll id="header" class="w-full py-3 md:py-5 top-0 left-0 z-[401] md:fixed sticky hidden md:block"
   [class.header-sticky]="isSticky">
   <div class="sectionContainer flex justify-between items-center flex-wrap">
     <a routerLink="/" class="logo md:text-3xl text-xl font-medium text-white cursor-pointer">GoPFood</a>
@@ -73,11 +73,11 @@
           <img loading="lazy" [src]="customerAvt" alt="avatar" onerror="this.src='assets/img/avatars/user.png'"
             class="w-full h-full rounded-[50%]">
         </a>
-        <div *ngIf="!isLogged" (click)="openAuthForm=true"
+        <button [hidden]="isLogged" (click)="createAuthModal()"
           class="cursor-pointer select-none h-full flex items-center bg-white rounded border border-solid border-gray-200">
           <div class="text-grey1 font-medium text-[12px] text-center px-3">{{ langData + 'DANG_NHAP' | translate}}
           </div>
-        </div>
+        </button>
       </div>
       <nz-select [(ngModel)]="currLang" class="" nzSize="large" (ngModelChange)="switchLanguage()">
         <nz-option nzValue="vi" nzLabel="Việt Nam"></nz-option>
@@ -87,4 +87,3 @@
   </div>
 </div>
 <app-cart [(opened)]="openDrawer"></app-cart>
-<app-auth [(openAuthForm)]="openAuthForm"></app-auth>

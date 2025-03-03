@@ -2,7 +2,7 @@ import { CommonModule } from '@angular/common';
 import { Component, CUSTOM_ELEMENTS_SCHEMA, ElementRef, Input, OnInit, ViewChild } from '@angular/core';
 import { Router, RouterModule } from '@angular/router';
 import { Store } from '@ngrx/store';
-import { catchError, distinctUntilChanged, EMPTY, Subscription, tap } from 'rxjs';
+import { Subscription } from 'rxjs';
 import { CuisineCategory } from 'src/app/core/models/cuisine/cuisine-category.model';
 import { getCuisines } from 'src/app/core/store/cuisine/cuisine.action';
 import { selectCuisines } from 'src/app/core/store/cuisine/cuisine.selector';
@@ -33,7 +33,7 @@ export class CuisinesSliderComponent implements OnInit {
   @ViewChild('cuisinesSlider', { static: true }) cuisineList!: ElementRef;
   cuisineCategories: CuisineCategory[] = [];
   sortedCuisineCategories: CuisineCategory[] = [];
-  isLoading: boolean = true;
+  isLoading: boolean = false;
   isImageLoaded: boolean = false;
   cuisineSubscription: Subscription = new Subscription();
 
@@ -47,34 +47,22 @@ export class CuisinesSliderComponent implements OnInit {
   }
 
   loadCuisines(): void {
-    this.cuisineSubscription = this.store.select(selectCuisines).subscribe((res: CuisinesState) => {
-      this.cuisineCategories = res.result;
-      this.sortedCuisineCategories = res.result;
-      this.isLoading = res.isLoading;
-      this.isImageLoaded = true;
-      this.handleCuisineRoute();
+    this.store.select(selectCuisines).subscribe({
+      next: (data: CuisinesState) => {
+        if (data.result.length > 0) {
+          this.cuisineCategories = data.result;
+          this.isImageLoaded = true;
+          this.isLoading = false;
+          this.handleCuisineRoute();
+        } else this.isLoading = true;
+      },
+      error: () => {
+        console.log('Error fetching cuisine categories');
+      },
     });
 
-    if (this.cuisineCategories.length == 0) {
+    if (this.isLoading === true) {
       this.store.dispatch(getCuisines());
-      this.cuisineSubscription.unsubscribe();
-      this.cuisineSubscription = this.store.select(selectCuisines).pipe(
-        distinctUntilChanged(),
-        tap((res: CuisinesState) => {
-          if (res.result.length > 0) {
-            this.cuisineCategories = res.result;
-            this.sortedCuisineCategories = res.result;
-            this.isLoading = res.isLoading;
-            this.onImageLoad();
-            this.handleCuisineRoute();
-          }
-        }),
-        catchError((error) => {
-          console.error('Error fetching cuisine categories:', error);
-          this.isLoading = false;
-          return EMPTY;
-        }),
-      ).subscribe();
     }
   }
 
@@ -88,12 +76,12 @@ export class CuisinesSliderComponent implements OnInit {
       if (cuisineId) {
         const index = this.cuisineCategories.findIndex(cuisine => cuisine.id == cuisineId);
         if (index > -1) {
-          const cuisineCategoriesCopy = [...this.sortedCuisineCategories];
+          const cuisineCategoriesCopy = [...this.cuisineCategories];
           const [cuisine] = cuisineCategoriesCopy.splice(index, 1);
           this.sortedCuisineCategories = cuisineCategoriesCopy;
           this.sortedCuisineCategories.unshift(cuisine);
         }
-      }
+      } else this.sortedCuisineCategories = [...this.cuisineCategories];
     }
   }
 

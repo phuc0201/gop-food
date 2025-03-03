@@ -35,7 +35,6 @@ export class SearchLocationComponent implements OnInit {
   }
 
   showMapSelector() {
-    // const customerMarker = new LocationMarker(RoleType.CUSTOMER, IconMarker.CUSTOMER, this.selectedAddress.coordinates);
     const modalRef = this.createModal(MapSelectorComponent, 'map-selector', []);
 
     modalRef.afterClose.subscribe((result: SelectedAddress) => {

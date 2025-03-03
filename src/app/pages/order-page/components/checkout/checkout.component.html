@@ -1,211 +1,197 @@
-<header class="bg-white">
-  <div class="sectionContainer">
-    <h1 class="m-0 py-7 font-medium md:block hidden">
-      {{ basket.cart.restaurant_name }}
-    </h1>
+<div>
+  <div class="bg-white">
+    <div class="sectionContainer">
+      <h1 class="m-0 py-7 font-medium md:block hidden">
+        {{ basket.cart.restaurant_name }}
+      </h1>
+    </div>
   </div>
-</header>
 
-<section class="bg-gray-100">
-  <div class="sectionContainer py-5">
+  <div class="bg-gray-100">
+    <div class="sectionContainer py-5">
 
-    <div nz-row nzGutter="20">
-      <div nz-col nzSpan="24" nzLg="16">
-        <div class="bg-white rounded-t-lg mb-5">
-          <div class="shadow-header p-5">
-            <h3 class="m-0 font-bold text-gray-700">Delivery address</h3>
+      <div nz-row nzGutter="20">
+        <div nz-col nzSpan="24" nzLg="16">
+          <div class="bg-white rounded-t-lg mb-5">
+            <div class="shadow-header p-5">
+              <h3 class="m-0 font-bold text-gray-700">Delivery address</h3>
+            </div>
+
+            <div class="p-5 flex flex-col gap-5">
+              <section (click)="showMapSelector()" class="cursor-pointer flex flex-col text-gray-500 font-medium">
+                <label for="" class="mb-2">Address</label>
+                <div class="border border-gray-300 relative rounded-lg overflow-hidden">
+                  <i class="fa-solid fa-location-dot absolute top-1/2 -translate-y-1/2 left-4 text-lg text-red"></i>
+
+                  <button
+                    class="cursor-pointer text-start border-none text-sm font-normal outline-none ring-0 w-full px-10 py-3">
+                    <span class="line-clamp-1">{{addressSelected.address}}</span>
+                  </button>
+
+                  <button class="absolute top-1/2 -translate-y-1/2 right-4">
+                    <i class="fa-solid fa-location-crosshairs text-lg text-primary"></i>
+                  </button>
+                </div>
+              </section>
+
+              <section class="flex flex-col text-gray-500 font-medium">
+                <label for="" class="mb-2">Phone
+                  <span class="text-red">*</span>
+                </label>
+                <input type="text"
+                  class="border-gray-300 focus:ring-0 ring-0 focus:border-gray-300 px-5 py-3 text-sm font-normal outline-none rounded-lg"
+                  [(ngModel)]="phone" [placeholder]="'0987654321'">
+              </section>
+            </div>
           </div>
 
-          <div class="p-5 flex flex-col gap-5">
-            <section class="flex flex-col text-gray-500 font-medium">
-              <label for="" class="mb-2">Address</label>
-              <div class="border border-gray-300 relative rounded-lg overflow-hidden">
-                <i class="fa-solid fa-location-dot absolute top-1/2 -translate-y-1/2 left-4 text-lg text-red"></i>
+          <div class="bg-white rounded-b-lg">
+            <div class="shadow-header p-5 flex items-center justify-between">
+              <h3 class="m-0 font-bold text-gray-700 uppercase">Foods ({{basket.cart.items.length}})</h3>
+              <a [routerLink]="['/restaurant', basket.cart.restaurant_id]" class="font-medium text-[#2b77eb] text-base">
 
-                <input type="text" class="border-none text-sm font-normal outline-none ring-0 w-full px-10 py-3"
-                  [value]="addressSelected.address">
-
-                <button (click)="showMapSelector()" nzPopoverPlacement="left" nz-popover nzType="primary"
-                  nzPopoverContent="Click here to select location" [nzPopoverVisible]="false"
-                  nzPopoverOverlayClassName="popover-select-location" class="absolute top-1/2 -translate-y-1/2 right-4">
-                  <i class="fa-solid fa-location-crosshairs text-lg text-primary"></i>
-                </button>
-              </div>
-            </section>
-
-            <section class="flex flex-col text-gray-500 font-medium">
-              <label for="" class="mb-2">Phone
-                <span class="text-red">*</span>
-              </label>
-              <input type="text"
-                class="border-gray-300 focus:ring-0 ring-0 focus:border-gray-300 px-5 py-3 text-sm font-normal outline-none rounded-lg"
-                [(ngModel)]="phone" [placeholder]="'0987654321'">
-            </section>
+              </a>
+            </div>
+            <ng-container [ngTemplateOutlet]="cartItemsTemplate"></ng-container>
           </div>
         </div>
 
-        <div class="bg-white rounded-b-lg">
-          <div class="shadow-header p-5 flex items-center justify-between">
-            <h3 class="m-0 font-bold text-gray-700 uppercase">Foods ({{basket.cart.items.length}})</h3>
-            <a [routerLink]="['/restaurant', basket.cart.restaurant_id]" class="font-medium text-[#2b77eb] text-base">
+        <div nz-col nzSpan="24" nzLg="8">
+          <div class="bg-white rounded-t-lg mt-5 mb-5 lg:mt-0">
+            <div class="shadow-header p-5 ">
+              <h3 class="m-0 font-bold text-gray-700">Payment methods & offers</h3>
+            </div>
 
-            </a>
+            <div class="p-5 cursor-pointer">
+              <div class="relative mb-5">
+                <div class="border relative border-gray-300 rounded-lg h-11 overflow-hidden">
+                  <ng-container
+                    *ngTemplateOutlet="paymentMethodTemplate; context: { $implicit:  paymentMethodSelected }"></ng-container>
+
+                  <i class="fa-solid absolute right-4 -translate-y-1/2 top-1/2"
+                    [ngClass]="isSelectPaymentMethod? 'fa-chevron-up': 'fa-angle-down'"></i>
+                </div>
+
+                <div *ngIf="isSelectPaymentMethod"
+                  class="absolute top-full left-0 right-0 translate-y-1 bg-white shadow rounded-lg">
+                  <ng-container *ngFor="let item of paymentMethod">
+                    <ng-container
+                      *ngTemplateOutlet="paymentMethodTemplate; context: { $implicit:  item }"></ng-container>
+                  </ng-container>
+                </div>
+              </div>
+
+
+              <div class="border border-gray-300 rounded-lg h-11 flex items-center px-4 text-xl  justify-between">
+
+                <div class="flex items-center gap-3">
+                  <i class="fa-solid fa-ticket text-red"></i>
+                  <span class="text-sm text-gray-500">{{basket.cart.campaign_ids.length}} applied</span>
+                </div>
+                <button (click)="showPromotion()" class="font-bold text-[#2b77eb] text-sm">Apply</button>
+              </div>
+              <p class="text-gray-400 m-0 font-medium mt-1 text-xs">You can apply multiple discount codes at once</p>
+            </div>
           </div>
-          <ng-container [ngTemplateOutlet]="cartItemsTemplate"></ng-container>
+
+          <div class="bg-white rounded-b-lg">
+            <div class="shadow-header p-5">
+              <h3 class="m-0 font-bold text-gray-700">
+                Checkout
+              </h3>
+            </div>
+
+            <div class="shadow-header p-5">
+              <div class="flex items-center justify-between mb-2">
+                <span class="font-medium">Subtotal</span>
+                <span>{{ this.basket.subtotal.toLocaleString("vi-VN", { style: "currency", currency: "VND" }) }}</span>
+              </div>
+
+              <div class="flex items-center justify-between mb-2">
+                <span class="font-medium">Delivery fee</span>
+                <span>{{ formatMoney(quote.delivery_fare) }}</span>
+              </div>
+
+              <div class="flex items-center justify-between mb-2">
+                <span class="font-medium">Platform</span>
+                <span>{{ formatMoney(2000) }}</span>
+              </div>
+
+              <div class="flex items-center justify-between">
+                <span class="font-medium">Discount</span>
+                <span class="text-green">- {{ formatMoney(quote.discount) }}</span>
+              </div>
+            </div>
+            <div class="p-5">
+              <div class="flex items-center justify-between">
+                <span class="font-bold text-xl">Total</span>
+                <span class="font-bold text-xl"> {{ formatMoney(quote.total)
+                  }}</span>
+              </div>
+              <button (click)="placeOrder()" class="p-3 mt-5 bg-primary w-full text-white font-bold rounded-lg"
+                [disabled]="quote.total == 0">
+                Place order
+              </button>
+            </div>
+          </div>
         </div>
       </div>
 
-      <div nz-col nzSpan="24" nzLg="8">
-        <div class="bg-white rounded-t-lg mt-5 mb-5 lg:mt-0">
-          <div class="shadow-header p-5 ">
-            <h3 class="m-0 font-bold text-gray-700">Payment methods & offers</h3>
+    </div>
+  </div>
+
+
+  <ng-template #paymentMethodTemplate let-data>
+    <div (click)="selectPaymentMethod(data)" class="bg-white hover:bg-[#ffe8d6] rounded-lg h-11 flex px-4">
+      <div class="h-8 w-fit my-auto">
+        <img [src]="data.image" class="h-full object-cover select-none">
+      </div>
+      <span class="my-auto select-none text-sm font-medium text-gray-600 ml-4">{{ data.name }}</span>
+    </div>
+  </ng-template>
+
+
+  <ng-template #cartItemsTemplate>
+    <div class="p-5 flex flex-col gap-4">
+      <ng-container *ngFor="let item of basket.cart.items; let last = last; let index = index">
+        <div [ngClass]="last ? '' : 'shadow-header pb-5'">
+          <ng-container
+            *ngTemplateOutlet="foodItemCardTemplate; context: { foodItem: item, index: index }"></ng-container>
+        </div>
+      </ng-container>
+    </div>
+  </ng-template>
+
+  <ng-template #foodItemCardTemplate let-foodItem="foodItem" let-index="index">
+    <div class="flex gap-4">
+      <img [src]="foodItem.image" alt="" class="w-16 h-16 aspect-square object-cover rounded-lg">
+      <div class="flex-1 flex flex-col justify-between">
+        <div class="flex justify-between mb-3 items-start">
+          <div class="flex flex-col">
+            <div class="">
+              <span class="font-bold text-gray-700 uppercase">{{ foodItem.food_name }}</span>
+              <span class="font-normal text-gray-500 ml-1">x{{ foodItem.quantity }}</span>
+            </div>
+            <span class="text-gray-400">Giá gốc: {{ foodItem.price.toLocaleString("vi-VN", { style: "currency",
+              currency:
+              "VND" }) }}</span>
+            <span *ngFor="let modifier of foodItem.modifiers" class="text-gray-400">{{ modifier.name }} + {{
+              modifier.price.toLocaleString("vi-VN", { style: "currency", currency: "VND" }) }}</span>
           </div>
 
-          <div class="p-5 cursor-pointer">
-            <div class="relative mb-5">
-              <div class="border relative border-gray-300 rounded-xl h-11 overflow-hidden">
-                <ng-container
-                  *ngTemplateOutlet="paymentMethodTemplate; context: { $implicit:  paymentMethodSelected }"></ng-container>
-
-                <i class="fa-solid absolute right-4 -translate-y-1/2 top-1/2"
-                  [ngClass]="isSelectPaymentMethod? 'fa-chevron-up': 'fa-angle-down'"></i>
-              </div>
-
-              <div *ngIf="isSelectPaymentMethod"
-                class="absolute top-full left-0 right-0 translate-y-1 bg-white shadow rounded-lg ">
-                <ng-container *ngFor="let item of paymentMethod">
-                  <ng-container *ngTemplateOutlet="paymentMethodTemplate; context: { $implicit:  item }"></ng-container>
-                </ng-container>
-              </div>
-            </div>
-
-
-            <div class="border border-gray-300 rounded-xl h-11 flex items-center px-4 text-xl  justify-between">
-
-              <div class="flex items-center gap-3">
-                <i class="fa-solid fa-ticket text-red"></i>
-                <span class="text-sm text-gray-500">{{basket.cart.campaign_ids.length}} applied</span>
-              </div>
-              <button (click)="showPromotion()" class="font-bold text-[#2b77eb] text-sm">Apply</button>
-            </div>
-            <p class="text-gray-400 m-0 font-medium mt-1 text-xs">You can apply multiple discount codes at once</p>
-          </div>
+          <button (click)="removeFoodItem(foodItem.food_id)">
+            <i class="fa-solid fa-trash-can text-lg hover:text-red"></i>
+          </button>
         </div>
 
-        <div class="bg-white rounded-b-lg">
-          <div class="shadow-header p-5">
-            <h3 class="m-0 font-bold text-gray-700">
-              Checkout
-            </h3>
-          </div>
-
-          <div class="shadow-header p-5">
-            <div class="flex items-center justify-between mb-2">
-              <span class="font-medium">Subtotal</span>
-              <span>{{ this.basket.subtotal.toLocaleString("vi-VN", { style: "currency", currency: "VND" }) }}</span>
-            </div>
-
-            <div class="flex items-center justify-between mb-2">
-              <span class="font-medium">Delivery fee</span>
-              <span>{{ formatMoney(quote.delivery_fare) }}</span>
-            </div>
-
-            <div class="flex items-center justify-between mb-2">
-              <span class="font-medium">Platform</span>
-              <span>{{ formatMoney(2000) }}</span>
-            </div>
-
-            <div class="flex items-center justify-between">
-              <span class="font-medium">Discount</span>
-              <span class="text-green">- {{ formatMoney(discount_value) }}</span>
-            </div>
-          </div>
-          <div class="p-5">
-            <div class="flex items-center justify-between">
-              <span class="font-bold text-xl">Total</span>
-              <span class="font-bold text-xl"> {{ formatMoney(basket.subtotal + quote.delivery_fare - discount_value +
-                2000)
-                }}</span>
-            </div>
-            <button (click)="checkPaymentMethod()" class="p-3 mt-5 bg-primary w-full text-white font-bold rounded-lg"
-              [disabled]="quote.total == 0">
-              Place order
-            </button>
-          </div>
+        <div class="flex justify-between">
+          <button (click)="createFoodDetailsDrawer(foodItem, index)" class="font-bold text-[#2b77eb] text-sm">Chỉnh sửa
+            món</button>
+          <span class="font-bold">{{ getFoodItemPrice(foodItem).toLocaleString("vi-VN", { style: "currency", currency:
+            "VND"
+            }) }}</span>
         </div>
       </div>
     </div>
-
-  </div>
-</section>
-
-
-<ng-template #paymentMethodTemplate let-data>
-  <div (click)="selectPaymentMethod(data)" class="bg-white hover:bg-[#ffe8d6] rounded-xl h-11 flex px-4">
-    <div class="h-8 w-fit my-auto">
-      <img [src]="data.image" class="h-full object-cover select-none">
-    </div>
-    <span class="my-auto select-none text-sm font-medium text-gray-600 ml-4">{{ data.name }}</span>
-  </div>
-</ng-template>
-
-
-<ng-template #cartItemsTemplate>
-  <div class="p-5 flex flex-col gap-4">
-    <ng-container *ngFor="let item of basket.cart.items; let last = last; let index = index">
-      <div [ngClass]="last ? '' : 'shadow-header pb-5'">
-        <ng-container
-          *ngTemplateOutlet="foodItemCardTemplate; context: { foodItem: item, index: index }"></ng-container>
-      </div>
-    </ng-container>
-  </div>
-</ng-template>
-
-<ng-template #foodItemCardTemplate let-foodItem="foodItem" let-index="index">
-  <div class="flex gap-4">
-    <img [src]="foodItem.image" alt="" class="w-16 h-16 aspect-square object-cover rounded-lg">
-    <div class="flex-1 flex flex-col justify-between">
-      <div class="flex justify-between mb-3 items-start">
-        <div class="flex flex-col">
-          <div class="">
-            <span class="font-bold text-gray-700 uppercase">{{ foodItem.food_name }}</span>
-            <span class="font-normal text-gray-500 ml-1">x{{ foodItem.quantity }}</span>
-          </div>
-          <span class="text-gray-400">Giá gốc: {{ foodItem.price.toLocaleString("vi-VN", { style: "currency",
-            currency:
-            "VND" }) }}</span>
-          <span *ngFor="let modifier of foodItem.modifiers" class="text-gray-400">{{ modifier.name }} + {{
-            modifier.price.toLocaleString("vi-VN", { style: "currency", currency: "VND" }) }}</span>
-        </div>
-
-        <button (click)="removeFoodItem(foodItem.food_id)">
-          <i class="fa-solid fa-trash-can text-lg hover:text-red"></i>
-        </button>
-      </div>
-
-      <div class="flex justify-between">
-        <button (click)="createFoodDetailsDrawer(foodItem, index)" class="font-bold text-[#2b77eb] text-sm">Chỉnh sửa
-          món</button>
-        <span class="font-bold">{{ getFoodItemPrice(foodItem).toLocaleString("vi-VN", { style: "currency", currency:
-          "VND"
-          }) }}</span>
-      </div>
-    </div>
-  </div>
-</ng-template>
-
-
-<ng-container *ngIf="paymentSuccessful">
-  <div class="fixed top-60 shadow-2xl left-1/2 -translate-x-1/2 -translate-y-1/2
-  bg-white w-96 rounded-lg transition-all">
-    <nz-result nzStatus="success" nzTitle="Top-Up Successful">
-    </nz-result>
-  </div>
-</ng-container>
-<ng-container *ngIf="paymentFailure">
-  <div class="fixed top-60 shadow-2xl left-1/2 -translate-x-1/2 -translate-y-1/2
-  bg-white w-96 rounded-lg transition-all">
-    <nz-result nzStatus="error" nzTitle="Error Processing Payment">
-    </nz-result>
-  </div>
-</ng-container>
+  </ng-template>
+</div>

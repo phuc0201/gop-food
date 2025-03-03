@@ -27,27 +27,25 @@ const plugin = [
   imports: plugin
 })
 export class ListRestaurantComponent implements OnInit, OnDestroy, AfterViewInit, OnChanges {
-
-  @Input() restaurants: IPagedResults<RestaurantRecommended> = { currPage: 1, data: [], totalPage: -1 };
-  @Output() restaurantsChange = new EventEmitter<IPagedResults<RestaurantRecommended>>();
-  @ViewChild('sentinel', { static: false }) sentinel!: ElementRef;
-  private observer!: IntersectionObserver;
-  private destroy$ = new Subject<void>();
   @Input() columnConfig = {
     xs: 12,
     sm: 12,
     md: 8,
     lg: 6,
   };
-
+  @Input() limit = 12;
+  @Input() restaurants: IPagedResults<RestaurantRecommended> = { currPage: 1, data: [], totalPage: -1 };
+  @Output() restaurantsChange = new EventEmitter<IPagedResults<RestaurantRecommended>>();
+  @ViewChild('sentinel', { static: false }) sentinel!: ElementRef;
+  private observer!: IntersectionObserver;
+  private destroy$ = new Subject<void>();
   isObserveRoute = false;
   currPage = 1;
   currSearchValue = '';
   crrCateID = '';
   isLoading = true;
   isNoData = false;
-  @Input() limit = 8;
-
+  isLoadMore = false;
   filter!: ICuisineFilter;
 
   constructor(
@@ -73,6 +71,7 @@ export class ListRestaurantComponent implements OnInit, OnDestroy, AfterViewInit
     if (this.restaurants.totalPage === -1) {
       this.observeRoute();
       this.isObserveRoute = true;
+      this.limit = 12;
     }
   }
 
@@ -99,9 +98,9 @@ export class ListRestaurantComponent implements OnInit, OnDestroy, AfterViewInit
   @HostListener('window:resize', ['$event'])
   getListOfRestaurantsSkeleteon(): number[] {
     if (window.screen.width > 992) {
-      return Array(8).fill(0);
+      return this.isLoadMore ? Array(4).fill(0) : Array(8).fill(0);
     } else if (window.screen.width > 768) {
-      return Array(6).fill(0);
+      return this.isLoadMore ? Array(3).fill(0) : Array(6).fill(0);
     }
 
     return Array(4).fill(0);
@@ -124,6 +123,7 @@ export class ListRestaurantComponent implements OnInit, OnDestroy, AfterViewInit
   loadMoreData(): void {
     if (this.restaurants.currPage < this.restaurants.totalPage) {
       this.currPage += 1;
+      this.isLoadMore = true;
       if (!this.isObserveRoute) {
         this.isLoading = true;
         this.store.dispatch(getRestaurantList({

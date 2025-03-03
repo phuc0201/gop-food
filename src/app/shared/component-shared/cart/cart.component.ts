@@ -1,17 +1,13 @@
 import { CommonModule } from '@angular/common';
-import { ChangeDetectionStrategy, Component, EventEmitter, HostListener, Input, OnChanges, OnInit, Output, Renderer2, SimpleChanges, ViewChild } from '@angular/core';
+import { ChangeDetectionStrategy, Component, EventEmitter, HostListener, Input, OnChanges, Output, Renderer2, SimpleChanges, ViewChild } from '@angular/core';
 import { Router, RouterModule } from '@angular/router';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { NzDrawerComponent, NzDrawerModule, NzDrawerPlacement } from 'ng-zorro-antd/drawer';
 import { URLConstant } from 'src/app/core/constants/url.constant';
-import { Cart } from 'src/app/core/models/order/order.model';
+import { Basket } from 'src/app/core/models/order/order.model';
 import { FoodItemDTO } from 'src/app/core/models/restaurant/food-items.model';
 import { Modifier } from 'src/app/core/models/restaurant/modifier.model';
 import { OrderService } from 'src/app/core/services/order.service';
-
-interface ICart {
-  quantity: number;
-}
 
 const plugins = [
   CommonModule,
@@ -28,14 +24,28 @@ const plugins = [
   imports: plugins,
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class CartComponent implements OnChanges, OnInit {
+export class CartComponent implements OnChanges {
   @Input() opened: boolean = false;
   @Output() openedChange = new EventEmitter<boolean>();
   langData: string = 'SHARED.COMPONENT_SHARED.DRAWER.';
   @ViewChild('cartDrawer') drawer!: NzDrawerComponent;
   placementDrawer: NzDrawerPlacement = 'right';
   urlCheckout = URLConstant.ROUTE.ORDER_PAGE.BASE;
-  cartItems = new Cart();
+  cartItems = new Basket();
+
+  constructor(
+    private translate: TranslateService,
+    private render: Renderer2,
+    private orderSrv: OrderService,
+    private router: Router,
+  ) {
+    translate.use(localStorage.getItem('language')?.toString() ?? 'vi');
+  }
+
+  ngOnChanges(changes: SimpleChanges): void {
+    this.checkMobileScreen();
+    this.cartItems = this.orderSrv.getCartItems();
+  }
 
   @HostListener('window:resize', ['$event'])
   onResize(event: any) {
@@ -81,11 +91,11 @@ export class CartComponent implements OnChanges, OnInit {
     this.openedChange.emit(this.opened);
   }
 
-  redirecrCheckout() {
+  redirectCheckout() {
     this.closeDrawer();
-    this.router.navigate([URLConstant.ROUTE.ORDER_PAGE.BASE]).then(() => {
-      window.scrollTo(0, 0);
-    });
+    setTimeout(() => {
+      this.router.navigate([URLConstant.ROUTE.ORDER_PAGE.BASE]);
+    }, 350);
   }
 
   getPrice(foodItems: FoodItemDTO<Modifier>): number {
@@ -93,23 +103,5 @@ export class CartComponent implements OnChanges, OnInit {
       return total + currValue.price;
     }, 0);
     return foodItems.price ? (foodItems.price + totalModifersPrice) * foodItems.quantity : 0;
-  }
-
-  ngOnChanges(changes: SimpleChanges): void {
-    this.checkMobileScreen();
-    this.cartItems = this.orderSrv.getCartItems();
-  }
-
-  ngOnInit(): void {
-
-  }
-
-  constructor(
-    private translate: TranslateService,
-    private render: Renderer2,
-    private orderSrv: OrderService,
-    private router: Router
-  ) {
-    translate.use(localStorage.getItem('language')?.toString() ?? 'vi');
   }
 }

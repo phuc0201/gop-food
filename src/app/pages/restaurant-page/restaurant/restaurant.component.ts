@@ -1,20 +1,22 @@
-import { AfterViewInit, Component, HostListener, OnInit } from '@angular/core';
+import { Component, HostListener, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Store } from '@ngrx/store';
+import { Subscription } from 'rxjs';
 import { Restaurant, RestaurantRecommended } from 'src/app/core/models/restaurant/restaurant.model';
 import { RestaurantService } from 'src/app/core/services/restaurant.service';
-import { getMenu } from 'src/app/core/store/restaurant/restaurant.action';
+import { getMenu, getRestaurantInfo } from 'src/app/core/store/restaurant/restaurant.action';
+import { selectRestaurantInfo } from 'src/app/core/store/restaurant/restaurant.selector';
 @Component({
   selector: 'app-restaurant',
   templateUrl: './restaurant.component.html',
   styleUrls: ['./restaurant.component.scss']
 })
-export class RestaurantComponent implements OnInit, AfterViewInit {
+export class RestaurantComponent implements OnInit {
   isMobile: boolean = false;
-  isLoading: boolean = true;
+  isLoading: boolean = false;
   restaurant = new Restaurant();
   isInWishlist: boolean = false;
-
+  restaurantSubscription: Subscription = new Subscription();
   constructor(
     private store: Store,
     private route: ActivatedRoute,
@@ -23,43 +25,24 @@ export class RestaurantComponent implements OnInit, AfterViewInit {
 
   ngOnInit(): void {
     this.handleMobileScreen();
-
     const id = this.route.snapshot.paramMap.get('id') as string;
     const index = this.restaurantSrv.getWishList().findIndex(res => res._id == id);
     this.isInWishlist = index !== -1;
 
-
-    this.store.dispatch(getMenu({ id: id }));
-    this.restaurantSrv.getRestaurantInfo(id).subscribe({
-      next: data => {
-        this.restaurant = data;
-        if (this.restaurant._id !== '') {
-          this.isLoading = false;
-        }
+    this.restaurantSubscription = this.store.select(selectRestaurantInfo).subscribe({
+      next: (data) => {
+        this.isLoading = data.restaurant._id !== id;
+        this.restaurant = this.isLoading ? new Restaurant() : data.restaurant;
+      },
+      complete: () => {
+        this.restaurantSubscription.unsubscribe();
       }
     });
 
-    if (this.isMobile) {
-      const webbodyMobile = document.getElementById('webbody-mobile');
-      if (webbodyMobile) {
-        webbodyMobile.scroll({
-          top: 0,
-          left: 0,
-          behavior: "instant",
-        });
-      }
+    this.store.dispatch(getRestaurantInfo({ res_id: id }));
+    if (this.isLoading == true) {
+      this.store.dispatch(getMenu({ id: id }));
     }
-    else {
-      window.scroll({
-        top: 0,
-        left: 0,
-        behavior: "instant",
-      });
-    }
-  }
-
-  ngAfterViewInit(): void {
-
   }
 
   @HostListener('window:resize', ['$event'])

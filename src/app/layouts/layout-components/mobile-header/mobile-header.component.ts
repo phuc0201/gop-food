@@ -8,7 +8,7 @@ import { filter } from 'rxjs';
 import { URLConstant } from 'src/app/core/constants/url.constant';
 import { IconMarker, RoleType } from 'src/app/core/models/common/enums/index.enum';
 import { LocationMarker, SelectedAddress } from 'src/app/core/models/geolocation/location.model';
-import { Cart } from 'src/app/core/models/order/order.model';
+import { Basket } from 'src/app/core/models/order/order.model';
 import { GeolocationService } from 'src/app/core/services/geolocation.service';
 import { OrderService } from 'src/app/core/services/order.service';
 import { SearchService } from 'src/app/core/services/search.service';
@@ -33,7 +33,7 @@ export class MobileHeaderComponent implements OnInit, OnChanges {
   @Input() scrollTopValue: number = 0;
   isScroll: boolean = false;
   addressSelected = new SelectedAddress();
-  basket = new Cart();
+  basket = new Basket();
   openDrawer: boolean = false;
   activeMobileHeaderRoutes = ['/'];
   isActive: boolean = false;

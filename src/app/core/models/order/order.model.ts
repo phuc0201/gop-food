@@ -2,7 +2,7 @@ import { BillStatus, OrderStatus, PaymentMethod } from "../common/enums/index.en
 import { FoodItemDTO } from "../restaurant/food-items.model";
 import { Modifier } from "../restaurant/modifier.model";
 
-export class DeliveryLocation {
+export class Location {
   type: string = 'Point';
   coordinates: number[] = [];
   address: string = '';
@@ -13,7 +13,7 @@ export class CreateOrderDTO<T> {
   phone: string = '0987654321';
   payment_method: PaymentMethod = PaymentMethod.CASH;
   campaign_ids: string[] = [];
-  delivery_location = new DeliveryLocation();
+  delivery_location = new Location();
   items: FoodItemDTO<T>[] = [];
 }
 
@@ -30,7 +30,7 @@ export class CreateCartItems extends CreateOrderDTO<Modifier> {
   restaurant_location: number[] = [0, 0];
 }
 
-export class Cart {
+export class Basket {
   cart = new CreateCartItems();
   subtotal: number = 0;
 }
@@ -42,7 +42,7 @@ export class Quote {
   order_type: string = 'DeliveryOrder';
   drivers_reject: string[] = [];
   items: FoodItemDTO<string>[] = [];
-  delivery_location = new DeliveryLocation();
+  delivery_location = new Location();
   delivery_fare: number = 0;
   order_cost: number = 0;
   distance: number = 0;
@@ -53,7 +53,7 @@ export class Quote {
 
 export class Bill {
   _id: string = 'bill_01';
-  status: BillStatus = BillStatus.PENDING;
+  status: BillStatus = BillStatus.PROGRESSING;
   order?: string = 'order_01';
   payment_method: PaymentMethod = PaymentMethod.CASH;
   transaction_id?: string = '';
@@ -67,10 +67,12 @@ export class Bill {
 
 
 class OrderHistoryRestaurant {
+  _id: string;
   restaurant_name: string;
   cover_image: string;
 
-  constructor(restaurant_name: string = '', cover_image: string = '') {
+  constructor(_id: string = '', restaurant_name: string = '', cover_image: string = '') {
+    this._id = _id;
     this.restaurant_name = restaurant_name;
     this.cover_image = cover_image;
   }
@@ -90,21 +92,22 @@ export class OrderHistory {
   _id: string;
   restaurant: OrderHistoryRestaurant;
   total: number;
+  billId: string;
   items: OrderHistoryItems[];
 
-  constructor(_id: string = '', restaurant: OrderHistoryRestaurant = new OrderHistoryRestaurant(), total: number = 0, items: OrderHistoryItems[] = []) {
+  constructor(
+    _id: string = '',
+    restaurant: OrderHistoryRestaurant = new OrderHistoryRestaurant(),
+    total: number = 0,
+    billId: string = '',
+    items: OrderHistoryItems[] = []) {
     this._id = _id;
+    this.billId = billId;
     this.restaurant = restaurant;
     this.total = total;
     this.items = items;
   }
 }
-
-
-
-
-
-
 
 export class UserInfo {
   _id: string;
@@ -155,9 +158,10 @@ export class OrderFoodItems {
 
 
 export class OrderDetails {
-  _id: string;
+  id: string;
   customer: UserInfo;
-  delivery_location: DeliveryLocation;
+  restaurant: { location: Location; restaurant_name: string; };
+  delivery_location: Location;
   order_time: Date;
   confirm_time: Date;
   complete_time: Date;
@@ -165,11 +169,13 @@ export class OrderDetails {
   delivery_fare: number;
   bill: Bill;
   items: OrderFoodItems[];
+  order_status: OrderStatus;
 
   constructor(
-    _id: string = '',
+    id: string = '',
     customer: UserInfo = new UserInfo(),
-    delivery_location: DeliveryLocation = new DeliveryLocation(),
+    restaurant: { location: Location; restaurant_name: string; } = { location: new Location(), restaurant_name: '' },
+    delivery_location: Location = new Location(),
     order_time: Date = new Date(),
     confirm_time: Date = new Date(),
     complete_time: Date = new Date(),
@@ -177,9 +183,11 @@ export class OrderDetails {
     delivery_fare: number = 0,
     bill: Bill = new Bill(),
     items: OrderFoodItems[] = [],
+    order_status: OrderStatus = OrderStatus.PENDING_CONFIRM
   ) {
-    this._id = _id;
+    this.id = id;
     this.customer = customer;
+    this.restaurant = restaurant;
     this.delivery_location = delivery_location;
     this.order_time = order_time;
     this.confirm_time = confirm_time;
@@ -188,6 +196,7 @@ export class OrderDetails {
     this.bill = bill;
     this.items = items;
     this.complete_time = complete_time;
+    this.order_status = order_status;
   }
 }
 

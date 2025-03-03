@@ -17,32 +17,6 @@ import { NotificationComponent } from './shared/component-shared/notification/no
 export class AppComponent implements OnInit, AfterViewInit {
   @ViewChild(NotificationComponent) notification!: NotificationComponent;
 
-  // loadProfile() {
-  //   if (!this.authSrv.isLogged()) {
-  //     this.store.select(selectToken).pipe(
-  //       filter(token => token.accessToken !== ''),
-  //       take(1),
-  //       switchMap(() => {
-  //         this.store.dispatch(getProfile());
-  //         return this.store.select(selectProfile).pipe(
-  //           filter(data => data.error === '' && data.profile._id !== ''),
-  //           take(1)
-  //         );
-  //       })
-  //     ).subscribe(data => {
-  //       this.profileSrv.setProfileIntoSession(data.profile);
-  //     });
-  //   } else if (this.profileSrv.getProfileInSession() === null) {
-  //     this.store.dispatch(getProfile());
-  //     this.store.select(selectProfile).pipe(
-  //       filter(data => data.error === '' && data.profile._id !== ''),
-  //       take(1)
-  //     ).subscribe(data => {
-  //       this.profileSrv.setProfileIntoSession(data.profile);
-  //     });
-  //   }
-  // }
-
   connectSocket() {
     const index = NotificationColor.findIndex(notify => notify.type === NotificationType.SUCCESS);
     const notificationColor = NotificationColor[index];
@@ -76,7 +50,7 @@ export class AppComponent implements OnInit, AfterViewInit {
     private geolocation: GeolocationService,
   ) {
     if (!localStorage.getItem('language')) {
-      localStorage.setItem('language', 'vi');
+      localStorage.setItem('language', 'en');
     }
     this.geolocation.loadLocation();
   }

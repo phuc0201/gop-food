@@ -37,12 +37,6 @@ export class RestaurantInfoComponent implements OnInit, OnChanges {
     } else this.isMobile = false;
   }
 
-  ngOnInit(): void {
-    if (window.innerWidth < 768) {
-      this.isMobile = true;
-    } else this.isMobile = false;
-  }
-
   ngOnChanges(changes: SimpleChanges): void {
     if (changes['restaurant'] && changes['restaurant'].currentValue._id !== '') {
       if (this.restaurant.distance && this.restaurant.duration) {
@@ -52,7 +46,7 @@ export class RestaurantInfoComponent implements OnInit, OnChanges {
         this.duration = duration < 60 ? duration + 'm' : (parseFloat((duration / 60).toFixed(0)) + 'h');
       }
 
-      this.campaignSrv.getCampaignsByRestaurantId(this.restaurant._id).subscribe({
+      this.campaignSrv.getCampaignAvailableForRestaurant(this.restaurant._id).subscribe({
         next: (data) => {
           this.campaigns = data;
         }
@@ -61,6 +55,12 @@ export class RestaurantInfoComponent implements OnInit, OnChanges {
       const index = this.restaurantSrv.getWishList().findIndex(res => res._id == this.restaurant._id);
       this.isInWishlist = index !== -1;
     }
+  }
+
+  ngOnInit(): void {
+    if (window.innerWidth < 768) {
+      this.isMobile = true;
+    } else this.isMobile = false;
   }
 
   createModal() {

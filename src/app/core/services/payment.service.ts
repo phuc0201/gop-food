@@ -1,6 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
+import { environment } from 'src/environments/environment';
 import { URLConstant } from '../constants/url.constant';
 
 @Injectable({
@@ -14,17 +15,16 @@ export class PaymentService {
     private http: HttpClient
   ) { }
 
-  deposit(amount: number): Observable<string> {
-    return this.http.post(this.baseUrl + URLConstant.API.PAYMENT.METHOD.VNPAY, {
+  createPayment(amount: number, billId: string): Observable<string> {
+    return this.http.post(this.baseUrl + '/payment/vnpay/create', {
       amount: amount,
-      returnUrl: URLConstant.API.PAYMENT.RETURN_URL
+      billId: billId,
+      returnUrl: environment.frontend.domain + '/order/checkout'
     }, { responseType: 'text' });
   }
 
-  payForTheBill(amount: number): Observable<string> {
-    return this.http.post(this.baseUrl + URLConstant.API.PAYMENT.METHOD.VNPAY, {
-      amount: amount,
-      returnUrl: URLConstant.API.PAYMENT.RETURN_URL_PAY_FOR_BILL
-    }, { responseType: 'text' });
+  handlePaymentReturn(params: any): Observable<any> {
+    const queryString = new URLSearchParams(params).toString();
+    return this.http.get(`${this.baseUrl}/payment/vnpay/return?${queryString}`);
   }
 }

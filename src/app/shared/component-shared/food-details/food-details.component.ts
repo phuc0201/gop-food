@@ -10,7 +10,7 @@ import { NzInputModule } from 'ng-zorro-antd/input';
 import { NzRadioModule } from 'ng-zorro-antd/radio';
 import { NzSkeletonModule } from 'ng-zorro-antd/skeleton';
 import { Observable, filter, of, switchMap, take, tap } from 'rxjs';
-import { Cart } from 'src/app/core/models/order/order.model';
+import { Basket } from 'src/app/core/models/order/order.model';
 import { FoodItemDTO, FoodItems } from 'src/app/core/models/restaurant/food-items.model';
 import { ModifierGroups } from 'src/app/core/models/restaurant/modifier-groups.model';
 import { Modifier } from 'src/app/core/models/restaurant/modifier.model';
@@ -127,7 +127,7 @@ export class FoodDetailsComponent implements OnInit {
     }
   }
 
-  updateCartItems(cartItems: Cart): Cart {
+  updateCartItems(cartItems: Basket): Basket {
     const indexFoodExists = cartItems.cart.items.findIndex(md => md.food_id === this.foodDetails._id);
     if (indexFoodExists >= 0 && this.modifiersSelected.length === cartItems.cart.items[indexFoodExists].modifiers.length) {
       let checkFoodExists = true;
@@ -192,9 +192,9 @@ export class FoodDetailsComponent implements OnInit {
 
 
 
-  handleRestaurantChange(restaurant: Restaurant, basket: Cart): Observable<any> {
+  handleRestaurantChange(restaurant: Restaurant, basket: Basket): Observable<any> {
     if (basket.cart.restaurant_id !== restaurant._id)
-      basket = new Cart();
+      basket = new Basket();
 
     basket.cart.restaurant_id = restaurant._id;
     basket.cart.restaurant_name = restaurant.restaurant_name;
@@ -202,7 +202,7 @@ export class FoodDetailsComponent implements OnInit {
     return of(basket);
   }
 
-  setDeliveryLocation(cartItems: Cart): Observable<any> {
+  setDeliveryLocation(cartItems: Basket): Observable<any> {
     return this.geoSrv.currLocation.pipe(
       tap(location => {
         cartItems.cart.delivery_location = {
@@ -215,7 +215,7 @@ export class FoodDetailsComponent implements OnInit {
     );
   }
 
-  finalizeCart(cartItems: Cart): void {
+  finalizeCart(cartItems: Basket): void {
     if (this.isAddToCart) {
       cartItems = this.updateCartItems(cartItems);
       cartItems.subtotal = cartItems.cart.items.reduce((total_price, item) => {

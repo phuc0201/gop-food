@@ -9,6 +9,7 @@ import { NzGridModule } from 'ng-zorro-antd/grid';
 import { RestaurantCardComponent } from 'src/app/shared/component-shared/restaurant-card/restaurant-card.component';
 
 import { NzAutocompleteModule } from 'ng-zorro-antd/auto-complete';
+import { NzModalService } from 'ng-zorro-antd/modal';
 import { NzPopoverModule } from 'ng-zorro-antd/popover';
 import { CategorySliderComponent } from 'src/app/shared/component-shared/category-slider/category-slider.component';
 import { FoodCardComponent } from 'src/app/shared/component-shared/food-card/food-card.component';
@@ -66,6 +67,9 @@ const plugins = [
     RouterModule,
     RouterModule.forChild(routes),
     CuisinesSliderComponent
+  ],
+  providers: [
+    NzModalService
   ]
 })
 export class HomePageModule { }

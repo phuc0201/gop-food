@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { OrderStatusTrackerType } from 'src/app/core/models/common/enums/index.enum';
 import { LocationMarker } from 'src/app/core/models/geolocation/location.model';
-import { Cart, OrderDetails, OrderFoodItems } from 'src/app/core/models/order/order.model';
+import { Basket, OrderDetails, OrderFoodItems } from 'src/app/core/models/order/order.model';
 import { OrderService } from 'src/app/core/services/order.service';
 
 @Component({
@@ -11,7 +11,7 @@ import { OrderService } from 'src/app/core/services/order.service';
   styleUrls: ['./order-history-details.component.scss'],
 })
 export class OrderHistoryDetailsComponent implements OnInit {
-  basket = new Cart();
+  basket = new Basket();
   orderDetails = new OrderDetails();
   locationMarkers: LocationMarker[] = [];
   isLoading: boolean = true;
@@ -39,7 +39,7 @@ export class OrderHistoryDetailsComponent implements OnInit {
     const totalModifersPrice = foodItem.foodDetails.price + foodItem.modifiers.reduce((total, currValue) => {
       return total + currValue.price;
     }, 0);
-    return totalModifersPrice * foodItem.quantity ?? 0;
+    return totalModifersPrice * foodItem.quantity;
   }
 
   createQuote() {

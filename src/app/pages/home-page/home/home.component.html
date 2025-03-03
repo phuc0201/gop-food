@@ -13,64 +13,65 @@
   </div>
 </div>
 
-<div class="sectionContainer pt-0 md:block hidden">
-  <div
-    class="relative banner-advertisement-app rounded-xl lg:flex-row flex-col flex justify-end p-5 md:p-10 lg:p-20 pb-0 lg:mt-20 mt-5">
+<ng-container *ngIf="false">
+  <div class="sectionContainer pt-0 md:block hidden">
+    <div
+      class="relative banner-advertisement-app rounded-xl lg:flex-row flex-col flex justify-end p-5 md:p-10 lg:p-20 pb-0 lg:mt-20 mt-5">
 
-    <div class="flex flex-col items-center gap-4">
-      <h1 class="text-[#03081F] font-bold lg:text-6xl sm:text-4xl text-2xl text-center">Ordering is more</h1>
-      <div class="p-3 px-10 bg-[#03081F] rounded-full">
-        <span
-          class="text-[#FC8A06] font-medium lg:text-4xl md:text-2xl sm:text-xl text-sm underline ">Personalised</span>
-        <span class="text-white font-medium lg:text-4xl md:text-2xl sm:text-xl text-sm"> & instant</span>
-      </div>
-      <span class="text-[#03081F] text-center">Download the GoP app for faster ordering</span>
+      <div class="flex flex-col items-center gap-4">
+        <h1 class="text-[#03081F] font-bold lg:text-6xl sm:text-4xl text-2xl text-center">Ordering is more</h1>
+        <div class="p-3 px-10 bg-[#03081F] rounded-full">
+          <span
+            class="text-[#FC8A06] font-medium lg:text-4xl md:text-2xl sm:text-xl text-sm underline ">Personalised</span>
+          <span class="text-white font-medium lg:text-4xl md:text-2xl sm:text-xl text-sm"> & instant</span>
+        </div>
+        <span class="text-[#03081F] text-center">Download the GoP app for faster ordering</span>
 
-      <div class="flex items-center gap-1 lg:mb-0 mb-4">
-        <img loading="lazy" src="assets/img/quick-add/logo-appstore.svg" class="object-cover w-1/2">
-        <img loading="lazy" src="assets/img/quick-add/logo-playstore.svg" class="object-cover w-1/2">
-      </div>
-    </div>
-
-    <div class="lg:absolute bottom-0 left-0 lg:w-1/2">
-      <img loading="lazy" src="assets/img/banners/person-ads.svg">
-    </div>
-  </div>
-</div>
-
-<div class="sectionContainer md:!mt-10 !mt-5 md:block hidden">
-  <div nz-row nzGutter="20">
-    <div nz-col nzSpan="24" nzLg="12" class="lg:mb-0 mb-5">
-      <div class="relative aspect-video rounded-xl overflow-hidden">
-        <div class="absolute top-0 left-0 w-full h-full banner-partner"></div>
-
-        <img loading="lazy" src="assets/img/banners/master-chef.jpg" class="object-cover">
-
-        <div class="absolute bottom-10 left-10">
-          <span class="text-yellow1">Signup as a business</span>
-          <h1 class="font-bold text-white">Partner with us</h1>
-          <button class="bg-yellow1 text-white rounded-full p-2 px-8">Get Started</button>
+        <div class="flex items-center gap-1 lg:mb-0 mb-4">
+          <img loading="lazy" src="assets/img/quick-add/logo-appstore.svg" class="object-cover w-1/2">
+          <img loading="lazy" src="assets/img/quick-add/logo-playstore.svg" class="object-cover w-1/2">
         </div>
       </div>
-    </div>
 
-    <div nz-col nzSpan="24" nzLg="12">
-      <div class="relative aspect-video rounded-xl overflow-hidden">
-        <div class="absolute top-0 left-0 w-full h-full banner-partner"></div>
-
-        <img loading="lazy" src="assets/img/banners/delivery-man.jpg" class="object-cover">
-
-        <div class="absolute bottom-10 left-10">
-          <span class="text-yellow1">Signup as a rider</span>
-          <h1 class="font-bold text-white">Ride with us</h1>
-          <button class="bg-yellow1 text-white rounded-full p-2 px-8">Get Started</button>
-        </div>
+      <div class="lg:absolute bottom-0 left-0 lg:w-1/2">
+        <img loading="lazy" src="assets/img/banners/person-ads.svg">
       </div>
     </div>
   </div>
-</div>
 
+  <div class="sectionContainer md:!mt-10 !mt-5 md:block hidden">
+    <div nz-row nzGutter="20">
+      <div nz-col nzSpan="24" nzLg="12" class="lg:mb-0 mb-5">
+        <div class="relative aspect-video rounded-xl overflow-hidden">
+          <div class="absolute top-0 left-0 w-full h-full banner-partner"></div>
 
-<div class="mt-16 md:block hidden">
-  <app-our-services></app-our-services>
-</div>
+          <img loading="lazy" src="assets/img/banners/master-chef.jpg" class="object-cover">
+
+          <div class="absolute bottom-10 left-10">
+            <span class="text-yellow1">Signup as a business</span>
+            <h1 class="font-bold text-white">Partner with us</h1>
+            <button class="bg-yellow1 text-white rounded-full p-2 px-8">Get Started</button>
+          </div>
+        </div>
+      </div>
+
+      <div nz-col nzSpan="24" nzLg="12">
+        <div class="relative aspect-video rounded-xl overflow-hidden">
+          <div class="absolute top-0 left-0 w-full h-full banner-partner"></div>
+
+          <img loading="lazy" src="assets/img/banners/delivery-man.jpg" class="object-cover">
+
+          <div class="absolute bottom-10 left-10">
+            <span class="text-yellow1">Signup as a rider</span>
+            <h1 class="font-bold text-white">Ride with us</h1>
+            <button class="bg-yellow1 text-white rounded-full p-2 px-8">Get Started</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="mt-16 md:block hidden">
+    <app-our-services></app-our-services>
+  </div>
+</ng-container>

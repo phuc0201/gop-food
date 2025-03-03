@@ -10,16 +10,17 @@ export const URLConstant = {
       BASE: '/cuisines'
     },
     ORDER_PAGE: {
-      BASE: '/order/checkout',
-      TRACKER: '/order/tracker'
+      BASE: '/order',
+      TRACKING: '/tracking',
+      CHECKOUT: '/checkout'
     },
     WISH_LIST: {
       BASE: '/wishlist'
     }
   },
   API: {
-    FILE: environment.endpoint + 'rest/file',
-    ENDPOINT: environment.endpoint,
+    FILE: environment.api.baseUrl + 'rest/file',
+    ENDPOINT: environment.api.baseUrl,
     AUTH: {
       SIGNIN: '/auth/customer/signin',
       SIGNUP: '/auth/customer/signup',
@@ -38,14 +39,14 @@ export const URLConstant = {
       QUOTE: '/order/quote/delivery'
     },
     CAMPAIGN: {
-      GET_ALL: '/customer/campaigns',
+      GET_ALL: '/campaign/all',
     },
     PAYMENT: {
       METHOD: {
-        VNPAY: '/bill/vnpay'
+        CREATE: '/payment/vnpay/create'
       },
-      RETURN_URL: environment.endpoint + '/user/wallet',
-      RETURN_URL_PAY_FOR_BILL: environment.endpoint + '/order/checkout'
+      RETURN_URL: '/user/wallet',
+      RETURN_URL_PAY_FOR_BILL: 'http://localhost:4200/order/checkout'
     }
   }
 };

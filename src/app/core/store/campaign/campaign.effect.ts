@@ -12,9 +12,9 @@ export class CampaignEffects {
 
   _getAllCampaign = createEffect(() =>
     this.action$.pipe(
-      ofType(campaignAction.getAllCampaign),
-      exhaustMap(() => {
-        return this.campaignSrv.fetchAllCampaign().pipe(
+      ofType(campaignAction.getCampaignAvailableForRestaurant),
+      exhaustMap((dto) => {
+        return this.campaignSrv.getCampaignAvailableForRestaurant(dto.restaurantId).pipe(
           map(data => campaignAction.getAllSuccess({ campaigns: data })),
           catchError(error => of(campaignAction.getAllCampaignFailure({ error: error })))
         );

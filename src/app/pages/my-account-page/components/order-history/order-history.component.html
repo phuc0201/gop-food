@@ -64,9 +64,16 @@
           "VND"})
           }}</span>
       </div>
-      <a [routerLink]="['details', order._id]"
-        class="bg-primary text-white p-2 rounded-md text-center cursor-pointer hover:text-white">View
-        details</a>
+      <div class="flex items-center gap-3">
+        <a [routerLink]="['/restaurant', order.restaurant._id]"
+          class="bg-white text-gray-400 border border-gray-300 p-2 rounded text-center cursor-pointer text-xs hover:text-gray-400">
+          View restaurnat
+        </a>
+        <a [routerLink]="['/order/tracking', order.billId]"
+          class="bg-primary text-white p-2 border border-primary rounded text-center cursor-pointer text-xs hover:text-white">
+          View details
+        </a>
+      </div>
     </div>
   </div>
 </ng-template>

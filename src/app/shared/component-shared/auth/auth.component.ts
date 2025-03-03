@@ -1,10 +1,10 @@
 import { CommonModule } from '@angular/common';
 import { HttpResponse, HttpStatusCode } from '@angular/common/http';
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Store } from '@ngrx/store';
 import { NzButtonModule } from 'ng-zorro-antd/button';
-import { NzModalModule } from 'ng-zorro-antd/modal';
+import { NzModalModule, NzModalRef } from 'ng-zorro-antd/modal';
 import { NzRadioModule } from 'ng-zorro-antd/radio';
 import { ToastrService } from 'ngx-toastr';
 import { ILoginDTO, SignupDTO } from 'src/app/core/models/auth/auth.model';
@@ -26,8 +26,7 @@ const plugins = [
   imports: plugins
 })
 export class AuthComponent implements OnInit {
-  @Input() openAuthForm: boolean = false;
-  @Output() openAuthFormChange = new EventEmitter<boolean>();
+  #modal = inject(NzModalRef);
   passwordVisible: boolean = false;
   isLoginForm: boolean = true;
   isSignupFormSubmited: boolean = false;
@@ -45,10 +44,6 @@ export class AuthComponent implements OnInit {
     gender: new FormControl(true),
   });;
 
-  showModal(): void {
-    this.openAuthForm = true;
-  }
-
   handleLogin(): void {
     this.authSrv.doLogin(this.loginFormData).subscribe({
       next: (auth) => {
@@ -57,11 +52,11 @@ export class AuthComponent implements OnInit {
           this.authSrv.changeLoginStatus(true);
           this.store.dispatch(getProfile());
           this.authSrv.promptLogin(false);
-          this.openAuthForm = false;
-          this.openAuthFormChange.emit(this.openAuthForm);
           this.toastrSrv.success('Login successfully', 'Success', {
             timeOut: 3000,
           });
+
+          this.#modal.close();
         }
       },
       error: () => {
@@ -108,9 +103,7 @@ export class AuthComponent implements OnInit {
 
   handleCancel(): void {
     this.authSrv.promptLogin(false);
-    this.openAuthForm = false;
     this.isLoginForm = true;
-    this.openAuthFormChange.emit(this.openAuthForm);
   }
 
   ngOnInit(): void {

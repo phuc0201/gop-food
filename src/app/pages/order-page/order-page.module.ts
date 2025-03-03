@@ -14,17 +14,24 @@ import { NotificationComponent } from 'src/app/shared/component-shared/notificat
 import { CampaignsComponent } from './components/campaigns/campaigns.component';
 import { CheckoutComponent } from './components/checkout/checkout.component';
 import { OrderStatusTrackerComponent } from './components/order-status-tracker/order-status-tracker.component';
+import { OrderComponent } from './order/order.component';
+
 const routes: Routes = [
   {
-    path: 'checkout',
-    component: CheckoutComponent,
-    title: 'Trang thanh toán đơn hàng online'
+    path: '',
+    redirectTo: 'checkout',
+    pathMatch: 'full'
   },
   {
-    path: 'tracker/:id',
+    path: 'checkout',
+    component: OrderComponent,
+    title: 'Checkout',
+  },
+  {
+    path: 'tracking/:id',
     component: OrderStatusTrackerComponent,
-    title: 'Theo dõi đơn hàng'
-  }
+    title: 'Tracking'
+  },
 ];
 
 const plugins = [
@@ -41,7 +48,8 @@ const plugins = [
   declarations: [
     CheckoutComponent,
     CampaignsComponent,
-    OrderStatusTrackerComponent
+    OrderStatusTrackerComponent,
+    OrderComponent
   ],
   imports: [
     CommonModule,

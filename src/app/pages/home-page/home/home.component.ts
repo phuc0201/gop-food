@@ -18,11 +18,11 @@ export class HomeComponent implements OnInit {
   address: string = '';
   foodItems: FoodItems<string>[] = [];
   listFoodCol: number = 6;
-  isLoading: boolean = true;
+  isLoading: boolean = false;
   restaurants: IPagedResults<RestaurantRecommended> = { data: [], totalPage: 0, currPage: 1 };
   isMobile: boolean = false;
   restaurantsSubscription: Subscription = new Subscription();
-  limit = 12;
+  limit = 8;
 
   constructor(
     private geoSrv: GeolocationService,
@@ -54,35 +54,26 @@ export class HomeComponent implements OnInit {
       next: res => {
         if (res.result.data.length > 0) {
           this.restaurants = res.result;
+          this.isLoading = false;
         }
+        else this.isLoading = true;
+      },
+      complete: () => {
+        this.restaurantsSubscription.unsubscribe();
       }
     });
 
-    if (this.restaurants.data.length == 0) {
-      this.restaurantsSubscription.unsubscribe();
+    if (this.isLoading = true) {
       this.store.dispatch(getRestaurantList({
         categoryId: "",
         searchQuery: "",
         page: 1,
         limit: this.limit
       }));
-
-      this.restaurantsSubscription = this.store.select(selectRestaurantList)
-        .pipe()
-        .subscribe({
-          next: res => {
-            this.restaurants = res.result;
-          },
-          complete: () => {
-            this.restaurantsSubscription.unsubscribe();
-          }
-        }
-        );
     }
   }
 
   loadData() {
-    // this.loadProfile();
     this.loadRecommendedRestaurants();
   }
 }

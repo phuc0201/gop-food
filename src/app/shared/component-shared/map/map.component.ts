@@ -45,6 +45,7 @@ export class MapComponent implements AfterViewInit, OnChanges {
   ngAfterViewInit(): void {
     this.isMobile = window.innerWidth < 768;
     this.initMap();
+
     if (this.map) {
       this.handleControlMap();
       if (this.locationMarkers.length > 0) {

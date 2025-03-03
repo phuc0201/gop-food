@@ -5,8 +5,9 @@
       <img [hidden]="isLoading" loading="lazy" [src]="restaurant.cover_image"
         onerror="this.src='assets/img/banners/banner-1.jpg'" class="w-full h-full object-cover md:block hidden">
 
-      <div *ngIf="isLoading" class="w-full h-full bg-gray-100 flex">
-        <div class="m-auto">
+      <div class="absolute top-0 left-0 right-0 bottom-0 transition-all duration-500 flex"
+        [ngClass]="isLoading ? 'opacity-100 bg-gray-100' : 'opacity-10 bg-black'">
+        <div *ngIf="isLoading" class="m-auto">
           <app-img-loader></app-img-loader>
         </div>
       </div>

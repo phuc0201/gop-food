@@ -3,7 +3,7 @@ import { Injectable } from "@angular/core";
 import { BehaviorSubject, Observable } from "rxjs";
 import { SystemConstant } from "../constants/system.constant";
 import { URLConstant } from "../constants/url.constant";
-import { Bill, Cart, CreateOrderDTO, OrderDetails, OrderHistory, OrderTracking, Quote } from "../models/order/order.model";
+import { Basket, Bill, CreateOrderDTO, OrderDetails, OrderHistory, OrderTracking, Quote } from "../models/order/order.model";
 
 @Injectable({
   providedIn: 'root'
@@ -12,25 +12,30 @@ export class OrderService {
 
   private baseUrl = URLConstant.API.ENDPOINT;
   private newCartItems;
-  basket: Observable<Cart>;
+  basket: Observable<Basket>;
   constructor(
     private http: HttpClient
   ) {
-    this.newCartItems = new BehaviorSubject<Cart>(this.getCartItems());
+    this.newCartItems = new BehaviorSubject<Basket>(this.getCartItems());
     this.basket = this.newCartItems.asObservable();
   }
 
-  addToCart(cart: Cart) {
+  addToCart(cart: Basket) {
     cart.subtotal = this.caculateSubtotal(cart);
     localStorage.setItem(SystemConstant.BASKET, JSON.stringify(cart));
     this.newCartItems.next(cart);
   }
 
-  updateCart(cart: Cart) {
-    console.log('update cart');
-    cart.subtotal = this.caculateSubtotal(cart);
-    localStorage.setItem(SystemConstant.BASKET, JSON.stringify(cart));
-    this.newCartItems.next(cart);
+  updateCart(basket: Basket) {
+    if (basket.cart.items.length === 0) {
+      basket = new Basket();
+    }
+    else {
+      basket.subtotal = this.caculateSubtotal(basket);
+    }
+
+    localStorage.setItem(SystemConstant.BASKET, JSON.stringify(basket));
+    this.newCartItems.next(basket);
   }
 
   removeCart() {
@@ -44,16 +49,16 @@ export class OrderService {
     this.updateCart(basket);
   }
 
-  getCartItems(): Cart {
+  getCartItems(): Basket {
     const basket = localStorage.getItem(SystemConstant.BASKET);
-    return basket ? JSON.parse(basket) : new Cart();
+    return basket ? JSON.parse(basket) : new Basket();
   }
 
   quoteOrder(dto: CreateOrderDTO<string>): Observable<Quote> {
     return this.http.post<Quote>(this.baseUrl + URLConstant.API.ORDER.QUOTE, dto);
   }
 
-  caculateSubtotal(basket: Cart): number {
+  caculateSubtotal(basket: Basket): number {
     basket.subtotal = basket.cart.items.reduce((total_price, item) => {
       const itemTotal = ((item.price ?? 0) + item.modifiers.reduce((price, modifier) => price + modifier.price, 0)) * item.quantity;
       return total_price + itemTotal;
@@ -61,7 +66,7 @@ export class OrderService {
     return basket.subtotal;
   }
 
-  createOrderDTO(basket: Cart): CreateOrderDTO<string> {
+  createOrderDTO(basket: Basket): CreateOrderDTO<string> {
     const order = new CreateOrderDTO<string>();
     order.items = [];
     order.campaign_ids = basket.cart.campaign_ids;
@@ -91,8 +96,8 @@ export class OrderService {
     return this.http.get<OrderHistory[]>(this.baseUrl + '/order/customer/history');
   }
 
-  getOrderDetails(id: string): Observable<OrderDetails> {
-    return this.http.get<OrderDetails>(this.baseUrl + `/order/${id}` + '/details');
+  getOrderDetails(billId: string): Observable<OrderDetails> {
+    return this.http.get<OrderDetails>(this.baseUrl + `/order/${billId}` + '/details');
   }
 
   trackingOrder(id: string): Observable<OrderTracking> {

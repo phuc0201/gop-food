@@ -1,6 +1,6 @@
 <section class="bg-white w-full rounded-lg h-full flex flex-col">
   <section class="p-5 shadow-header flex items-center justify-between">
-    <h3 class="font-bold text-gray-700 text-lg">Khuyến mãi</h3>
+    <h3 class="font-bold text-gray-700 text-lg">Promotions</h3>
     <button (click)="destroyModal()" class="w-7 h-7 flex  rounded-lg hover:bg-gray-200">
       <i class="fa-solid fa-xmark m-auto text-xl"></i>
     </button>
@@ -9,7 +9,7 @@
   <section class="relative flex-1 overflow-y-auto p-5 compaigns-body">
     <div class="mb-6">
       <h3 class="font-bold text-gray-500 text-xs mb-5 uppercase">
-        Ưu đãi ăn uống & vận chuyển
+        Food & Delivery Offers
       </h3>
 
       <ng-container *ngIf="campaigns.length > 0">
@@ -53,21 +53,24 @@
     </ng-container>
 
     <div
-      class="promo-card-wrapper py-3 pl-3 pr-5 border border-primary bg-green5 h-24 rounded-xl overflow-hidden flex items-center justify-between">
+      class="promo-card-wrapper md:py-3 py-2 md:pl-3 pl-2 pr-5 border border-primary bg-green5 h-24 rounded-xl overflow-hidden flex items-center justify-between">
       <div class="h-full flex flex-1 gap-3">
         <div class="h-full aspect-square bg-gray-200 rounded-lg" [ngClass]="!campaign.image ? 'animate-pulse' : '' ">
           <img [src]="campaign.image" onerror="this.src='assets/img/promo/promotion.jpg'"
             class="object-cover rounded-lg">
         </div>
-        <div class="max-w-[85%] flex flex-col justify-between">
-          <h3 class="font-bold text-gray-700 line-clamp-1 max-w-xs">
+        <div class="max-w-[calc(100%-80px)] flex flex-col justify-between">
+          <h3 class="font-bold text-gray-700 line-clamp-1 max-w-xs sm:text-sm text-xs">
             {{ campaign.name }}
           </h3>
-          <span class="text-gray-500 font-medium text-xs">
-            Đơn hàng tối thiểu {{ campaign.conditions.minBasketAmount.toLocaleString("vi-VN", { style: "currency",
-            currency: "VND" }) ?? 0 }}
-          </span>
-          <span class="text-gray-700 font-medium text-xs">HSD: {{ formatDate(campaign.conditions.end_time) }}</span>
+          <div class="flex flex-col gap-2">
+            <span class="text-gray-500 font-medium text-xs">
+              Min basket amount {{ campaign.conditions.minBasketAmount.toLocaleString("vi-VN", { style: "currency",
+              currency: "VND" }) ?? 0 }}
+            </span>
+            <span class="text-gray-700 font-medium sm:text-sm text-xs">Ends: {{
+              formatDate(campaign.conditions.end_time) }}</span>
+          </div>
         </div>
       </div>
 

@@ -23,11 +23,13 @@ export class RestaurantEffects {
 
   _getRestaurantInfo = createEffect(() => this.action$.pipe(
     ofType(restaurantAction.getRestaurantInfo),
-    switchMap((dto) => this.restaurantSrv.getRestaurantInfo(dto.res_id).pipe(
-      map(data => restaurantAction.getRestaurantInfoSuccess({ info: data })),
-      catchError(error => of(restaurantAction.getRestaurantInfoFailure({ error: error }))
-      )
-    ))
+    switchMap(
+      (dto) => this.restaurantSrv.getRestaurantInfo(dto.res_id)
+        .pipe(
+          map(data => restaurantAction.getRestaurantInfoSuccess({ info: data })),
+          catchError(error => of(restaurantAction.getRestaurantInfoFailure({ error: error })))
+        )
+    )
   ));
 
   _getMenu = createEffect(() => this.action$.pipe(

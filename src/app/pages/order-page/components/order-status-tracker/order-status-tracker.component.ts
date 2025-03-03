@@ -2,13 +2,12 @@ import { AfterViewInit, Component, OnDestroy, OnInit, Type, ViewContainerRef } f
 import { ActivatedRoute, Router } from '@angular/router';
 import { NzModalService } from 'ng-zorro-antd/modal';
 import { NzNotificationService } from 'ng-zorro-antd/notification';
-import { interval, Subject, switchMap, takeUntil } from 'rxjs';
-import { IconMarker, OrderStatus, OrderStatusTrackerType, RoleType } from 'src/app/core/models/common/enums/index.enum';
+import { filter, interval, Subject, switchMap, takeUntil } from 'rxjs';
+import { BillStatus, IconMarker, OrderStatus, OrderStatusTrackerType, PaymentMethod, RoleType } from 'src/app/core/models/common/enums/index.enum';
 import { LocationMarker } from 'src/app/core/models/geolocation/location.model';
-import { Cart, Quote } from 'src/app/core/models/order/order.model';
-import { FoodItemDTO } from 'src/app/core/models/restaurant/food-items.model';
-import { Modifier } from 'src/app/core/models/restaurant/modifier.model';
+import { Basket, OrderDetails, OrderFoodItems } from 'src/app/core/models/order/order.model';
 import { OrderService } from 'src/app/core/services/order.service';
+import { PaymentService } from 'src/app/core/services/payment.service';
 import { CreateReviewComponent } from 'src/app/shared/component-shared/create-review/create-review.component';
 
 @Component({
@@ -18,8 +17,8 @@ import { CreateReviewComponent } from 'src/app/shared/component-shared/create-re
 })
 export class OrderStatusTrackerComponent implements OnInit, OnDestroy, AfterViewInit {
   // @ViewChild(CreateReviewComponent) reviewCmp!: CreateReviewComponent;
-  basket = new Cart();
-  quote = new Quote();
+  basket = new Basket();
+  order = new OrderDetails();
   locationMarkers: LocationMarker[] = [];
   stepper = [
     {
@@ -36,6 +35,58 @@ export class OrderStatusTrackerComponent implements OnInit, OnDestroy, AfterView
     }
   ];
   stopPolling = new Subject<void>();
+  isLoading: boolean = true;
+  isVisibleProceedPaymentModal = false;
+
+  constructor(
+    private orderSrv: OrderService,
+    private modal: NzModalService,
+    private viewContainerRef: ViewContainerRef,
+    private route: ActivatedRoute,
+    private router: Router,
+    private notification: NzNotificationService,
+    private paymentService: PaymentService
+  ) { }
+
+  ngOnInit(): void {
+    const id = this.route.snapshot.paramMap.get('id') as string;
+    this.getOrderDetails(id);
+  }
+
+  ngAfterViewInit(): void {
+
+  }
+
+  ngOnDestroy(): void {
+    this.basket.cart.campaign_ids = [];
+    this.orderSrv.updateCart(this.basket);
+    this.stopPolling.next();
+    this.stopPolling.complete();
+  }
+
+  showModal(): void {
+    this.isVisibleProceedPaymentModal = true;
+  }
+
+  handleProcessPayment(): void {
+    this.isVisibleProceedPaymentModal = false;
+    if (!this.order.bill.total || this.order.bill._id == '') {
+      alert('Please fill in all required fields');
+      return;
+    }
+
+    this.paymentService.createPayment(this.order.bill.total, this.order.bill._id).subscribe({
+      next: (res) => {
+        window.location.href = res;
+      }
+    });
+  }
+
+  handleCancelPayment(): void {
+    this.isVisibleProceedPaymentModal = false;
+    this.router.navigate(['']);
+  }
+
   createModal<T>(component: Type<T>, className: string, data: { title: string, id: string; }) {
     return this.modal.create<T, { title: string, id: string; }>({
       nzContent: component,
@@ -52,17 +103,47 @@ export class OrderStatusTrackerComponent implements OnInit, OnDestroy, AfterView
     return price.toLocaleString("vi-VN", { style: "currency", currency: "VND" });
   }
 
-  getFoodItemPrice(foodItem: FoodItemDTO<Modifier>): number {
-    const totalModifersPrice = foodItem.modifiers.reduce((total, currValue) => {
-      return total + currValue.price;
+  getFoodItemPrice(foodItem: OrderFoodItems): number {
+    const price = foodItem.foodDetails.price + foodItem.modifiers.reduce((total, curr) => {
+      return total + curr.price;
     }, 0);
-    return foodItem.price ? (foodItem.price + totalModifersPrice) * foodItem.quantity : 0;
+    return price;
   }
 
-  createQuote() {
-    const order = this.orderSrv.createOrderDTO(this.basket);
-    this.orderSrv.quoteOrder(order).subscribe(data => {
-      this.quote = data;
+  getOrderDetails(id: string): void {
+    this.orderSrv.getOrderDetails(id).pipe(
+      filter((res) => res.id !== '')
+    ).subscribe({
+      next: (res: OrderDetails) => {
+        this.order = { ...res };
+        console.log(res);
+
+        if (this.order.bill.payment_method !== PaymentMethod.CASH && this.order.bill.status !== BillStatus.PAID) {
+          this.isVisibleProceedPaymentModal = true;
+        }
+
+        this.locationMarkers = [
+          new LocationMarker(RoleType.RESTAURANT, IconMarker.RESTAURANT, res.restaurant.location.coordinates.reverse()),
+          new LocationMarker(RoleType.CUSTOMER, IconMarker.CUSTOMER, res.delivery_location.coordinates.reverse())
+        ];
+        setTimeout(() => {
+          this.isLoading = false;
+        }, 300);
+        if (res.order_status === OrderStatus.PROGRESSING) {
+          this.stepper[1].status = true;
+          this.stepper[2].status = false;
+        }
+        if (res.order_status === OrderStatus.COMPLETED) {
+          this.stepper[1].status = true;
+          this.stepper[2].status = true;
+          this.stopPolling.next();
+        }
+        if (res.order_status === OrderStatus.CANCELLED) {
+          this.stepper[1].status = false;
+          this.stepper[2].status = false;
+          this.stopPolling.next();
+        }
+      }
     });
   }
 
@@ -108,43 +189,4 @@ export class OrderStatusTrackerComponent implements OnInit, OnDestroy, AfterView
       this.router.navigate(['/']);
     });
   }
-
-  ngOnInit(): void {
-    this.basket = this.orderSrv.getCartItems();
-
-    const cusLocation = [...this.basket.cart.delivery_location.coordinates];
-    const resLocation = [...this.basket.cart.restaurant_location];
-
-    const restaurantMarker = new LocationMarker(RoleType.RESTAURANT, IconMarker.RESTAURANT, resLocation.reverse());
-    const customerMarker = new LocationMarker(RoleType.CUSTOMER, IconMarker.CUSTOMER, cusLocation.reverse());
-
-    this.locationMarkers = [...[restaurantMarker], ...[customerMarker]];
-
-    this.createQuote();
-
-    const id = this.route.snapshot.paramMap.get('id') as string;
-    this.trackingOrder(id);
-  }
-
-  ngAfterViewInit(): void {
-    // setTimeout(() => {
-    //   this.createModal(CreateReviewComponent, 'review-modal', { title: 'How did you find our delivery service?', id: '239482432864' });
-    // }, 5000);
-  }
-
-  ngOnDestroy(): void {
-    this.basket.cart.campaign_ids = [];
-    this.orderSrv.updateCart(this.basket);
-    this.stopPolling.next();
-    this.stopPolling.complete();
-  }
-
-  constructor(
-    private orderSrv: OrderService,
-    private modal: NzModalService,
-    private viewContainerRef: ViewContainerRef,
-    private route: ActivatedRoute,
-    private router: Router,
-    private notification: NzNotificationService
-  ) { }
 }

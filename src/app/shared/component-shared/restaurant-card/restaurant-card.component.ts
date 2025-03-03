@@ -1,6 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { ChangeDetectionStrategy, Component, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
-import { Router, RouterModule } from '@angular/router';
+import { RouterModule } from '@angular/router';
 import { CuisineCategory } from 'src/app/core/mock-data/cuisine-category.data';
 import { RestaurantRecommended } from 'src/app/core/models/restaurant/restaurant.model';
 import { RestaurantService } from 'src/app/core/services/restaurant.service';
@@ -18,12 +18,34 @@ const plugins = [
 })
 export class RestaurantCardComponent implements OnChanges, OnInit {
   @Input() restaurant = new RestaurantRecommended();
-  isLoadImg: boolean = true;
   cuisine_cate_name: string[] = ['Loading....'];
   distance: number = 0;
   duration: string = '0m';
   hasPromotion: boolean = true;
   checkInWishList: boolean = false;
+  timeout: any;
+
+  constructor(
+    private resSrv: RestaurantService
+  ) { }
+
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes['restaurant'] && changes['restaurant'].currentValue) {
+      this.restaurant = changes['restaurant'].currentValue;
+      this.getCuisineNameByType();
+
+      if (this.restaurant.distance && this.restaurant.duration) {
+        this.distance = parseFloat((this.restaurant.distance / 1000).toFixed(2));
+        let duration = parseFloat((this.restaurant.duration / 60).toFixed(0));
+        this.duration = duration < 60 ? duration + 'm' : (parseFloat((duration / 60).toFixed(0)) + 'h');
+      }
+    }
+  }
+
+  ngOnInit(): void {
+    const index = this.resSrv.getWishList().findIndex(res => res._id == this.restaurant._id);
+    this.checkInWishList = index !== -1;
+  }
 
   getCuisineNameByType() {
     this.cuisine_cate_name = [];
@@ -53,29 +75,4 @@ export class RestaurantCardComponent implements OnChanges, OnInit {
     this.checkInWishList = index === -1;
     this.resSrv.addToWishList(this.restaurant);
   }
-
-  ngOnChanges(changes: SimpleChanges): void {
-    if (changes['restaurant']) {
-      this.restaurant = changes['restaurant'].currentValue;
-      this.getCuisineNameByType();
-
-      if (this.restaurant.distance && this.restaurant.duration) {
-        this.distance = parseFloat((this.restaurant.distance / 1000).toFixed(2));
-        let duration = parseFloat((this.restaurant.duration / 60).toFixed(0));
-        this.duration = duration < 60 ? duration + 'm' : (parseFloat((duration / 60).toFixed(0)) + 'h');
-      }
-    }
-  }
-
-  ngOnInit(): void {
-    this.isLoadImg = true;
-    const index = this.resSrv.getWishList().findIndex(res => res._id == this.restaurant._id);
-    this.checkInWishList = index !== -1;
-  }
-
-  constructor(
-    private route: Router,
-    private resSrv: RestaurantService
-  ) { }
-
 }

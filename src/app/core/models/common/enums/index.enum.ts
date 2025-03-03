@@ -55,10 +55,10 @@ export enum OrderType {
 }
 
 export enum BillStatus {
-  PENDING = "PENDING", // initial status của cash order
-  PAID = "PAID", // status của VNPAY order
-  COMPLETED = "COMPLETED", // status của order khi đã hoàn thành
-  CANCELLED = "CANCELLED" // status của order khi bị hủy
+  PROGRESSING = 'PROGRESSING',
+  PAID = 'PAID',
+  COMPLETED = 'COMPLETED',
+  CANCELLED = 'CANCELLED',
 }
 
 export enum PaymentMethod {
@@ -66,8 +66,6 @@ export enum PaymentMethod {
   VNPAY = "VNPAY",
   GOP_Wallet = "GOP_Wallet"
 }
-
-
 
 export enum CampaignUserGroup {
   ALL_CUSTOMER = 'ALL_CUSTOMER'

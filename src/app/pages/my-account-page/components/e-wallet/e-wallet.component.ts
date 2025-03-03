@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { filter, tap } from 'rxjs';
 import { IProfile } from 'src/app/core/models/profile/profile.model';
 import { PaymentService } from 'src/app/core/services/payment.service';
 import { ProfileService } from 'src/app/core/services/profile.service';
@@ -24,24 +23,7 @@ export class EWalletComponent implements OnInit {
   }
 
   deposit() {
-    this.paymentSrv.deposit(100000)
-      .pipe(
-        filter(res => res !== '' && res !== undefined),
-        tap(res => console.log('Response received:', res)) // Log phản hồi
-      )
-      .subscribe({
-        next: res => {
-          try {
-            const url = new URL(res);
-            window.location.href = url.href;
-          } catch (e) {
-            console.log('Invalid URL:', res);
-          }
-        },
-        error: err => {
-          console.log('Error occurred:', err);
-        }
-      });
+
   }
 
 

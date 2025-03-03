@@ -1,15 +1,10 @@
-<nz-modal nzCentered nzWrapClassName="auth-form" [(nzVisible)]="openAuthForm" nzTitle="Discover gastronomy with GoPFood"
-  (nzOnCancel)="handleCancel()">
-  <!-- <ng-container *nzModalTitle></ng-container> -->
-  <ng-container *nzModalContent>
-    <ng-containe [ngTemplateOutlet]="isLoginForm ? loginTemplate : signupTemplate"></ng-containe>
-  </ng-container>
-  <ng-container *nzModalFooter>
-    <ng-containe
-      [ngTemplateOutlet]="isLoginForm ? buttonControlForLoginTemplate : buttonControlForSignupTemplate"></ng-containe>
-  </ng-container>
-</nz-modal>
-
+<ng-container>
+  <ng-containe [ngTemplateOutlet]="isLoginForm ? loginTemplate : signupTemplate"></ng-containe>
+</ng-container>
+<ng-container>
+  <ng-containe
+    [ngTemplateOutlet]="isLoginForm ? buttonControlForLoginTemplate : buttonControlForSignupTemplate"></ng-containe>
+</ng-container>
 
 <ng-template #loginTemplate>
   <div>
@@ -136,7 +131,8 @@
 </ng-template>
 
 <ng-template #buttonControlForLoginTemplate>
-  <button (click)="handleLogin()" nz-button nzSize="large" nzType="primary" class="w-full rounded-lg">Login</button>
+  <button (click)="handleLogin()" nz-button nzSize="large" nzType="primary"
+    class="w-full rounded-lg mt-5">Login</button>
 
   <div class="signup w-full flex">
     <div class="flex m-auto">
@@ -148,7 +144,8 @@
 </ng-template>
 
 <ng-template #buttonControlForSignupTemplate>
-  <button (click)="handleSigup()" nz-button nzSize="large" nzType="primary" class="w-full rounded-lg">Sign up</button>
+  <button (click)="handleSigup()" nz-button nzSize="large" nzType="primary" class="w-full rounded-lg mt-5">Sign
+    up</button>
 
   <div class="signup w-full flex">
     <div class="flex m-auto">

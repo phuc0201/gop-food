@@ -1,19 +1,49 @@
 .divide {
-  background-image: repeating-linear-gradient(45deg, #6fa6d6, #6fa6d6 33px, transparent 0, transparent 41px, #f18d9b 0, #f18d9b 74px, transparent 0, transparent 82px);
+  background-image: repeating-linear-gradient(
+    45deg,
+    #6fa6d6,
+    #6fa6d6 33px,
+    transparent 0,
+    transparent 41px,
+    #f18d9b 0,
+    #f18d9b 74px,
+    transparent 0,
+    transparent 82px
+  );
   background-position-x: -1.875rem;
-  background-size: 7.25rem .1875rem;
-  height: .1875rem;
+  background-size: 7.25rem 0.1875rem;
+  height: 0.1875rem;
   width: 100%;
 }
 
 .status-tracker-item.active {
-  @apply text-primary after:border-green
+  @apply text-primary after:border-green;
 }
 
 .status-tracker-item {
-  @apply text-gray-400
+  @apply text-gray-400;
 }
 
 .status-tracker-item.active .status-tracker-item-icon {
-  @apply border border-primary bg-white
+  @apply border border-primary bg-white;
+}
+
+.display {
+  animation: animation-order-items-display 0.2s ease forwards;
+  animation-delay: 0.3s;
+  opacity: 0;
+}
+
+.skeleton-hidden {
+  animation: animation-items-skeleton 0.1s ease forwards;
+}
+
+@keyframes animation-order-items-display {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
 }

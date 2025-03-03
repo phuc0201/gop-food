@@ -31,9 +31,7 @@ export class CuisinesComponent implements OnInit {
     this.cuisineSrv.getCuisineCategories().subscribe(
       res => {
         this.categories = res;
-        setTimeout(() => {
-          this.isLoading = false;
-        }, 600);
+        this.isLoading = false;
       }
     );
 
