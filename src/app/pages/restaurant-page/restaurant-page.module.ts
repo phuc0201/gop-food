@@ -5,6 +5,7 @@ import { RouterModule, Routes } from '@angular/router';
 import { NzAutocompleteModule } from 'ng-zorro-antd/auto-complete';
 import { NzDrawerModule } from 'ng-zorro-antd/drawer';
 import { NzGridModule } from 'ng-zorro-antd/grid';
+import { NzModalService } from 'ng-zorro-antd/modal';
 import { NzRateModule } from 'ng-zorro-antd/rate';
 import { NzSkeletonModule } from 'ng-zorro-antd/skeleton';
 import { CreateReviewComponent } from 'src/app/shared/component-shared/create-review/create-review.component';
@@ -62,6 +63,9 @@ const plugins = [
     FormsModule,
     NzGridModule,
     RouterModule.forChild(routes)
+  ],
+  providers: [
+    NzModalService
   ]
 })
 export class RestaurantPageModule { }
