@@ -15,7 +15,6 @@ const plugins = [
 })
 export class MainFooterComponent implements OnInit {
   isMobile: boolean = false;
-  isHidden: boolean = true;
 
   ngOnInit(): void {
     this.isMobile = window.innerWidth <= 768;

@@ -200,6 +200,7 @@ export class ListRestaurantComponent implements OnInit, OnDestroy, AfterViewInit
     this.restaurants = { currPage: res.currPage, totalPage: res.totalPage, data: [...this.restaurants.data, ...newData] };
     this.isLoading = false;
     this.isNoData = this.restaurants.data.length === 0;
+
     this.restaurantsChange.emit(this.restaurants);
   }
 

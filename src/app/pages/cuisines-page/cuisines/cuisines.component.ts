@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Store } from '@ngrx/store';
 import { CuisineCategory } from 'src/app/core/models/cuisine/cuisine-category.model';
 import { FoodItems } from 'src/app/core/models/restaurant/food-items.model';
 import { CuisineService } from 'src/app/core/services/cuisine.service';
@@ -22,7 +23,8 @@ export class CuisinesComponent implements OnInit {
 
   constructor(
     private searchSrv: SearchService,
-    private cuisineSrv: CuisineService
+    private cuisineSrv: CuisineService,
+    private store: Store
   ) {
     this.search = this.debounce(this.search.bind(this), 500);
   }
@@ -41,12 +43,6 @@ export class CuisinesComponent implements OnInit {
       }
     });
     searchObserve$.unsubscribe();
-
-    window.scrollTo({
-      top: 0,
-      left: 0,
-      behavior: "instant",
-    });
   }
 
   search(searchValue: string) {

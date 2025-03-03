@@ -27,7 +27,10 @@ const plugins = [
   templateUrl: './mobile-header.component.html',
   styleUrls: ['./mobile-header.component.scss'],
   standalone: true,
-  imports: plugins
+  imports: plugins,
+  providers: [
+    NzModalService
+  ]
 })
 export class MobileHeaderComponent implements OnInit, OnChanges {
   @Input() scrollTopValue: number = 0;

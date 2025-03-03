@@ -1,4 +1,5 @@
-import { Component, HostListener, OnInit } from '@angular/core';
+import { Component, HostListener, OnDestroy, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { Subscription } from 'rxjs';
 import { IPagedResults } from 'src/app/core/models/common/response-data.model';
@@ -14,7 +15,7 @@ import { selectRestaurantList } from 'src/app/core/store/restaurant/restaurant.s
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.scss']
 })
-export class HomeComponent implements OnInit {
+export class HomeComponent implements OnInit, OnDestroy {
   address: string = '';
   foodItems: FoodItems<string>[] = [];
   listFoodCol: number = 6;
@@ -23,17 +24,24 @@ export class HomeComponent implements OnInit {
   isMobile: boolean = false;
   restaurantsSubscription: Subscription = new Subscription();
   limit = 8;
+  isHiddenSystemService: boolean = true;
 
   constructor(
     private geoSrv: GeolocationService,
     private searchSrv: SearchService,
     private store: Store,
+    private router: Router
   ) { }
 
   ngOnInit(): void {
     this.handleMobileScreen();
     this.searchSrv.setRestaurantSearchQuery('');
     this.loadData();
+    document.getElementById('footer')?.classList.add('hidden');
+  }
+
+  ngOnDestroy(): void {
+    document.getElementById('footer')?.classList.remove('hidden');
   }
 
   @HostListener('window:resize', ['$event'])
@@ -55,6 +63,10 @@ export class HomeComponent implements OnInit {
         if (res.result.data.length > 0) {
           this.restaurants = res.result;
           this.isLoading = false;
+          if (res.result.currPage === res.result.totalPage) {
+            document.getElementById('footer')?.classList.remove('hidden');
+            this.isHiddenSystemService = false;
+          }
         }
         else this.isLoading = true;
       },
