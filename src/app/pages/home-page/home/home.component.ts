@@ -25,7 +25,7 @@ export class HomeComponent implements OnInit, OnDestroy {
   restaurantsSubscription: Subscription = new Subscription();
   limit = 8;
   isHiddenSystemService: boolean = true;
-
+  currPage = 1;
   constructor(
     private geoSrv: GeolocationService,
     private searchSrv: SearchService,
@@ -62,6 +62,7 @@ export class HomeComponent implements OnInit, OnDestroy {
       next: res => {
         if (res.result.data.length > 0) {
           this.restaurants = res.result;
+          this.currPage = res.result.currPage;
           this.isLoading = false;
           if (res.result.currPage === res.result.totalPage) {
             document.getElementById('footer')?.classList.remove('hidden');
@@ -79,7 +80,7 @@ export class HomeComponent implements OnInit, OnDestroy {
       this.store.dispatch(getRestaurantList({
         categoryId: "",
         searchQuery: "",
-        page: 1,
+        page: this.currPage,
         limit: this.limit
       }));
     }

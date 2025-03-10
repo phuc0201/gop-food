@@ -16,8 +16,8 @@
   </ng-container>
 </div>
 
-<ng-container *ngIf="isNoData">
-  <div class="w-full h-full flex justify-center items-center p-5">
+<ng-container>
+  <div [hidden]="!isNoData" class="w-full h-full flex justify-center items-center p-5">
     <img src="assets/img/icons/ilus-basket-empty.svg" alt="" class="w-full max-w-96">
   </div>
 </ng-container>
