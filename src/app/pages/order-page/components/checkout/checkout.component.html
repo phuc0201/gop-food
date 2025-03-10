@@ -21,7 +21,7 @@
               <section (click)="showMapSelector()" class="cursor-pointer flex flex-col text-gray-500 font-medium">
                 <label for="" class="mb-2">Address</label>
                 <div class="border border-gray-300 relative rounded-lg overflow-hidden">
-                  <i class="fa-solid fa-location-dot absolute top-1/2 -translate-y-1/2 left-4 text-lg text-red"></i>
+                  <i class="fa-solid fa-location-dot absolute top-1/2 -translate-y-1/2 left-4 text-lg text-red1"></i>
 
                   <button
                     class="cursor-pointer text-start border-none text-sm font-normal outline-none ring-0 w-full px-10 py-3">
@@ -36,7 +36,7 @@
 
               <section class="flex flex-col text-gray-500 font-medium">
                 <label for="" class="mb-2">Phone
-                  <span class="text-red">*</span>
+                  <span class="text-red1">*</span>
                 </label>
                 <input type="text"
                   class="border-gray-300 focus:ring-0 ring-0 focus:border-gray-300 px-5 py-3 text-sm font-normal outline-none rounded-lg"
@@ -85,7 +85,7 @@
               <div class="border border-gray-300 rounded-lg h-11 flex items-center px-4 text-xl  justify-between">
 
                 <div class="flex items-center gap-3">
-                  <i class="fa-solid fa-ticket text-red"></i>
+                  <i class="fa-solid fa-ticket text-red1"></i>
                   <span class="text-sm text-gray-500">{{basket.cart.campaign_ids.length}} applied</span>
                 </div>
                 <button (click)="showPromotion()" class="font-bold text-[#2b77eb] text-sm">Apply</button>
@@ -180,7 +180,7 @@
           </div>
 
           <button (click)="removeFoodItem(foodItem.food_id)">
-            <i class="fa-solid fa-trash-can text-lg hover:text-red"></i>
+            <i class="fa-solid fa-trash-can text-lg hover:text-red1"></i>
           </button>
         </div>
 

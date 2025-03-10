@@ -17,7 +17,8 @@
         successfully placed</span>
     </li>
     <li [class.active]="stepper[1].status"
-      class="status-tracker-item relative flex w-full items-center after:content-[''] after:w-full after:h-1 after:border-b after:border-gray-100 after:border-4 after:inline-block">
+      class="status-tracker-item relative flex w-full items-center after:content-[''] after:w-full after:h-1 after:border-b after:border-gray-100 after:border-4 after:inline-block"
+      [ngClass]="order.order_status === 'CANCELLED' ? 'after:!border-red1' : ''">
       <span
         class="status-tracker-item-icon flex items-center justify-center w-7 h-7 md:w-10 md:h-10 lg:h-12 lg:w-12 bg-gray-100 rounded-full shrink-0">
         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"
@@ -28,8 +29,9 @@
 
       </span>
       <span
-        class="capitalize absolute top-full left-[calc(50%+24px)] -translate-x-1/2 -translate-y-2 text-center lg:text-sm sm:text-xs md:block hidden">Order
-        received by restaurant</span>
+        class="capitalize absolute top-full left-[calc(50%+24px)] -translate-x-1/2 -translate-y-2 text-center lg:text-sm sm:text-xs md:block hidden">
+        {{ order.order_status === 'CANCELLED' ? 'Order cancelled' : 'Order received by restaurant' }}
+      </span>
     </li>
 
     <li [class.active]="stepper[2].status"
@@ -215,7 +217,7 @@
         </p>
 
         <ul class="mt-5">
-          <li>Transaction ID: <span class="text-red1">{{ order.bill._id }}</span></li>
+          <li>Transaction ID: <span class="text-red2">{{ order.bill._id }}</span></li>
           <li>Amount:
             <span class="text-primary font-bold">
               {{ order.bill.total.toLocaleString('vi-VN', { style: 'currency', currency: 'VND' })}}

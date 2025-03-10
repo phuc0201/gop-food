@@ -56,7 +56,7 @@
       </button>
       <button (click)="closeMap()"
         class="rounded-full flex-1 h-10 bg-white shadow-3x flex items-center justify-start px-4">
-        <div class="w-4 h-4 bg-red1 rounded-full flex">
+        <div class="w-4 h-4 bg-red2 rounded-full flex">
           <div class="w-1 h-1 bg-white rounded-full m-auto"></div>
         </div>
 
@@ -64,8 +64,8 @@
       </button>
     </div>
 
-    <app-map [addressList]="addressList"
-      (addressListChange)="onMapSelectAddress($event)" [location]="location" [zoomValue]="14">
+    <app-map [addressList]="addressList" (addressListChange)="onMapSelectAddress($event)" [location]="location"
+      [zoomValue]="14">
     </app-map>
 
     <button (click)="autoDetectLocation()"

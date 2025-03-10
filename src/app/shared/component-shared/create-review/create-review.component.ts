@@ -12,14 +12,12 @@ const plugins = [
   FormsModule
 ];
 
-
-
 @Component({
   selector: 'app-create-review',
   templateUrl: './create-review.component.html',
   styleUrls: ['./create-review.component.scss'],
   standalone: true,
-  imports: plugins
+  imports: plugins,
 })
 export class CreateReviewComponent {
   reviewable: {
@@ -29,6 +27,11 @@ export class CreateReviewComponent {
   ratingValue: number = 0;
   review = new Review();
   #modal = inject(NzModalRef);
+
+  constructor(
+    private profileSrv: ProfileService,
+    private reviewSrv: ReviewService
+  ) { }
 
   submitReview() {
     if (this.review.rating > 0) {
@@ -42,8 +45,4 @@ export class CreateReviewComponent {
   closeModal() {
     this.#modal.close();
   }
-  constructor(
-    private profileSrv: ProfileService,
-    private reviewSrv: ReviewService
-  ) { }
 }

@@ -15,11 +15,14 @@ export class PaymentService {
     private http: HttpClient
   ) { }
 
-  createPayment(amount: number, billId: string): Observable<string> {
+  createPayment(
+    amount: number,
+    billId: string,
+    urlReturn: string = '/order/checkout'): Observable<string> {
     return this.http.post(this.baseUrl + '/payment/vnpay/create', {
       amount: amount,
       billId: billId,
-      returnUrl: environment.frontend.domain + '/order/checkout'
+      returnUrl: environment.frontend.domain + urlReturn
     }, { responseType: 'text' });
   }
 

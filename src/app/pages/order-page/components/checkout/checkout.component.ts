@@ -4,7 +4,7 @@ import { Store } from '@ngrx/store';
 import { NzDrawerPlacement, NzDrawerRef, NzDrawerService } from 'ng-zorro-antd/drawer';
 import { NzModalService } from 'ng-zorro-antd/modal';
 import { PaymentMethodData } from 'src/app/core/mock-data/payment-method.data';
-import { PaymentMethod } from 'src/app/core/models/common/enums/index.enum';
+import { BillStatus, PaymentMethod } from 'src/app/core/models/common/enums/index.enum';
 import { LocationMarker, SelectedAddress } from 'src/app/core/models/geolocation/location.model';
 import { Basket, Quote } from 'src/app/core/models/order/order.model';
 import { PaymentMethodType } from 'src/app/core/models/payment/payment.model';
@@ -20,6 +20,7 @@ import { getFoodDetails } from 'src/app/core/store/restaurant/restaurant.action'
 import { FoodDetailsComponent } from 'src/app/shared/component-shared/food-details/food-details.component';
 import { MapSelectorComponent } from '../../../../shared/component-shared/map-selector/map-selector.component';
 import { CampaignsComponent } from '../campaigns/campaigns.component';
+import { PaymentNotificationComponent } from '../payment-notification/payment-notification.component';
 
 @Component({
   selector: 'app-checkout',
@@ -65,13 +66,6 @@ export class CheckoutComponent implements OnInit {
     this.store.dispatch(getCampaignAvailableForRestaurant({ restaurantId: this.basket.cart.restaurant_id }));
     this.getCurrentPhone();
     this.handleMobileScreen();
-
-    setTimeout(() => {
-      window.scroll({
-        top: 0,
-        behavior: 'instant'
-      });
-    }, 500);
   }
 
   @HostListener('window:resize', ['event'])
@@ -191,12 +185,12 @@ export class CheckoutComponent implements OnInit {
       .subscribe({
         next: (result) => {
           if (result.error === false && result.billId !== '') {
-            this.router.navigate([`/order/tracking/${result.billId}`]);
+            this.createPaymentResultNotification(BillStatus.PAID, result.billId, result.amount);
+          }
+          else {
+            this.createPaymentResultNotification(BillStatus.FAILED, result.billId, result.amount);
           }
         },
-        error: (error) => {
-
-        }
       });
   }
 
@@ -267,5 +261,20 @@ export class CheckoutComponent implements OnInit {
 
   getCurrentPhone() {
     this.phone = this.profileService.getProfileInSession().phone;
+  }
+
+  createPaymentResultNotification(billStatus: BillStatus, billId: string = '', amount: number = 0) {
+    return this.modal.create<PaymentNotificationComponent>({
+      nzContent: PaymentNotificationComponent,
+      nzClosable: false,
+      nzWrapClassName: 'payment-modal',
+      nzViewContainerRef: this.viewContainerRef,
+      nzFooter: null,
+      nzData: {
+        status: billStatus,
+        amount: amount,
+        billId: billId
+      }
+    });
   }
 }

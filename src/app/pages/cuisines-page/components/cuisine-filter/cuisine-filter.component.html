@@ -118,7 +118,7 @@
             <ng-container *ngIf="dropDownForDrawer == false; else sortByForDrawer">
               <a nz-radio [nzValue]="item" [routerLink]="[filterURL]" [queryParams]="{sortby: item}"
                 queryParamsHandling="merge"
-                class="items-center !py-4 text-black hover:text-black !m-0 hover:bg-green3 border border-gray-200 border-x-0 border-t-0 last:border-0"
+                class="items-center !py-4 text-black hover:text-black !m-0 hover:bg-green4 border border-gray-200 border-x-0 border-t-0 last:border-0"
                 (click)="dropDownForSortBy=false">
                 <span class="capitalize">{{ item }}</span>
               </a>
@@ -126,7 +126,7 @@
 
             <ng-template #sortByForDrawer>
               <div nz-radio [nzValue]="item"
-                class="sm:!hidden !flex items-center !py-4 text-black hover:text-black !m-0 hover:bg-green3 border border-gray-200 border-x-0 border-t-0 last:border-0">
+                class="sm:!hidden !flex items-center !py-4 text-black hover:text-black !m-0 hover:bg-green4 border border-gray-200 border-x-0 border-t-0 last:border-0">
                 <span class="capitalize">{{ item }}</span>
               </div>
             </ng-template>
@@ -147,7 +147,7 @@
             <ng-container *ngIf="!deleveryForDrawer; else deleveryForMobile">
               <a nz-radio [nzValue]=item [routerLink]="[filterURL]" [queryParams]="{deliveryFee: item}"
                 queryParamsHandling="merge" routerLinkActive="active"
-                class="!py-4 text-black hover:text-black !m-0 hover:bg-green3 border border-gray-200 border-x-0 border-t-0 last:border-0"
+                class="!py-4 text-black hover:text-black !m-0 hover:bg-green4 border border-gray-200 border-x-0 border-t-0 last:border-0"
                 (click)="dropDownForDeleivery=false">
                 <span class="capitalize">
                   {{ item === 'any' ? item : 'Less than ' + item }}
@@ -157,7 +157,7 @@
 
             <ng-template #deleveryForMobile>
               <div nz-radio [nzValue]=item
-                class="!py-4 text-black hover:text-black !m-0 hover:bg-green3 border border-gray-200 border-x-0 border-t-0 last:border-0">
+                class="!py-4 text-black hover:text-black !m-0 hover:bg-green4 border border-gray-200 border-x-0 border-t-0 last:border-0">
                 <span *ngIf="item === 'any'" class="capitalize"> {{ item }} </span>
                 <span *ngIf="item!=='any'" class="capitalize"> Less than {{ item }} </span>
               </div>

@@ -8,9 +8,10 @@
 
   <section class="relative flex-1 overflow-y-auto p-5 compaigns-body">
     <div class="mb-6">
-      <h3 class="font-bold text-gray-500 text-xs mb-5 uppercase">
+      <h3 class="font-bold text-gray-500 text-xs mb-2 uppercase">
         Food & Delivery Offers
       </h3>
+      <p class="text-xs text-gray-400 font-light mb-5">Each promotion can be used twice</p>
 
       <ng-container *ngIf="campaigns.length > 0">
         <ng-container *ngFor="let campaign of campaigns; let i = index">

@@ -1,8 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { Store } from '@ngrx/store';
 import { CuisineCategory } from 'src/app/core/models/cuisine/cuisine-category.model';
 import { FoodItems } from 'src/app/core/models/restaurant/food-items.model';
-import { CuisineService } from 'src/app/core/services/cuisine.service';
 import { SearchService } from 'src/app/core/services/search.service';
 
 @Component({
@@ -23,20 +21,11 @@ export class CuisinesComponent implements OnInit {
 
   constructor(
     private searchSrv: SearchService,
-    private cuisineSrv: CuisineService,
-    private store: Store
   ) {
     this.search = this.debounce(this.search.bind(this), 500);
   }
 
   ngOnInit(): void {
-    this.cuisineSrv.getCuisineCategories().subscribe(
-      res => {
-        this.categories = res;
-        this.isLoading = false;
-      }
-    );
-
     const searchObserve$ = this.searchSrv.restaurantSearchQuery.subscribe({
       next: value => {
         this.searchValue = value;

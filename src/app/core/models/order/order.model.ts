@@ -11,7 +11,7 @@ export class Location {
 export class CreateOrderDTO<T> {
   restaurant_id: string = '';
   phone: string = '0987654321';
-  payment_method: PaymentMethod = PaymentMethod.CASH;
+  payment_method: PaymentMethod = PaymentMethod.COD;
   campaign_ids: string[] = [];
   delivery_location = new Location();
   items: FoodItemDTO<T>[] = [];
@@ -55,7 +55,7 @@ export class Bill {
   _id: string = 'bill_01';
   status: BillStatus = BillStatus.PROGRESSING;
   order?: string = 'order_01';
-  payment_method: PaymentMethod = PaymentMethod.CASH;
+  payment_method: PaymentMethod = PaymentMethod.COD;
   transaction_id?: string = '';
   campaign_id: string[] = [];
   total: number = 0;
@@ -158,9 +158,9 @@ export class OrderFoodItems {
 
 
 export class OrderDetails {
-  id: string;
+  _id: string;
   customer: UserInfo;
-  restaurant: { location: Location; restaurant_name: string; };
+  restaurant: { _id: string, location: Location; restaurant_name: string; };
   delivery_location: Location;
   order_time: Date;
   confirm_time: Date;
@@ -172,9 +172,9 @@ export class OrderDetails {
   order_status: OrderStatus;
 
   constructor(
-    id: string = '',
+    _id: string = '',
     customer: UserInfo = new UserInfo(),
-    restaurant: { location: Location; restaurant_name: string; } = { location: new Location(), restaurant_name: '' },
+    restaurant: { _id: string, location: Location; restaurant_name: string; } = { _id: '', location: new Location(), restaurant_name: '' },
     delivery_location: Location = new Location(),
     order_time: Date = new Date(),
     confirm_time: Date = new Date(),
@@ -185,7 +185,7 @@ export class OrderDetails {
     items: OrderFoodItems[] = [],
     order_status: OrderStatus = OrderStatus.PENDING_CONFIRM
   ) {
-    this.id = id;
+    this._id = _id;
     this.customer = customer;
     this.restaurant = restaurant;
     this.delivery_location = delivery_location;

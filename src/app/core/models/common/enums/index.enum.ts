@@ -57,12 +57,13 @@ export enum OrderType {
 export enum BillStatus {
   PROGRESSING = 'PROGRESSING',
   PAID = 'PAID',
+  FAILED = 'FAILED',
   COMPLETED = 'COMPLETED',
   CANCELLED = 'CANCELLED',
 }
 
 export enum PaymentMethod {
-  CASH = "CASH",
+  COD = "COD",
   VNPAY = "VNPAY",
   GOP_Wallet = "GOP_Wallet"
 }

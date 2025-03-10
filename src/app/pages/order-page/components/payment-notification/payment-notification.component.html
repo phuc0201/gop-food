@@ -1,0 +1,57 @@
+<div id="notification" class="notification-animation md:w-96 bg-white rounded-lg shadow-lg overflow-hidden">
+
+  <div class="px-4 py-2 flex justify-between items-center"
+    [ngClass]="notifyData.status === 'PAID' ? 'bg-primary' : 'bg-red1'">
+    <h3 class="text-white font-medium">
+      {{ notifyData.status === 'PAID' ? 'Payment successful' : 'Payment failed' }}
+    </h3>
+  </div>
+
+  <div class="p-4">
+    <div class="flex items-center mb-3">
+      <div class="p-2 rounded-full mr-3" [ngClass]="notifyData.status === 'PAID' ? 'bg-green-100' : 'bg-red-100'">
+        <svg *ngIf="notifyData.status === 'PAID'" xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-primary"
+          fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+        </svg>
+        <svg *ngIf="notifyData.status !== 'PAID'" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+          stroke-width="1.5" stroke="currentColor" class="h-5 w-5 text-red1">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12" />
+        </svg>
+      </div>
+      <p class="text-gray-800 font-medium">
+        {{ notifyData.status === 'PAID' ? 'Your transaction has been processed!' : 'Your payment could not be completed'
+        }}
+      </p>
+    </div>
+
+    <p class="text-gray-600 text-xs mb-3">
+      {{
+      notifyData.status === 'PAID' ? 'Thank you for your payment. Your order will be processed soon.' : 'Please try
+      again or contact us for support.'
+      }}
+    </p>
+
+    <div class="bg-gray-50 p-3 rounded-md mb-3">
+      <div class="flex justify-between mb-1">
+        <span class="text-gray-500 text-xs">Transaction ID:</span>
+        <span class="text-gray-700 text-xs font-medium">{{ notifyData.billId }}</span>
+      </div>
+      <div class="flex justify-between">
+        <span class="text-gray-500 text-xs">Amount:</span>
+        <span class="text-gray-700 text-xs font-medium">{{ notifyData.amount.toLocaleString('vi-VN', { style:
+          'currency', currency: 'VND' }) }}</span>
+      </div>
+    </div>
+
+    <button *ngIf="notifyData.status === 'PAID'" (click)="onTrackOrder()"
+      class="w-full bg-primary text-white py-2 px-4 rounded transition duration-200 border-none focus:outline-none">
+      Tracking your order
+    </button>
+
+    <button *ngIf="notifyData.status !== 'PAID'" (click)="onClose()"
+      class="w-full bg-red1 text-white py-2 px-4 rounded transition duration-200 border-none focus:outline-none">
+      Canncel
+    </button>
+  </div>
+</div>

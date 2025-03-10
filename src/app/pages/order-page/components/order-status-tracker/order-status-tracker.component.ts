@@ -1,13 +1,13 @@
-import { AfterViewInit, Component, OnDestroy, OnInit, Type, ViewContainerRef } from '@angular/core';
+import { Component, OnDestroy, OnInit, Type, ViewContainerRef } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { NzModalService } from 'ng-zorro-antd/modal';
-import { NzNotificationService } from 'ng-zorro-antd/notification';
-import { filter, interval, Subject, switchMap, takeUntil } from 'rxjs';
+import { filter } from 'rxjs';
 import { BillStatus, IconMarker, OrderStatus, OrderStatusTrackerType, PaymentMethod, RoleType } from 'src/app/core/models/common/enums/index.enum';
 import { LocationMarker } from 'src/app/core/models/geolocation/location.model';
 import { Basket, OrderDetails, OrderFoodItems } from 'src/app/core/models/order/order.model';
 import { OrderService } from 'src/app/core/services/order.service';
 import { PaymentService } from 'src/app/core/services/payment.service';
+import { SocketService } from 'src/app/core/services/socket.service';
 import { CreateReviewComponent } from 'src/app/shared/component-shared/create-review/create-review.component';
 
 @Component({
@@ -15,7 +15,7 @@ import { CreateReviewComponent } from 'src/app/shared/component-shared/create-re
   templateUrl: './order-status-tracker.component.html',
   styleUrls: ['./order-status-tracker.component.scss']
 })
-export class OrderStatusTrackerComponent implements OnInit, OnDestroy, AfterViewInit {
+export class OrderStatusTrackerComponent implements OnInit, OnDestroy {
   // @ViewChild(CreateReviewComponent) reviewCmp!: CreateReviewComponent;
   basket = new Basket();
   order = new OrderDetails();
@@ -34,7 +34,6 @@ export class OrderStatusTrackerComponent implements OnInit, OnDestroy, AfterView
       status: false
     }
   ];
-  stopPolling = new Subject<void>();
   isLoading: boolean = true;
   isVisibleProceedPaymentModal = false;
 
@@ -44,8 +43,8 @@ export class OrderStatusTrackerComponent implements OnInit, OnDestroy, AfterView
     private viewContainerRef: ViewContainerRef,
     private route: ActivatedRoute,
     private router: Router,
-    private notification: NzNotificationService,
-    private paymentService: PaymentService
+    private paymentService: PaymentService,
+    private socketSrv: SocketService,
   ) { }
 
   ngOnInit(): void {
@@ -53,15 +52,8 @@ export class OrderStatusTrackerComponent implements OnInit, OnDestroy, AfterView
     this.getOrderDetails(id);
   }
 
-  ngAfterViewInit(): void {
-
-  }
-
   ngOnDestroy(): void {
-    this.basket.cart.campaign_ids = [];
-    this.orderSrv.updateCart(this.basket);
-    this.stopPolling.next();
-    this.stopPolling.complete();
+
   }
 
   showModal(): void {
@@ -75,29 +67,20 @@ export class OrderStatusTrackerComponent implements OnInit, OnDestroy, AfterView
       return;
     }
 
-    this.paymentService.createPayment(this.order.bill.total, this.order.bill._id).subscribe({
-      next: (res) => {
-        window.location.href = res;
-      }
-    });
+    this.paymentService.createPayment(
+      this.order.bill.total,
+      this.order.bill._id, '/order/tracking/' + this.order.bill._id)
+      .subscribe({
+        next: (res) => {
+          window.location.href = res;
+        }
+      });
   }
 
   handleCancelPayment(): void {
     this.isVisibleProceedPaymentModal = false;
     this.router.navigate(['']);
   }
-
-  createModal<T>(component: Type<T>, className: string, data: { title: string, id: string; }) {
-    return this.modal.create<T, { title: string, id: string; }>({
-      nzContent: component,
-      nzClosable: false,
-      nzWrapClassName: className,
-      nzViewContainerRef: this.viewContainerRef,
-      nzFooter: null,
-      nzData: data
-    });
-  }
-
 
   formatMoney(price: number = 0): string {
     return price.toLocaleString("vi-VN", { style: "currency", currency: "VND" });
@@ -112,13 +95,12 @@ export class OrderStatusTrackerComponent implements OnInit, OnDestroy, AfterView
 
   getOrderDetails(id: string): void {
     this.orderSrv.getOrderDetails(id).pipe(
-      filter((res) => res.id !== '')
+      filter((res) => res._id !== '')
     ).subscribe({
       next: (res: OrderDetails) => {
         this.order = { ...res };
-        console.log(res);
 
-        if (this.order.bill.payment_method !== PaymentMethod.CASH && this.order.bill.status !== BillStatus.PAID) {
+        if (this.order.bill.payment_method !== PaymentMethod.COD && this.order.bill.status !== BillStatus.PAID) {
           this.isVisibleProceedPaymentModal = true;
         }
 
@@ -126,65 +108,61 @@ export class OrderStatusTrackerComponent implements OnInit, OnDestroy, AfterView
           new LocationMarker(RoleType.RESTAURANT, IconMarker.RESTAURANT, res.restaurant.location.coordinates.reverse()),
           new LocationMarker(RoleType.CUSTOMER, IconMarker.CUSTOMER, res.delivery_location.coordinates.reverse())
         ];
+
         setTimeout(() => {
           this.isLoading = false;
         }, 300);
-        if (res.order_status === OrderStatus.PROGRESSING) {
-          this.stepper[1].status = true;
-          this.stepper[2].status = false;
-        }
-        if (res.order_status === OrderStatus.COMPLETED) {
-          this.stepper[1].status = true;
-          this.stepper[2].status = true;
-          this.stopPolling.next();
-        }
-        if (res.order_status === OrderStatus.CANCELLED) {
-          this.stepper[1].status = false;
-          this.stepper[2].status = false;
-          this.stopPolling.next();
-        }
+
+        this.updateStepperStatus(res.order_status);
+
+        this.socketSrv.onOrderStatus(this.order._id).subscribe({
+          next: (res) => {
+            this.updateStepperStatus(res.order_status);
+            if (res.order_status === OrderStatus.COMPLETED) {
+              this.createReviewModal();
+            }
+          }
+        });
       }
     });
   }
 
-  trackingOrder(orderId: string) {
-    const subscription = interval(1000)
-      .pipe(
-        switchMap(() => this.orderSrv.trackingOrder(orderId)),
-        takeUntil(this.stopPolling)
-      )
-      .subscribe(data => {
-        if (data.state === OrderStatus.PROGRESSING) {
-          this.stepper[1].status = true;
-          this.stepper[2].status = false;
-        }
-        if (data.state === OrderStatus.COMPLETED) {
-          this.stepper[1].status = true;
-          this.stepper[2].status = true;
-          this.stopPolling.next();
-        }
-        if (data.state === OrderStatus.CANCELLED) {
-          this.stepper[1].status = false;
-          this.stepper[2].status = false;
-          this.createNotification('error');
-          setTimeout(() => {
-            this.router.navigate(['/']);
-          }, 1500);
-          this.stopPolling.next();
-        }
-      });
+  updateStepperStatus(orderStatus: OrderStatus): void {
+    switch (orderStatus) {
+      case OrderStatus.PROGRESSING:
+        this.stepper[1].status = true;
+        this.stepper[2].status = false;
+        break;
+      case OrderStatus.COMPLETED:
+        this.stepper[1].status = true;
+        this.stepper[2].status = true;
+        break;
+      case OrderStatus.CANCELLED:
+        this.stepper[1].status = false;
+        this.stepper[2].status = false;
+        break;
+      default:
+        break;
+    }
   }
 
-  createNotification(type: string): void {
-    this.notification.create(
-      type,
-      'Order rejected',
-      'The restaurant has rejected the order'
-    );
+  createModal<T>(component: Type<T>, className: string, data: any) {
+    return this.modal.create<T, any>({
+      nzContent: component,
+      nzClosable: false,
+      nzWrapClassName: className,
+      nzViewContainerRef: this.viewContainerRef,
+      nzFooter: null,
+      nzData: data
+    });
   }
 
-  review() {
-    const modalRef = this.createModal(CreateReviewComponent, 'review-modal', { title: 'How was your food at the restaurant?', id: this.basket.cart.restaurant_id });
+  createReviewModal() {
+    const modalRef = this.createModal(CreateReviewComponent, 'review-modal', {
+      title: 'How was your food at the restaurant?',
+      id: this.order.restaurant._id
+    });
+
     modalRef.afterClose.subscribe(() => {
       this.router.navigate(['/']);
     });

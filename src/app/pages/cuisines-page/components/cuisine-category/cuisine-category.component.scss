@@ -14,7 +14,7 @@
   color: black;
 }
 .category.active {
-  @apply text-black1 bg-green rounded-lg;
+  @apply text-black1 bg-green1 rounded-lg;
 }
 a:hover {
   @apply text-gray-400;

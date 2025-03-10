@@ -40,7 +40,7 @@ export class AppComponent implements OnInit, AfterViewInit {
   }
 
   ngAfterViewInit(): void {
-    // this.connectSocket();
+
   }
 
   constructor(

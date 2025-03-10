@@ -20,25 +20,20 @@ import { ListFooditemsComponent } from "../../shared/component-shared/list-foodi
 import { CuisineCategoryComponent } from './components/cuisine-category/cuisine-category.component';
 import { CuisineFilterComponent } from './components/cuisine-filter/cuisine-filter.component';
 import { CuisinesComponent } from './cuisines/cuisines.component';
+
 const routes: Routes = [
+  {
+    path: ':id',
+    component: CuisinesComponent,
+    title: 'Cuisines',
+  },
   {
     path: '',
     component: CuisinesComponent,
     title: 'Cuisines',
-    children: [
-      {
-        path: '',
-        component: ListRestaurantComponent,
-        title: 'Cuisines',
-      },
-      {
-        path: ':id',
-        component: ListRestaurantComponent,
-        title: 'Cuisines',
-      }
-    ]
-  },
+  }
 ];
+
 
 const plugins = [
   RestaurantCardComponent,

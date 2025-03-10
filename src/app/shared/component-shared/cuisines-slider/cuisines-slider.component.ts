@@ -1,19 +1,12 @@
 import { CommonModule } from '@angular/common';
 import { Component, CUSTOM_ELEMENTS_SCHEMA, ElementRef, Input, OnInit, ViewChild } from '@angular/core';
-import { Router, RouterModule } from '@angular/router';
+import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { Subscription } from 'rxjs';
 import { CuisineCategory } from 'src/app/core/models/cuisine/cuisine-category.model';
 import { getCuisines } from 'src/app/core/store/cuisine/cuisine.action';
 import { selectCuisines } from 'src/app/core/store/cuisine/cuisine.selector';
 import { CuisinesState } from 'src/app/core/store/cuisine/cuisine.state';
-import { register } from 'swiper/element/bundle';
-register();
-
-export interface ICategory {
-  image: string;
-  name: string;
-}
 
 const plugins = [
   CommonModule,
@@ -39,7 +32,8 @@ export class CuisinesSliderComponent implements OnInit {
 
   constructor(
     private store: Store,
-    private router: Router
+    private router: Router,
+    private route: ActivatedRoute,
   ) { }
 
   ngOnInit(): void {
@@ -47,19 +41,21 @@ export class CuisinesSliderComponent implements OnInit {
   }
 
   loadCuisines(): void {
-    this.store.select(selectCuisines).subscribe({
-      next: (data: CuisinesState) => {
-        if (data.result.length > 0) {
-          this.cuisineCategories = data.result;
-          this.isImageLoaded = true;
-          this.isLoading = false;
-          this.handleCuisineRoute();
-        } else this.isLoading = true;
-      },
-      error: () => {
-        console.log('Error fetching cuisine categories');
-      },
-    });
+    this.store.select(selectCuisines)
+      .subscribe({
+        next: (data: CuisinesState) => {
+          if (data.result.length > 0) {
+            this.cuisineCategories = data.result;
+            this.isImageLoaded = true;
+            this.isLoading = false;
+            this.handleCuisineRoute();
+          }
+          else this.isLoading = true;
+        },
+        error: () => {
+          console.log('Error fetching cuisine categories');
+        },
+      });
 
     if (this.isLoading === true) {
       this.store.dispatch(getCuisines());
@@ -71,18 +67,16 @@ export class CuisinesSliderComponent implements OnInit {
   }
 
   handleCuisineRoute(): void {
-    if (this.router.url.split('/').length > 1) {
-      const cuisineId = this.router.url.split('/')[2];
-      if (cuisineId) {
-        const index = this.cuisineCategories.findIndex(cuisine => cuisine.id == cuisineId);
-        if (index > -1) {
-          const cuisineCategoriesCopy = [...this.cuisineCategories];
-          const [cuisine] = cuisineCategoriesCopy.splice(index, 1);
-          this.sortedCuisineCategories = cuisineCategoriesCopy;
-          this.sortedCuisineCategories.unshift(cuisine);
-        }
-      } else this.sortedCuisineCategories = [...this.cuisineCategories];
-    }
+    const cuisineId = this.route.snapshot.params['id'];
+    if (cuisineId) {
+      const index = this.cuisineCategories.findIndex(cuisine => cuisine.id == cuisineId);
+      if (index > -1) {
+        const cuisineCategoriesCopy = [...this.cuisineCategories];
+        const [cuisine] = cuisineCategoriesCopy.splice(index, 1);
+        this.sortedCuisineCategories = cuisineCategoriesCopy;
+        this.sortedCuisineCategories.unshift(cuisine);
+      }
+    } else this.sortedCuisineCategories = [...this.cuisineCategories];
   }
 
   scrollLeft(): void {
