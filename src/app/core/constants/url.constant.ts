@@ -33,7 +33,8 @@ export const URLConstant = {
       GET_LIST: '/restaurant/recommended',
       GET_INFO: '/restaurant/info',
       GET_MENU: '/restaurant/menu',
-      GET_FOOD_DETAILS: '/restaurant/fooditem/'
+      GET_FOOD_DETAILS: '/restaurant/fooditem/',
+      GET_NEARBY: '/restaurant/nearby',
     },
     ORDER: {
       QUOTE: '/order/quote/delivery'

@@ -1,0 +1,94 @@
+<div class="flex overflow-hidden h-[calc(100vh-80px)]">
+  <section class="list-of-restaurants h-full flex flex-col overflow-y-auto transition-all duration-150"
+    [ngClass]="isShowFullMap ? 'w-0 p-0' : 'w-1/2  px-4'">
+    <div [ngClass]="isShowFullMap ? 'hidden' : ''">
+      <button class="flex items-center gap-2 py-2" (click)="toggleDisplayMap()">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"
+          class="size-6">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 19.5 8.25 12l7.5-7.5" />
+        </svg>
+        <p>Back</p>
+      </button>
+
+      <h2 class="text-2xl font-bold my-4">Nearby Restaurants</h2>
+    </div>
+
+    <div class="grid-cols-3 gap-4" [ngClass]="isShowFullMap ? 'hidden' : 'grid'">
+      <ng-container *ngFor="let item of restaurants">
+        <app-restaurant-card [restaurant]="item"></app-restaurant-card>
+      </ng-container>
+    </div>
+  </section>
+
+  <section class="relative h-full bg-blue-50 transition-all duration-150"
+    [ngClass]="isShowFullMap ? 'w-full' : 'w-1/2'">
+    <div class="absolute top-2 left-2 z-[401] flex flex-col items-center gap-5">
+      <ng-container [ngTemplateOutlet]="buttonShowFullMap"></ng-container>
+      <ng-container [ngTemplateOutlet]="distanceControlTemplate"></ng-container>
+    </div>
+
+
+
+    <div class="map-restaurants-container relative h-full w-full">
+      <div class="map-restaurants-frame h-full w-full">
+        <div id="restaurantsOnMap" class="border-none outline-none h-full w-full"></div>
+      </div>
+    </div>
+  </section>
+</div>
+
+
+<ng-template #buttonShowFullMap>
+  <button (click)="showFullMap()" class="btn-show-full-map bg-white p-4 rounded-full">
+    <svg *ngIf="!isShowFullMap" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+      stroke="currentColor" class="size-5">
+      <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 19.5 8.25 12l7.5-7.5" />
+    </svg>
+
+    <svg *ngIf="isShowFullMap" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+      stroke="currentColor" class="size-5">
+      <path stroke-linecap="round" stroke-linejoin="round" d="m8.25 4.5 7.5 7.5-7.5 7.5" />
+    </svg>
+  </button>
+</ng-template>
+
+
+<ng-template #distanceControlTemplate>
+  <div class="distance-control bg-white rounded-lg flex flex-col items-center gap-2">
+    <button (click)="increaseDistance()" class="p-2 px-5">
+      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"
+        class="size-5">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
+      </svg>
+    </button>
+    <div class="text-gray-600">{{ currDistance }} km</div>
+    <button (click)="decreaseDistance()" class="p-2 px-5">
+      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"
+        class="size-5">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M5 12h14" />
+      </svg>
+    </button>
+  </div>
+</ng-template>
+
+<ng-template #popupRestaurantOnMapTemplate let-restaurant>
+  <div class="popup-content cursor-pointer">
+    <div class="popup-image aspect-video">
+      <img [src]="restaurant.avatar" [alt]="restaurant.restaurant_name" class="object-cover w-full h-full" />
+    </div>
+    <div class="popup-info p-4">
+      <h3 class="text-sm max-w-full line-clamp-1">{{ restaurant.restaurant_name }}</h3>
+
+      <div class="flex gap-2">
+        <div class="restaurant-duration flex items-center gap-1">
+          <i class="fa-regular fa-clock text-grey1 text-xs"></i>
+          <div class="text-grey1 text-xs">{{ getDuration(restaurant.duration) }}</div>
+        </div>
+        <div class="restaurant-distance hidden xs:flex items-center gap-1">
+          <i class="fa-regular fa-map text-grey1 text-xs"></i>
+          <div class="text-grey1 text-xs">{{ getDistance(restaurant.distance) }}</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</ng-template>

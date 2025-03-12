@@ -1,0 +1,47 @@
+::ng-deep .custom-marker:hover {
+  background-color: #000 !important;
+}
+
+::ng-deep .custom-marker {
+  position: absolute;
+  top: 50%;
+  background-color: #fff;
+  box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+}
+
+::ng-deep
+  .map-restaurants-container
+  .leaflet-control-attribution.leaflet-control {
+  @apply hidden;
+}
+
+::ng-deep .map-restaurants-container .leaflet-popup {
+  margin-bottom: 5px;
+  width: 250px;
+}
+
+::ng-deep .map-restaurants-container .leaflet-popup-content {
+  margin: 0;
+}
+
+::ng-deep .map-restaurants-container .leaflet-popup-content-wrapper {
+  padding: 0;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+::ng-deep .btn-show-full-map {
+  box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+}
+
+::ng-deep .marker-dot {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-size: 12px;
+  @apply bg-red1;
+}

@@ -1,5 +1,5 @@
 <div class="relative flex justify-between w-full h-32 mb-5 bg-white lg:px-3 px-0 p-3  rounded-md">
-  <a [routerLink]="['/restaurant', restaurant._id]"
+  <a [routerLink]="['/restaurant', restaurant.id]"
     class="absolute right-3 bottom-3 p-2 px-4 bg-primary text-white font-bold rounded-md hover:text-white hover:opacity-90">
     Start Grabbing Food
   </a>
@@ -19,7 +19,7 @@
 
 
 <ng-template #binButtonTpl>
-  <button (click)="removeRestaurant(restaurant._id)" class="bin-button">
+  <button (click)="removeRestaurant(restaurant.id)" class="bin-button">
     <ng-container *ngIf="removing">
       <dot-spinner></dot-spinner>
     </ng-container>

@@ -6,6 +6,7 @@ export class SystemConstant {
   public static CURRENT_INFO_GOOGLE = 'CURRENT_INFO_GOOGLE';
   public static BASKET = 'BASKET';
   public static WISH_LIST = 'WISH_LIST';
+  public static DINING_MODE = 'DINING_MODE';
 
   public static COORDINATES = [10.85063531707399, 106.7719145751954];
 }

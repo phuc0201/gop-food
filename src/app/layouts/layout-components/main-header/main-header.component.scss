@@ -12,6 +12,14 @@
   background-image: none;
 }
 
+#header .search-bar {
+  @apply border border-solid border-transparent;
+}
+
+#header.header-sticky .search-bar {
+  @apply border-gray-300;
+}
+
 #header.scrolled .search-bar,
 #header.header-stick .search-bar {
   @apply border-gray-300;

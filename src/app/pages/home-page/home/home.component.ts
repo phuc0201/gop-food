@@ -1,7 +1,8 @@
-import { Component, HostListener, OnDestroy, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
+import { AfterViewInit, Component, HostListener, OnDestroy, OnInit } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { Subscription } from 'rxjs';
+import { SystemConstant } from 'src/app/core/constants/system.constant';
+import { DiningMode } from 'src/app/core/models/common/enums/index.enum';
 import { IPagedResults } from 'src/app/core/models/common/response-data.model';
 import { FoodItems } from 'src/app/core/models/restaurant/food-items.model';
 import { RestaurantRecommended } from 'src/app/core/models/restaurant/restaurant.model';
@@ -15,7 +16,8 @@ import { selectRestaurantList } from 'src/app/core/store/restaurant/restaurant.s
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.scss']
 })
-export class HomeComponent implements OnInit, OnDestroy {
+export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
+  displayNearbyRestaurantsOnMap: boolean = false;
   address: string = '';
   foodItems: FoodItems<string>[] = [];
   listFoodCol: number = 6;
@@ -26,22 +28,28 @@ export class HomeComponent implements OnInit, OnDestroy {
   limit = 8;
   isHiddenSystemService: boolean = true;
   currPage = 1;
+  diningMode = DiningMode.DELIVERY;
+
   constructor(
     private geoSrv: GeolocationService,
     private searchSrv: SearchService,
     private store: Store,
-    private router: Router
   ) { }
 
   ngOnInit(): void {
     this.handleMobileScreen();
     this.searchSrv.setRestaurantSearchQuery('');
-    this.loadData();
+    this.loadRestaurants();
+    this.getDiningMode();
+  }
+
+  ngAfterViewInit(): void {
     document.getElementById('footer')?.classList.add('hidden');
   }
 
   ngOnDestroy(): void {
     document.getElementById('footer')?.classList.remove('hidden');
+    document.getElementById('header')?.classList.remove('header-sticky');
   }
 
   @HostListener('window:resize', ['$event'])
@@ -57,7 +65,7 @@ export class HomeComponent implements OnInit, OnDestroy {
     this.geoSrv.currLocation.subscribe(res => this.address = res.address);
   }
 
-  loadRecommendedRestaurants() {
+  loadRestaurants() {
     this.restaurantsSubscription = this.store.select(selectRestaurantList).subscribe({
       next: res => {
         if (res.result.data.length > 0) {
@@ -65,8 +73,10 @@ export class HomeComponent implements OnInit, OnDestroy {
           this.currPage = res.result.currPage;
           this.isLoading = false;
           if (res.result.currPage === res.result.totalPage) {
-            document.getElementById('footer')?.classList.remove('hidden');
-            this.isHiddenSystemService = false;
+            setTimeout(() => {
+              document.getElementById('footer')?.classList.remove('hidden');
+              this.isHiddenSystemService = false;
+            }, 200);
           }
         }
         else this.isLoading = true;
@@ -86,8 +96,42 @@ export class HomeComponent implements OnInit, OnDestroy {
     }
   }
 
-  loadData() {
-    this.loadRecommendedRestaurants();
+  toggleNearbyRestaurantsOnMap() {
+    this.displayNearbyRestaurantsOnMap = !this.displayNearbyRestaurantsOnMap;
+
+    const header = document.getElementById('header');
+    if (this.displayNearbyRestaurantsOnMap) {
+      this.setDiningMode(DiningMode.PICKUP);
+      if (header && !header.classList.contains('header-sticky')) {
+        header.classList.add('header-sticky');
+      }
+    }
+    else if (header) {
+      header.classList.remove('header-sticky');
+      this.setDiningMode(DiningMode.DELIVERY);
+    }
+  }
+
+  getDiningMode() {
+    const diningMode = localStorage.getItem(SystemConstant.DINING_MODE);
+    if (diningMode && diningMode === DiningMode.PICKUP) {
+      const header = document.getElementById('header');
+      if (header && !header.classList.contains('header-sticky'))
+        header.classList.add('header-sticky');
+
+      this.displayNearbyRestaurantsOnMap = !this.displayNearbyRestaurantsOnMap;
+
+      this.setDiningMode(DiningMode.PICKUP);
+      this.diningMode = DiningMode.PICKUP;
+    }
+    else {
+      this.setDiningMode(DiningMode.DELIVERY);
+    }
+  }
+
+  setDiningMode(mode: DiningMode) {
+    this.diningMode = mode;
+    localStorage.setItem(SystemConstant.DINING_MODE, mode);
   }
 }
 

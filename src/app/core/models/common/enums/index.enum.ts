@@ -113,3 +113,9 @@ export enum SortStatus {
   RECOMMENDED = 'recommended',
   RATING = 'rating',
 }
+
+
+export enum DiningMode {
+  DELIVERY = 'DELIVERY',
+  PICKUP = 'PICKUP',
+}

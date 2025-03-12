@@ -52,7 +52,7 @@ export class RestaurantInfoComponent implements OnInit, OnChanges {
         }
       });
 
-      const index = this.restaurantSrv.getWishList().findIndex(res => res._id == this.restaurant._id);
+      const index = this.restaurantSrv.getWishList().findIndex(res => res.id == this.restaurant._id);
       this.isInWishlist = index !== -1;
     }
   }
@@ -85,7 +85,7 @@ export class RestaurantInfoComponent implements OnInit, OnChanges {
       this.restaurant.duration,
       false,
     );
-    const index = this.restaurantSrv.getWishList().findIndex(res => res._id == restaurant._id);
+    const index = this.restaurantSrv.getWishList().findIndex(res => res.id == restaurant.id);
 
     this.isInWishlist = index === -1;
     this.restaurantSrv.addToWishList(restaurant);

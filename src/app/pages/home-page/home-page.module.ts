@@ -19,6 +19,7 @@ import { PageLoaderComponent } from 'src/app/shared/component-shared/loaders/pag
 import { MapComponent } from 'src/app/shared/component-shared/map/map.component';
 import { CuisinesSliderComponent } from "../../shared/component-shared/cuisines-slider/cuisines-slider.component";
 import { HomeSliderComponent } from './components/home-slider/home-slider.component';
+import { NearbyRestaurantsComponent } from './components/nearby-restaurants/nearby-restaurants.component';
 import { NewAndEventsComponent } from './components/new-and-events/new-and-events.component';
 import { OurMenuComponent } from './components/our-menu/our-menu.component';
 import { OurServicesComponent } from './components/our-services/our-services.component';
@@ -45,7 +46,8 @@ const plugins = [
   ListRestaurantComponent,
   ListFooditemsComponent,
   PageLoaderComponent,
-  NzPopoverModule
+  NzPopoverModule,
+  RestaurantCardComponent
 ];
 
 @NgModule({
@@ -55,6 +57,7 @@ const plugins = [
     NewAndEventsComponent,
     OurServicesComponent,
     OurMenuComponent,
+    NearbyRestaurantsComponent,
   ],
   imports: [
     CommonModule,

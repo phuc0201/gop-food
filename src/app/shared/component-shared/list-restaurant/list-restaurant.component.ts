@@ -196,7 +196,7 @@ export class ListRestaurantComponent implements OnInit, OnDestroy, AfterViewInit
   }
 
   private handleRestaurantResponse(res: IPagedResults<RestaurantRecommended>): void {
-    const newData = res.data.filter(newItem => !this.restaurants.data.some(existingItem => existingItem._id === newItem._id));
+    const newData = res.data.filter(newItem => !this.restaurants.data.some(existingItem => existingItem.id === newItem.id));
     this.restaurants = { currPage: res.currPage, totalPage: res.totalPage, data: [...this.restaurants.data, ...newData] };
     this.isLoading = false;
     this.isNoData = this.restaurants.data.length === 0;

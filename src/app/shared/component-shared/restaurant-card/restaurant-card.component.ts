@@ -43,7 +43,7 @@ export class RestaurantCardComponent implements OnChanges, OnInit {
   }
 
   ngOnInit(): void {
-    const index = this.resSrv.getWishList().findIndex(res => res._id == this.restaurant._id);
+    const index = this.resSrv.getWishList().findIndex(res => res.id == this.restaurant.id);
     this.checkInWishList = index !== -1;
   }
 
@@ -64,13 +64,13 @@ export class RestaurantCardComponent implements OnChanges, OnInit {
 
   checkIsWishLish(id: string): boolean {
     const wl = this.resSrv.getWishList();
-    const index = wl.findIndex(item => item._id === id);
+    const index = wl.findIndex(item => item.id === id);
 
     return index !== -1 ? true : false;
   }
 
   toggleWishlist() {
-    const index = this.resSrv.getWishList().findIndex(res => res._id == this.restaurant._id);
+    const index = this.resSrv.getWishList().findIndex(res => res.id == this.restaurant.id);
 
     this.checkInWishList = index === -1;
     this.resSrv.addToWishList(this.restaurant);

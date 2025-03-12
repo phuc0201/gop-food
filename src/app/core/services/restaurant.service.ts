@@ -102,10 +102,10 @@ export class RestaurantService {
 
   addToWishList(restaurant: RestaurantRecommended) {
     let wl = this.getWishList();
-    const index = wl.findIndex(item => item._id === restaurant._id);
+    const index = wl.findIndex(item => item.id === restaurant.id);
 
     if (index !== -1) {
-      this.removeItemInWishList(wl[index]._id);
+      this.removeItemInWishList(wl[index].id);
     } else {
       wl.push(restaurant);
       this.updateWishList(wl);
@@ -114,7 +114,7 @@ export class RestaurantService {
 
   removeItemInWishList(id: string) {
     let wl = this.getWishList();
-    let new_wl = wl.filter(item => item._id !== id);
+    let new_wl = wl.filter(item => item.id !== id);
     this.updateWishList(new_wl);
   }
 
@@ -126,5 +126,14 @@ export class RestaurantService {
   getWishList(): RestaurantRecommended[] {
     const wl = localStorage.getItem(SystemConstant.WISH_LIST);
     return wl ? JSON.parse(wl) : [];
+  }
+
+  getRestaurantsNearby(coordinates: [number, number], distance: number = 10000): Observable<RestaurantRecommended[]> {
+    let params = new HttpParams()
+      .set('coordinates', `${coordinates[1]},${coordinates[0]}`)
+      .set('distance', distance.toString());
+
+    return this.http.get<RestaurantRecommended[]>(this.constructUrl(URLConstant.API.RESTAURANT.GET_NEARBY), { params })
+      .pipe(catchError(this.handleError<RestaurantRecommended[]>()));
   }
 }

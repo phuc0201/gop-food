@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { AfterViewInit, Component, EventEmitter, HostListener, Input, OnChanges, Output, SimpleChanges } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, EventEmitter, HostListener, Input, OnChanges, Output, SimpleChanges, ViewChild } from '@angular/core';
 import { LeafletModule } from '@asymmetrik/ngx-leaflet';
 import * as L from 'leaflet';
 import 'leaflet-routing-machine';
@@ -18,6 +18,8 @@ const plugins = [
   imports: plugins
 })
 export class MapComponent implements AfterViewInit, OnChanges {
+  @ViewChild('mapId') mapId!: ElementRef;
+
   @Input() address: string = '';
   @Input() enableSelectLocation: boolean = true;
   @Input() zoomValue: number = 13;
@@ -26,6 +28,9 @@ export class MapComponent implements AfterViewInit, OnChanges {
   @Input() locationMarkers: LocationMarker[] = [];
   @Output() addressListChange = new EventEmitter<Address[]>();
   @Input() enableZoom: boolean = true;
+  @Input() viewOnly: boolean = false;
+  @Input() mapContainerName: string = 'map';
+
   selectedCoordinate: [number, number] = [0, 0];
   map!: L.Map;
   currMarker!: L.Marker;
@@ -44,9 +49,10 @@ export class MapComponent implements AfterViewInit, OnChanges {
 
   ngAfterViewInit(): void {
     this.isMobile = window.innerWidth < 768;
+
     this.initMap();
 
-    if (this.map) {
+    if (this.map && !this.viewOnly) {
       this.handleControlMap();
       if (this.locationMarkers.length > 0) {
         this.createRouting();
@@ -70,7 +76,7 @@ export class MapComponent implements AfterViewInit, OnChanges {
   }
 
   initMap(): void {
-    this.map = L.map('map', {
+    this.map = L.map(this.mapContainerName, {
       center: this.location as L.LatLngExpression,
       zoom: this.zoomValue,
       scrollWheelZoom: this.enableZoom,
@@ -87,8 +93,6 @@ export class MapComponent implements AfterViewInit, OnChanges {
     }).addTo(this.map);
 
     tiles.addTo(this.map);
-
-
   }
 
   handleControlMap(): void {

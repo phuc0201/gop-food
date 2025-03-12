@@ -1,11 +1,11 @@
 <div class="map-container relative">
   <div class="map-frame">
-    <div id="map" class="border-none outline-none"
+    <div [id]="mapContainerName" class="map border-none outline-none h-full"
       [ngClass]="enableSelectLocation ? '!cursor-default' : 'cursor-pointer'"></div>
   </div>
 </div>
 
-<ng-container *ngIf="locationMarkers.length == 0">
+<ng-container *ngIf="locationMarkers.length == 0 && !viewOnly">
   <div class="ripple-dot w-20 h-20" [ngClass]="{'hidden' : isDragging}"></div>
 
   <div class="absolute transition-all duration-300 bottom-1/2 left-1/2 -translate-x-1/2 z-[400]"

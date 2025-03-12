@@ -2,7 +2,7 @@
   <button (click)="toggleWishlist()" class="favorite absolute top-3 right-3 z-10">
     <div class="icon-wrapper w-8 h-8 rounded-full bg-white flex justify-center items-center">
       <div class="ui-bookmark">
-        <input [id]="restaurant._id" [checked]="checkInWishList" type="checkbox" class="hidden">
+        <input [id]="restaurant.id" [checked]="checkInWishList" type="checkbox" class="hidden">
         <div class="bookmark">
           <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" stroke-width="1.5">
             <path stroke-linecap="round" stroke-linejoin="round"
@@ -13,7 +13,7 @@
     </div>
   </button>
 
-  <a [routerLink]="['/restaurant', restaurant._id]" class="text-black hover:text-black">
+  <a [routerLink]="['/restaurant', restaurant.id]" class="text-black hover:text-black">
     <div
       class="restaurant-card flex md:flex-col flex-row md:gap-0 gap-3 rounded-lg cursor-pointer group lg:mb-8 md:mb-6 sm:mb-4 mb-3">
       <div class="md:mb-3 relative">

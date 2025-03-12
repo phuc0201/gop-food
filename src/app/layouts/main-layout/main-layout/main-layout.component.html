@@ -1,9 +1,7 @@
 <ng-container *ngIf="!isMobile">
   <div class="relative webbody">
     <app-main-header [isSticky]="isHeaderSticky"></app-main-header>
-    <div class="pb-10">
-      <router-outlet></router-outlet>
-    </div>
+    <router-outlet></router-outlet>
     <app-main-footer></app-main-footer>
   </div>
 </ng-container>

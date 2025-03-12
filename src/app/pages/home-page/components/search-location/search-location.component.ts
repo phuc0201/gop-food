@@ -23,6 +23,25 @@ export class SearchLocationComponent implements OnInit {
   selectedAddress = new SelectedAddress();
   searchValue: string = '';
 
+  ngOnInit(): void {
+    this.geoSrv.currLocation.subscribe((location) => {
+      this.selectedAddress = location;
+    });
+  }
+
+  constructor(
+    private translate: TranslateService,
+    private searchSrv: SearchService,
+    private modal: NzModalService,
+    private router: Router,
+    private profileSrv: ProfileService,
+    private geoSrv: GeolocationService,
+    private viewContainerRef: ViewContainerRef,
+  ) {
+    translate.use(localStorage.getItem('language')?.toString() ?? 'vi');
+    this.filteredAddress = this.address;
+  }
+
   createModal<T>(component: Type<T>, className: string, data: LocationMarker[]) {
     return this.modal.create<T, LocationMarker[]>({
       nzContent: component,
@@ -72,24 +91,5 @@ export class SearchLocationComponent implements OnInit {
         _location.unsubscribe();
       }
     });
-  }
-
-  ngOnInit(): void {
-    this.geoSrv.currLocation.subscribe((location) => {
-      this.selectedAddress = location;
-    });
-  }
-
-  constructor(
-    private translate: TranslateService,
-    private searchSrv: SearchService,
-    private modal: NzModalService,
-    private router: Router,
-    private profileSrv: ProfileService,
-    private geoSrv: GeolocationService,
-    private viewContainerRef: ViewContainerRef,
-  ) {
-    translate.use(localStorage.getItem('language')?.toString() ?? 'vi');
-    this.filteredAddress = this.address;
   }
 }

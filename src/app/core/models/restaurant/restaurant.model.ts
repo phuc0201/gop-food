@@ -22,28 +22,32 @@ export class Restaurant {
 }
 
 export class RestaurantRecommended {
-  _id: string;
+  id: string;
   restaurant_name: string;
+  location?: ILocation;
   cuisine_categories: string[];
   avatar: string;
   rating: number;
   distance: number;
   duration: number;
   hasCampaign: boolean;
-  items: any;
-  count: any;
+  isClosed?: boolean;
+  items?: any;
+  count?: any;
 
   constructor(
-    _id: string = '',
+    id: string = '',
     restaurant_name: string = '',
     cuisine_categories: string[] = [],
     avatar: string = '',
     rating: number = 0,
     distance: number = 0,
     duration: number = 0,
-    hasCampaign: boolean = false
+    hasCampaign: boolean = false,
+    location?: ILocation,
+    isClosed?: boolean
   ) {
-    this._id = _id;
+    this.id = id;
     this.restaurant_name = restaurant_name;
     this.cuisine_categories = cuisine_categories;
     this.avatar = avatar;
@@ -51,5 +55,7 @@ export class RestaurantRecommended {
     this.distance = distance;
     this.duration = duration;
     this.hasCampaign = hasCampaign;
+    this.location = location;
+    this.isClosed = isClosed;
   }
 }

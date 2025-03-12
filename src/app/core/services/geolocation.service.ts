@@ -40,7 +40,7 @@ export class GeolocationService {
 
   setLocationByProfile() {
     const profile = this.profileSrv.getProfileInSession();
-    if (profile.address !== '') {
+    if (profile && profile.address !== '') {
       const _location = this.searchLocationByAddress(profile.address)
         .pipe(
           filter(res => res.results.length > 0)
@@ -60,6 +60,9 @@ export class GeolocationService {
             _location.unsubscribe();
           }
         });
+    }
+    else {
+      this.setLocation(this.defaultLocation);
     }
   }
 

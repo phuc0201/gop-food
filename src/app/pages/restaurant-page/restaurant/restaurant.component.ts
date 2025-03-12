@@ -26,7 +26,7 @@ export class RestaurantComponent implements OnInit {
   ngOnInit(): void {
     this.handleMobileScreen();
     const id = this.route.snapshot.paramMap.get('id') as string;
-    const index = this.restaurantSrv.getWishList().findIndex(res => res._id == id);
+    const index = this.restaurantSrv.getWishList().findIndex(res => res.id == id);
     this.isInWishlist = index !== -1;
 
     this.restaurantSubscription = this.store.select(selectRestaurantInfo).subscribe({
@@ -68,7 +68,7 @@ export class RestaurantComponent implements OnInit {
       false,
     );
 
-    const index = this.restaurantSrv.getWishList().findIndex(res => res._id == restaurant._id);
+    const index = this.restaurantSrv.getWishList().findIndex(res => res.id == restaurant.id);
 
     this.isInWishlist = index === -1;
     this.restaurantSrv.addToWishList(restaurant);

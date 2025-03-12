@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, Input, OnInit, ViewContainerRef } from '@angular/core';
+import { AfterViewInit, Component, Input, OnInit, ViewContainerRef } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { Router, RouterModule } from '@angular/router';
 import { Store } from '@ngrx/store';
@@ -7,7 +7,9 @@ import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { NzBadgeModule } from 'ng-zorro-antd/badge';
 import { NzModalService } from 'ng-zorro-antd/modal';
 import { NzSelectModule } from 'ng-zorro-antd/select';
+import { SystemConstant } from 'src/app/core/constants/system.constant';
 import { URLConstant } from 'src/app/core/constants/url.constant';
+import { DiningMode } from 'src/app/core/models/common/enums/index.enum';
 import { Basket } from 'src/app/core/models/order/order.model';
 import { AuthService } from 'src/app/core/services/auth.service';
 import { GeolocationService } from 'src/app/core/services/geolocation.service';
@@ -40,7 +42,7 @@ const plugins = [
     NzModalService
   ]
 })
-export class MainHeaderComponent implements OnInit {
+export class MainHeaderComponent implements OnInit, AfterViewInit {
   @Input() isSticky: boolean = false;
   langData: string = 'LAYOUTS.MAIN_LAYOUT.HEADER.';
   currLang?: string = '';
@@ -103,6 +105,10 @@ export class MainHeaderComponent implements OnInit {
 
   }
 
+  ngAfterViewInit(): void {
+    this.getDiningMode();
+  }
+
   switchLanguage() {
     localStorage.setItem('language', this.currLang ?? 'vi');
     if (this.currLang !== this.translate.currentLang) {
@@ -124,5 +130,15 @@ export class MainHeaderComponent implements OnInit {
       nzFooter: null,
       nzData: '',
     });
+  }
+
+  getDiningMode() {
+    const diningMode = localStorage.getItem(SystemConstant.DINING_MODE);
+    if (diningMode && diningMode === DiningMode.PICKUP) {
+      document.getElementById('header')?.classList.add('header-sticky');
+    }
+    else {
+      localStorage.setItem(SystemConstant.DINING_MODE, DiningMode.DELIVERY);
+    }
   }
 }

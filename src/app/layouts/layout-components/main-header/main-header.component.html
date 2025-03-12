@@ -1,10 +1,9 @@
-<div appScroll id="header" class="w-full py-3 md:py-5 top-0 left-0 z-[401] md:fixed sticky hidden md:block"
+<div appScroll id="header" class="w-full py-3 md:py-5 top-0 left-0 z-[1000] md:fixed sticky hidden md:block"
   [class.header-sticky]="isSticky">
   <div class="sectionContainer flex justify-between items-center flex-wrap">
     <a routerLink="/" class="logo md:text-3xl text-xl font-medium text-white cursor-pointer">GoPFood</a>
 
-    <div [ngClass]="isSticky ? 'border-gray-200' : 'border-transparent'"
-      class="search-bar lg:flex hidden border pr-5 flex-1 max-w-96 rounded-md h-10 items-center bg-white">
+    <div class="search-bar lg:flex hidden border pr-5 flex-1 max-w-96 rounded-md h-10 items-center bg-white">
       <div class="px-5">
         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"
           class="size-6">
