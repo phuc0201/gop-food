@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { AfterViewInit, Component, Input, OnInit, ViewContainerRef } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, Input, OnInit, ViewChild, ViewContainerRef } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { Router, RouterModule } from '@angular/router';
 import { Store } from '@ngrx/store';
@@ -7,9 +7,7 @@ import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { NzBadgeModule } from 'ng-zorro-antd/badge';
 import { NzModalService } from 'ng-zorro-antd/modal';
 import { NzSelectModule } from 'ng-zorro-antd/select';
-import { SystemConstant } from 'src/app/core/constants/system.constant';
 import { URLConstant } from 'src/app/core/constants/url.constant';
-import { DiningMode } from 'src/app/core/models/common/enums/index.enum';
 import { Basket } from 'src/app/core/models/order/order.model';
 import { AuthService } from 'src/app/core/services/auth.service';
 import { GeolocationService } from 'src/app/core/services/geolocation.service';
@@ -43,6 +41,7 @@ const plugins = [
   ]
 })
 export class MainHeaderComponent implements OnInit, AfterViewInit {
+  @ViewChild('header') header!: ElementRef;
   @Input() isSticky: boolean = false;
   langData: string = 'LAYOUTS.MAIN_LAYOUT.HEADER.';
   currLang?: string = '';
@@ -102,11 +101,10 @@ export class MainHeaderComponent implements OnInit, AfterViewInit {
     this.geoSrv.currLocation.subscribe(location => {
       this.address = location.address;
     });
-
   }
 
   ngAfterViewInit(): void {
-    this.getDiningMode();
+
   }
 
   switchLanguage() {
@@ -130,15 +128,5 @@ export class MainHeaderComponent implements OnInit, AfterViewInit {
       nzFooter: null,
       nzData: '',
     });
-  }
-
-  getDiningMode() {
-    const diningMode = localStorage.getItem(SystemConstant.DINING_MODE);
-    if (diningMode && diningMode === DiningMode.PICKUP) {
-      document.getElementById('header')?.classList.add('header-sticky');
-    }
-    else {
-      localStorage.setItem(SystemConstant.DINING_MODE, DiningMode.DELIVERY);
-    }
   }
 }

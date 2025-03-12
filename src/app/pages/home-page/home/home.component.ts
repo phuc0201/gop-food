@@ -39,7 +39,6 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
   ngOnInit(): void {
     this.handleMobileScreen();
     this.searchSrv.setRestaurantSearchQuery('');
-    this.loadRestaurants();
     this.getDiningMode();
   }
 
@@ -49,7 +48,6 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
 
   ngOnDestroy(): void {
     document.getElementById('footer')?.classList.remove('hidden');
-    document.getElementById('header')?.classList.remove('header-sticky');
   }
 
   @HostListener('window:resize', ['$event'])
@@ -97,34 +95,39 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   toggleNearbyRestaurantsOnMap() {
-    this.displayNearbyRestaurantsOnMap = !this.displayNearbyRestaurantsOnMap;
+    if (window.innerWidth <= 768) {
+      const webbodyMobile = document.getElementById('webbody-mobile');
+      webbodyMobile?.scroll({
+        top: 0,
+        behavior: 'instant'
+      });
+    }
 
-    const header = document.getElementById('header');
-    if (this.displayNearbyRestaurantsOnMap) {
-      this.setDiningMode(DiningMode.PICKUP);
-      if (header && !header.classList.contains('header-sticky')) {
-        header.classList.add('header-sticky');
+    setTimeout(() => {
+      this.displayNearbyRestaurantsOnMap = !this.displayNearbyRestaurantsOnMap;
+
+      const header = document.getElementById('header');
+      if (this.displayNearbyRestaurantsOnMap) {
+        this.setDiningMode(DiningMode.PICKUP);
+        header?.classList.add('header-sticky');
       }
-    }
-    else if (header) {
-      header.classList.remove('header-sticky');
-      this.setDiningMode(DiningMode.DELIVERY);
-    }
+      else {
+        this.loadRestaurants();
+        header?.classList.remove('header-sticky');
+        this.setDiningMode(DiningMode.DELIVERY);
+      }
+    }, window.innerWidth <= 768 ? 100 : 0);
   }
 
   getDiningMode() {
     const diningMode = localStorage.getItem(SystemConstant.DINING_MODE);
     if (diningMode && diningMode === DiningMode.PICKUP) {
-      const header = document.getElementById('header');
-      if (header && !header.classList.contains('header-sticky'))
-        header.classList.add('header-sticky');
-
-      this.displayNearbyRestaurantsOnMap = !this.displayNearbyRestaurantsOnMap;
-
+      this.displayNearbyRestaurantsOnMap = true;
       this.setDiningMode(DiningMode.PICKUP);
       this.diningMode = DiningMode.PICKUP;
     }
     else {
+      this.loadRestaurants();
       this.setDiningMode(DiningMode.DELIVERY);
     }
   }

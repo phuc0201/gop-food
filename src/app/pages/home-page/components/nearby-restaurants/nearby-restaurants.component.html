@@ -1,6 +1,6 @@
-<div class="flex overflow-hidden h-[calc(100vh-80px)]">
-  <section class="list-of-restaurants h-full flex flex-col overflow-y-auto transition-all duration-150"
-    [ngClass]="isShowFullMap ? 'w-0 p-0' : 'w-1/2  px-4'">
+<div class="flex overflow-hidden md:h-[calc(100vh-80px)] h-[calc(100vh-112px-56px)]">
+  <section class="list-of-restaurants h-full md:flex hidden flex-col overflow-y-auto transition-all duration-150"
+    [ngClass]="isShowFullMap ? 'w-0 p-0' : '2xl:w-1/2 md:w-1/3 w-0  px-4'">
     <div [ngClass]="isShowFullMap ? 'hidden' : ''">
       <button class="flex items-center gap-2 py-2" (click)="toggleDisplayMap()">
         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"
@@ -13,21 +13,24 @@
       <h2 class="text-2xl font-bold my-4">Nearby Restaurants</h2>
     </div>
 
-    <div class="grid-cols-3 gap-4" [ngClass]="isShowFullMap ? 'hidden' : 'grid'">
+    <div class="2xl:grid-cols-3 grid-cols-1 gap-4" [ngClass]="isShowFullMap ? 'hidden' : 'grid'">
       <ng-container *ngFor="let item of restaurants">
-        <app-restaurant-card [restaurant]="item"></app-restaurant-card>
+        <app-restaurant-card [restaurant]="item" (mouseleave)="onRestaurantCardHover(item)"
+          (mouseenter)="onRestaurantCardHover(item, true)"></app-restaurant-card>
       </ng-container>
+    </div>
+
+    <div [hidden]="restaurants.length > 0" class="w-full flex justify-center h-full">
+      <img src="assets/img/icons/ilus-basket-empty.svg" alt="empty" class="max-w-[400px]">
     </div>
   </section>
 
   <section class="relative h-full bg-blue-50 transition-all duration-150"
-    [ngClass]="isShowFullMap ? 'w-full' : 'w-1/2'">
+    [ngClass]="isShowFullMap ? 'w-full' : '2xl:w-1/2 md:w-2/3 w-full'">
     <div class="absolute top-2 left-2 z-[401] flex flex-col items-center gap-5">
       <ng-container [ngTemplateOutlet]="buttonShowFullMap"></ng-container>
       <ng-container [ngTemplateOutlet]="distanceControlTemplate"></ng-container>
     </div>
-
-
 
     <div class="map-restaurants-container relative h-full w-full">
       <div class="map-restaurants-frame h-full w-full">
@@ -39,7 +42,7 @@
 
 
 <ng-template #buttonShowFullMap>
-  <button (click)="showFullMap()" class="btn-show-full-map bg-white p-4 rounded-full">
+  <button (click)="showFullMap()" class="btn-show-full-map bg-white p-4 rounded-full md:block hidden">
     <svg *ngIf="!isShowFullMap" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
       stroke="currentColor" class="size-5">
       <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 19.5 8.25 12l7.5-7.5" />
@@ -48,6 +51,13 @@
     <svg *ngIf="isShowFullMap" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
       stroke="currentColor" class="size-5">
       <path stroke-linecap="round" stroke-linejoin="round" d="m8.25 4.5 7.5 7.5-7.5 7.5" />
+    </svg>
+  </button>
+
+  <button (click)="toggleDisplayMap()" class="btn-show-full-map bg-white p-4 rounded-full md:hidden block">
+    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"
+      class="size-5">
+      <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 19.5 8.25 12l7.5-7.5" />
     </svg>
   </button>
 </ng-template>
@@ -79,6 +89,9 @@
     <div class="popup-info p-4">
       <h3 class="text-sm max-w-full line-clamp-1">{{ restaurant.restaurant_name }}</h3>
 
+      <div class="my-1 text-red1">
+        {{ restaurant.status == 'CLOSED' ? 'closed' : '' }}
+      </div>
       <div class="flex gap-2">
         <div class="restaurant-duration flex items-center gap-1">
           <i class="fa-regular fa-clock text-grey1 text-xs"></i>

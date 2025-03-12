@@ -5,19 +5,21 @@
       <app-restaurant-card [restaurant]="item"></app-restaurant-card>
     </div>
   </ng-container>
+</div>
 
-  <ng-container *ngIf="isLoading">
+<ng-container *ngIf="isFisrtLoading">
+  <div nz-row nzGutter="20">
     <ng-container *ngFor="let item of getListOfRestaurantsSkeleteon()">
       <div nz-col nzSpan="24" [nzSm]='columnConfig.sm' [nzMd]="columnConfig.md" [nzLg]="columnConfig.lg"
-        class="restaurant-card-wrapper lg:mb-8 md:mb-6 sm:mb-4 mb-3">
+        class="restaurants-skeleton lg:mb-8 md:mb-6 sm:mb-4 mb-3">
         <ng-container [ngTemplateOutlet]="resCardLoadingTpl"></ng-container>
       </div>
     </ng-container>
-  </ng-container>
-</div>
+  </div>
+</ng-container>
 
-<ng-container>
-  <div [hidden]="!isNoData" class="w-full h-full flex justify-center items-center p-5">
+<ng-container *ngIf="!isFisrtLoading">
+  <div [hidden]="restaurants.data.length > 0" class="w-full h-full flex justify-center items-center p-5">
     <img src="assets/img/icons/ilus-basket-empty.svg" alt="" class="w-full max-w-96">
   </div>
 </ng-container>

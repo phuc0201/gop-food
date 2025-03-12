@@ -72,7 +72,7 @@ export class NearbyRestaurantsComponent implements OnInit, AfterViewInit, OnDest
   initMap(coords: number[]): void {
     this.map = L.map('restaurantsOnMap', {
       center: this.coordinates as L.LatLngExpression,
-      zoom: 12,
+      zoom: 15,
       zoomControl: false
     });
 
@@ -94,6 +94,24 @@ export class NearbyRestaurantsComponent implements OnInit, AfterViewInit, OnDest
 
   fetchRestaurantsNearby(): void {
     this.distanceChange$.next(this.currDistance);
+  }
+
+  onRestaurantCardHover(restaurant: RestaurantRecommended, isHover: boolean = false): void {
+    const marker = this.markers.find(m => {
+      const markerCoords = (m.getLatLng() as L.LatLng).wrap();
+      const restaurantCoords = L.latLng(restaurant.location?.coordinates as L.LatLngExpression).wrap();
+      return markerCoords.equals(restaurantCoords);
+    });
+
+    if (marker) {
+      const popupContent = this.createPopupHtml(restaurant);
+      if (isHover) {
+        marker.bindPopup(popupContent).openPopup();
+        this.map.setView(marker.getLatLng());
+      } else {
+        marker.closePopup();
+      }
+    }
   }
 
   createMarkers() {
@@ -147,8 +165,6 @@ export class NearbyRestaurantsComponent implements OnInit, AfterViewInit, OnDest
   }
 
   createMarkerHtml(restaurant: RestaurantRecommended) {
-    console.log(restaurant);
-
     if (!restaurant.isClosed) {
       return `
     <button class="custom-marker w-8 h-8 rounded-full text-xs font-bold hover:text-white flex items-center justify-center bg-white">

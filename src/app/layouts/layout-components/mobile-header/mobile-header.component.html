@@ -1,5 +1,5 @@
-<div *ngIf="isActive" id="mobile-header" class="w-full sectionContainer bg-white z-30 transition-all py-4 sticky top-0"
-  [ngClass]="{'h-[72px]' : isScroll}">
+<div *ngIf="isActive" id="mobile-header"
+  class="w-full sectionContainer bg-white z-[403] transition-all py-4 sticky top-0" [ngClass]="{'h-[72px]' : isScroll}">
   <div class="relative flex items-center justify-between h-10">
     <div (click)="showMapSelector()">
       <div class="flex items-center cursor-pointer" [ngClass]="{'opacity-0' : isScroll}">

@@ -1,6 +1,8 @@
 import { AfterViewInit, Component, ElementRef, HostListener, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { NavigationEnd, Router } from '@angular/router';
 import { filter, fromEvent, Subject, takeUntil } from 'rxjs';
+import { SystemConstant } from 'src/app/core/constants/system.constant';
+import { DiningMode } from 'src/app/core/models/common/enums/index.enum';
 @Component({
   selector: 'app-main-layout',
   templateUrl: './main-layout.component.html',
@@ -74,6 +76,16 @@ export class MainLayoutComponent implements OnInit, AfterViewInit, OnDestroy {
       this.isHeaderSticky = this.stickyRoutes.includes(url);
       this.isHiddenMobileHeader = !this.hiddenMobileHeaderRoutes.includes(url);
     }
+    else this.getDiningMode();
   }
 
+  getDiningMode() {
+    const diningMode = localStorage.getItem(SystemConstant.DINING_MODE);
+    if (diningMode && diningMode === DiningMode.PICKUP && this.router.url == '/') {
+      this.isHeaderSticky = true;
+    }
+    else {
+      localStorage.setItem(SystemConstant.DINING_MODE, DiningMode.DELIVERY);
+    }
+  }
 }

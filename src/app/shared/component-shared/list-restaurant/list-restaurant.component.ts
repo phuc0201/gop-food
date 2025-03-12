@@ -44,9 +44,9 @@ export class ListRestaurantComponent implements OnInit, OnDestroy, AfterViewInit
   currSearchValue = '';
   crrCateID = '';
   isLoading = true;
-  isNoData = false;
   isLoadMore = false;
   filter!: ICuisineFilter;
+  isFisrtLoading: boolean = true;
 
   constructor(
     private route: ActivatedRoute,
@@ -61,8 +61,9 @@ export class ListRestaurantComponent implements OnInit, OnDestroy, AfterViewInit
         this.isObserveRoute = false;
       }
       else if (this.restaurants.totalPage > 0) {
-        this.isLoading = false;
         this.currPage = this.restaurants.currPage;
+        this.isLoading = false;
+        this.isFisrtLoading = false;
       }
     }
   }
@@ -112,6 +113,10 @@ export class ListRestaurantComponent implements OnInit, OnDestroy, AfterViewInit
         if (entry.isIntersecting) {
           this.loadMoreData();
         }
+      }, {
+        root: null,
+        rootMargin: '200px 0px',
+        threshold: 0.2
       });
     });
 
@@ -141,10 +146,11 @@ export class ListRestaurantComponent implements OnInit, OnDestroy, AfterViewInit
 
   observeRoute(): void {
     this.route.queryParams
-      .pipe(tap(() => {
-        this.resetFilter();
-        this.resetRestaurants();
-      }))
+      .pipe(
+        tap(() => {
+          this.resetFilter();
+          this.resetRestaurants();
+        }))
       .subscribe({
         next: () => {
           this.handleQueryParams(this.route.snapshot.queryParams);
@@ -160,7 +166,7 @@ export class ListRestaurantComponent implements OnInit, OnDestroy, AfterViewInit
     ]).pipe(
       tap(([id, search]) => this.handleSearchParams(id, search)),
       switchMap(([id, search]) => this.restaurantSrv.getRestaurants(id, search, this.currPage, this.limit, this.filter)),
-      takeUntil(this.destroy$)
+      takeUntil(this.destroy$),
     ).subscribe({
       next: res => this.handleRestaurantResponse(res),
       error: err => this.handleError(err)
@@ -185,7 +191,6 @@ export class ListRestaurantComponent implements OnInit, OnDestroy, AfterViewInit
 
   private handleSearchParams(id: string, search: string): void {
     this.isLoading = true;
-    this.isNoData = false;
 
     if (this.crrCateID !== id || this.currSearchValue !== search) {
       this.resetRestaurants();
@@ -196,22 +201,27 @@ export class ListRestaurantComponent implements OnInit, OnDestroy, AfterViewInit
   }
 
   private handleRestaurantResponse(res: IPagedResults<RestaurantRecommended>): void {
-    const newData = res.data.filter(newItem => !this.restaurants.data.some(existingItem => existingItem.id === newItem.id));
-    this.restaurants = { currPage: res.currPage, totalPage: res.totalPage, data: [...this.restaurants.data, ...newData] };
+    if (this.isLoadMore) {
+      this.restaurants = { currPage: res.currPage, totalPage: res.totalPage, data: [...this.restaurants.data, ...res.data] };
+    }
+    else this.restaurants = res;
+
     this.isLoading = false;
-    this.isNoData = this.restaurants.data.length === 0;
+
+    this.isFisrtLoading = false;
 
     this.restaurantsChange.emit(this.restaurants);
   }
 
   private handleError(err: any): void {
     this.isLoading = false;
-    this.isNoData = true;
+    this.isLoadMore = false;
     console.error('Error loading restaurants', err);
   }
 
   private resetRestaurants(): void {
-    this.restaurants = { data: [], totalPage: 0, currPage: 1 };
     this.currPage = 1;
+    this.isLoadMore = false;
+    this.isLoading = true;
   }
 }

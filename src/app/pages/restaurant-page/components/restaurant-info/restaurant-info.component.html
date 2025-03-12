@@ -11,7 +11,7 @@
         </button>
       </div>
       <h4 class="text-gray-500 font-light m-0">{{ restaurant.location.address }}</h4>
-      <span *ngIf="restaurant.status == 'CLOSED'" class="text-[#b82323] font-medium">Đóng cửa</span>
+      <span *ngIf="restaurant.status == 'CLOSED'" class="text-[#b82323] font-medium">Closed</span>
     </div>
 
     <div [hidden]="isLoading" class="flex items-center md:gap-3 gap-2 max-w-full mb-2">
