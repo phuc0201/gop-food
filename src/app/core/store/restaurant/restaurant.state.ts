@@ -4,56 +4,54 @@ import { ModifierGroups } from "../../models/restaurant/modifier-groups.model";
 import { RestaurantCategory } from "../../models/restaurant/restaurant-category.model";
 import { Restaurant, RestaurantRecommended } from "../../models/restaurant/restaurant.model";
 
-export interface RestaurantListSate {
-  result: IPagedResults<RestaurantRecommended>,
-  error: string,
-  isLoading: boolean;
+export interface RestaurantsState {
+  restaurants: IPagedResults<RestaurantRecommended>;
+  error: string | null;
+  loading: boolean;
 }
 
-export interface RestaurantInfoState {
-  restaurant: Restaurant,
-  error: string,
-  isLoading: boolean;
+export interface RestaurantDetailState {
+  restaurant: Restaurant;
+  error: string | null;
+  loading: boolean;
 }
-
 
 export interface MenuState {
-  menu: RestaurantCategory<FoodItems<string>>[],
-  error: string,
-  isLoading: boolean;
+  items: RestaurantCategory<FoodItems<string>>[];
+  error: string | null;
+  loading: boolean;
 }
 
-export interface FoodDetailsState {
-  foodDetails: FoodItems<ModifierGroups>;
-  error: string,
-  isLoading: boolean;
+export interface FoodDetailState {
+  food: FoodItems<ModifierGroups>;
+  error: string | null;
+  loading: boolean;
 }
-//
 
-export const initialMenuState: MenuState = {
-  menu: [],
-  error: '',
-  isLoading: false
-};
-export const initialRestaurantListSate: RestaurantListSate = {
-  result: {
+export const initialRestaurantsState: RestaurantsState = {
+  restaurants: {
     currPage: 1,
     totalPage: 0,
     data: []
   },
-  error: '',
-  isLoading: false
+  error: null,
+  loading: false
 };
 
-export const initialRestaurantInfo: RestaurantInfoState = {
+export const initialRestaurantDetailState: RestaurantDetailState = {
   restaurant: new Restaurant(),
-  error: '',
-  isLoading: false
+  error: null,
+  loading: false
 };
 
+export const initialMenuState: MenuState = {
+  items: [],
+  error: null,
+  loading: false
+};
 
-export const initialFoodDetails: FoodDetailsState = {
-  foodDetails: new FoodItems<ModifierGroups>(),
-  error: '',
-  isLoading: false
+export const initialFoodDetailState: FoodDetailState = {
+  food: new FoodItems<ModifierGroups>(),
+  error: null,
+  loading: false
 };

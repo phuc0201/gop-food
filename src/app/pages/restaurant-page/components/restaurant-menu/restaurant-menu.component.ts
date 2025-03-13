@@ -4,7 +4,7 @@ import { filter } from 'rxjs';
 import { FoodItems } from 'src/app/core/models/restaurant/food-items.model';
 import { RestaurantCategory } from 'src/app/core/models/restaurant/restaurant-category.model';
 import { SearchService } from 'src/app/core/services/search.service';
-import { selectMenu } from 'src/app/core/store/restaurant/restaurant.selector';
+import { selectMenuItems } from 'src/app/core/store/restaurant/restaurant.selectors';
 
 @Component({
   selector: 'app-restaurant-menu',
@@ -225,11 +225,11 @@ export class RestaurantMenuComponent implements OnInit, AfterViewInit {
 
   loadData(): void {
     this.isLoading = true;
-    this.store.select(selectMenu).pipe(
-      filter(data => data.error == '' && data.isLoading == false)
+    this.store.select(selectMenuItems).pipe(
+      filter(data => data.error == '' && data.loading == false)
     ).subscribe({
       next: data => {
-        this.menu = data.menu;
+        this.menu = data.items;
         this.menuSearching = this.menu.filter(cate => cate.food_items.length > 0);
         this.isLoading = false;
       }

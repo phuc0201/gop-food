@@ -4,8 +4,9 @@ import { Store } from '@ngrx/store';
 import { Subscription } from 'rxjs';
 import { Restaurant, RestaurantRecommended } from 'src/app/core/models/restaurant/restaurant.model';
 import { RestaurantService } from 'src/app/core/services/restaurant.service';
-import { getMenu, getRestaurantInfo } from 'src/app/core/store/restaurant/restaurant.action';
-import { selectRestaurantInfo } from 'src/app/core/store/restaurant/restaurant.selector';
+import { fetchMenu, fetchRestaurantDetail } from 'src/app/core/store/restaurant/restaurant.actions';
+import { selectRestaurantDetail } from 'src/app/core/store/restaurant/restaurant.selectors';
+
 @Component({
   selector: 'app-restaurant',
   templateUrl: './restaurant.component.html',
@@ -29,7 +30,7 @@ export class RestaurantComponent implements OnInit {
     const index = this.restaurantSrv.getWishList().findIndex(res => res.id == id);
     this.isInWishlist = index !== -1;
 
-    this.restaurantSubscription = this.store.select(selectRestaurantInfo).subscribe({
+    this.restaurantSubscription = this.store.select(selectRestaurantDetail).subscribe({
       next: (data) => {
         this.isLoading = data.restaurant._id !== id;
         this.restaurant = this.isLoading ? new Restaurant() : data.restaurant;
@@ -39,9 +40,9 @@ export class RestaurantComponent implements OnInit {
       }
     });
 
-    this.store.dispatch(getRestaurantInfo({ res_id: id }));
+    this.store.dispatch(fetchRestaurantDetail({ restaurantId: id }));
     if (this.isLoading == true) {
-      this.store.dispatch(getMenu({ id: id }));
+      this.store.dispatch(fetchMenu({ restaurantId: id }));
     }
   }
 

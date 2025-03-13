@@ -1,22 +1,22 @@
 import { CommonModule } from '@angular/common';
-import { AfterViewInit, Component, ElementRef, EventEmitter, HostListener, Input, OnChanges, OnDestroy, OnInit, Output, SimpleChanges, ViewChild } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { AfterViewInit, Component, ElementRef, HostListener, Input, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { NzGridModule } from 'ng-zorro-antd/grid';
-import { combineLatest, map, Subject, switchMap, takeUntil, tap } from 'rxjs';
+import { debounceTime, fromEvent, Subject, takeUntil, tap } from 'rxjs';
 import { SortStatus } from 'src/app/core/models/common/enums/index.enum';
 import { IPagedResults } from 'src/app/core/models/common/response-data.model';
 import { ICuisineFilter } from 'src/app/core/models/restaurant/cuisine-filter.model';
 import { RestaurantRecommended } from 'src/app/core/models/restaurant/restaurant.model';
-import { RestaurantService } from 'src/app/core/services/restaurant.service';
-import { SearchService } from 'src/app/core/services/search.service';
-import { getRestaurantList } from 'src/app/core/store/restaurant/restaurant.action';
+import { fetchRestaurants } from 'src/app/core/store/restaurant/restaurant.actions';
+import { selectAllRestaurants } from 'src/app/core/store/restaurant/restaurant.selectors';
 import { RestaurantCardComponent } from 'src/app/shared/component-shared/restaurant-card/restaurant-card.component';
+import { DotSpinnerComponent } from '../loaders/dot-spinner/dot-spinner.component';
 
 const plugin = [
   CommonModule,
   RestaurantCardComponent,
   NzGridModule,
+  DotSpinnerComponent
 ];
 
 @Component({
@@ -26,58 +26,44 @@ const plugin = [
   standalone: true,
   imports: plugin
 })
-export class ListRestaurantComponent implements OnInit, OnDestroy, AfterViewInit, OnChanges {
+export class ListRestaurantComponent implements OnInit, OnDestroy, AfterViewInit {
+  @ViewChild('sentinel') sentinel!: ElementRef;
+  @ViewChild('listOfRestaurants', { static: true }) listOfRestaurantsEl!: ElementRef;
+
   @Input() columnConfig = {
     xs: 12,
     sm: 12,
     md: 8,
     lg: 6,
   };
-  @Input() limit = 12;
-  @Input() restaurants: IPagedResults<RestaurantRecommended> = { currPage: 1, data: [], totalPage: -1 };
-  @Output() restaurantsChange = new EventEmitter<IPagedResults<RestaurantRecommended>>();
-  @ViewChild('sentinel', { static: false }) sentinel!: ElementRef;
-  private observer!: IntersectionObserver;
-  private destroy$ = new Subject<void>();
+  @Input() limit = 8;
+  @Input() currCuisineId: string = '';
+  @Input() filter!: ICuisineFilter;
+
+  restaurants: IPagedResults<RestaurantRecommended> = { currPage: 1, data: [], totalPage: -1 };
+  observer!: IntersectionObserver;
+  destroy$ = new Subject<void>();
   isObserveRoute = false;
-  currPage = 1;
   currSearchValue = '';
   crrCateID = '';
   isLoading = true;
   isLoadMore = false;
-  filter!: ICuisineFilter;
   isFisrtLoading: boolean = true;
+  isDataEmpty: boolean = false;
+  scrollThreshold = 100;
 
   constructor(
-    private route: ActivatedRoute,
-    private searchSrc: SearchService,
-    private restaurantSrv: RestaurantService,
     private store: Store
-  ) { }
-
-  ngOnChanges(changes: SimpleChanges): void {
-    if (changes['restaurants'] && changes['restaurants'].currentValue) {
-      if (this.restaurants.totalPage === 0) {
-        this.isObserveRoute = false;
-      }
-      else if (this.restaurants.totalPage > 0) {
-        this.currPage = this.restaurants.currPage;
-        this.isLoading = false;
-        this.isFisrtLoading = false;
-      }
-    }
+  ) {
+    this.loadRestaurants();
   }
 
   ngOnInit(): void {
-    if (this.restaurants.totalPage === -1) {
-      this.observeRoute();
-      this.isObserveRoute = true;
-      this.limit = 12;
-    }
+
   }
 
   ngAfterViewInit(): void {
-    this.setupIntersectionObserver();
+
   }
 
   ngOnDestroy(): void {
@@ -99,129 +85,76 @@ export class ListRestaurantComponent implements OnInit, OnDestroy, AfterViewInit
   @HostListener('window:resize', ['$event'])
   getListOfRestaurantsSkeleteon(): number[] {
     if (window.screen.width > 992) {
-      return this.isLoadMore ? Array(4).fill(0) : Array(8).fill(0);
+      return Array(4).fill(0);
     } else if (window.screen.width > 768) {
-      return this.isLoadMore ? Array(3).fill(0) : Array(6).fill(0);
+      return Array(3).fill(0);
     }
 
     return Array(4).fill(0);
   }
 
-  private setupIntersectionObserver(): void {
-    this.observer = new IntersectionObserver(entries => {
-      entries.forEach(entry => {
-        if (entry.isIntersecting) {
-          this.loadMoreData();
-        }
-      }, {
-        root: null,
-        rootMargin: '200px 0px',
-        threshold: 0.2
-      });
-    });
-
-    if (this.sentinel) {
-      this.observer.observe(this.sentinel.nativeElement);
-    }
-  }
-
-  loadMoreData(): void {
-    if (this.restaurants.currPage < this.restaurants.totalPage) {
-      this.currPage += 1;
-      this.isLoadMore = true;
-      if (!this.isObserveRoute) {
-        this.isLoading = true;
-        this.store.dispatch(getRestaurantList({
-          categoryId: this.crrCateID,
-          searchQuery: this.currSearchValue,
-          page: this.currPage,
-          limit: this.limit,
-        }));
-      }
-      else {
-        this.loadListOfRestaurants();
-      }
-    }
-  }
-
-  observeRoute(): void {
-    this.route.queryParams
+  loadRestaurants(): void {
+    this.store.select(selectAllRestaurants)
       .pipe(
         tap(() => {
-          this.resetFilter();
-          this.resetRestaurants();
-        }))
+          this.isDataEmpty = false;
+          if (!this.isLoadMore) {
+            this.isFisrtLoading = true;
+            this.restaurants = {
+              currPage: 1,
+              totalPage: 1,
+              data: []
+            };
+          }
+        }),
+        debounceTime(this.isLoadMore ? 0 : 300)
+      )
       .subscribe({
-        next: () => {
-          this.handleQueryParams(this.route.snapshot.queryParams);
-        },
-        error: err => this.handleError(err),
+        next: (response) => {
+          if (this.isFisrtLoading && response.restaurants.data.length === 0) {
+            this.isDataEmpty = true;
+          }
+          else this.isDataEmpty = false;
+
+          this.restaurants = response.restaurants;
+          this.isFisrtLoading = false;
+          this.isLoadMore = false;
+        }
       });
   }
 
-  loadListOfRestaurants(): void {
-    combineLatest([
-      this.route.params.pipe(map(params => params["id"])),
-      this.searchSrc.restaurantSearchQuery
-    ]).pipe(
-      tap(([id, search]) => this.handleSearchParams(id, search)),
-      switchMap(([id, search]) => this.restaurantSrv.getRestaurants(id, search, this.currPage, this.limit, this.filter)),
-      takeUntil(this.destroy$),
-    ).subscribe({
-      next: res => this.handleRestaurantResponse(res),
-      error: err => this.handleError(err)
-    });
-  }
-
-  private handleQueryParams(params: any): void {
-    const { sortby, promo, under, bestOverall, deliveryFee } = params;
-
-    this.filter = {
-      sortby: sortby || SortStatus.RECOMMENDED,
-      promo: promo === 'true' || false,
-      bestOverall: bestOverall === 'true' || false,
-      deliveryFee: deliveryFee || 'any'
-    };
-    if (under) {
-      this.filter.under = Number(under);
+  loadMore(): void {
+    if (this.restaurants.currPage < this.restaurants.totalPage) {
+      this.isLoadMore = true;
+      const currPage = this.restaurants.currPage;
+      this.store.dispatch(fetchRestaurants({
+        cuisineId: this.currCuisineId,
+        searchQuery: this.currSearchValue,
+        page: currPage + 1,
+        limit: this.limit,
+      }));
     }
-
-    this.loadListOfRestaurants();
   }
 
-  private handleSearchParams(id: string, search: string): void {
-    this.isLoading = true;
+  @HostListener("window:scroll", ["$event"])
+  onScroll(): void {
+    const restaurantsContainerBottom = this.listOfRestaurantsEl.nativeElement.getBoundingClientRect().bottom;
+    const windowHeight = window.innerHeight;
 
-    if (this.crrCateID !== id || this.currSearchValue !== search) {
-      this.resetRestaurants();
+    if ((windowHeight - restaurantsContainerBottom > -this.scrollThreshold)) {
+      this.loadMore();
     }
-
-    this.crrCateID = id;
-    this.currSearchValue = search;
   }
 
-  private handleRestaurantResponse(res: IPagedResults<RestaurantRecommended>): void {
-    if (this.isLoadMore) {
-      this.restaurants = { currPage: res.currPage, totalPage: res.totalPage, data: [...this.restaurants.data, ...res.data] };
+  onMobileScroll(): void {
+    const webbodyMobile = document.getElementById('webbodyMobile');
+    if (webbodyMobile) {
+      fromEvent(webbodyMobile, 'scroll')
+        .pipe(takeUntil(this.destroy$))
+        .subscribe((event: Event) => {
+          const element = event.target as HTMLDivElement;
+        });
     }
-    else this.restaurants = res;
-
-    this.isLoading = false;
-
-    this.isFisrtLoading = false;
-
-    this.restaurantsChange.emit(this.restaurants);
-  }
-
-  private handleError(err: any): void {
-    this.isLoading = false;
-    this.isLoadMore = false;
-    console.error('Error loading restaurants', err);
-  }
-
-  private resetRestaurants(): void {
-    this.currPage = 1;
-    this.isLoadMore = false;
-    this.isLoading = true;
   }
 }
+

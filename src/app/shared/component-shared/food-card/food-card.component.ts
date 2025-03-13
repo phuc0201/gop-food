@@ -5,7 +5,7 @@ import { NzDrawerPlacement, NzDrawerService } from 'ng-zorro-antd/drawer';
 import { Subscription } from 'rxjs';
 import { FoodItems } from 'src/app/core/models/restaurant/food-items.model';
 import { ModifierGroups } from 'src/app/core/models/restaurant/modifier-groups.model';
-import { getFoodDetails } from 'src/app/core/store/restaurant/restaurant.action';
+import { fetchFoodDetail } from 'src/app/core/store/restaurant/restaurant.actions';
 import { FoodDetailsComponent } from '../food-details/food-details.component';
 import { DotSpinnerComponent } from '../loaders/dot-spinner/dot-spinner.component';
 
@@ -69,7 +69,7 @@ export class FoodCardComponent implements OnInit, OnDestroy {
   showDetails() {
     if (!this.isAddToCard) {
       this.isAddToCard = true;
-      this.store.dispatch(getFoodDetails({ id: this.foodInfor._id }));
+      this.store.dispatch(fetchFoodDetail({ foodId: this.foodInfor._id }));
       setTimeout(() => {
         this.createFoodDetailsDrawer();
         this.isAddToCard = false;

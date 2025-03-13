@@ -13,9 +13,8 @@ import { GeolocationEffects } from './store/geolocation/geolocation.effect';
 import { searchAddressReducer } from './store/geolocation/geolocation.reducer';
 import { ProfileEffects } from './store/profile/profile.effect';
 import { getProfileReducer } from './store/profile/profile.reducer';
-import { RestaurantEffects } from './store/restaurant/restaurant.effect';
-import { getFoodDetailsReducer, getMenuReducer, getRestaurantInfoReducer, getRestaurantListReducer } from './store/restaurant/restaurant.reducer';
-
+import { RestaurantEffects } from './store/restaurant/restaurant.effects';
+import { foodDetailReducer, menuReducer, restaurantDetailReducer, restaurantsReducer } from './store/restaurant/restaurant.reducers';
 
 
 @NgModule({
@@ -27,9 +26,10 @@ import { getFoodDetailsReducer, getMenuReducer, getRestaurantInfoReducer, getRes
     StoreModule.forRoot({
       auth_login: loginReducer,
       get_profile: getProfileReducer,
-      get_restaurant_list: getRestaurantListReducer, get_restaurant_info: getRestaurantInfoReducer,
-      get_menu: getMenuReducer,
-      getFoodDetails: getFoodDetailsReducer,
+      restaurants: restaurantsReducer,
+      restaurantDetail: restaurantDetailReducer,
+      menu: menuReducer,
+      foodDetails: foodDetailReducer,
       search_address: searchAddressReducer,
       get_campaigns: getAllCampaignReducer,
       cuisines: cuisinesReducer,

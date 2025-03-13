@@ -7,7 +7,7 @@ import { NzDrawerRef, NzDrawerService } from 'ng-zorro-antd/drawer';
 import { NzRateModule } from 'ng-zorro-antd/rate';
 import { FoodItems } from 'src/app/core/models/restaurant/food-items.model';
 import { ModifierGroups } from 'src/app/core/models/restaurant/modifier-groups.model';
-import { getFoodDetails } from 'src/app/core/store/restaurant/restaurant.action';
+import { fetchFoodDetail } from 'src/app/core/store/restaurant/restaurant.actions';
 import { FoodDetailsComponent } from '../food-details/food-details.component';
 import { DotSpinnerComponent } from '../loaders/dot-spinner/dot-spinner.component';
 
@@ -34,7 +34,7 @@ export class FooditemCardComponent {
     this.isAddToCard = true;
     setTimeout(() => {
       this.createFoodDetailsDrawer();
-      this.store.dispatch(getFoodDetails({ id: this.fooditem._id }));
+      this.store.dispatch(fetchFoodDetail({ foodId: this.fooditem._id }));
       this.isAddToCard = false;
     }, 500);
   }

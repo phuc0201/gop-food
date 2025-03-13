@@ -18,7 +18,7 @@ import { Restaurant } from 'src/app/core/models/restaurant/restaurant.model';
 import { GeolocationService } from 'src/app/core/services/geolocation.service';
 import { OrderService } from 'src/app/core/services/order.service';
 import { ProfileService } from 'src/app/core/services/profile.service';
-import { selectFoodDetails, selectRestaurantInfo } from 'src/app/core/store/restaurant/restaurant.selector';
+import { selectFoodDetail, selectRestaurantDetail } from 'src/app/core/store/restaurant/restaurant.selectors';
 import { DotsLoaderComponent } from '../loaders/dots-loader/dots-loader.component';
 import { ImgLoaderComponent } from '../loaders/img-loader/img-loader.component';
 export const plugins = [
@@ -52,11 +52,11 @@ export class FoodDetailsComponent implements OnInit {
   isUpdate: boolean = false;
 
   initial(): void {
-    this.store.select(selectFoodDetails)
+    this.store.select(selectFoodDetail)
       .pipe(
-        filter(data => !data.isLoading && data.foodDetails._id !== ''),
+        filter(data => !data.loading && data.food._id !== ''),
         tap(data => {
-          data.foodDetails.modifier_groups.forEach(mdg => {
+          data.food.modifier_groups.forEach(mdg => {
             if (mdg.min === 1 && mdg.max === 1 && mdg.modifier.length > 0) {
               let check = false;
               for (const md of mdg.modifier) {
@@ -73,7 +73,7 @@ export class FoodDetailsComponent implements OnInit {
       )
       .subscribe({
         next: data => {
-          this.foodDetails = data.foodDetails;
+          this.foodDetails = data.food;
           this.isLoading = false;
           this.isAddToCart = false;
         }
@@ -167,7 +167,7 @@ export class FoodDetailsComponent implements OnInit {
     let basket = this.orderSrv.getCartItems();
     this.isAddToCart = true;
     if (!this.isUpdate) {
-      this.store.select(selectRestaurantInfo).pipe(
+      this.store.select(selectRestaurantDetail).pipe(
         take(1),
         switchMap(data => this.handleRestaurantChange(data.restaurant, basket)),
         switchMap(cartItems => this.setDeliveryLocation(cartItems)),

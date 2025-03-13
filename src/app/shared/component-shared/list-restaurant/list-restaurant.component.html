@@ -1,4 +1,4 @@
-<div nz-row [nzGutter]="20">
+<div #listOfRestaurants nz-row [nzGutter]="20" class="relative">
   <ng-container *ngIf="restaurants.data.length > 0">
     <div *ngFor="let item of restaurants.data" nz-col nzSpan="24" [nzSm]='columnConfig.sm' [nzMd]="columnConfig.md"
       [nzLg]="columnConfig.lg" class="">
@@ -18,8 +18,14 @@
   </div>
 </ng-container>
 
-<ng-container *ngIf="!isFisrtLoading">
-  <div [hidden]="restaurants.data.length > 0" class="w-full h-full flex justify-center items-center p-5">
+<ng-container *ngIf="isLoadMore">
+  <div class="w-full flex justify-center my-10">
+    <dot-spinner [size]="'3rem'"></dot-spinner>
+  </div>
+</ng-container>
+
+<ng-container>
+  <div [hidden]="!isDataEmpty" class="w-full h-full flex justify-center items-center p-5">
     <img src="assets/img/icons/ilus-basket-empty.svg" alt="" class="w-full max-w-96">
   </div>
 </ng-container>
@@ -36,12 +42,11 @@
       </svg>
     </div>
     <div class="w-full">
-      <div class="md:block hidden h-2.5 bg-gray-200 rounded-full w-full mb-2"></div>
-      <div class="h-2 bg-gray-200 rounded-full  mb-2.5 w-full"></div>
-      <div class="h-2 bg-gray-200 rounded-full  mb-2.5 w-full"></div>
+      <div class="md:block hidden h-2 bg-gray-200 rounded-full w-full mb-2"></div>
+      <div class="h-[6px] bg-gray-200 rounded-full  mb-2.5 w-1/2"></div>
+      <div class="h-[6px] bg-gray-200 rounded-full  mb-2.5 w-1/4"></div>
     </div>
   </div>
 </ng-template>
 
-<div #sentinel>
-</div>
+<div #sentinel></div>

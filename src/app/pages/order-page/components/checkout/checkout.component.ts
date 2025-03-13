@@ -16,7 +16,7 @@ import { OrderService } from 'src/app/core/services/order.service';
 import { PaymentService } from 'src/app/core/services/payment.service';
 import { ProfileService } from 'src/app/core/services/profile.service';
 import { getCampaignAvailableForRestaurant } from 'src/app/core/store/campaign/campaign.action';
-import { getFoodDetails } from 'src/app/core/store/restaurant/restaurant.action';
+import { fetchFoodDetail } from 'src/app/core/store/restaurant/restaurant.actions';
 import { FoodDetailsComponent } from 'src/app/shared/component-shared/food-details/food-details.component';
 import { MapSelectorComponent } from '../../../../shared/component-shared/map-selector/map-selector.component';
 import { CampaignsComponent } from '../campaigns/campaigns.component';
@@ -83,7 +83,7 @@ export class CheckoutComponent implements OnInit {
 
   createFoodDetailsDrawer(foodItem: FoodItemDTO<Modifier>, index: number) {
     const item = { ...foodItem };
-    this.store.dispatch(getFoodDetails({ id: foodItem.food_id }));
+    this.store.dispatch(fetchFoodDetail({ foodId: foodItem.food_id }));
     this.drawerRef = this.drawerSrv.create<FoodDetailsComponent, { foodItem: FoodItemDTO<Modifier>; foodItemIndex: number; }>({
       nzClosable: false,
       nzPlacement: this.placementDrawer,

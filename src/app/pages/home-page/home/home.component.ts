@@ -8,8 +8,8 @@ import { FoodItems } from 'src/app/core/models/restaurant/food-items.model';
 import { RestaurantRecommended } from 'src/app/core/models/restaurant/restaurant.model';
 import { GeolocationService } from 'src/app/core/services/geolocation.service';
 import { SearchService } from 'src/app/core/services/search.service';
-import { getRestaurantList } from 'src/app/core/store/restaurant/restaurant.action';
-import { selectRestaurantList } from 'src/app/core/store/restaurant/restaurant.selector';
+import { fetchRestaurants } from 'src/app/core/store/restaurant/restaurant.actions';
+import { selectAllRestaurants } from 'src/app/core/store/restaurant/restaurant.selectors';
 
 @Component({
   selector: 'app-home',
@@ -25,7 +25,7 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
   restaurants: IPagedResults<RestaurantRecommended> = { data: [], totalPage: 0, currPage: 1 };
   isMobile: boolean = false;
   restaurantsSubscription: Subscription = new Subscription();
-  limit = 8;
+  limit = 30;
   isHiddenSystemService: boolean = true;
   currPage = 1;
   diningMode = DiningMode.DELIVERY;
@@ -64,34 +64,26 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   loadRestaurants() {
-    this.restaurantsSubscription = this.store.select(selectRestaurantList).subscribe({
+    this.store.dispatch(fetchRestaurants({
+      cuisineId: "",
+      searchQuery: "",
+      page: this.currPage,
+      limit: this.limit
+    }));
+
+    this.store.select(selectAllRestaurants).subscribe({
       next: res => {
-        if (res.result.data.length > 0) {
-          this.restaurants = res.result;
-          this.currPage = res.result.currPage;
-          this.isLoading = false;
-          if (res.result.currPage === res.result.totalPage) {
-            setTimeout(() => {
-              document.getElementById('footer')?.classList.remove('hidden');
-              this.isHiddenSystemService = false;
-            }, 200);
-          }
+        this.restaurants = res.restaurants;
+        this.currPage = res.restaurants.currPage;
+        this.isLoading = false;
+        if (res.restaurants.currPage === res.restaurants.totalPage) {
+          setTimeout(() => {
+            document.getElementById('footer')?.classList.remove('hidden');
+            this.isHiddenSystemService = false;
+          }, 200);
         }
-        else this.isLoading = true;
-      },
-      complete: () => {
-        this.restaurantsSubscription.unsubscribe();
       }
     });
-
-    if (this.isLoading = true) {
-      this.store.dispatch(getRestaurantList({
-        categoryId: "",
-        searchQuery: "",
-        page: this.currPage,
-        limit: this.limit
-      }));
-    }
   }
 
   toggleNearbyRestaurantsOnMap() {
