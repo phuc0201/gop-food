@@ -40,7 +40,7 @@ export class ListRestaurantComponent implements OnInit, OnDestroy, AfterViewInit
   @Input() currCuisineId: string = '';
   @Input() filter!: ICuisineFilter;
 
-  restaurants: IPagedResults<RestaurantRecommended> = { currPage: 1, data: [], totalPage: -1 };
+  @Input() restaurants: IPagedResults<RestaurantRecommended> = { currPage: 1, data: [], totalPage: -1 };
   observer!: IntersectionObserver;
   destroy$ = new Subject<void>();
   isObserveRoute = false;
@@ -54,12 +54,10 @@ export class ListRestaurantComponent implements OnInit, OnDestroy, AfterViewInit
 
   constructor(
     private store: Store
-  ) {
-    this.loadRestaurants();
-  }
+  ) { }
 
   ngOnInit(): void {
-
+    this.loadRestaurants();
   }
 
   ngAfterViewInit(): void {
@@ -107,17 +105,22 @@ export class ListRestaurantComponent implements OnInit, OnDestroy, AfterViewInit
             };
           }
         }),
-        debounceTime(this.isLoadMore ? 0 : 300)
+        debounceTime(300)
       )
       .subscribe({
         next: (response) => {
-          if (!response.loading && response.restaurants.data.length === 0) {
-            this.isDataEmpty = true;
-          }
-          else this.isDataEmpty = false;
+          this.restaurants = response.restaurants.cuisineId === this.currCuisineId ? response.restaurants : { data: [], totalPage: 0, currPage: 1 };
 
-          this.restaurants = response.restaurants;
-          this.isFisrtLoading = !(this.isDataEmpty || this.restaurants.data.length > 0);
+          this.isDataEmpty = !response.loading && this.restaurants.data.length === 0;
+
+          if (this.isDataEmpty) {
+            this.isFisrtLoading = false;
+          }
+
+          if (this.restaurants.data.length > 0) {
+            this.isFisrtLoading = false;
+          }
+
           this.isLoadMore = false;
         }
       });

@@ -5,6 +5,7 @@ export interface IToken {
 
 
 export interface IPagedResults<T> {
+  cuisineId?: string;
   currPage: number;
   totalPage: number;
   data: T[];

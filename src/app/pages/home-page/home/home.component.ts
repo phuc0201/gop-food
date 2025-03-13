@@ -9,7 +9,6 @@ import { RestaurantRecommended } from 'src/app/core/models/restaurant/restaurant
 import { GeolocationService } from 'src/app/core/services/geolocation.service';
 import { SearchService } from 'src/app/core/services/search.service';
 import { fetchRestaurants } from 'src/app/core/store/restaurant/restaurant.actions';
-import { selectAllRestaurants } from 'src/app/core/store/restaurant/restaurant.selectors';
 
 @Component({
   selector: 'app-home',
@@ -71,19 +70,19 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
       limit: this.limit
     }));
 
-    this.store.select(selectAllRestaurants).subscribe({
-      next: res => {
-        this.restaurants = res.restaurants;
-        this.currPage = res.restaurants.currPage;
-        this.isLoading = false;
-        if (res.restaurants.currPage === res.restaurants.totalPage) {
-          setTimeout(() => {
-            document.getElementById('footer')?.classList.remove('hidden');
-            this.isHiddenSystemService = false;
-          }, 200);
-        }
-      }
-    });
+    // this.store.select(selectAllRestaurants).subscribe({
+    //   next: res => {
+    //     this.restaurants = res.restaurants;
+    //     this.currPage = res.restaurants.currPage;
+    //     this.isLoading = false;
+    //     if (res.restaurants.currPage === res.restaurants.totalPage) {
+    //       setTimeout(() => {
+    //         document.getElementById('footer')?.classList.remove('hidden');
+    //         this.isHiddenSystemService = false;
+    //       }, 200);
+    //     }
+    //   }
+    // });
   }
 
   toggleNearbyRestaurantsOnMap() {

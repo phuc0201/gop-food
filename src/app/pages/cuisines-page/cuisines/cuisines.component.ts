@@ -39,6 +39,17 @@ export class CuisinesComponent implements OnInit {
     private store: Store
   ) {
     this.search = this.debounce(this.search.bind(this), 500);
+    this.route.queryParams.subscribe({
+      next: () => {
+        this.handleQueryParams(this.route.snapshot.queryParams);
+      },
+    });
+
+    this.route.paramMap.subscribe(params => {
+      this.currCuisineId = params.get('id')!;
+      this.restaurants = { data: [], totalPage: 0, currPage: 1 };
+      this.loadRestaurants(this.currCuisineId);
+    });
   }
 
   ngOnInit(): void {
@@ -48,17 +59,6 @@ export class CuisinesComponent implements OnInit {
       }
     });
     searchObserve$.unsubscribe();
-
-    this.route.queryParams.subscribe({
-      next: () => {
-        this.handleQueryParams(this.route.snapshot.queryParams);
-      },
-    });
-
-    this.route.paramMap.subscribe(params => {
-      this.currCuisineId = params.get('id')!;
-      this.loadRestaurants(this.currCuisineId);
-    });
   }
 
   loadRestaurants(cuisineId: string) {
