@@ -111,13 +111,13 @@ export class ListRestaurantComponent implements OnInit, OnDestroy, AfterViewInit
       )
       .subscribe({
         next: (response) => {
-          if (this.isFisrtLoading && response.restaurants.data.length === 0) {
+          if (!response.loading && response.restaurants.data.length === 0) {
             this.isDataEmpty = true;
           }
           else this.isDataEmpty = false;
 
           this.restaurants = response.restaurants;
-          this.isFisrtLoading = false;
+          this.isFisrtLoading = !(this.isDataEmpty || this.restaurants.data.length > 0);
           this.isLoadMore = false;
         }
       });

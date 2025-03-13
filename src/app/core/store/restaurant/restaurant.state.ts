@@ -35,7 +35,7 @@ export const initialRestaurantsState: RestaurantsState = {
     data: []
   },
   error: null,
-  loading: false
+  loading: true
 };
 
 export const initialRestaurantDetailState: RestaurantDetailState = {
