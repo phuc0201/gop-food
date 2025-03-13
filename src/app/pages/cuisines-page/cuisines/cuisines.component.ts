@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Store } from '@ngrx/store';
-import { Subscription } from 'rxjs';
+import { combineLatest, Subscription } from 'rxjs';
 import { SortStatus } from 'src/app/core/models/common/enums/index.enum';
 import { IPagedResults } from 'src/app/core/models/common/response-data.model';
 import { CuisineCategory } from 'src/app/core/models/cuisine/cuisine-category.model';
@@ -37,34 +37,42 @@ export class CuisinesComponent implements OnInit {
     private searchSrv: SearchService,
     private route: ActivatedRoute,
     private store: Store
-  ) {
-    this.search = this.debounce(this.search.bind(this), 500);
-    this.route.queryParams.subscribe({
-      next: () => {
-        this.handleQueryParams(this.route.snapshot.queryParams);
-      },
-    });
-
-    this.route.paramMap.subscribe(params => {
-      this.currCuisineId = params.get('id')!;
-      this.restaurants = { data: [], totalPage: 0, currPage: 1 };
-      this.loadRestaurants(this.currCuisineId);
-    });
-  }
+  ) { }
 
   ngOnInit(): void {
-    const searchObserve$ = this.searchSrv.restaurantSearchQuery.subscribe({
-      next: value => {
-        this.searchValue = value;
-      }
+    // combineLatest([
+    //   this.route.queryParams,
+    //   this.route.paramMap,
+    // ]).subscribe(([queryParams, paramMap]) => {
+    //   this.currCuisineId = paramMap.get('id') ?? '';
+    //   this.restaurants = { data: [], totalPage: 0, currPage: 1 };
+    //   this.handleQueryParams(queryParams);
+    //   this.loadRestaurants();
+    // });
+
+    // this.searchSrv.restaurantSearchQuery.subscribe({
+    //   next: (value) => {
+    //     this.loadRestaurants(value);
+    //   }
+    // });
+
+    combineLatest([
+      this.searchSrv.restaurantSearchQuery,
+      this.route.queryParams,
+      this.route.paramMap,
+    ]).subscribe(([searchValue, queryParams, paramMap]) => {
+      this.currCuisineId = paramMap.get('id') ?? '';
+      this.restaurants = { data: [], totalPage: 0, currPage: 1 };
+
+      this.handleQueryParams(queryParams);
+      this.loadRestaurants(searchValue);
     });
-    searchObserve$.unsubscribe();
   }
 
-  loadRestaurants(cuisineId: string) {
+  loadRestaurants(searchValue: string = '') {
     this.store.dispatch(fetchRestaurants({
-      cuisineId: cuisineId,
-      searchQuery: "",
+      cuisineId: this.currCuisineId,
+      searchQuery: searchValue,
       page: this.currPage,
       limit: this.limit,
       filter: this.filter
@@ -83,8 +91,6 @@ export class CuisinesComponent implements OnInit {
     if (under) {
       this.filter.under = Number(under);
     }
-
-    this.loadRestaurants(this.currCuisineId);
   }
 
   search(searchValue: string) {

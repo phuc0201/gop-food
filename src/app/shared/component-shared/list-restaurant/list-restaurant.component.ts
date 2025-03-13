@@ -40,11 +40,11 @@ export class ListRestaurantComponent implements OnInit, OnDestroy, AfterViewInit
   @Input() currCuisineId: string = '';
   @Input() filter!: ICuisineFilter;
 
+  @Input() currSearchValue = '';
   @Input() restaurants: IPagedResults<RestaurantRecommended> = { currPage: 1, data: [], totalPage: -1 };
   observer!: IntersectionObserver;
   destroy$ = new Subject<void>();
   isObserveRoute = false;
-  currSearchValue = '';
   crrCateID = '';
   isLoading = true;
   isLoadMore = false;
@@ -144,7 +144,7 @@ export class ListRestaurantComponent implements OnInit, OnDestroy, AfterViewInit
     const restaurantsContainerBottom = this.listOfRestaurantsEl.nativeElement.getBoundingClientRect().bottom;
     const windowHeight = window.innerHeight;
 
-    if ((windowHeight - restaurantsContainerBottom > -this.scrollThreshold)) {
+    if (!this.isLoadMore && (windowHeight - restaurantsContainerBottom > -this.scrollThreshold)) {
       this.loadMore();
     }
   }

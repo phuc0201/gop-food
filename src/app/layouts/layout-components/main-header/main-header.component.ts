@@ -116,7 +116,9 @@ export class MainHeaderComponent implements OnInit, AfterViewInit {
 
   search(): void {
     this.searchSrv.setRestaurantSearchQuery(this.searchValue);
-    this.router.navigate([URLConstant.ROUTE.CUISINE_PAGE.BASE]);
+    if (!this.router.url.includes('cuisines')) {
+      this.router.navigate([URLConstant.ROUTE.CUISINE_PAGE.BASE]);
+    }
   }
 
   createAuthModal() {
