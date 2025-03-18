@@ -10,6 +10,11 @@ const routes: Routes = [
     children: [
       {
         path: '',
+        redirectTo: 'feed',
+        pathMatch: 'full'
+      },
+      {
+        path: 'feed',
         loadChildren: () => import('./home-page/home-page.module').then(m => m.HomePageModule),
         pathMatch: 'full'
       },

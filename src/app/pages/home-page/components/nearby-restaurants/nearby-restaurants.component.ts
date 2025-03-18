@@ -6,7 +6,6 @@ import { SystemConstant } from 'src/app/core/constants/system.constant';
 import { IconMarker } from 'src/app/core/models/common/enums/index.enum';
 import { RestaurantRecommended } from 'src/app/core/models/restaurant/restaurant.model';
 import { RestaurantService } from 'src/app/core/services/restaurant.service';
-
 @Component({
   selector: 'app-nearby-restaurants',
   templateUrl: './nearby-restaurants.component.html',
@@ -69,20 +68,17 @@ export class NearbyRestaurantsComponent implements OnInit, AfterViewInit, OnDest
     this.destroy$.complete();
   }
 
-  initMap(coords: number[]): void {
+  initMap(coords: [number, number]): void {
     this.map = L.map('restaurantsOnMap', {
-      center: this.coordinates as L.LatLngExpression,
+      center: coords,
       zoom: 15,
       zoomControl: false
     });
 
-    const tiles = L.tileLayer(`https://maps.vietmap.vn/api/tm/{z}/{x}/{y}@2x.png?apikey=${'b00c56c4751ac6eb19dd72a48d9c8630d203e6aa8bbb104a'}`, {
-      attribution: '© Vietmap',
-      maxZoom: 18,
-      minZoom: 5,
+    L.tileLayer('https://{s}.google.com/vt/lyrs=m&x={x}&y={y}&z={z}', {
+      subdomains: ['mt0', 'mt1', 'mt2', 'mt3'],
+      attribution: '© Google',
     }).addTo(this.map);
-
-    tiles.addTo(this.map);
 
     const icon = L.icon({
       iconUrl: IconMarker.CUSTOMER,
@@ -97,16 +93,25 @@ export class NearbyRestaurantsComponent implements OnInit, AfterViewInit, OnDest
   }
 
   onRestaurantCardHover(restaurant: RestaurantRecommended, isHover: boolean = false): void {
+    const coords = [restaurant.location?.coordinates[1], restaurant.location?.coordinates[0]];
     const marker = this.markers.find(m => {
       const markerCoords = (m.getLatLng() as L.LatLng).wrap();
-      const restaurantCoords = L.latLng(restaurant.location?.coordinates as L.LatLngExpression).wrap();
+      const restaurantCoords = L.latLng(coords as L.LatLngExpression).wrap();
       return markerCoords.equals(restaurantCoords);
     });
 
     if (marker) {
-      const popupContent = this.createPopupHtml(restaurant);
       if (isHover) {
-        marker.bindPopup(popupContent).openPopup();
+        marker.openPopup(marker.getLatLng());
+
+        const uniqueId = `popup-${restaurant.id}`;
+        const popupElement = document.getElementById(uniqueId);
+        if (popupElement) {
+          popupElement.addEventListener('click', () => {
+            this.navigateToRestaurant(restaurant.id);
+          });
+        }
+
         this.map.setView(marker.getLatLng());
       } else {
         marker.closePopup();
@@ -128,24 +133,27 @@ export class NearbyRestaurantsComponent implements OnInit, AfterViewInit, OnDest
         iconAnchor: [15, 15]
       });
 
+      //lat long
       const marker = L.marker(
-        restaurant.location?.coordinates as L.LatLngExpression,
+        [restaurant.location?.coordinates[1], restaurant.location?.coordinates[0]] as L.LatLngExpression,
         { icon: customIcon }
       ).addTo(this.map);
 
-      marker.on('click', () => {
-        const popupContent = this.createPopupHtml(restaurant);
-        L.popup()
-          .setLatLng(restaurant.location?.coordinates as L.LatLngExpression)
-          .setContent(popupContent)
-          .openOn(this.map);
+      const popupContent = this.createPopupHtml(restaurant);
+      marker.bindPopup(popupContent);
 
-        const popupElements = document.querySelectorAll('.popup-content');
-        popupElements.forEach(popupElement => {
+      marker.on('click', () => {
+        marker.openPopup(marker.getLatLng());
+
+        const uniqueId = `popup-${restaurant.id}`;
+        const popupElement = document.getElementById(uniqueId);
+        if (popupElement) {
           popupElement.addEventListener('click', () => {
             this.navigateToRestaurant(restaurant.id);
           });
-        });
+        }
+
+        this.map.setView(marker.getLatLng());
       });
 
       this.markers.push(marker);
@@ -184,7 +192,12 @@ export class NearbyRestaurantsComponent implements OnInit, AfterViewInit, OnDest
   createPopupHtml(restaurant: RestaurantRecommended): string {
     const view = this.popupRestaurantOnMapTemplate.createEmbeddedView({ $implicit: restaurant });
     view.detectChanges();
-    return view.rootNodes.map(node => node.outerHTML).join('');
+
+    const htmlContent = view.rootNodes.map(node => node.outerHTML).join('');
+    const uniqueId = `popup-${restaurant.id}`;
+    const wrappedContent = `<div id="${uniqueId}">${htmlContent}</div>`;
+
+    return wrappedContent;
   }
 
   navigateToRestaurant(restaurantId: string): void {
@@ -208,7 +221,6 @@ export class NearbyRestaurantsComponent implements OnInit, AfterViewInit, OnDest
   }
 
   toggleDisplayMap(): void {
-    document.getElementById('header')?.classList.remove('header-sticky');
     this.displayMap = !this.displayMap;
     this.displayMapChange.emit(this.displayMap);
   }

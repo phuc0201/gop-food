@@ -1,5 +1,5 @@
 <div #listOfRestaurants nz-row [nzGutter]="20" class="relative">
-  <ng-container *ngIf="restaurants.data.length > 0">
+  <ng-container>
     <div *ngFor="let item of restaurants.data" nz-col nzSpan="24" [nzSm]='columnConfig.sm' [nzMd]="columnConfig.md"
       [nzLg]="columnConfig.lg" class="">
       <app-restaurant-card [restaurant]="item"></app-restaurant-card>
@@ -48,5 +48,3 @@
     </div>
   </div>
 </ng-template>
-
-<div #sentinel></div>

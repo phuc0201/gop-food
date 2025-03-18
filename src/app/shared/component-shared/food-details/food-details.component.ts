@@ -9,7 +9,7 @@ import { NzDrawerModule, NzDrawerRef } from 'ng-zorro-antd/drawer';
 import { NzInputModule } from 'ng-zorro-antd/input';
 import { NzRadioModule } from 'ng-zorro-antd/radio';
 import { NzSkeletonModule } from 'ng-zorro-antd/skeleton';
-import { Observable, filter, of, switchMap, take, tap } from 'rxjs';
+import { filter, Observable, of, switchMap, take, tap } from 'rxjs';
 import { Basket } from 'src/app/core/models/order/order.model';
 import { FoodItemDTO, FoodItems } from 'src/app/core/models/restaurant/food-items.model';
 import { ModifierGroups } from 'src/app/core/models/restaurant/modifier-groups.model';
@@ -54,7 +54,7 @@ export class FoodDetailsComponent implements OnInit {
   initial(): void {
     this.store.select(selectFoodDetail)
       .pipe(
-        filter(data => !data.loading && data.food._id !== ''),
+        filter(data => data.food._id !== ''),
         tap(data => {
           data.food.modifier_groups.forEach(mdg => {
             if (mdg.min === 1 && mdg.max === 1 && mdg.modifier.length > 0) {

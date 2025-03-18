@@ -1,6 +1,5 @@
 import { AfterViewInit, Component, ElementRef, HostListener, OnInit, Renderer2, ViewChild } from '@angular/core';
 import { Store } from '@ngrx/store';
-import { filter } from 'rxjs';
 import { FoodItems } from 'src/app/core/models/restaurant/food-items.model';
 import { RestaurantCategory } from 'src/app/core/models/restaurant/restaurant-category.model';
 import { SearchService } from 'src/app/core/services/search.service';
@@ -225,14 +224,13 @@ export class RestaurantMenuComponent implements OnInit, AfterViewInit {
 
   loadData(): void {
     this.isLoading = true;
-    this.store.select(selectMenuItems).pipe(
-      filter(data => data.error == '' && data.loading == false)
-    ).subscribe({
-      next: data => {
-        this.menu = data.items;
-        this.menuSearching = this.menu.filter(cate => cate.food_items.length > 0);
-        this.isLoading = false;
-      }
-    });
+    this.store.select(selectMenuItems)
+      .subscribe({
+        next: data => {
+          this.menu = data.items;
+          this.menuSearching = this.menu.filter(cate => cate.food_items.length > 0);
+          this.isLoading = false;
+        }
+      });
   }
 }

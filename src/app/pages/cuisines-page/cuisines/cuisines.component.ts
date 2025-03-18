@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { Store } from '@ngrx/store';
-import { combineLatest, Subscription } from 'rxjs';
+import { combineLatest, filter, Subscription } from 'rxjs';
+import { URLConstant } from 'src/app/core/constants/url.constant';
 import { SortStatus } from 'src/app/core/models/common/enums/index.enum';
 import { IPagedResults } from 'src/app/core/models/common/response-data.model';
 import { CuisineCategory } from 'src/app/core/models/cuisine/cuisine-category.model';
@@ -36,37 +37,26 @@ export class CuisinesComponent implements OnInit {
   constructor(
     private searchSrv: SearchService,
     private route: ActivatedRoute,
+    private router: Router,
     private store: Store
   ) { }
 
   ngOnInit(): void {
-    // combineLatest([
-    //   this.route.queryParams,
-    //   this.route.paramMap,
-    // ]).subscribe(([queryParams, paramMap]) => {
-    //   this.currCuisineId = paramMap.get('id') ?? '';
-    //   this.restaurants = { data: [], totalPage: 0, currPage: 1 };
-    //   this.handleQueryParams(queryParams);
-    //   this.loadRestaurants();
-    // });
-
-    // this.searchSrv.restaurantSearchQuery.subscribe({
-    //   next: (value) => {
-    //     this.loadRestaurants(value);
-    //   }
-    // });
-
     combineLatest([
       this.searchSrv.restaurantSearchQuery,
       this.route.queryParams,
       this.route.paramMap,
-    ]).subscribe(([searchValue, queryParams, paramMap]) => {
-      this.currCuisineId = paramMap.get('id') ?? '';
-      this.restaurants = { data: [], totalPage: 0, currPage: 1 };
+    ])
+      .pipe(
+        filter(() => !this.router.url.startsWith(URLConstant.ROUTE.HOMEPAGE))
+      )
+      .subscribe(([searchValue, queryParams, paramMap]) => {
+        this.currCuisineId = paramMap.get('id') ?? '';
+        this.restaurants = { data: [], totalPage: 0, currPage: 1 };
 
-      this.handleQueryParams(queryParams);
-      this.loadRestaurants(searchValue);
-    });
+        this.handleQueryParams(queryParams);
+        this.loadRestaurants(searchValue);
+      });
   }
 
   loadRestaurants(searchValue: string = '') {

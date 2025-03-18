@@ -8,7 +8,7 @@ import { Address, LocationMarker } from 'src/app/core/models/geolocation/locatio
 import { GeolocationService } from 'src/app/core/services/geolocation.service';
 const plugins = [
   CommonModule,
-  LeafletModule
+  LeafletModule,
 ];
 @Component({
   selector: 'app-map',
@@ -33,6 +33,8 @@ export class MapComponent implements AfterViewInit, OnChanges {
 
   selectedCoordinate: [number, number] = [0, 0];
   map!: L.Map;
+  style = 'mapbox://styles/mapbox/streets-v11';
+
   currMarker!: L.Marker;
   pinIcon = L.icon({
     iconUrl: IconMarker.CUSTOMER,
@@ -86,13 +88,13 @@ export class MapComponent implements AfterViewInit, OnChanges {
     });
     this.selectedCoordinate = this.location;
 
-    const tiles = L.tileLayer(`https://maps.vietmap.vn/api/tm/{z}/{x}/{y}@2x.png?apikey=${'b00c56c4751ac6eb19dd72a48d9c8630d203e6aa8bbb104a'}`, {
-      attribution: '© Vietmap',
+    L.tileLayer(`https://{s}.google.com/vt/lyrs=m&x={x}&y={y}&z={z}`, {
+      subdomains: ['mt0', 'mt1', 'mt2', 'mt3'],
+      attribution: '© Google',
       maxZoom: 18,
       minZoom: 5,
     }).addTo(this.map);
 
-    tiles.addTo(this.map);
   }
 
   handleControlMap(): void {

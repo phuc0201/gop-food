@@ -2,7 +2,7 @@ import { environment } from "src/environments/environment";
 
 export const URLConstant = {
   ROUTE: {
-    HOMEPAGE: '/',
+    HOMEPAGE: '/feed',
     RESTAURANT_PAGE: {
       BASE: '/restaurant',
     },

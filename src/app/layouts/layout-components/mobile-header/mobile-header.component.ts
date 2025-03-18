@@ -38,8 +38,8 @@ export class MobileHeaderComponent implements OnInit, OnChanges {
   addressSelected = new SelectedAddress();
   basket = new Basket();
   openDrawer: boolean = false;
-  activeMobileHeaderRoutes = ['/'];
-  isActive: boolean = false;
+  activeMobileHeaderRoutes = ['/feed'];
+  isActive: boolean = true;
   searchValue: string = '';
   constructor(
     private geoSrv: GeolocationService,
@@ -70,14 +70,7 @@ export class MobileHeaderComponent implements OnInit, OnChanges {
   }
 
   handleMobileHeaderActive(): void {
-    this.isActive = false;
-    if (this.router.url == '/') {
-      this.isActive = true;
-    }
-    else if (this.router.url !== '') {
-      const url = this.router.url.split('/')[1];
-      this.isActive = this.activeMobileHeaderRoutes.includes(url);
-    }
+    this.isActive = this.router.url.startsWith('/feed');
 
     if (this.isActive) {
       this.geoSrv.currLocation.subscribe(location => {

@@ -1,7 +1,8 @@
 import { AfterViewInit, Component, ElementRef, HostListener, OnDestroy, OnInit, ViewChild } from '@angular/core';
-import { NavigationEnd, Router } from '@angular/router';
+import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
 import { filter, fromEvent, Subject, takeUntil } from 'rxjs';
 import { SystemConstant } from 'src/app/core/constants/system.constant';
+import { URLConstant } from 'src/app/core/constants/url.constant';
 import { DiningMode } from 'src/app/core/models/common/enums/index.enum';
 @Component({
   selector: 'app-main-layout',
@@ -13,7 +14,6 @@ export class MainLayoutComponent implements OnInit, AfterViewInit, OnDestroy {
   isLoading = false;
   isMobile: boolean = false;
   isHeaderSticky: boolean = false;
-  isHiddenMobileHeader: boolean = true;
   stickyRoutes = ['user', 'order', 'cuisines', 'wishlist'];
   hiddenMobileHeaderRoutes = ['restaurant'];
   scrollTopValue: number = 0;
@@ -21,18 +21,57 @@ export class MainLayoutComponent implements OnInit, AfterViewInit, OnDestroy {
 
   constructor(
     private router: Router,
+    private route: ActivatedRoute
   ) { }
 
   ngOnInit(): void {
     this.onActivate();
     this.isMobile = window.innerWidth < 768;
     this.handleHeaderSticky();
-
     this.router.events.pipe(
-      filter(event => event instanceof NavigationEnd)
-    ).subscribe((event: any) => {
-      this.handleHeaderSticky();
+      filter(event => event instanceof NavigationEnd),
+    ).subscribe(() => {
+      if (!this.router.url.startsWith(URLConstant.ROUTE.HOMEPAGE)) {
+        this.handleHeaderSticky();
+      }
+      else {
+        const storedDiningMode = localStorage.getItem(SystemConstant.DINING_MODE);
+        let targetDiningMode: DiningMode;
+        targetDiningMode = storedDiningMode === DiningMode.PICKUP ?
+          DiningMode.PICKUP : DiningMode.DELIVERY;
+        this.router.navigate([URLConstant.ROUTE.HOMEPAGE], {
+          queryParams: { diningMode: targetDiningMode },
+          replaceUrl: true
+        });
+      }
+
       this.onActivate();
+    });
+
+    this.route.queryParams.pipe(
+      filter(() => this.router.url.startsWith(URLConstant.ROUTE.HOMEPAGE))
+    ).subscribe(params => {
+      const storedDiningMode = localStorage.getItem(SystemConstant.DINING_MODE);
+      const currentDiningMode = params['diningMode'];
+
+      let targetDiningMode: DiningMode;
+
+      if (currentDiningMode) {
+        targetDiningMode = currentDiningMode === DiningMode.PICKUP ?
+          DiningMode.PICKUP : DiningMode.DELIVERY;
+      } else {
+        targetDiningMode = storedDiningMode as DiningMode || DiningMode.DELIVERY;
+      }
+
+      this.isHeaderSticky = targetDiningMode === DiningMode.PICKUP;
+      this.setDiningMode(targetDiningMode);
+
+      if (currentDiningMode !== targetDiningMode) {
+        this.router.navigate([URLConstant.ROUTE.HOMEPAGE], {
+          queryParams: { diningMode: targetDiningMode },
+          replaceUrl: true
+        });
+      }
     });
   }
 
@@ -70,22 +109,13 @@ export class MainLayoutComponent implements OnInit, AfterViewInit, OnDestroy {
 
   handleHeaderSticky(): void {
     this.isHeaderSticky = false;
-    this.isHiddenMobileHeader = true;
-    if (this.router.url != '/') {
+    if (!this.router.url.startsWith(URLConstant.ROUTE.HOMEPAGE)) {
       const url = this.router.url.split('/')[1];
       this.isHeaderSticky = this.stickyRoutes.includes(url);
-      this.isHiddenMobileHeader = !this.hiddenMobileHeaderRoutes.includes(url);
     }
-    else this.getDiningMode();
   }
 
-  getDiningMode() {
-    const diningMode = localStorage.getItem(SystemConstant.DINING_MODE);
-    if (diningMode && diningMode === DiningMode.PICKUP && this.router.url == '/') {
-      this.isHeaderSticky = true;
-    }
-    else {
-      localStorage.setItem(SystemConstant.DINING_MODE, DiningMode.DELIVERY);
-    }
+  setDiningMode(mode: DiningMode) {
+    localStorage.setItem(SystemConstant.DINING_MODE, mode);
   }
 }

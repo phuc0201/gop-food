@@ -2,7 +2,7 @@ import { CommonModule } from '@angular/common';
 import { AfterViewInit, Component, ElementRef, HostListener, Input, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { NzGridModule } from 'ng-zorro-antd/grid';
-import { debounceTime, fromEvent, Subject, takeUntil, tap } from 'rxjs';
+import { fromEvent, Subject, takeUntil, tap } from 'rxjs';
 import { SortStatus } from 'src/app/core/models/common/enums/index.enum';
 import { IPagedResults } from 'src/app/core/models/common/response-data.model';
 import { ICuisineFilter } from 'src/app/core/models/restaurant/cuisine-filter.model';
@@ -27,7 +27,6 @@ const plugin = [
   imports: plugin
 })
 export class ListRestaurantComponent implements OnInit, OnDestroy, AfterViewInit {
-  @ViewChild('sentinel') sentinel!: ElementRef;
   @ViewChild('listOfRestaurants', { static: true }) listOfRestaurantsEl!: ElementRef;
 
   @Input() columnConfig = {
@@ -45,13 +44,12 @@ export class ListRestaurantComponent implements OnInit, OnDestroy, AfterViewInit
   observer!: IntersectionObserver;
   destroy$ = new Subject<void>();
   isObserveRoute = false;
-  crrCateID = '';
   isLoading = true;
   isLoadMore = false;
   isFisrtLoading: boolean = true;
   isDataEmpty: boolean = false;
   scrollThreshold = 100;
-
+  currPage: number = 0;
   constructor(
     private store: Store
   ) { }
@@ -61,15 +59,12 @@ export class ListRestaurantComponent implements OnInit, OnDestroy, AfterViewInit
   }
 
   ngAfterViewInit(): void {
-
+    this.onMobileScroll();
   }
 
   ngOnDestroy(): void {
     this.destroy$.next();
     this.destroy$.complete();
-    if (this.observer && this.sentinel) {
-      this.observer.unobserve(this.sentinel.nativeElement);
-    }
   }
 
   resetFilter(): void {
@@ -97,43 +92,77 @@ export class ListRestaurantComponent implements OnInit, OnDestroy, AfterViewInit
         tap(() => {
           this.isDataEmpty = false;
           if (!this.isLoadMore) {
-            this.isFisrtLoading = true;
-            this.restaurants = {
-              currPage: 1,
-              totalPage: 1,
-              data: []
-            };
+            this.resetRestaurantsData();
           }
-        }),
-        debounceTime(300)
+        })
       )
       .subscribe({
         next: (response) => {
-          this.restaurants = response.restaurants.cuisineId === this.currCuisineId ? response.restaurants : { data: [], totalPage: 0, currPage: 1 };
+          const isSameCuisine = response.restaurants.cuisineId === this.currCuisineId;
 
-          this.isDataEmpty = !response.loading && this.restaurants.data.length === 0;
-
-          if (this.isDataEmpty) {
-            this.isFisrtLoading = false;
+          if (!this.isLoadMore) {
+            this.handleInitialLoad(response, isSameCuisine);
+          } else {
+            this.handleLoadMore(response);
           }
-
-          if (this.restaurants.data.length > 0) {
-            this.isFisrtLoading = false;
-          }
-
-          this.isLoadMore = false;
         }
       });
   }
 
+  resetRestaurantsData(): void {
+    this.isFisrtLoading = true;
+    this.currPage = 0;
+    this.restaurants = {
+      currPage: 0,
+      totalPage: 0,
+      data: []
+    };
+  }
+
+  handleInitialLoad(response: any, isSameCuisine: boolean): void {
+    this.restaurants = isSameCuisine ? response.restaurants : { data: [], totalPage: 0, currPage: 0 };
+    this.isDataEmpty = !response.loading && this.restaurants.totalPage === 0;
+
+    if (this.isDataEmpty
+      || (this.restaurants.currPage > 0 && this.restaurants.currPage === this.restaurants.totalPage)) {
+      setTimeout(() => {
+        document.getElementById('footer')?.classList.remove('hidden');
+      }, this.restaurants.totalPage > 1 ? 500 : 0);
+    }
+
+    if (this.isDataEmpty || (this.restaurants.data.length > 0 && isSameCuisine)) {
+      this.isFisrtLoading = false;
+      this.isLoadMore = false;
+
+      if (this.restaurants.data.length > 0 && isSameCuisine) {
+        this.currPage = this.restaurants.currPage;
+        if (this.restaurants.totalPage > 1 && this.restaurants.currPage < this.restaurants.totalPage) {
+          document.getElementById('footer')?.classList.add('hidden');
+        }
+      }
+    }
+  }
+
+  handleLoadMore(response: any): void {
+    this.currPage = this.restaurants.currPage + 1;
+    if (response.restaurants.totalPage > 0) {
+      this.restaurants = response.restaurants;
+      this.isLoadMore = false;
+    }
+  }
+
   loadMore(): void {
-    if (this.restaurants.currPage < this.restaurants.totalPage) {
+    const canLoadMore = this.restaurants.currPage < this.restaurants.totalPage
+      && this.restaurants.currPage === this.currPage
+      && !this.isLoadMore;
+
+    if (canLoadMore) {
+      this.currPage += 1;
       this.isLoadMore = true;
-      const currPage = this.restaurants.currPage;
       this.store.dispatch(fetchRestaurants({
         cuisineId: this.currCuisineId,
         searchQuery: this.currSearchValue,
-        page: currPage + 1,
+        page: this.currPage,
         limit: this.limit,
       }));
     }
@@ -150,12 +179,19 @@ export class ListRestaurantComponent implements OnInit, OnDestroy, AfterViewInit
   }
 
   onMobileScroll(): void {
-    const webbodyMobile = document.getElementById('webbodyMobile');
+    const webbodyMobile = document.getElementById('webbody-mobile');
+
     if (webbodyMobile) {
       fromEvent(webbodyMobile, 'scroll')
         .pipe(takeUntil(this.destroy$))
         .subscribe((event: Event) => {
-          const element = event.target as HTMLDivElement;
+          if (window.innerWidth <= 768) {
+            const restaurantsContainerBottom = this.listOfRestaurantsEl.nativeElement.getBoundingClientRect().bottom;
+            const webbodyMobileBottom = webbodyMobile.getBoundingClientRect().bottom;
+            if (!this.isLoadMore && (webbodyMobileBottom - restaurantsContainerBottom > -this.scrollThreshold)) {
+              this.loadMore();
+            }
+          }
         });
     }
   }

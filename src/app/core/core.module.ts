@@ -29,7 +29,7 @@ import { foodDetailReducer, menuReducer, restaurantDetailReducer, restaurantsRed
       restaurants: restaurantsReducer,
       restaurantDetail: restaurantDetailReducer,
       menu: menuReducer,
-      foodDetails: foodDetailReducer,
+      foodDetail: foodDetailReducer,
       search_address: searchAddressReducer,
       get_campaigns: getAllCampaignReducer,
       cuisines: cuisinesReducer,

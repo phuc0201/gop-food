@@ -1,7 +1,8 @@
 import { AfterViewInit, Component, HostListener, OnDestroy, OnInit } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
 import { Store } from '@ngrx/store';
-import { Subscription } from 'rxjs';
-import { SystemConstant } from 'src/app/core/constants/system.constant';
+import { filter, Subscription } from 'rxjs';
+import { URLConstant } from 'src/app/core/constants/url.constant';
 import { DiningMode } from 'src/app/core/models/common/enums/index.enum';
 import { IPagedResults } from 'src/app/core/models/common/response-data.model';
 import { FoodItems } from 'src/app/core/models/restaurant/food-items.model';
@@ -34,12 +35,27 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
     private geoSrv: GeolocationService,
     private searchSrv: SearchService,
     private store: Store,
+    private router: Router,
+    private route: ActivatedRoute
   ) { }
 
   ngOnInit(): void {
     this.handleMobileScreen();
     this.searchSrv.setRestaurantSearchQuery('');
-    this.getDiningMode();
+    this.route.queryParams
+      .pipe(
+        filter(() => this.router.url.startsWith(URLConstant.ROUTE.HOMEPAGE))
+      )
+      .subscribe({
+        next: (params) => {
+          if (params['diningMode'] == DiningMode.PICKUP) {
+            this.toggleNearbyRestaurantsOnMap();
+          }
+          else {
+            this.loadRestaurants();
+          }
+        }
+      });
   }
 
   ngAfterViewInit(): void {
@@ -83,7 +99,7 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
     });
   }
 
-  toggleNearbyRestaurantsOnMap() {
+  toggleNearbyRestaurantsOnMap(openMap: boolean = true) {
     if (window.innerWidth <= 768) {
       const webbodyMobile = document.getElementById('webbody-mobile');
       webbodyMobile?.scroll({
@@ -91,39 +107,18 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
         behavior: 'instant'
       });
     }
+    this.displayNearbyRestaurantsOnMap = openMap;
 
-    setTimeout(() => {
-      this.displayNearbyRestaurantsOnMap = !this.displayNearbyRestaurantsOnMap;
-
-      const header = document.getElementById('header');
-      if (this.displayNearbyRestaurantsOnMap) {
-        this.setDiningMode(DiningMode.PICKUP);
-        header?.classList.add('header-sticky');
-      }
-      else {
-        this.loadRestaurants();
-        header?.classList.remove('header-sticky');
-        this.setDiningMode(DiningMode.DELIVERY);
-      }
-    }, window.innerWidth <= 768 ? 100 : 0);
-  }
-
-  getDiningMode() {
-    const diningMode = localStorage.getItem(SystemConstant.DINING_MODE);
-    if (diningMode && diningMode === DiningMode.PICKUP) {
-      this.displayNearbyRestaurantsOnMap = true;
-      this.setDiningMode(DiningMode.PICKUP);
-      this.diningMode = DiningMode.PICKUP;
+    if (this.displayNearbyRestaurantsOnMap) {
+      this.router.navigate(['/feed'], {
+        queryParams: { diningMode: DiningMode.PICKUP },
+      });
     }
     else {
-      this.loadRestaurants();
-      this.setDiningMode(DiningMode.DELIVERY);
+      this.router.navigate(['/feed'], {
+        queryParams: { diningMode: DiningMode.DELIVERY },
+      });
     }
-  }
-
-  setDiningMode(mode: DiningMode) {
-    this.diningMode = mode;
-    localStorage.setItem(SystemConstant.DINING_MODE, mode);
   }
 }
 

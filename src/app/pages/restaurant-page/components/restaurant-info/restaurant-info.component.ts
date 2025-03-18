@@ -41,7 +41,7 @@ export class RestaurantInfoComponent implements OnInit, OnChanges {
     if (changes['restaurant'] && changes['restaurant'].currentValue._id !== '') {
       if (this.restaurant.distance && this.restaurant.duration) {
         this.distance = parseFloat((this.restaurant.distance / 1000).toFixed(2));
-        let duration = parseFloat((this.restaurant.duration / 60000).toFixed(0));
+        let duration = parseFloat((this.restaurant.duration / 60).toFixed(0));
 
         this.duration = duration < 60 ? duration + 'm' : (parseFloat((duration / 60).toFixed(0)) + 'h');
       }
