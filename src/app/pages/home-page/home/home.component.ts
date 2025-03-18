@@ -80,6 +80,8 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   loadRestaurants() {
+    this.restaurants = { data: [], totalPage: 0, currPage: 0 };
+
     this.store.dispatch(fetchRestaurants({
       cuisineId: "",
       searchQuery: "",
@@ -89,6 +91,9 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
 
     this.store.select(selectAllRestaurants).subscribe({
       next: res => {
+        if (res.restaurants.totalPage > 0) {
+          this.restaurants = res.restaurants;
+        }
         if (res.restaurants.currPage === res.restaurants.totalPage) {
           setTimeout(() => {
             document.getElementById('footer')?.classList.remove('hidden');

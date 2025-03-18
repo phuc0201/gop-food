@@ -29,7 +29,7 @@ export class CuisinesComponent implements OnInit {
   maxPrice: number = 100;
   filter!: ICuisineFilter;
   restaurantsSubscription: Subscription = new Subscription();
-  restaurants: IPagedResults<RestaurantRecommended> = { data: [], totalPage: 0, currPage: 1 };
+  restaurants: IPagedResults<RestaurantRecommended> = { data: [], totalPage: 0, currPage: 0 };
   currPage: number = 1;
   limit: number = 12;
   currCuisineId: string = '';
@@ -61,13 +61,17 @@ export class CuisinesComponent implements OnInit {
 
   loadRestaurants(searchValue: string = '') {
     this.isLoading = true;
-    this.store.dispatch(fetchRestaurants({
-      cuisineId: this.currCuisineId,
-      searchQuery: searchValue,
-      page: this.currPage,
-      limit: this.limit,
-      filter: this.filter
-    }));
+    this.restaurants = { data: [], totalPage: 0, currPage: 0 };
+
+    setTimeout(() => {
+      this.store.dispatch(fetchRestaurants({
+        cuisineId: this.currCuisineId,
+        searchQuery: searchValue,
+        page: this.currPage,
+        limit: this.limit,
+        filter: this.filter
+      }));
+    }, 100);
   }
 
   private handleQueryParams(params: any): void {

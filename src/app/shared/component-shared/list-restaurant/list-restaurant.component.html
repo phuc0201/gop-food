@@ -25,8 +25,10 @@
 </ng-container>
 
 <ng-container>
-  <div [hidden]="!isDataEmpty" class="w-full h-full flex justify-center items-center p-5">
-    <img src="assets/img/icons/ilus-basket-empty.svg" alt="" class="w-full max-w-96">
+  <div [hidden]="isLoading">
+    <div [hidden]="!isDataEmpty" class="w-full h-full flex justify-center items-center p-5">
+      <img src="assets/img/icons/ilus-basket-empty.svg" alt="" class="w-full max-w-96">
+    </div>
   </div>
 </ng-container>
 
