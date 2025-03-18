@@ -1,13 +1,13 @@
 <div #listOfRestaurants nz-row [nzGutter]="20" class="relative">
   <ng-container>
-    <div *ngFor="let item of restaurants.data" nz-col nzSpan="24" [nzSm]='columnConfig.sm' [nzMd]="columnConfig.md"
-      [nzLg]="columnConfig.lg" class="">
+    <div [hidden]="isLoading" *ngFor="let item of restaurants.data" nz-col nzSpan="24" [nzSm]='columnConfig.sm'
+      [nzMd]="columnConfig.md" [nzLg]="columnConfig.lg" class="">
       <app-restaurant-card [restaurant]="item"></app-restaurant-card>
     </div>
   </ng-container>
 </div>
 
-<ng-container *ngIf="isFisrtLoading">
+<ng-container *ngIf="isLoading">
   <div nz-row nzGutter="20">
     <ng-container *ngFor="let item of getListOfRestaurantsSkeleteon()">
       <div nz-col nzSpan="24" [nzSm]='columnConfig.sm' [nzMd]="columnConfig.md" [nzLg]="columnConfig.lg"

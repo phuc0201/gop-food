@@ -60,6 +60,7 @@ export class CuisinesComponent implements OnInit {
   }
 
   loadRestaurants(searchValue: string = '') {
+    this.isLoading = true;
     this.store.dispatch(fetchRestaurants({
       cuisineId: this.currCuisineId,
       searchQuery: searchValue,

@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { AfterViewInit, Component, ElementRef, HostListener, Input, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, EventEmitter, HostListener, Input, OnDestroy, OnInit, Output, ViewChild } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { NzGridModule } from 'ng-zorro-antd/grid';
 import { fromEvent, Subject, takeUntil, tap } from 'rxjs';
@@ -39,14 +39,14 @@ export class ListRestaurantComponent implements OnInit, OnDestroy, AfterViewInit
   @Input() currCuisineId: string = '';
   @Input() filter!: ICuisineFilter;
 
+  @Input() isLoading = true;
+  @Output() isLoadingChange = new EventEmitter();
   @Input() currSearchValue = '';
   @Input() restaurants: IPagedResults<RestaurantRecommended> = { currPage: 1, data: [], totalPage: -1 };
   observer!: IntersectionObserver;
   destroy$ = new Subject<void>();
   isObserveRoute = false;
-  isLoading = true;
   isLoadMore = false;
-  isFisrtLoading: boolean = true;
   isDataEmpty: boolean = false;
   scrollThreshold = 100;
   currPage: number = 0;
@@ -94,7 +94,7 @@ export class ListRestaurantComponent implements OnInit, OnDestroy, AfterViewInit
           if (!this.isLoadMore) {
             this.resetRestaurantsData();
           }
-        })
+        }),
       )
       .subscribe({
         next: (response) => {
@@ -110,7 +110,6 @@ export class ListRestaurantComponent implements OnInit, OnDestroy, AfterViewInit
   }
 
   resetRestaurantsData(): void {
-    this.isFisrtLoading = true;
     this.currPage = 0;
     this.restaurants = {
       currPage: 0,
@@ -131,8 +130,9 @@ export class ListRestaurantComponent implements OnInit, OnDestroy, AfterViewInit
     }
 
     if (this.isDataEmpty || (this.restaurants.data.length > 0 && isSameCuisine)) {
-      this.isFisrtLoading = false;
+      this.isLoading = false;
       this.isLoadMore = false;
+      this.isLoadingChange.emit(false);
 
       if (this.restaurants.data.length > 0 && isSameCuisine) {
         this.currPage = this.restaurants.currPage;
