@@ -130,9 +130,11 @@ export class ListRestaurantComponent implements OnInit, OnDestroy, AfterViewInit
     }
 
     if (this.isDataEmpty || (this.restaurants.data.length > 0 && isSameCuisine)) {
-      this.isLoading = false;
+      setTimeout(() => {
+        this.isLoading = false;
+        this.isLoadingChange.emit(false);
+      }, 200);
       this.isLoadMore = false;
-      this.isLoadingChange.emit(false);
 
       if (this.restaurants.data.length > 0 && isSameCuisine) {
         this.currPage = this.restaurants.currPage;
