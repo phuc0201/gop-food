@@ -1,7 +1,7 @@
 export const environment = {
   production: true,
   api: {
-    baseUrl: 'https://gop-gateway-production.up.railway.app/api/v1',
+    baseUrl: 'https://gop-server.vercel.app/api/v1',
     version: 'v1'
   },
   frontend: {
