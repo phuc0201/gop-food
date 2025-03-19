@@ -1,15 +1,14 @@
 import { CommonModule } from '@angular/common';
-import { AfterViewInit, Component, ElementRef, EventEmitter, HostListener, Input, OnDestroy, OnInit, Output, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, EventEmitter, HostListener, Input, OnDestroy, OnInit, Output } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { NzGridModule } from 'ng-zorro-antd/grid';
-import { fromEvent, Subject, takeUntil, tap } from 'rxjs';
+import { fromEvent, Subject, takeUntil } from 'rxjs';
 import { SortStatus } from 'src/app/core/models/common/enums/index.enum';
 import { IPagedResults } from 'src/app/core/models/common/response-data.model';
 import { ICuisineFilter } from 'src/app/core/models/restaurant/cuisine-filter.model';
 import { RestaurantRecommended } from 'src/app/core/models/restaurant/restaurant.model';
 import { fetchRestaurants } from 'src/app/core/store/restaurant/restaurant.actions';
 import { selectAllRestaurants } from 'src/app/core/store/restaurant/restaurant.selectors';
-import { RestaurantsState } from 'src/app/core/store/restaurant/restaurant.state';
 import { RestaurantCardComponent } from 'src/app/shared/component-shared/restaurant-card/restaurant-card.component';
 import { DotSpinnerComponent } from '../loaders/dot-spinner/dot-spinner.component';
 
@@ -28,8 +27,6 @@ const plugin = [
   imports: plugin
 })
 export class ListRestaurantComponent implements OnInit, OnDestroy, AfterViewInit {
-  @ViewChild('listOfRestaurants', { static: true }) listOfRestaurantsEl!: ElementRef;
-
   @Input() columnConfig = {
     xs: 12,
     sm: 12,
@@ -39,19 +36,17 @@ export class ListRestaurantComponent implements OnInit, OnDestroy, AfterViewInit
   @Input() limit = 8;
   @Input() currCuisineId: string = '';
   @Input() filter!: ICuisineFilter;
-
-  @Input() isLoading = true;
   @Output() isLoadingChange = new EventEmitter();
   @Input() currSearchValue = '';
-  @Input() restaurants: IPagedResults<RestaurantRecommended> = { currPage: 0, data: [], totalPage: 0 };
-  @Output() restaurantsChange = new EventEmitter<IPagedResults<RestaurantRecommended>>;
-  observer!: IntersectionObserver;
+
+  restaurants$ = this.store.select(selectAllRestaurants);
+  currRestaurants: IPagedResults<RestaurantRecommended> = { data: [], currPage: 0, totalPage: 0 };
   destroy$ = new Subject<void>();
   isObserveRoute = false;
   isLoadMore = false;
-  isDataEmpty: boolean = false;
   scrollThreshold = 200;
   currPage: number = 0;
+
   constructor(
     private store: Store
   ) { }
@@ -89,103 +84,50 @@ export class ListRestaurantComponent implements OnInit, OnDestroy, AfterViewInit
   }
 
   loadRestaurants(): void {
-    this.store.select(selectAllRestaurants)
-      .pipe(
-        tap(() => {
-          this.isDataEmpty = false;
-          if (!this.isLoadMore) {
-            this.resetRestaurantsData();
-          }
-        }),
-      )
-      .subscribe({
-        next: (response) => {
-          const isSameCuisine = response.restaurants.cuisineId === this.currCuisineId;
-
-          if (!this.isLoadMore) {
-            this.handleInitialLoad(response, isSameCuisine);
-          } else {
-            this.handleLoadMore(response);
-          }
-        }
-      });
-  }
-
-  resetRestaurantsData(): void {
-    this.currPage = 0;
-    this.restaurants = {
-      currPage: 0,
-      totalPage: 0,
-      data: []
-    };
-  }
-
-  handleInitialLoad(response: RestaurantsState, isSameCuisine: boolean): void {
-    this.isDataEmpty = !response.loading && response.restaurants.totalPage === 0;
-
-    if (this.isDataEmpty) {
-      this.isLoading = false;
-      this.isLoadingChange.emit(false);
-    }
-
-    if (response.restaurants.totalPage > 0 && isSameCuisine) {
-      this.currPage = response.restaurants.currPage;
-
-      this.restaurants = response.restaurants;
-      this.restaurantsChange.emit(response.restaurants);
-
-      this.isLoading = false;
-      this.isLoadingChange.emit(false);
-      this.isLoadMore = false;
-    }
-  }
-
-  handleLoadMore(response: any): void {
-    this.currPage = this.restaurants.currPage + 1;
-    if (response.restaurants.totalPage > 0) {
-      this.restaurants = response.restaurants;
-      this.isLoadMore = false;
-    }
+    this.restaurants$.subscribe({
+      next: (state) => {
+        this.currPage = state.restaurants.currPage;
+        this.isLoadMore = state.isLoadMore;
+        this.currRestaurants = state.restaurants;
+      }
+    });
   }
 
   loadMore(): void {
-    const canLoadMore = this.restaurants.currPage < this.restaurants.totalPage
-      && this.restaurants.currPage === this.currPage
-      && !this.isLoadMore;
-
-    if (canLoadMore) {
-      this.currPage += 1;
-      this.isLoadMore = true;
-      this.store.dispatch(fetchRestaurants({
-        cuisineId: this.currCuisineId,
-        searchQuery: this.currSearchValue,
-        page: this.currPage,
-        limit: this.limit,
-      }));
-    }
+    this.store.dispatch(fetchRestaurants({
+      cuisineId: this.currCuisineId,
+      searchQuery: this.currSearchValue,
+      page: this.currPage + 1,
+      limit: this.limit,
+    }));
   }
 
   @HostListener("window:scroll", ["$event"])
   onScroll(): void {
-    const restaurantsContainerBottom = this.listOfRestaurantsEl.nativeElement.getBoundingClientRect().bottom;
+    const restaurantsContainer = document.getElementById('listOfRestaurants');
+    const restaurantsContainerBottom = restaurantsContainer?.getBoundingClientRect().bottom || 0;
     const windowHeight = window.innerHeight;
 
-    if (!this.isLoadMore && (windowHeight - restaurantsContainerBottom > -this.scrollThreshold)) {
+    if (!this.isLoadMore
+      && (windowHeight - restaurantsContainerBottom > -this.scrollThreshold)
+      && this.currRestaurants.currPage < this.currRestaurants.totalPage) {
       this.loadMore();
     }
   }
 
   onMobileScroll(): void {
     const webbodyMobile = document.getElementById('webbody-mobile');
-
+    const restaurantsContainer = document.getElementById('listOfRestaurants');
     if (webbodyMobile) {
       fromEvent(webbodyMobile, 'scroll')
         .pipe(takeUntil(this.destroy$))
         .subscribe((event: Event) => {
           if (window.innerWidth <= 768) {
-            const restaurantsContainerBottom = this.listOfRestaurantsEl.nativeElement.getBoundingClientRect().bottom;
+            const restaurantsContainerBottom = restaurantsContainer?.getBoundingClientRect().bottom || 0;
             const webbodyMobileBottom = webbodyMobile.getBoundingClientRect().bottom;
-            if (!this.isLoadMore && (webbodyMobileBottom - restaurantsContainerBottom > -this.scrollThreshold)) {
+            if (!this.isLoadMore
+              && (webbodyMobileBottom - restaurantsContainerBottom > -this.scrollThreshold)
+              && this.currRestaurants.currPage < this.currRestaurants.totalPage) {
               this.loadMore();
             }
           }

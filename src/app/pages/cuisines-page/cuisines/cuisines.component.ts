@@ -1,14 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Store } from '@ngrx/store';
-import { combineLatest, filter, Subscription } from 'rxjs';
+import { combineLatest } from 'rxjs';
 import { URLConstant } from 'src/app/core/constants/url.constant';
 import { SortStatus } from 'src/app/core/models/common/enums/index.enum';
-import { IPagedResults } from 'src/app/core/models/common/response-data.model';
 import { CuisineCategory } from 'src/app/core/models/cuisine/cuisine-category.model';
 import { ICuisineFilter } from 'src/app/core/models/restaurant/cuisine-filter.model';
 import { FoodItems } from 'src/app/core/models/restaurant/food-items.model';
-import { RestaurantRecommended } from 'src/app/core/models/restaurant/restaurant.model';
 import { SearchService } from 'src/app/core/services/search.service';
 import { fetchRestaurants } from 'src/app/core/store/restaurant/restaurant.actions';
 
@@ -28,10 +26,8 @@ export class CuisinesComponent implements OnInit {
   minPrice: number = 0;
   maxPrice: number = 100;
   filter!: ICuisineFilter;
-  restaurantsSubscription: Subscription = new Subscription();
-  restaurants: IPagedResults<RestaurantRecommended> = { data: [], totalPage: 0, currPage: 0 };
   currPage: number = 1;
-  limit: number = 12;
+  limit: number = 20;
   currCuisineId: string = '';
 
   constructor(
@@ -47,34 +43,26 @@ export class CuisinesComponent implements OnInit {
       this.route.queryParams,
       this.route.paramMap,
     ])
-      .pipe(
-        filter(() => !this.router.url.startsWith(URLConstant.ROUTE.HOMEPAGE))
-      )
       .subscribe(([searchValue, queryParams, paramMap]) => {
         this.currCuisineId = paramMap.get('id') ?? '';
-        this.restaurants = { data: [], totalPage: 0, currPage: 1 };
-
-        this.handleQueryParams(queryParams);
-        this.loadRestaurants(searchValue);
+        if (!this.router.url.startsWith(URLConstant.ROUTE.HOMEPAGE)) {
+          this.handleQueryParams(queryParams);
+          this.loadRestaurants(searchValue);
+        }
       });
   }
 
   loadRestaurants(searchValue: string = '') {
-    this.isLoading = true;
-    this.restaurants = { data: [], totalPage: 0, currPage: 0 };
-
-    setTimeout(() => {
-      this.store.dispatch(fetchRestaurants({
-        cuisineId: this.currCuisineId,
-        searchQuery: searchValue,
-        page: this.currPage,
-        limit: this.limit,
-        filter: this.filter
-      }));
-    }, 100);
+    this.store.dispatch(fetchRestaurants({
+      cuisineId: this.currCuisineId,
+      searchQuery: searchValue,
+      page: this.currPage,
+      limit: this.limit,
+      filter: this.filter
+    }));
   }
 
-  private handleQueryParams(params: any): void {
+  handleQueryParams(params: any): void {
     const { sortby, promo, under, bestOverall, deliveryFee } = params;
 
     this.filter = {

@@ -8,6 +8,7 @@ export interface RestaurantsState {
   restaurants: IPagedResults<RestaurantRecommended>;
   error: string | null;
   loading: boolean;
+  isLoadMore: boolean;
 }
 
 export interface RestaurantDetailState {
@@ -35,7 +36,8 @@ export const initialRestaurantsState: RestaurantsState = {
     data: []
   },
   error: null,
-  loading: true
+  loading: true,
+  isLoadMore: false
 };
 
 export const initialRestaurantDetailState: RestaurantDetailState = {

@@ -1,13 +1,4 @@
-<div #listOfRestaurants nz-row [nzGutter]="20" class="relative">
-  <ng-container>
-    <div [hidden]="isLoading" *ngFor="let item of restaurants.data" nz-col nzSpan="24" [nzSm]='columnConfig.sm'
-      [nzMd]="columnConfig.md" [nzLg]="columnConfig.lg" class="">
-      <app-restaurant-card [restaurant]="item"></app-restaurant-card>
-    </div>
-  </ng-container>
-</div>
-
-<ng-container *ngIf="isLoading">
+<ng-container *ngIf="(restaurants$ | async)?.loading; else dataLoaded">
   <div nz-row nzGutter="20">
     <ng-container *ngFor="let item of getListOfRestaurantsSkeleteon()">
       <div nz-col nzSpan="24" [nzSm]='columnConfig.sm' [nzMd]="columnConfig.md" [nzLg]="columnConfig.lg"
@@ -18,15 +9,26 @@
   </div>
 </ng-container>
 
-<ng-container *ngIf="isLoadMore">
-  <div class="w-full flex justify-center my-10">
-    <dot-spinner [size]="'3rem'"></dot-spinner>
+<ng-template #dataLoaded>
+  <div #listOfRestaurants id="listOfRestaurants" nz-row [nzGutter]="20" class="relative">
+    <ng-container *ngFor="let restaurant of (restaurants$ | async)?.restaurants?.data">
+      <div nz-col nzSpan="24" [nzSm]='columnConfig.sm' [nzMd]="columnConfig.md" [nzLg]="columnConfig.lg">
+        <app-restaurant-card [restaurant]="restaurant"></app-restaurant-card>
+      </div>
+    </ng-container>
   </div>
-</ng-container>
+
+  <ng-container *ngIf="(restaurants$ | async)?.isLoadMore">
+    <div class="w-full flex justify-center my-10">
+      <dot-spinner [size]="'3rem'"></dot-spinner>
+    </div>
+  </ng-container>
+</ng-template>
 
 <ng-container>
-  <div [hidden]="isLoading">
-    <div [hidden]="!isDataEmpty" class="w-full h-full flex justify-center items-center p-5">
+  <div [hidden]="(restaurants$ | async)?.loading">
+    <div [hidden]="((restaurants$ | async)?.restaurants?.totalPage || 0)> 0"
+      class="w-full h-full flex justify-center items-center p-5">
       <img src="assets/img/icons/ilus-basket-empty.svg" alt="" class="w-full max-w-96">
     </div>
   </div>

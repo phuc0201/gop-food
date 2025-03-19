@@ -9,9 +9,10 @@ import {
 
 export const restaurantsReducer = createReducer(
   initialRestaurantsState,
-  on(RestaurantActions.fetchRestaurants, (state) => ({
+  on(RestaurantActions.fetchRestaurants, (state, { page }) => ({
     ...state,
-    loading: true
+    isLoadMore: page > 1,
+    loading: page === 1
   })),
 
   on(RestaurantActions.fetchRestaurantsSuccess, (state, { payload }) => {
@@ -28,6 +29,7 @@ export const restaurantsReducer = createReducer(
     return {
       ...state,
       loading: false,
+      isLoadMore: false,
       restaurants: {
         ...payload,
         data: updatedData
