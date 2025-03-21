@@ -15,6 +15,8 @@ import { OrderHistoryComponent } from './components/order-history/order-history.
 import { ProfileComponent } from './components/profile/profile.component';
 import { SidebarMenuComponent } from './components/sidebar-menu/sidebar-menu.component';
 import { MyAccountComponent } from './my-account/my-account.component';
+import { OrderHistoryListComponent } from './components/order-history-list/order-history-list.component';
+import { OrderCardComponent } from './components/order-card/order-card.component';
 const routes: Routes = [
   {
     path: '',
@@ -72,6 +74,8 @@ const plugins = [
     EWalletComponent,
     OrderHistoryComponent,
     OrderHistoryDetailsComponent,
+    OrderHistoryListComponent,
+    OrderCardComponent,
   ],
   imports: [
     CommonModule,

@@ -3,7 +3,7 @@ import { Store } from '@ngrx/store';
 import { initFlowbite } from 'flowbite';
 import { AuthService } from './core/services/auth.service';
 import { GeolocationService } from './core/services/geolocation.service';
-import { getProfile } from './core/store/profile/profile.action';
+import { getProfile } from './core/store/profile/profile.actions';
 import { NotificationComponent } from './shared/component-shared/notification/notification.component';
 @Component({
   selector: 'app-root',

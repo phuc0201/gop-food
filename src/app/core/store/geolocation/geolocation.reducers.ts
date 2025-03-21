@@ -1,5 +1,5 @@
 import { createReducer, on } from "@ngrx/store";
-import * as geolocaitonAction from './geolocation.action';
+import * as geolocaitonAction from './geolocation.actions';
 import { initialSearchState } from "./geolocation.state";
 
 const _searchAddress = createReducer(

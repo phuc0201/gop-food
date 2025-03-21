@@ -1,5 +1,5 @@
 import { createReducer, on } from "@ngrx/store";
-import * as cuisineAction from './cuisine.action';
+import * as cuisineAction from './cuisine.actions';
 import { initialCuisinesState } from "./cuisine.state";
 const _cuisinesReducer = createReducer(
   initialCuisinesState,

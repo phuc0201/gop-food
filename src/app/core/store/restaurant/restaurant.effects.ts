@@ -15,12 +15,15 @@ export class RestaurantEffects {
     this.actions$.pipe(
       ofType(RestaurantActions.fetchRestaurants),
       switchMap(({ cuisineId, searchQuery, page, limit, filter }) =>
-        this.restaurantService.getRestaurants(cuisineId, searchQuery, page, limit, filter).pipe(
-          map(response => RestaurantActions.fetchRestaurantsSuccess({ payload: response })),
-          catchError(error => of(RestaurantActions.fetchRestaurantsFailure({
-            error: error?.message || 'Failed to fetch restaurants'
-          })))
-        )
+        this.restaurantService.getRestaurants(cuisineId, searchQuery, page, limit, filter)
+          .pipe(
+            map(response =>
+              RestaurantActions.fetchRestaurantsSuccess({ payload: response })),
+            catchError(error =>
+              of(RestaurantActions.fetchRestaurantsFailure({
+                error: error?.message || 'Failed to fetch restaurants'
+              })))
+          )
       )
     )
   );

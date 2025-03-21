@@ -92,7 +92,7 @@ export class OrderService {
     return this.http.post<Bill>(this.baseUrl + '/order/create/delivery', dto);
   }
 
-  getHistory(): Observable<OrderHistory[]> {
+  getOrderHistory(): Observable<OrderHistory[]> {
     return this.http.get<OrderHistory[]>(this.baseUrl + '/order/customer/history');
   }
 

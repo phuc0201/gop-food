@@ -4,8 +4,8 @@ import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { Subscription } from 'rxjs';
 import { CuisineCategory } from 'src/app/core/models/cuisine/cuisine-category.model';
-import { getCuisines } from 'src/app/core/store/cuisine/cuisine.action';
-import { selectCuisines } from 'src/app/core/store/cuisine/cuisine.selector';
+import { getCuisines } from 'src/app/core/store/cuisine/cuisine.actions';
+import { selectCuisines } from 'src/app/core/store/cuisine/cuisine.selectors';
 import { CuisinesState } from 'src/app/core/store/cuisine/cuisine.state';
 
 const plugins = [

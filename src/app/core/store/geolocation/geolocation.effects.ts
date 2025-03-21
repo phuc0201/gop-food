@@ -2,7 +2,7 @@ import { Injectable } from "@angular/core";
 import { Actions, createEffect, ofType } from "@ngrx/effects";
 import { catchError, exhaustMap, map, of } from "rxjs";
 import { GeolocationService } from "../../services/geolocation.service";
-import * as geolocationAction from './geolocation.action';
+import * as geolocationAction from './geolocation.actions';
 @Injectable()
 export class GeolocationEffects {
   constructor(

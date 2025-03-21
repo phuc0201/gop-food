@@ -4,15 +4,17 @@ import { EffectsModule } from '@ngrx/effects';
 import { StoreModule } from '@ngrx/store';
 import { ScrollDirective } from '../shared/widget/directives/scroll.directive';
 import { AuthEffects } from './store/auth/auth.effects';
-import { loginReducer } from './store/auth/auth.reducer';
-import { CampaignEffects } from './store/campaign/campaign.effect';
-import { getAllCampaignReducer } from './store/campaign/campaign.reducer';
-import { CuisineEffects } from './store/cuisine/cuisine.effect';
-import { cuisinesReducer } from './store/cuisine/cuisine.reducer';
-import { GeolocationEffects } from './store/geolocation/geolocation.effect';
-import { searchAddressReducer } from './store/geolocation/geolocation.reducer';
-import { ProfileEffects } from './store/profile/profile.effect';
-import { getProfileReducer } from './store/profile/profile.reducer';
+import { loginReducer } from './store/auth/auth.reducers';
+import { CampaignEffects } from './store/campaign/campaign.effects';
+import { getAllCampaignReducer } from './store/campaign/campaign.reducers';
+import { CuisineEffects } from './store/cuisine/cuisine.effects';
+import { cuisinesReducer } from './store/cuisine/cuisine.reducers';
+import { GeolocationEffects } from './store/geolocation/geolocation.effects';
+import { searchAddressReducer } from './store/geolocation/geolocation.reducers';
+import { OrderEffects } from './store/order/order.effects';
+import { orderHistoryReducer } from './store/order/order.reducers';
+import { ProfileEffects } from './store/profile/profile.effects';
+import { getProfileReducer } from './store/profile/profile.reducers';
 import { RestaurantEffects } from './store/restaurant/restaurant.effects';
 import { foodDetailReducer, menuReducer, restaurantDetailReducer, restaurantsReducer } from './store/restaurant/restaurant.reducers';
 
@@ -33,6 +35,7 @@ import { foodDetailReducer, menuReducer, restaurantDetailReducer, restaurantsRed
       search_address: searchAddressReducer,
       get_campaigns: getAllCampaignReducer,
       cuisines: cuisinesReducer,
+      orderHistory: orderHistoryReducer
     }),
     EffectsModule.forRoot([
       AuthEffects,
@@ -40,7 +43,8 @@ import { foodDetailReducer, menuReducer, restaurantDetailReducer, restaurantsRed
       RestaurantEffects,
       GeolocationEffects,
       CampaignEffects,
-      CuisineEffects
+      CuisineEffects,
+      OrderEffects
     ])
   ]
 })

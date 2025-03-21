@@ -3,7 +3,7 @@ import { Actions, createEffect, ofType } from "@ngrx/effects";
 import { catchError, map, of, switchMap } from "rxjs";
 import { CuisineCategory } from "../../models/cuisine/cuisine-category.model";
 import { CuisineService } from "../../services/cuisine.service";
-import * as cuisineAction from './cuisine.action';
+import * as cuisineAction from './cuisine.actions';
 
 @Injectable()
 export class CuisineEffects {

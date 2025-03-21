@@ -6,7 +6,7 @@ import { URLConstant } from "../constants/url.constant";
 import { Campaign } from "../models/campaign/campain.model";
 import { CampaignDiscountType, CampaignScopeType } from "../models/common/enums/index.enum";
 import { Basket } from "../models/order/order.model";
-import { selectCampaigns } from "../store/campaign/campaign.selector";
+import { selectCampaigns } from "../store/campaign/campaign.selectors";
 import { OrderService } from "./order.service";
 import { ProfileService } from "./profile.service";
 

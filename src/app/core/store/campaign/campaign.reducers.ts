@@ -1,5 +1,5 @@
 import { createReducer, on } from "@ngrx/store";
-import * as campaignAction from './campaign.action';
+import * as campaignAction from './campaign.actions';
 import { initialCampaignsState } from "./campaign.state";
 const _getAllCampaign = createReducer(
   initialCampaignsState,
