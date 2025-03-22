@@ -11,7 +11,7 @@ export const OrderActionTypes = {
 export const fetchOrders = createAction(
   OrderActionTypes.FETCH_ORDER_HISTORY,
   props<{
-    filter?: any;
+    filter?: { status: string, searchValue: string; };
   }>()
 );
 

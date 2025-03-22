@@ -1,4 +1,4 @@
-import { HttpClient } from "@angular/common/http";
+import { HttpClient, HttpParams } from "@angular/common/http";
 import { Injectable } from "@angular/core";
 import { BehaviorSubject, Observable } from "rxjs";
 import { SystemConstant } from "../constants/system.constant";
@@ -92,8 +92,11 @@ export class OrderService {
     return this.http.post<Bill>(this.baseUrl + '/order/create/delivery', dto);
   }
 
-  getOrderHistory(): Observable<OrderHistory[]> {
-    return this.http.get<OrderHistory[]>(this.baseUrl + '/order/customer/history');
+  getOrderHistory(filter: { status: string, searchValue: string; }): Observable<OrderHistory[]> {
+    let params = new HttpParams()
+      .set('status', filter.status)
+      .set('searchValue', filter.searchValue);
+    return this.http.get<OrderHistory[]>(this.baseUrl + '/order/customer/history', { params });
   }
 
   getOrderDetails(billId: string): Observable<OrderDetails> {

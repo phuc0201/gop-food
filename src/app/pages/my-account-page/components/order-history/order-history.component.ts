@@ -1,5 +1,6 @@
 import { Component, HostListener, OnInit } from '@angular/core';
 import { Store } from '@ngrx/store';
+// Removed unused import of debounce from 'rxjs'
 import { OrderHistory } from 'src/app/core/models/order/order.model';
 import { fetchOrders } from 'src/app/core/store/order/order.actions';
 import { selectOrderHistory } from 'src/app/core/store/order/order.selectors';
@@ -17,11 +18,12 @@ export class OrderHistoryComponent implements OnInit {
   isMobile: boolean = false;
   isNoData: boolean = false;
   orders$ = this.store.select(selectOrderHistory);
+  selectedOrderStatus: string = '';
 
   constructor(
     private store: Store
   ) {
-    // this.search = this.debounce(this.search.bind(this), 500);
+    this.search = this.debounce(this.search.bind(this), 500);
   }
 
   ngOnInit(): void {
@@ -34,6 +36,26 @@ export class OrderHistoryComponent implements OnInit {
     });
   };
 
+  onSelectStatus(status: string) {
+    this.selectedOrderStatus = status;
+    this.store.dispatch(fetchOrders({
+      filter: {
+        status: status,
+        searchValue: this.searchValue
+      }
+    }));
+  }
+
+  search(value: string) {
+    this.searchValue = value;
+    this.store.dispatch(fetchOrders({
+      filter: {
+        status: this.selectedOrderStatus,
+        searchValue: value
+      }
+    }));
+  }
+
   @HostListener('window:resize', ['$event'])
   onResize(event: any) {
     this.hanldeMobileScreen();
@@ -43,52 +65,15 @@ export class OrderHistoryComponent implements OnInit {
     this.isMobile = window.innerWidth <= 768;
   }
 
-  // search(name: string) {
-  //   this.orderForSearch = this.orders.filter(order => {
-  //     let check = order.items.filter(item => this.normalizeString(item.food_name).includes(this.normalizeString(name)));
-
-  //     if (check.length > 0)
-  //       return true;
-  //     return false;
-  //   });
-
-  //   this.isNoData = this.orderForSearch.length == 0;
-  // }
-
-
-  // normalizeString(str: string): string {
-  //   return str
-  //     .normalize('NFD')
-  //     .replace(/[\u0300-\u036f]/g, '')
-  //     .toLowerCase();
-  // }
-
-  // debounce(func: Function, wait: number) {
-  //   let timeout: any;
-  //   return (...args: any[]) => {
-  //     const later = () => {
-  //       clearTimeout(timeout);
-  //       func.apply(this, args);
-  //     };
-  //     clearTimeout(timeout);
-  //     timeout = setTimeout(later, wait);
-  //   };
-  // }
-
-  // loadOrders() {
-  //   this.isLoading = true;
-  //   this.isNoData = false;
-  //   this.orderSrv.getHistory().subscribe({
-  //     next: data => {
-  //       this.orders = data;
-  //       this.orderForSearch = data;
-  //     },
-  //     complete: () => {
-  //       this.isLoading = false;
-  //       if (this.orderForSearch.length == 0) {
-  //         this.isNoData = true;
-  //       }
-  //     }
-  //   });
-  // }
+  debounce(func: Function, wait: number) {
+    let timeout: any;
+    return (...args: any[]) => {
+      const later = () => {
+        clearTimeout(timeout);
+        func.apply(this, args);
+      };
+      clearTimeout(timeout);
+      timeout = setTimeout(later, wait);
+    };
+  }
 }

@@ -14,8 +14,11 @@ export class OrderEffects {
   fetchOrderHistory$ = createEffect(() =>
     this.actions$.pipe(
       ofType(OrderActions.fetchOrders),
-      switchMap(() =>
-        this.orderSrv.getOrderHistory()
+      switchMap(({ filter }) =>
+        this.orderSrv.getOrderHistory({
+          status: filter?.status || '',
+          searchValue: filter?.searchValue || ''
+        })
           .pipe(
             map(response =>
               OrderActions.fetchOrdersSuccess({ orders: response })),
