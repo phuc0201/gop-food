@@ -5,42 +5,55 @@
       <div class="flex">
         <div class="mr-4">
           <div class="relative">
-            <img [src]="order.restaurant.cover_image" alt='avatar'
+            <img [src]="order.restaurant.avatar" alt='avatar'
               class="h-14 w-14 rounded-xl object-cover border border-gray-100 shadow-sm" />
             <div class="absolute -bottom-1 -right-1 w-5 h-5 rounded-full flex items-center justify-center bg-white">
-              <div class="w-2.5 h-2.5 rounded-full bg-primary"></div>
+              <div class="w-2.5 h-2.5 rounded-full"
+                [ngClass]="order.restaurant.status == 'OPEN' ? 'bg-primary' : 'bg-red-500'"></div>
             </div>
           </div>
         </div>
         <div>
-          <h3 class="font-semibold text-gray-900">
+          <h3 class="font-semibold text-gray-900 max-w-96 line-clamp-1">
             {{order.restaurant.restaurant_name}}
           </h3>
-          <div class="flex items-center mt-1 text-sm text-gray-500">
-            <!-- <Clock class="h-3.5 w-3.5 mr-1" /> -->
+          <div class="flex items-center gap-2 mt-1 text-sm text-gray-500">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+              stroke="currentColor" class="size-5">
+              <path stroke-linecap="round" stroke-linejoin="round"
+                d="M12 6v6h4.5m4.5 0a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
+            </svg>
+
             <span>
-              <!-- {order.date} • {order.time} -->
-              1/1/2025
+              {{formatDate(order.order_time)}}
             </span>
           </div>
           <div class="flex items-center mt-1">
-            <div class="flex items-center px-2.5 py-1 gap-2 text-primary font-light rounded-full text-xs border">
-              <div class="w-2.5 h-2.5 rounded-full bg-primary"></div>
-              {{ 'Delivered' }}
+            <div class="flex items-center px-2.5 py-1 gap-2 font-light rounded-full text-xs border"
+              [ngClass]="order.order_status == 'COMPLETED' ? 'text-primary' : (order.order_status == 'CANCELLED' ? 'text-red-500' : 'text-yellow-400')">
+              <div class="w-2.5 h-2.5 rounded-full"
+                [ngClass]="order.order_status == 'COMPLETED' ? 'bg-primary' : (order.order_status == 'CANCELLED' ? 'bg-red-500' : 'bg-yellow-400')">
+              </div>
+              {{ order.order_status == 'COMPLETED' ? 'Delivered' : (order.order_status == 'CANCELLED' ? 'Canceled' :
+              'Pending') }}
             </div>
           </div>
         </div>
       </div>
       <div class="text-right">
-        <p class="font-bold text-lg text-gray-900">100$</p>
-        <p class="text-xs text-gray-500 mt-1">Order ID: #sdfgsdhf</p>
+        <p class="font-bold text-lg text-gray-900">{{ order.bill.total.toLocaleString('vi-VN', {
+          style:'currency',currency: 'VND' }) }}</p>
+        <p class="text-xs text-gray-500 mt-1">Order ID: #{{ order._id }}</p>
       </div>
     </div>
 
     <div class="mt-4 pt-4 border-t border-dashed border-gray-200 flex flex-wrap justify-between items-center gap-2">
-      <div class="flex items-center text-sm text-gray-500">
-        <!-- <MapPin class="h-4 w-4 mr-1" /> -->
-        <span>Delivered to: 123 ABC Street, District 1, HCMC</span>
+      <div class="flex items-center text-sm text-gray-500 gap-2">
+        <i class="fa-solid fa-location-dot"></i>
+        <div class="max-w-96 font-light line-clamp-1">
+          <span class="font-bold mr-2">Delivered to:</span>
+          <span>{{ order.delivery_location.address }}</span>
+        </div>
       </div>
       <div class="flex space-x-2">
         <button
@@ -53,7 +66,13 @@
           Reorder
         </button>
         <button (click)="showDetails = !showDetails"
-          class="flex items-center px-3.5 py-2 bg-gray-50 border border-gray-200 text-gray-700 rounded-lg text-sm font-medium hover:bg-gray-100 transition-colors">
+          class="flex items-center gap-2 px-3.5 py-2 bg-gray-50 border border-gray-200 text-gray-700 rounded-lg text-sm font-medium hover:bg-gray-100 transition-colors">
+          <div [ngClass]="showDetails ? 'rotate-180' : ''" class="transition-all duration-300">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+              stroke="currentColor" class="size-5">
+              <path stroke-linecap="round" stroke-linejoin="round" d="m19.5 8.25-7.5 7.5-7.5-7.5" />
+            </svg>
+          </div>
           View details
         </button>
       </div>
@@ -66,41 +85,49 @@
         Order details
       </h4>
       <ul class="space-y-3">
-        <li key={index} class="flex justify-between text-sm bg-white p-3 rounded-lg border border-gray-100">
-          <div class="flex items-center">
+        <li *ngFor="let item of order.items"
+          class="flex justify-between text-sm bg-white p-3 rounded-lg border border-gray-100">
+          <div class="flex items-center gap-2">
+            <img [src]="item.image" alt="food" class="w-11 h-11 object-cover rounded-md">
+            <span class="text-gray-800">{{item.name}}</span>
             <div class="w-6 h-6 bg-gray-100 rounded-full flex items-center justify-center mr-2 text-xs font-medium">
-              10
+              {{item.quantity}}
             </div>
-            <span class="text-gray-800">name</span>
           </div>
-          <span class="font-medium text-gray-900">100$</span>
+          <span class="font-medium text-gray-900">{{ item.price.toLocaleString('vi-VN', { style:'currency',currency:
+            'VND' }) }}</span>
         </li>
       </ul>
 
       <div class="mt-4 pt-3 border-t border-gray-200">
         <div class="flex justify-between text-sm text-gray-500 mb-2">
           <span>Subtotal</span>
-          <span>$10.50</span>
+          <span>{{ order.order_cost.toLocaleString('vi-VN', { style:'currency',currency: 'VND' }) }}</span>
         </div>
         <div class="flex justify-between text-sm text-gray-500 mb-2">
           <span>Delivery fee</span>
-          <span>$1.50</span>
+          <span>{{ order.delivery_fare.toLocaleString('vi-VN', { style:'currency',currency: 'VND' }) }}</span>
         </div>
         <div class="flex justify-between text-sm text-gray-500 mb-3">
           <span>Discount</span>
-          <span>-$0</span>
+          <span>- {{ order.bill.discount.toLocaleString('vi-VN', { style:'currency',currency: 'VND' }) }}</span>
+        </div>
+        <div class="flex justify-between text-sm text-gray-500 mb-3">
+          <span>Platform</span>
+          <span>{{ order.bill.platform_fee.toLocaleString('vi-VN', { style:'currency',currency: 'VND' }) }}</span>
         </div>
         <div class="flex justify-between font-semibold text-gray-900">
           <span>Total</span>
-          <span>100$</span>
+          <span>{{ order.bill.total.toLocaleString('vi-VN', { style:'currency',currency: 'VND' }) }}</span>
         </div>
       </div>
 
       <div class="mt-4 pt-4 border-t border-gray-200 flex justify-center">
-        <button class="flex items-center text-sm gap-2 text-blue-600 hover:text-blue-700">
+        <a [routerLink]="['/order/tracking', order.bill._id]"
+          class="flex items-center text-sm gap-2 text-blue-600 hover:text-blue-700">
           <i class="fa-solid fa-arrow-up-right-from-square"></i>
           View full receipt
-        </button>
+        </a>
       </div>
     </div>
   </div>

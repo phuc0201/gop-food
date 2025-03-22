@@ -1,4 +1,5 @@
 import { BillStatus, OrderStatus, PaymentMethod } from "../common/enums/index.enum";
+import { ILocation } from "../geolocation/location.model";
 import { FoodItemDTO } from "../restaurant/food-items.model";
 import { Modifier } from "../restaurant/modifier.model";
 
@@ -90,22 +91,75 @@ class OrderHistoryItems {
 
 export class OrderHistory {
   _id: string;
-  restaurant: OrderHistoryRestaurant;
-  total: number;
-  billId: string;
-  items: OrderHistoryItems[];
+  restaurant: {
+    _id: string,
+    restaurant_name: string,
+    avatar: string,
+    status: string;
+  };
+  bill: Bill;
+  items: {
+    id: string,
+    quantity: number,
+    price: number,
+    name: string,
+    image: string;
+  }[];
+  delivery_location: ILocation;
+  delivery_fare: number;
+  order_cost: number;
+  confirm_time: Date;
+  complete_time: Date;
+  order_time: Date;
+  order_status: OrderStatus;
+  updatedAt: Date;
 
   constructor(
     _id: string = '',
-    restaurant: OrderHistoryRestaurant = new OrderHistoryRestaurant(),
-    total: number = 0,
-    billId: string = '',
-    items: OrderHistoryItems[] = []) {
+    restaurant: {
+      _id: string,
+      restaurant_name: string,
+      avatar: string,
+      status: string;
+    } = {
+        _id: '',
+        restaurant_name: '',
+        avatar: '',
+        status: ''
+      },
+    bill: Bill = new Bill(),
+    items: {
+      id: string,
+      quantity: number,
+      price: number,
+      name: string,
+      image: string;
+    }[] = [],
+    delivery_location: ILocation = {
+      type: '',
+      address: '',
+      coordinates: []
+    },
+    delivery_fare: number = 0,
+    order_cost: number = 0,
+    confirm_time: Date = new Date(),
+    complete_time: Date = new Date(),
+    order_time: Date = new Date(),
+    order_status: OrderStatus = OrderStatus.PENDING_CONFIRM,
+    updatedAt: Date = new Date()
+  ) {
     this._id = _id;
-    this.billId = billId;
     this.restaurant = restaurant;
-    this.total = total;
+    this.bill = bill;
     this.items = items;
+    this.delivery_location = delivery_location;
+    this.delivery_fare = delivery_fare;
+    this.order_cost = order_cost;
+    this.confirm_time = confirm_time;
+    this.complete_time = complete_time;
+    this.order_time = order_time;
+    this.order_status = order_status;
+    this.updatedAt = updatedAt;
   }
 }
 

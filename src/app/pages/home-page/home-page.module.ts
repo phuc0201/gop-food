@@ -13,7 +13,6 @@ import { NzModalService } from 'ng-zorro-antd/modal';
 import { NzPopoverModule } from 'ng-zorro-antd/popover';
 import { CategorySliderComponent } from 'src/app/shared/component-shared/category-slider/category-slider.component';
 import { FoodCardComponent } from 'src/app/shared/component-shared/food-card/food-card.component';
-import { ListFooditemsComponent } from 'src/app/shared/component-shared/list-fooditems/list-fooditems.component';
 import { ListRestaurantComponent } from 'src/app/shared/component-shared/list-restaurant/list-restaurant.component';
 import { PageLoaderComponent } from 'src/app/shared/component-shared/loaders/page-loader/page-loader.component';
 import { MapComponent } from 'src/app/shared/component-shared/map/map.component';
@@ -44,7 +43,6 @@ const plugins = [
   FoodCardComponent,
   MapComponent,
   ListRestaurantComponent,
-  ListFooditemsComponent,
   PageLoaderComponent,
   NzPopoverModule,
   RestaurantCardComponent
