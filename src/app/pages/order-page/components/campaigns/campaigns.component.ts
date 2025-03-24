@@ -31,7 +31,7 @@ export class CampaignsComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    this.basket = this.orderSrv.getCartItems();
+    this.basket = this.orderSrv.getBasket();
     this.campainsSelected = this.basket.cart.campaign_ids;
     const fetchCampaign = this.store.select(selectCampaigns)
       .pipe(

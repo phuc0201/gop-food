@@ -16,7 +16,7 @@ export class OrderService {
   constructor(
     private http: HttpClient
   ) {
-    this.newCartItems = new BehaviorSubject<Basket>(this.getCartItems());
+    this.newCartItems = new BehaviorSubject<Basket>(this.getBasket());
     this.basket = this.newCartItems.asObservable();
   }
 
@@ -43,13 +43,13 @@ export class OrderService {
   }
 
   removeFoodItem(id: string) {
-    const basket = this.getCartItems();
+    const basket = this.getBasket();
     const newFoodItems = basket.cart.items.filter(item => item.food_id !== id);
     basket.cart.items = newFoodItems;
     this.updateCart(basket);
   }
 
-  getCartItems(): Basket {
+  getBasket(): Basket {
     const basket = localStorage.getItem(SystemConstant.BASKET);
     return basket ? JSON.parse(basket) : new Basket();
   }
@@ -90,6 +90,13 @@ export class OrderService {
 
   placeOrder(dto: CreateOrderDTO<string>): Observable<Bill> {
     return this.http.post<Bill>(this.baseUrl + '/order/create/delivery', dto);
+  }
+
+  reOrder(orderId: string) {
+    let params = new HttpParams()
+      .set('orderId', orderId);
+
+    return this.http.get<any>(this.baseUrl + '/order/customer/re-order', { params });
   }
 
   getOrderHistory(filter: { status: string, searchValue: string; }): Observable<OrderHistory[]> {

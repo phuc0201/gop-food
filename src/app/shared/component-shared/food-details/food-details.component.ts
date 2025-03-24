@@ -164,7 +164,7 @@ export class FoodDetailsComponent implements OnInit {
   }
 
   addToCart(): void {
-    let basket = this.orderSrv.getCartItems();
+    let basket = this.orderSrv.getBasket();
     this.isAddToCart = true;
     if (!this.isUpdate) {
       this.store.select(selectRestaurantDetail).pipe(

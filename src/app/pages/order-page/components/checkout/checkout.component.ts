@@ -1,8 +1,9 @@
-import { Component, HostListener, OnInit, Type, ViewContainerRef } from '@angular/core';
+import { Component, HostListener, OnDestroy, OnInit, Type, ViewContainerRef } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { NzDrawerPlacement, NzDrawerRef, NzDrawerService } from 'ng-zorro-antd/drawer';
 import { NzModalService } from 'ng-zorro-antd/modal';
+import { Subscription } from 'rxjs';
 import { PaymentMethodData } from 'src/app/core/mock-data/payment-method.data';
 import { BillStatus, PaymentMethod } from 'src/app/core/models/common/enums/index.enum';
 import { LocationMarker, SelectedAddress } from 'src/app/core/models/geolocation/location.model';
@@ -27,7 +28,7 @@ import { PaymentNotificationComponent } from '../payment-notification/payment-no
   templateUrl: './checkout.component.html',
   styleUrls: ['./checkout.component.scss']
 })
-export class CheckoutComponent implements OnInit {
+export class CheckoutComponent implements OnInit, OnDestroy {
   basket = new Basket();
   quote = new Quote();
   paymentMethod = PaymentMethodData;
@@ -39,7 +40,7 @@ export class CheckoutComponent implements OnInit {
   drawerRef?: NzDrawerRef<any, any>;
   phone: string = '';
   placementDrawer: NzDrawerPlacement = 'right';
-
+  basketSubscription: Subscription = new Subscription();
   constructor(
     private orderSrv: OrderService,
     private modal: NzModalService,
@@ -66,6 +67,10 @@ export class CheckoutComponent implements OnInit {
     this.store.dispatch(getCampaignAvailableForRestaurant({ restaurantId: this.basket.cart.restaurant_id }));
     this.getCurrentPhone();
     this.handleMobileScreen();
+  }
+
+  ngOnDestroy(): void {
+    this.basketSubscription.unsubscribe();
   }
 
   @HostListener('window:resize', ['event'])
@@ -235,11 +240,11 @@ export class CheckoutComponent implements OnInit {
   }
 
   initData() {
-    this.orderSrv.basket.subscribe(res => {
+    this.basketSubscription = this.orderSrv.basket.subscribe(res => {
       if (res.cart.items.length === 0) {
         this.router.navigate(['']);
       }
-      else this.basket = this.orderSrv.getCartItems();
+      else this.basket = this.orderSrv.getBasket();
     });
 
     this.paymentMethod.forEach(payment => {

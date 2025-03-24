@@ -42,7 +42,7 @@ export class CampaignService {
     });
 
     const cus_id = this.profileSrv.getProfileInSession()._id;
-    const discount_value = this.validateAndApplyCampaign(cus_id, campaigns, this.orderSrv.getCartItems(), delivery_fare);
+    const discount_value = this.validateAndApplyCampaign(cus_id, campaigns, this.orderSrv.getBasket(), delivery_fare);
 
     return discount_value;
   }

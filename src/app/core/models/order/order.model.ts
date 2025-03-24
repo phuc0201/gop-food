@@ -18,14 +18,6 @@ export class CreateOrderDTO<T> {
   items: FoodItemDTO<T>[] = [];
 }
 
-
-// export class ItemsDTO {
-//   food_id: string = '';
-//   quantity: number = 0;
-//   price: number = 0;
-//   modifiers: string[] = [];
-// }
-
 export class CreateCartItems extends CreateOrderDTO<Modifier> {
   restaurant_name: string = '';
   restaurant_location: number[] = [0, 0];

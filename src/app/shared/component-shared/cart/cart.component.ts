@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { ChangeDetectionStrategy, Component, EventEmitter, HostListener, Input, OnChanges, Output, Renderer2, SimpleChanges, ViewChild } from '@angular/core';
+import { ChangeDetectionStrategy, Component, EventEmitter, HostListener, Input, OnChanges, Output, SimpleChanges, ViewChild } from '@angular/core';
 import { Router, RouterModule } from '@angular/router';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { NzDrawerComponent, NzDrawerModule, NzDrawerPlacement } from 'ng-zorro-antd/drawer';
@@ -35,7 +35,6 @@ export class CartComponent implements OnChanges {
 
   constructor(
     private translate: TranslateService,
-    private render: Renderer2,
     private orderSrv: OrderService,
     private router: Router,
   ) {
@@ -44,7 +43,7 @@ export class CartComponent implements OnChanges {
 
   ngOnChanges(changes: SimpleChanges): void {
     this.checkMobileScreen();
-    this.cartItems = this.orderSrv.getCartItems();
+    this.cartItems = this.orderSrv.getBasket();
   }
 
   @HostListener('window:resize', ['$event'])
@@ -79,11 +78,11 @@ export class CartComponent implements OnChanges {
   }
 
   updateCart() {
-    this.cartItems.subtotal = this.cartItems.cart.items.reduce((total_price, item) => {
-      const itemTotal = ((item.price ?? 0) + item.modifiers.reduce((price, modifier) => price + modifier.price, 0)) * item.quantity;
-      return total_price + itemTotal;
-    }, 0);
+    this.cartItems.subtotal = this.orderSrv.caculateSubtotal(this.cartItems);
     this.orderSrv.updateCart(this.cartItems);
+
+    if (this.cartItems.cart.items.length === 0)
+      this.closeDrawer();
   }
 
   closeDrawer(): void {
