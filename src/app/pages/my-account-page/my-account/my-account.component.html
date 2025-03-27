@@ -1,11 +1,11 @@
 <!-- PC -->
 <div *ngIf="!isMobile" class="bg-gray-50 h-full md:block hidden">
   <div class="sectionContainer py-5 h-full ">
-    <div nz-row class="h-full bg-white shadow rounded-sm">
-      <div nz-col nzSpan="5">
+    <div class="flex h-full bg-white shadow rounded-sm">
+      <div class="lg:w-64 w-52">
         <app-sidebar-menu></app-sidebar-menu>
       </div>
-      <div nz-col nzSpan="19" class="h-full">
+      <div class="flex-1 h-full">
         <div class="p-6 pr-5">
           <router-outlet></router-outlet>
         </div>

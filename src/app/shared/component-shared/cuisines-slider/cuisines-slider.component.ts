@@ -1,6 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { Component, CUSTOM_ELEMENTS_SCHEMA, ElementRef, Input, OnInit, ViewChild } from '@angular/core';
-import { ActivatedRoute, Router, RouterModule } from '@angular/router';
+import { ActivatedRoute, RouterModule } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { Subscription } from 'rxjs';
 import { CuisineCategory } from 'src/app/core/models/cuisine/cuisine-category.model';
@@ -32,7 +32,6 @@ export class CuisinesSliderComponent implements OnInit {
 
   constructor(
     private store: Store,
-    private router: Router,
     private route: ActivatedRoute,
   ) { }
 
