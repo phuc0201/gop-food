@@ -1,9 +1,14 @@
 <!-- PC LAYOUT -->
 <ng-container *ngIf="!isMobile">
-  <div class="pb-8 bg-white md:block hidden">
+  <div class="pb-8 bg-white md:block hidden relative">
     <div class="relative w-full h-[550px] md:block hidden">
       <img [hidden]="isLoading" loading="lazy" [src]="restaurant.cover_image"
         onerror="this.src='assets/img/banners/banner-1.jpg'" class="w-full h-full object-cover md:block hidden">
+
+      <app-restaurant-info *ngIf="!isMobile" [reviewsCount]="reviews.length" [restaurant]="restaurant"
+        [isLoading]="isLoading"></app-restaurant-info>
+
+      <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/70 to-transparent"></div>
 
       <div class="absolute top-0 left-0 right-0 bottom-0 transition-all duration-500 flex"
         [ngClass]="isLoading ? 'opacity-100 bg-gray-100' : 'opacity-10 bg-black'">
@@ -58,6 +63,7 @@
 
 <!-- COMMON COMPONENTS -->
 <ng-template #restaurantContentTemplate>
-  <app-restaurant-info [restaurant]="restaurant" [isLoading]="isLoading"></app-restaurant-info>
+  <app-restaurant-info *ngIf="isMobile" [restaurant]="restaurant" [isLoading]="isLoading"></app-restaurant-info>
+  <app-campaign-slider *ngIf="!isMobile"></app-campaign-slider>
   <app-restaurant-menu></app-restaurant-menu>
 </ng-template>

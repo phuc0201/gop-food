@@ -1,45 +1,76 @@
 <!--  -->
-<div id="restaurant-infor" class="sectionContainer">
-  <div class="md:flex flex-col hidden gap-3 overflow-hidden">
+<div id="restaurant-infor" class="relative">
+  <div
+    class="md:flex flex-col hidden gap-3 overflow-hidden sectionContainer absolute top-full left-0 right-0 z-10 -translate-y-full pb-20">
     <div [hidden]="isLoading" class="grid gap-3">
-      <div class="flex items-center justify-between">
-        <h1 class="font-bold text-3xl m-0 flex-1">{{ restaurant.restaurant_name }}</h1>
-        <button (click)="toggleWishlist()" class="p-2 px-3 shadow-6x rounded-full w-[200px]"
-          [ngClass]="{'text-white bg-red1' : isInWishlist}">
-          <i class="fa-regular fa-heart"></i>
-          {{isInWishlist ? 'Remove from favorites' : 'Add to favorites'}}
-        </button>
+      <div class="grid gap-6 restaurant-animate-fadeInUp">
+        <div *ngIf="restaurant.status == 'CLOSED'" class="bg-red1 text-white w-fit rounded-full px-4 p-[2px]">
+          closed
+        </div>
+
+        <h1 class="font-bold text-5xl m-0 flex-1 text-white max-w-[70%]">
+          {{ restaurant.restaurant_name }}
+        </h1>
+
+        <div class="flex items-center gap-3">
+          <div *ngFor="let item of restaurant.cuisine_categories"
+            class=" border-white/40 text-xs border text-white bg-white/10 backdrop-blur-sm hover:bg-white/20 rounded-full px-5 p-[2px]">
+            {{ item }}
+          </div>
+
+          <div class="w-1 h-1 rounded-full bg-white"></div>
+
+          <button (click)="isVisibleRatingsAndReviews=!isVisibleRatingsAndReviews" class="">
+            <i class="fa-solid fa-star text-yellow-300 md:text-base text-xs mr-1"></i>
+            <span class="text-white underline">{{restaurant.rating}} ( {{reviewsCount}} reviews )</span>
+          </button>
+
+          <div class="w-1 h-1 rounded-full bg-white"></div>
+
+          <div class="flex items-center text-white gap-2">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+              stroke="currentColor" class="size-4">
+              <path stroke-linecap="round" stroke-linejoin="round"
+                d="M8.25 18.75a1.5 1.5 0 0 1-3 0m3 0a1.5 1.5 0 0 0-3 0m3 0h6m-9 0H3.375a1.125 1.125 0 0 1-1.125-1.125V14.25m17.25 4.5a1.5 1.5 0 0 1-3 0m3 0a1.5 1.5 0 0 0-3 0m3 0h1.125c.621 0 1.129-.504 1.09-1.124a17.902 17.902 0 0 0-3.213-9.193 2.056 2.056 0 0 0-1.58-.86H14.25M16.5 18.75h-2.25m0-11.177v-.958c0-.568-.422-1.048-.987-1.106a48.554 48.554 0 0 0-10.026 0 1.106 1.106 0 0 0-.987 1.106v7.635m12-6.677v6.677m0 4.5v-4.5m0 0h-12" />
+            </svg>
+            <span class="text-white">{{distance}} km</span>
+          </div>
+
+          <div class="w-1 h-1 rounded-full bg-white"></div>
+
+          <button (click)="createModal()" class="text-white underline">
+            info
+          </button>
+        </div>
+
+        <div class="flex items-center gap-2">
+          <button (click)="copyCurrentUrlToClipboard()"
+            class="flex items-center gap-2 border-white/40 text-xs border text-white bg-white/10 backdrop-blur-sm hover:bg-white/20 rounded-md px-5 p-1">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+              stroke="currentColor" class="size-3">
+              <path stroke-linecap="round" stroke-linejoin="round"
+                d="M13.19 8.688a4.5 4.5 0 0 1 1.242 7.244l-4.5 4.5a4.5 4.5 0 0 1-6.364-6.364l1.757-1.757m13.35-.622 1.757-1.757a4.5 4.5 0 0 0-6.364-6.364l-4.5 4.5a4.5 4.5 0 0 0 1.242 7.244" />
+            </svg>
+
+            {{ isCopied ? 'copied' : 'share' }}
+          </button>
+
+          <button (click)="toggleWishlist()"
+            class="flex items-center gap-2  text-xs border backdrop-blur-sm rounded-md px-5 p-1 h-full"
+            [ngClass]="isInWishlist ? 'text-red1 border-red1 bg-red1/10 hover:bg-red1/20 ' : 'text-white bg-white/10 border-white/40 hover:bg-white/20 '">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+              stroke="currentColor" class="size-3">
+              <path stroke-linecap="round" stroke-linejoin="round"
+                d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12Z" />
+            </svg>
+          </button>
+        </div>
       </div>
-      <h4 class="text-gray-500 font-light m-0">{{ restaurant.location.address }}</h4>
-      <span *ngIf="restaurant.status == 'CLOSED'" class="text-[#b82323] font-medium">Closed</span>
     </div>
-
-    <div [hidden]="isLoading" class="flex items-center md:gap-3 gap-2 max-w-full mb-2">
-      <div class="restaurant-rat flex items-center md:gap-2 gap-1">
-        <i class="fa-solid fa-star text-yellow-300 md:text-base text-xs"></i>
-        <div class="text-gray-500 md:text-sm text-xs font-light">{{ restaurant.rating }}</div>
-      </div>
-      <div class="restaurant-duration flex items-center md:gap-2 gap-1">
-        <i class="fa-regular fa-clock text-gray-500 md:text-base text-xs"></i>
-        <div class="text-gray-500 md:text-sm text-xs font-light">{{ duration }}</div>
-      </div>
-      <div class="restaurant-distance hidden xs:flex items-center md:gap-2 gap-1">
-        <i class="fa-regular fa-map text-gray-500 md:text-base text-xs"></i>
-        <div class="text-gray-500 md:text-sm text-xs font-light">{{ distance }} km</div>
-      </div>
-
-      <div class="w-1 h-1 rounded-full bg-gray-500"></div>
-
-      <button (click)="createModal()" class="underline text-gray-500 cursor-pointer">Info</button>
-    </div>
-
-    <app-review-slider [restaurantId]="restaurant._id"></app-review-slider>
-
-    <app-campaign-slider [campaigns]="campaigns"></app-campaign-slider>
   </div>
 
   <!-- MOBILE -->
-  <div class="sectionContainer !p-0 bg-transparent md:hidden block">
+  <div class="sectionContainer px-4 bg-transparent md:hidden block">
     <div class="bg-white border border-gray-200 p-4 rounded-lg">
       <div class="border border-gray-200 border-x-0 border-t-0 pb-2">
         <div class="flex items-center gap-4">
@@ -73,7 +104,7 @@
         </div>
       </div>
 
-      <div (click)="isVisibleCampaignDrawer = true" *ngIf="campaigns.length > 0"
+      <div (click)="isVisibleCampaignDrawer = true" *ngIf="((campaigns$ | async)?.length || 0) > 0"
         class="flex items-center gap-3 py-4 Infinity border border-gray-200 border-x-0 border-t-0">
         <div class="rotate-90 w-5 h-5">
           <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="#20bb65"
@@ -83,8 +114,8 @@
             <path strokeLinecap="round" strokeLinejoin="round" d="M6 6h.008v.008H6V6Z" />
           </svg>
         </div>
-        <span>{{campaigns[0].name}}</span>
-        <app-campaign-drawer [(isVisible)]="isVisibleCampaignDrawer" [campaigns]="campaigns"></app-campaign-drawer>
+        <span>{{(campaigns$ | async)?.[0]?.name || 'No campaign available'}}</span>
+        <app-campaign-drawer [(isVisible)]="isVisibleCampaignDrawer"></app-campaign-drawer>
       </div>
 
       <div class="flex items-center justify-between p-4 mt-4 bg-premium rounded-md">
@@ -139,6 +170,6 @@
   </ng-container>
 </div>
 
-<ng-container *ngIf="isMobile">
+<ng-container>
   <app-review-drawer [restaurant]="restaurant" [(opened)]="isVisibleRatingsAndReviews"></app-review-drawer>
 </ng-container>

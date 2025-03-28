@@ -1,7 +1,7 @@
 import { createReducer, on } from "@ngrx/store";
 import * as campaignAction from './campaign.actions';
 import { initialCampaignsState } from "./campaign.state";
-const _getAllCampaign = createReducer(
+export const campaignReducer = createReducer(
   initialCampaignsState,
   on(campaignAction.getCampaignAvailableForRestaurant, (state) => {
     return {
@@ -24,7 +24,3 @@ const _getAllCampaign = createReducer(
     };
   })
 );
-
-export function getAllCampaignReducer(state: any, action: any) {
-  return _getAllCampaign(state, action);
-}

@@ -1,9 +1,11 @@
 import { Component, HostListener, Input, OnChanges, OnInit, SimpleChanges, ViewContainerRef } from '@angular/core';
+import { Store } from '@ngrx/store';
 import { NzModalService } from 'ng-zorro-antd/modal';
-import { Campaign } from 'src/app/core/models/campaign/campain.model';
+import { map } from 'rxjs';
 import { Restaurant, RestaurantRecommended } from 'src/app/core/models/restaurant/restaurant.model';
-import { CampaignService } from 'src/app/core/services/campaign.service';
 import { RestaurantService } from 'src/app/core/services/restaurant.service';
+import { selectCampaigns } from 'src/app/core/store/campaign/campaign.selectors';
+import { CampaignsState } from 'src/app/core/store/campaign/campaign.state';
 import { RestaurantInfoDetailsComponent } from '../restaurant-info-details/restaurant-info-details.component';
 
 
@@ -15,19 +17,24 @@ import { RestaurantInfoDetailsComponent } from '../restaurant-info-details/resta
 export class RestaurantInfoComponent implements OnInit, OnChanges {
   @Input() isLoading: boolean = true;
   @Input() restaurant = new Restaurant();
+  @Input() reviewsCount: number = 0;
+
+  campaigns$ = this.store.select(selectCampaigns).pipe(
+    map((state: CampaignsState) => state.campaigns)
+  );
   distance: number = 0;
   duration: string = '';
   isVisibleRatingsAndReviews: boolean = false;
   isVisibleCampaignDrawer: boolean = false;
   isInWishlist: boolean = false;
   isMobile: boolean = false;
-  campaigns: Campaign[] = [];
+  isCopied: boolean = false;
 
   constructor(
     private restaurantSrv: RestaurantService,
-    private campaignSrv: CampaignService,
     private modal: NzModalService,
     private viewContainerRef: ViewContainerRef,
+    private store: Store
   ) { }
 
   @HostListener('window:resize', ['$event'])
@@ -45,12 +52,6 @@ export class RestaurantInfoComponent implements OnInit, OnChanges {
 
         this.duration = duration < 60 ? duration + 'm' : (parseFloat((duration / 60).toFixed(0)) + 'h');
       }
-
-      this.campaignSrv.getCampaignAvailableForRestaurant(this.restaurant._id).subscribe({
-        next: (data) => {
-          this.campaigns = data;
-        }
-      });
 
       const index = this.restaurantSrv.getWishList().findIndex(res => res.id == this.restaurant._id);
       this.isInWishlist = index !== -1;
@@ -89,5 +90,14 @@ export class RestaurantInfoComponent implements OnInit, OnChanges {
 
     this.isInWishlist = index === -1;
     this.restaurantSrv.addToWishList(restaurant);
+  }
+
+  copyCurrentUrlToClipboard() {
+    const currentUrl = window.location.href;
+    navigator.clipboard.writeText(currentUrl).then(() => {
+      this.isCopied = true;
+    }).catch(err => {
+      console.error('Failed to copy URL: ', err);
+    });
   }
 }

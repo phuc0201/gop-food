@@ -1,29 +1,25 @@
-import { Component, Input, OnChanges, SimpleChanges } from '@angular/core';
-import { Campaign } from 'src/app/core/models/campaign/campain.model';
+import { Component, Input } from '@angular/core';
+import { Store } from '@ngrx/store';
+import { map } from 'rxjs/operators';
 import { FormatService } from 'src/app/core/services/common/format.serive';
+import { selectCampaigns } from 'src/app/core/store/campaign/campaign.selectors';
+import { CampaignsState } from 'src/app/core/store/campaign/campaign.state';
 
 @Component({
   selector: 'app-campaign-slider',
   templateUrl: './campaign-slider.component.html',
   styleUrls: ['./campaign-slider.component.scss']
 })
-export class CampaignSliderComponent implements OnChanges {
+export class CampaignSliderComponent {
   @Input() restaurantId: string = '';
-  @Input() campaigns: Campaign[] = [];
+  campaigns$ = this.store.select(selectCampaigns).pipe(
+    map((state: CampaignsState) => state.campaigns)
+  );
 
   constructor(
-    private formatSrv: FormatService
+    private formatSrv: FormatService,
+    private store: Store
   ) { }
-
-  ngOnChanges(changes: SimpleChanges): void {
-    // if (changes['restaurantId'].currentValue !== '') {
-    //   this.campaignSrv.getCampaignsByRestaurantId(this.restaurantId).subscribe({
-    //     next: (data) => {
-    //       this.campaigns = data;
-    //     }
-    //   });
-    // }
-  }
 
   formatDate(date: Date): string {
     return this.formatSrv.formatDate(date.toString());

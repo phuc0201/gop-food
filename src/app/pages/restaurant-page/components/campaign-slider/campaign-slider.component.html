@@ -1,29 +1,67 @@
-<div *ngIf="campaigns.length > 0" class="px-1 mb-5">
-  <div class="w-full h-[1px] bg-gray-100 my-4"></div>
-  <h1 class="font-medium text-gray-700 text-base m-0">Available deals</h1>
+<section class="sectionContainer">
+  <div *ngIf="((campaigns$ | async)?.length || 0) > 0" class="px-1 mb-5">
+    <h2 class="text-2xl font-bold mb-3 text-gray-900">
+      Special Offers
+    </h2>
 
-  <app-horizontal-scroll-slider [isDisplayButton]="true">
-    <ng-container *ngFor="let item of campaigns">
-      <div class="py-1">
-        <div class="flex rounded-lg shadow-6x min-w-80 h-32 overflow-hidden">
-          <div class="aspect-square h-full">
-            <img [src]="item.image" alt="" class="object-cover">
-          </div>
-          <div class="w-3/5 h-full p-4 flex flex-col justify-between">
-            <div>
-              <div class="font-medium line-clamp-3"> {{item.name}}</div>
-              <div class="text-xs text-gray-400">Ends {{formatDate(item.conditions.end_time)}}</div>
-            </div>
-            <div *ngIf="item.discount.type === 'PERCENTAGE'" class="text-gray-600">
-              Max {{item.discount.cap.toLocaleString('vi-VN', {style: 'currency', currency: 'VND'})}}
-            </div>
-            <div *ngIf="item.discount.type === 'NET'">
-              <s class="text-gray-600">{{item.discount.value.toLocaleString('vi-VN', {style: 'currency', currency:
-                'VND'})}}</s>
-            </div>
-          </div>
-        </div>
+    <app-horizontal-scroll-slider [isDisplayButton]="true">
+      <ng-container *ngFor="let item of (campaigns$ | async)">
+        <ng-container *ngIf="item.discount.type == 'DELIVERY'" [ngTemplateOutlet]="freeShipCampaign"
+          [ngTemplateOutletContext]="{ campaign: item }">
+        </ng-container>
+        <ng-container *ngIf="item.discount.type !== 'DELIVERY'" [ngTemplateOutlet]="orderCampaign"
+          [ngTemplateOutletContext]="{ campaign: item }">
+        </ng-container>
+      </ng-container>
+    </app-horizontal-scroll-slider>
+  </div>
+</section>
+
+
+<ng-template #freeShipCampaign let-campaign="campaign">
+  <div class="py-2">
+    <div class="relative flex items-center min-w-96 max-w-96 rounded-sm shadow-lg overflow-hidden">
+      <div class="absolute top-1/2 -translate-y-1/2 -left-[7px] grid gap-[2px]">
+        <div *ngFor="let item of [1,2,3,4,5,6,7,8,9,10]" class="w-[10px] h-[10px] rounded-full bg-white"></div>
       </div>
-    </ng-container>
-  </app-horizontal-scroll-slider>
-</div>
+
+      <div class="h-32 aspect-square bg-[#26aa99] flex items-center justify-center">
+        <img src="https://down-vn.img.susercontent.com/file/sg-11134004-22120-4cskiffs0olvc3.webp" alt="" class="w-24">
+      </div>
+      <div class="flex-1 p-4">
+        <span class="text-[16px] break-words line-clamp-2 font-light">{{ campaign.name }}</span>
+        <span class="text-sm break-words line-clamp-2 font-light">Min spend: {{
+          campaign.conditions.minBasketAmount.toLocaleString('vi-VN', {style: 'currency', currency:
+          'VND'}) }}</span>
+        <span class="text-xs text-gray-500 font-light">Expiring: {{formatDate(campaign.conditions.end_time)}}</span>
+      </div>
+    </div>
+  </div>
+</ng-template>
+
+<ng-template #orderCampaign let-campaign="campaign">
+  <div class="py-2">
+    <div class="relative flex items-center min-w-96 max-w-96 rounded-sm shadow-lg overflow-hidden">
+      <div class="absolute top-1/2 -translate-y-1/2 -left-[7px] grid gap-[2px]">
+        <div *ngFor="let item of [1,2,3,4,5,6,7,8,9,10]" class="w-[10px] h-[10px] rounded-full bg-white"></div>
+      </div>
+
+      <div class="h-32 aspect-square bg-[#ee4d2d] flex flex-col items-center justify-center gap-3">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"
+          class="size-12 text-white">
+          <path stroke-linecap="round" stroke-linejoin="round"
+            d="M15.75 10.5V6a3.75 3.75 0 1 0-7.5 0v4.5m11.356-1.993 1.263 12c.07.665-.45 1.243-1.119 1.243H4.25a1.125 1.125 0 0 1-1.12-1.243l1.264-12A1.125 1.125 0 0 1 5.513 7.5h12.974c.576 0 1.059.435 1.119 1.007ZM8.625 10.5a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Zm7.5 0a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Z" />
+        </svg>
+        <span *ngIf="campaign.discount.type=='PERCENTAGE'" class="text-white text-xs">Max: {{ campaign.discount.cap
+          }}</span>
+      </div>
+      <div class="flex-1 p-4">
+        <span class="text-[16px] break-words line-clamp-2 font-light">{{ campaign.name }}</span>
+        <span class="text-sm break-words line-clamp-2 font-light">Min spend: {{
+          campaign.conditions.minBasketAmount.toLocaleString('vi-VN', {style: 'currency', currency:
+          'VND'}) }}</span>
+        <span class="text-xs text-gray-500 font-light">Expiring: {{formatDate(campaign.conditions.end_time)}}</span>
+      </div>
+    </div>
+  </div>
+</ng-template>

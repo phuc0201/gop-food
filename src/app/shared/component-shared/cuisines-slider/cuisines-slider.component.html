@@ -27,13 +27,14 @@
     <div class="relative w-full">
       <div #cuisinesSlider id="cuisine-list" class="cuisine-slider flex items-start justify-start gap-3">
         <ng-container *ngFor="let cusine of sortedCuisineCategories">
-          <div class="slider-item flex flex-col items-center">
+          <div class="relative slider-item flex flex-col items-center">
             <a [routerLink]="['/cuisines', cusine.id]" [queryParamsHandling]="'merge'" [routerLinkActive]="'active'"
               class="relative border-2 border-transparent transition-all duration-300 w-16 min-w-16 aspect-square sm:w-32 sm:min-w-32 lg:w-44 lg:min-w-44 sm:aspect-video overflow-hidden rounded-full sm:rounded-lg">
 
-              <div *ngIf="isImageLoaded"
-                class="sm:block hidden z-10 absolute top-0 left-0 right-0 bottom-0 sm:rounded-lg cuisine-overlay rounded-full">
+              <div
+                class="absolute inset-0 bg-gradient-to-tr from-black/80 via-transparent to-transparent rounded-full sm:rounded-lg">
               </div>
+
               <div [class.opacity-0]="isImageLoaded" [class.pointer-events-none]="isImageLoaded"
                 class="z-10 transition-all duration-500 absolute top-0 left-0 right-0 bottom-0 sm:rounded-md bg-gray-300 rounded-full flex justify-center items-center">
                 <svg class="md:w-5 md:h-5 w-2 h-2 text-gray-100" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
@@ -52,9 +53,9 @@
                 cusine.name
                 }}</span>
             </a>
-            <span class="sm:hidden block text-black text-center text-xs lg:font-medium mt-2 line-clamp-1">{{
-              cusine.name
-              }}</span>
+            <span class="sm:hidden block text-black text-center text-xs lg:font-medium mt-2 line-clamp-1">
+              {{ cusine.name }}
+            </span>
           </div>
         </ng-container>
       </div>

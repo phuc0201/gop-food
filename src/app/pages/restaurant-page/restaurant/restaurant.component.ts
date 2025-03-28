@@ -2,8 +2,12 @@ import { Component, HostListener, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { Subscription } from 'rxjs';
+import { Campaign } from 'src/app/core/models/campaign/campain.model';
 import { Restaurant, RestaurantRecommended } from 'src/app/core/models/restaurant/restaurant.model';
+import { Review } from 'src/app/core/models/review/review.model';
 import { RestaurantService } from 'src/app/core/services/restaurant.service';
+import { ReviewService } from 'src/app/core/services/review.service';
+import { getCampaignAvailableForRestaurant } from 'src/app/core/store/campaign/campaign.actions';
 import { fetchMenu, fetchRestaurantDetail } from 'src/app/core/store/restaurant/restaurant.actions';
 import { selectRestaurantDetail } from 'src/app/core/store/restaurant/restaurant.selectors';
 
@@ -17,13 +21,16 @@ export class RestaurantComponent implements OnInit {
   isLoading: boolean = false;
   restaurant = new Restaurant();
   isInWishlist: boolean = false;
+  reviews: Review[] = [];
   restaurantSubscription: Subscription = new Subscription();
+  campaigns: Campaign[] = [];
+
   constructor(
     private store: Store,
     private route: ActivatedRoute,
     private restaurantSrv: RestaurantService,
+    private reviewSrv: ReviewService,
   ) { }
-
   ngOnInit(): void {
     this.handleMobileScreen();
     const id = this.route.snapshot.paramMap.get('id') as string;
@@ -34,6 +41,10 @@ export class RestaurantComponent implements OnInit {
       next: (data) => {
         this.isLoading = data.restaurant._id !== id;
         this.restaurant = this.isLoading ? new Restaurant() : data.restaurant;
+
+        if (this.restaurant._id !== '') {
+          this.getReviews();
+        }
       },
       complete: () => {
         this.restaurantSubscription.unsubscribe();
@@ -43,6 +54,7 @@ export class RestaurantComponent implements OnInit {
     this.store.dispatch(fetchRestaurantDetail({ restaurantId: id }));
     if (this.isLoading == true) {
       this.store.dispatch(fetchMenu({ restaurantId: id }));
+      this.store.dispatch(getCampaignAvailableForRestaurant({ restaurantId: id }));
     }
   }
 
@@ -77,5 +89,13 @@ export class RestaurantComponent implements OnInit {
 
   goBack() {
     window.history.back();
+  }
+
+  getReviews(): void {
+    this.reviewSrv.getReviews(this.restaurant._id).subscribe({
+      next: (data) => {
+        this.reviews = data;
+      }
+    });
   }
 }

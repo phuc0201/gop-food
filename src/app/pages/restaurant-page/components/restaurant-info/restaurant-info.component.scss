@@ -5,3 +5,18 @@
     rgba(192, 229, 246, 1) 64%
   );
 }
+
+.restaurant-animate-fadeInUp {
+  animation: fadeInUp 1s ease forwards;
+  opacity: 1;
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+  }
+}

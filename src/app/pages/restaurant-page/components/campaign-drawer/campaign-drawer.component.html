@@ -21,12 +21,13 @@
             </ng-container>
           </ng-container> -->
 
-          <ng-container *ngFor="let item of campaigns">
+          <ng-container *ngFor="let item of (campaigns$ | async)">
             <div
               class="promo-card-wrapper py-3 pl-3 pr-5 border bg-white h-24 rounded-lg overflow-hidden flex items-center justify-between">
               <div class="h-full flex flex-1 gap-3">
                 <div class="h-full aspect-square bg-gray-200 rounded-lg">
-                  <img [src]="item.image" onerror="this.src='assets/img/promo/promotion.jpg'" class="object-cover rounded-lg">
+                  <img [src]="item.image" onerror="this.src='assets/img/promo/promotion.jpg'"
+                    class="object-cover rounded-lg">
                 </div>
                 <div class="max-w-[85%] flex flex-col justify-between">
                   <h3 class="font-bold text-gray-700 line-clamp-1 max-w-xs">

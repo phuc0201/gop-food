@@ -6,7 +6,7 @@ import { ScrollDirective } from '../shared/widget/directives/scroll.directive';
 import { AuthEffects } from './store/auth/auth.effects';
 import { loginReducer } from './store/auth/auth.reducers';
 import { CampaignEffects } from './store/campaign/campaign.effects';
-import { getAllCampaignReducer } from './store/campaign/campaign.reducers';
+import { campaignReducer } from './store/campaign/campaign.reducers';
 import { CuisineEffects } from './store/cuisine/cuisine.effects';
 import { cuisinesReducer } from './store/cuisine/cuisine.reducers';
 import { GeolocationEffects } from './store/geolocation/geolocation.effects';
@@ -33,7 +33,7 @@ import { foodDetailReducer, menuReducer, restaurantDetailReducer, restaurantsRed
       menu: menuReducer,
       foodDetail: foodDetailReducer,
       search_address: searchAddressReducer,
-      get_campaigns: getAllCampaignReducer,
+      campaigns: campaignReducer,
       cuisines: cuisinesReducer,
       orderHistory: orderHistoryReducer
     }),

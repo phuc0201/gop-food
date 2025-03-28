@@ -1,6 +1,9 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
-import { Campaign } from 'src/app/core/models/campaign/campain.model';
+import { Store } from '@ngrx/store';
+import { map } from 'rxjs';
 import { FormatService } from 'src/app/core/services/common/format.serive';
+import { selectCampaigns } from 'src/app/core/store/campaign/campaign.selectors';
+import { CampaignsState } from 'src/app/core/store/campaign/campaign.state';
 
 @Component({
   selector: 'app-campaign-drawer',
@@ -10,10 +13,13 @@ import { FormatService } from 'src/app/core/services/common/format.serive';
 export class CampaignDrawerComponent {
   @Input() isVisible: boolean = false;
   @Output() isVisibleChange = new EventEmitter<boolean>();
-  @Input() campaigns: Campaign[] = [];
+  campaigns$ = this.store.select(selectCampaigns).pipe(
+    map((state: CampaignsState) => state.campaigns)
+  );
 
   constructor(
-    private format: FormatService
+    private format: FormatService,
+    private store: Store
   ) { }
 
   closeDrawer() {
