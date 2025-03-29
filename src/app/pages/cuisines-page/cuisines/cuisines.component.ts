@@ -28,7 +28,7 @@ export class CuisinesComponent implements OnInit {
   filter!: ICuisineFilter;
   currPage: number = 1;
   limit: number = 20;
-  currCuisineId: string = '';
+  currCuisineSlug: string = '';
 
   constructor(
     private searchSrv: SearchService,
@@ -44,7 +44,7 @@ export class CuisinesComponent implements OnInit {
       this.route.paramMap,
     ])
       .subscribe(([searchValue, queryParams, paramMap]) => {
-        this.currCuisineId = paramMap.get('id') ?? '';
+        this.currCuisineSlug = paramMap.get('slug') ?? '';
         if (!this.router.url.startsWith(URLConstant.ROUTE.HOMEPAGE)) {
           this.handleQueryParams(queryParams);
           this.loadRestaurants(searchValue);
@@ -54,7 +54,7 @@ export class CuisinesComponent implements OnInit {
 
   loadRestaurants(searchValue: string = '') {
     this.store.dispatch(fetchRestaurants({
-      cuisineId: this.currCuisineId,
+      cuisineSlug: this.currCuisineSlug,
       searchQuery: searchValue,
       page: this.currPage,
       limit: this.limit,

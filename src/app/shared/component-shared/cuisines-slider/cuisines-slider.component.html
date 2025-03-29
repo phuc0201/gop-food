@@ -28,7 +28,7 @@
       <div #cuisinesSlider id="cuisine-list" class="cuisine-slider flex items-start justify-start gap-3">
         <ng-container *ngFor="let cusine of sortedCuisineCategories">
           <div class="relative slider-item flex flex-col items-center">
-            <a [routerLink]="['/cuisines', cusine.id]" [queryParamsHandling]="'merge'" [routerLinkActive]="'active'"
+            <a [routerLink]="['/cuisines', cusine.slug]" [queryParamsHandling]="'merge'" [routerLinkActive]="'active'"
               class="relative border-2 border-transparent transition-all duration-300 w-16 min-w-16 aspect-square sm:w-32 sm:min-w-32 lg:w-44 lg:min-w-44 sm:aspect-video overflow-hidden rounded-full sm:rounded-lg">
 
               <div

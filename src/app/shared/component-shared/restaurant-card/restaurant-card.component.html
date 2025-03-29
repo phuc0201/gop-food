@@ -13,7 +13,8 @@
     </div>
   </button>
 
-  <a [routerLink]="['/restaurant', restaurant.id]" class="text-black hover:text-black">
+  <a [routerLink]="'/restaurant/' + convertToSlug(restaurant.restaurant_name, restaurant.id)"
+    class="text-black hover:text-black">
     <div
       class="restaurant-card flex md:flex-col flex-row md:gap-0 gap-3 rounded-lg cursor-pointer group lg:mb-8 md:mb-6 sm:mb-4 mb-3">
       <div class="md:mb-3 relative">

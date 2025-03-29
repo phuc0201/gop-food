@@ -33,7 +33,10 @@ export class RestaurantComponent implements OnInit {
   ) { }
   ngOnInit(): void {
     this.handleMobileScreen();
-    const id = this.route.snapshot.paramMap.get('id') as string;
+    const slug = this.route.snapshot.paramMap.get('slug') as string;
+    const slugLength = slug.split('-').length;
+    const id = slug.split('-')[slugLength - 1];
+
     const index = this.restaurantSrv.getWishList().findIndex(res => res.id == id);
     this.isInWishlist = index !== -1;
 

@@ -47,7 +47,7 @@ export class RestaurantService {
   }
 
   getRestaurants(
-    cuisineId?: string,
+    cuisineSlug?: string,
     searchQuery?: string,
     page: number = 1,
     limit: number = 10,
@@ -59,7 +59,7 @@ export class RestaurantService {
           .set('coordinates', `${location.coordinates[1]},${location.coordinates[0]}`)
           .set('page', page.toString())
           .set('limit', limit.toString())
-          .set('cuisineId', cuisineId || '')
+          .set('cuisineSlug', cuisineSlug || '')
           .set('searchQuery', searchQuery || '');
 
         Object.entries(filter).forEach(([key, value]) => {

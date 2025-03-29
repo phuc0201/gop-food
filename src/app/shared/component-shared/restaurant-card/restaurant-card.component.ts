@@ -1,6 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { ChangeDetectionStrategy, Component, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
 import { RouterModule } from '@angular/router';
+import slugify from 'slugify';
 import { CuisineCategory } from 'src/app/core/mock-data/cuisine-category.data';
 import { RestaurantRecommended } from 'src/app/core/models/restaurant/restaurant.model';
 import { RestaurantService } from 'src/app/core/services/restaurant.service';
@@ -74,5 +75,13 @@ export class RestaurantCardComponent implements OnChanges, OnInit {
 
     this.checkInWishList = index === -1;
     this.resSrv.addToWishList(this.restaurant);
+  }
+
+  convertToSlug(name: string, id: string): string {
+    return slugify(name, {
+      lower: true,
+      strict: true,
+      locale: 'vi'
+    }) + '-' + id;
   }
 }

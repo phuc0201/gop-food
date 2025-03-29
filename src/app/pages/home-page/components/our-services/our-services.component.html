@@ -1,72 +1,63 @@
-<!-- <div class="sectionContainer hidden">
-  <div nz-row nzGutter="20" class="lg:gap-0 gap-5">
+<section class="py-20 pt-10 relative overflow-hidden">
+  <!-- Background pattern -->
+  <div class="absolute inset-0 bg-gradient-to-br from-orange-50 to-white opacity-80 z-0"></div>
+  <div class="absolute -right-20 -top-20 w-64 h-64 bg-orange-100 rounded-full opacity-50"></div>
+  <div class="absolute -left-20 -bottom-20 w-80 h-80 bg-red-100 rounded-full opacity-40"></div>
 
-    <div nz-col nzSpan="24" nzLg="8" class="our-service-card">
-      <div class="flex flex-col lg:flex-row gap-3 items-center">
-        <div class="min-w-24 w-24 h-24 bg-green4 rounded-[50%] flex justify-center items-center">
-          <img loading="lazy" src="assets/img/icons/icon-online-payment.png" class="object-cover">
-        </div>
-        <div class="text-center lg:text-left">
-          <span class="font-bold text-lg text-black">Thanh toán tiện lợi</span> <br>
-          <span class="text-gray-500 text-sm">GoPFood cung cấp dịch vụ giao đồ ăn nhanh</span>
-        </div>
-      </div>
+  <div class="container mx-auto px-4 relative z-10">
+    <div class="text-center mb-16">
+      <span class="text-orange-500 font-medium text-sm uppercase tracking-wider">Why Choose Us</span>
+      <h2 class="text-4xl md:text-5xl font-bold text-gray-900 mt-2 mb-4">
+        Delicious Food, <span class="text-orange-500">Delivered Fast</span>
+      </h2>
+      <div class="w-24 h-1 bg-orange-500 mx-auto rounded-full"></div>
+      <p class="text-lg text-gray-600 max-w-2xl mx-auto mt-6">
+        Experience the best food delivery service with these amazing benefits
+      </p>
     </div>
 
-    <div nz-col nzSpan="24" nzLg="8" class="our-service-card">
-      <div class="flex flex-col lg:flex-row gap-3 items-center">
-        <div class="min-w-24 w-24 h-24 bg-green4 rounded-[50%] flex justify-center items-center">
-          <img loading="lazy" src="assets/img/icons/ilus-cool-features-app.svg" class="object-cover">
+    <div class="grid grid-cols-1 xl:grid-cols-3 gap-8 max-w-5xl mx-auto">
+      <div
+        class="bg-white rounded-lg p-8 shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1 border border-gray-100 h-full">
+        <div
+          class="w-16 h-16 rounded-2xl flex items-center justify-center mb-6 shadow-lg bg-gradient-to-br from-orange-500 to-red-500">
+          <i class="fa-solid fa-clock text-white text-2xl"></i>
         </div>
-        <div class="text-center lg:text-left max-w-72 overflow-hidden text-wrap">
-          <span class="font-bold text-lg text-black">Booking dễ dàng</span> <br>
-          <span class="text-gray-500 text-sm ">Vài cú nhấp chuột hoặc chạm nhẹ là đã có
-            thể đặt đồ
-            ăn</span>
+        <h3 class="text-2xl font-bold mb-4 text-gray-900">
+          Lightning Fast Delivery
+        </h3>
+        <p class="text-gray-600 text-lg leading-relaxed">
+          Your favorite meals delivered in 30 minutes or less, hot and fresh to your doorstep.
+        </p>
+      </div>
+
+      <div
+        class="bg-white rounded-lg p-8 shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1 border border-gray-100 h-full">
+        <div
+          class="w-16 h-16 rounded-2xl flex items-center justify-center mb-6 shadow-lg bg-gradient-to-br from-red-500 to-pink-500">
+          <i class="fa-solid fa-utensils text-white text-2xl"></i>
         </div>
+        <h3 class="text-2xl font-bold mb-4 text-gray-900">
+          Premium Quality Food
+        </h3>
+        <p class="text-gray-600 text-lg leading-relaxed">
+          We partner with top-rated restaurants to ensure every meal exceeds your expectations.
+        </p>
       </div>
-    </div>
 
-    <div nz-col nzSpan="24" nzLg="8" class="our-service-card">
-      <div class="flex flex-col lg:flex-row gap-3 items-center">
-        <div class="min-w-24 w-24 h-24 bg-green4 rounded-[50%] flex justify-center items-center">
-          <img loading="lazy" src="assets/img/icons/scooter.png" class="object-cover">
+      <div
+        class="bg-white rounded-lg p-8 shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1 border border-gray-100 h-full">
+        <div
+          class="w-16 h-16 rounded-2xl flex items-center justify-center mb-6 shadow-lg bg-gradient-to-br from-green-500 to-emerald-500">
+          <i class="fa-solid fa-truck text-white text-2xl"></i>
         </div>
-        <div class="text-center lg:text-left max-w-72 overflow-hidden text-wrap">
-          <span class="font-bold text-lg text-black">Giao hàng nhanh</span> <br>
-          <span class="text-gray-500 text-sm">Đồ ăn của khách hàng sẽ được giao tận tay </span>
-        </div>
-      </div>
-    </div>
-
-  </div>
-</div> -->
-
-
-<div class="sectionContainer md:mb-0 !mb-10">
-  <div nz-row nzGutter="20">
-    <div nz-col nzLg="8" nzSpan="24" class="lg:mb-0 mb-5">
-      <div class="rounded-xl w-full h-full flex flex-col items-center gap-5 shadow p-8">
-        <h2 class="font-bold">Place an Order!</h2>
-        <img loading="lazy" src="assets/img/icons/place-order.png" class="w-28">
-        <span>Place order through our website or Mobile app</span>
-      </div>
-    </div>
-
-    <div nz-col nzLg="8" nzSpan="24" class="lg:mb-0 mb-5">
-      <div class="rounded-xl w-full h-full flex flex-col items-center gap-5 shadow p-8">
-        <h2 class="font-bold">Track Progress</h2>
-        <img loading="lazy" src="assets/img/icons/map-tracking.png" class="w-28">
-        <span>Your can track your order status with delivery time</span>
-      </div>
-    </div>
-
-    <div nz-col nzLg="8" nzSpan="24" class="lg:mb-0 mb-5">
-      <div class="rounded-xl w-full h-full flex flex-col items-center gap-5 shadow p-8">
-        <h2 class="font-bold">Get Your Order</h2>
-        <img loading="lazy" src="assets/img/icons/food-delivery.png" class="w-28">
-        <span>Receive your order at a lighting fast speed!</span>
+        <h3 class="text-2xl font-bold mb-4 text-gray-900">
+          Real-Time Tracking
+        </h3>
+        <p class="text-gray-600 text-lg leading-relaxed">
+          Follow your order's journey from the kitchen to your door with our live tracking system.
+        </p>
       </div>
     </div>
   </div>
-</div>
+</section>

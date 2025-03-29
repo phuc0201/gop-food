@@ -1,0 +1,18 @@
+<div class="py-3 h-full group">
+  <a [href]="blog.link" class="">
+    <div class="w-[408px] h-full flex flex-col justify-between rounded-lg shadow-lg overflow-hidden">
+      <div class="relative w-full h-[186px] overflow-hidden">
+        <img [src]="blog.image" alt=""
+          class="group-hover:scale-105  transition-all duration-300 object-cover w-full h-full">
+      </div>
+      <div class="grid gap-2 p-4 flex-1">
+        <h2 class="line-clamp-2 m-0 text-base font-bold break-words">
+          {{ blog.title }}
+        </h2>
+        <div class="line-clamp-2 text-xs text-gray-400 break-words">
+          {{ blog.description }}
+        </div>
+      </div>
+    </div>
+  </a>
+</div>

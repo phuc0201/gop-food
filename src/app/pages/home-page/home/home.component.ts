@@ -83,7 +83,7 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
     this.restaurants = { data: [], totalPage: 0, currPage: 0 };
 
     this.store.dispatch(fetchRestaurants({
-      cuisineId: "",
+      cuisineSlug: "",
       searchQuery: "",
       page: this.currPage,
       limit: this.limit

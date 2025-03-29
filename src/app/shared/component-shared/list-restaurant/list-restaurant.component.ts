@@ -34,7 +34,7 @@ export class ListRestaurantComponent implements OnInit, OnDestroy, AfterViewInit
     lg: 6,
   };
   @Input() limit = 8;
-  @Input() currCuisineId: string = '';
+  @Input() currCuisineSlug: string = '';
   @Input() filter!: ICuisineFilter;
   @Output() isLoadingChange = new EventEmitter();
   @Input() currSearchValue = '';
@@ -95,7 +95,7 @@ export class ListRestaurantComponent implements OnInit, OnDestroy, AfterViewInit
 
   loadMore(): void {
     this.store.dispatch(fetchRestaurants({
-      cuisineId: this.currCuisineId,
+      cuisineSlug: this.currCuisineSlug,
       searchQuery: this.currSearchValue,
       page: this.currPage + 1,
       limit: this.limit,

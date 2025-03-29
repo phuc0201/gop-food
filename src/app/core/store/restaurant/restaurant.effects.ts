@@ -14,8 +14,8 @@ export class RestaurantEffects {
   fetchRestaurants$ = createEffect(() =>
     this.actions$.pipe(
       ofType(RestaurantActions.fetchRestaurants),
-      switchMap(({ cuisineId, searchQuery, page, limit, filter }) =>
-        this.restaurantService.getRestaurants(cuisineId, searchQuery, page, limit, filter)
+      switchMap(({ cuisineSlug, searchQuery, page, limit, filter }) =>
+        this.restaurantService.getRestaurants(cuisineSlug, searchQuery, page, limit, filter)
           .pipe(
             map(response =>
               RestaurantActions.fetchRestaurantsSuccess({ payload: response })),

@@ -25,12 +25,16 @@
       </button>
     </div>
 
+    <div class="pt-4">
+      <app-list-blogs></app-list-blogs>
+    </div>
+
     <div class="lg:py-5 py-4">
-      <app-list-restaurant [limit]="limit" [currCuisineId]="''"></app-list-restaurant>
+      <app-list-restaurant [limit]="limit" [currCuisineSlug]="''"></app-list-restaurant>
     </div>
   </div>
 
-  <div *ngIf="!isHiddenSystemService">
+  <div *ngIf="!isHiddenSystemService" class="grid gap-10">
     <div class="sectionContainer pt-0 md:block hidden">
       <div
         class="relative banner-advertisement-app rounded-xl lg:flex-row flex-col flex justify-end p-5 md:p-10 lg:p-20 pb-0 lg:mt-20 mt-5">
@@ -56,7 +60,11 @@
       </div>
     </div>
 
-    <div class="sectionContainer md:!mt-10 !mt-5 md:block hidden">
+    <div class="md:block hidden">
+      <app-our-services></app-our-services>
+    </div>
+
+    <div class="sectionContainer md:block hidden pb-10">
       <div nz-row nzGutter="20">
         <div nz-col nzSpan="24" nzLg="12" class="lg:mb-0 mb-5">
           <div class="relative aspect-video rounded-xl overflow-hidden">
@@ -86,10 +94,6 @@
           </div>
         </div>
       </div>
-    </div>
-
-    <div class="mt-16 md:block hidden">
-      <app-our-services></app-our-services>
     </div>
   </div>
 </ng-container>

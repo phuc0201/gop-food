@@ -22,7 +22,7 @@ import { CuisinesComponent } from './cuisines/cuisines.component';
 
 const routes: Routes = [
   {
-    path: ':id',
+    path: ':slug',
     component: CuisinesComponent,
     title: 'Cuisines',
   },

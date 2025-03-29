@@ -33,7 +33,7 @@ export const RestaurantActionTypes = {
 export const fetchRestaurants = createAction(
   RestaurantActionTypes.FETCH_RESTAURANTS,
   props<{
-    cuisineId: string;
+    cuisineSlug: string;
     searchQuery: string;
     page: number;
     limit: number;

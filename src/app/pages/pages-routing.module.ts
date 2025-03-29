@@ -19,13 +19,9 @@ const routes: Routes = [
         pathMatch: 'full'
       },
       {
-        path: 'restaurant/:id',
+        path: 'restaurant/:slug',
         loadChildren: () => import('./restaurant-page/restaurant-page.module').then(m => m.RestaurantPageModule),
       },
-      // {
-      //   path: 'wallet',
-      //   loadChildren: () => import('./my-account-page/my-account-page.module').then(m => m.MyAccountPageModule)
-      // },
       {
         path: 'order',
         loadChildren: () => import('./order-page/order-page.module').then(m => m.OrderPageModule),
