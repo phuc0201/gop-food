@@ -3,7 +3,7 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { NzGridModule } from 'ng-zorro-antd/grid';
 import { DotSpinnerComponent } from 'src/app/shared/component-shared/loaders/dot-spinner/dot-spinner.component';
-import { RestaurantCardComponent } from './components/restaurant-card/restaurant-card.component';
+import { RestaurantCardComponent } from 'src/app/shared/component-shared/restaurant-card/restaurant-card.component';
 import { WishlistComponent } from './wishlist/wishlist.component';
 
 
@@ -18,12 +18,12 @@ const routes: Routes = [
 @NgModule({
   declarations: [
     WishlistComponent,
-    RestaurantCardComponent
   ],
   imports: [
     CommonModule,
     DotSpinnerComponent,
     NzGridModule,
+    RestaurantCardComponent,
     RouterModule.forChild(routes)
   ]
 })

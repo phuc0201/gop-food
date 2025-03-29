@@ -1,10 +1,11 @@
-<div class="w-full h-full">
+<div class="w-full h-full min-h-[500px]">
   <div class="sectionContainer h-full">
     <ng-container *ngIf="wishlist.length > 0">
       <div nz-row nzGutter="20" class="py-5">
-        <div *ngFor="let item of wishlist; let last = last" nz-col nzSpan="24" nzLg="12">
+        <div *ngFor="let item of wishlist; let last = last" nz-col nzSpan="24" nzMd="8" nzLg="6">
           <app-restaurant-card [restaurant]="item"></app-restaurant-card>
-          <div class="lg:hidden block w-full h-[1px] bg-gray-300" [ngClass]="last ? 'hidden' : ''"></div>
+          <div class="lg:hidden block w-full h-[1px] bg-gray-300 lg:mb-8 md:mb-6 sm:mb-4 mb-3"
+            [ngClass]="last ? 'hidden' : ''"></div>
         </div>
       </div>
     </ng-container>
