@@ -66,9 +66,9 @@ export class CuisinesSliderComponent implements OnInit {
   }
 
   handleCuisineRoute(): void {
-    const cuisineId = this.route.snapshot.params['id'];
-    if (cuisineId) {
-      const index = this.cuisineCategories.findIndex(cuisine => cuisine.id == cuisineId);
+    const cuisineSlug = this.route.snapshot.params['slug'];
+    if (cuisineSlug) {
+      const index = this.cuisineCategories.findIndex(cuisine => cuisine.slug == cuisineSlug);
       if (index > -1) {
         const cuisineCategoriesCopy = [...this.cuisineCategories];
         const [cuisine] = cuisineCategoriesCopy.splice(index, 1);
