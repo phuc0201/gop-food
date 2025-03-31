@@ -3,7 +3,7 @@
 }
 
 ::ng-deep .map-selector .ant-modal {
-  @apply p-0 md:max-w-[600px] md:relative md:top-[100px] top-0 left-0 right-0 bottom-0 md:min-w-[600px] min-w-full m-0 md:m-auto;
+  @apply p-0 md:max-w-[600px] md:relative md:top-[100px] top-0 left-0 right-0 md:bottom-0 md:min-w-[600px] min-w-full m-0 md:m-auto;
 }
 
 ::ng-deep .map-selector .ant-modal-content {
@@ -11,7 +11,7 @@
 }
 
 ::ng-deep .map-selector .ant-modal-content {
-  @apply rounded-xl md:relative top-0 left-0 right-0 bottom-0 md:h-auto h-[100vh];
+  @apply rounded-xl md:relative top-0 left-0 right-0 md:bottom-0 md:h-auto h-[100svh];
 }
 ::ng-deep .map-selector .ant-modal-body {
   @apply p-0 rounded-lg h-full overflow-hidden bg-transparent;
