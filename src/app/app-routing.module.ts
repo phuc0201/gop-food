@@ -1,5 +1,5 @@
 import { NgModule } from '@angular/core';
-import { ExtraOptions, RouterModule, Routes } from '@angular/router';
+import { ExtraOptions, provideRouter, RouterModule, Routes } from '@angular/router';
 
 const routes: Routes = [
   {
@@ -17,6 +17,9 @@ const scrollOption: ExtraOptions = {
 
 @NgModule({
   imports: [RouterModule.forRoot(routes, scrollOption)],
+  providers: [
+    provideRouter(routes),
+  ],
   exports: [RouterModule]
 })
 export class AppRoutingModule { }

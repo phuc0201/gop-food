@@ -1,9 +1,12 @@
-import { AfterViewInit, Component, ElementRef, HostListener, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, HostListener, OnDestroy, OnInit, ViewChild, ViewContainerRef } from '@angular/core';
 import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
+import { NzModalService } from 'ng-zorro-antd/modal';
 import { filter, fromEvent, Subject, takeUntil } from 'rxjs';
 import { SystemConstant } from 'src/app/core/constants/system.constant';
 import { URLConstant } from 'src/app/core/constants/url.constant';
 import { DiningMode } from 'src/app/core/models/common/enums/index.enum';
+import { AuthService } from 'src/app/core/services/auth.service';
+import { AuthComponent } from 'src/app/shared/component-shared/auth/auth.component';
 @Component({
   selector: 'app-main-layout',
   templateUrl: './main-layout.component.html',
@@ -21,10 +24,14 @@ export class MainLayoutComponent implements OnInit, AfterViewInit, OnDestroy {
 
   constructor(
     private router: Router,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private viewContainerRef: ViewContainerRef,
+    private modal: NzModalService,
+    private authSrv: AuthService
   ) { }
 
   ngOnInit(): void {
+    this.doLogin();
     this.onActivate();
     this.isMobile = window.innerWidth < 768;
     this.handleHeaderSticky();
@@ -117,5 +124,27 @@ export class MainLayoutComponent implements OnInit, AfterViewInit, OnDestroy {
 
   setDiningMode(mode: DiningMode) {
     localStorage.setItem(SystemConstant.DINING_MODE, mode);
+  }
+
+  doLogin() {
+    this.authSrv.requireLogin$.subscribe({
+      next: (res) => {
+        if (res == true) {
+
+          this.createAuthModal();
+        }
+      }
+    });
+  }
+
+  createAuthModal() {
+    return this.modal.create<AuthComponent, any>({
+      nzContent: AuthComponent,
+      nzClosable: false,
+      nzWrapClassName: 'auth-form',
+      nzViewContainerRef: this.viewContainerRef,
+      nzFooter: null,
+      nzData: '',
+    });
   }
 }

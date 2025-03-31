@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { AfterViewInit, Component, ElementRef, Input, OnInit, ViewChild, ViewContainerRef } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, Input, OnInit, ViewChild } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { Router, RouterModule } from '@angular/router';
 import { Store } from '@ngrx/store';
@@ -15,7 +15,6 @@ import { OrderService } from 'src/app/core/services/order.service';
 import { RestaurantService } from 'src/app/core/services/restaurant.service';
 import { SearchService } from 'src/app/core/services/search.service';
 import { selectProfile } from 'src/app/core/store/profile/profile.selectors';
-import { AuthComponent } from 'src/app/shared/component-shared/auth/auth.component';
 import { CartComponent } from 'src/app/shared/component-shared/cart/cart.component';
 import { ScrollDirective } from 'src/app/shared/widget/directives/scroll.directive';
 
@@ -65,21 +64,12 @@ export class MainHeaderComponent implements OnInit, AfterViewInit {
     private searchSrv: SearchService,
     private router: Router,
     private geoSrv: GeolocationService,
-    private viewContainerRef: ViewContainerRef,
-    private modal: NzModalService,
   ) {
     translate.use(localStorage.getItem('language')?.toString() ?? 'en');
   }
 
   ngOnInit(): void {
     this.currLang = localStorage.getItem('language')?.toString();
-
-    this.authSrv.requireLogin$.subscribe({
-      next: res => {
-        this.openAuthForm = res;
-      }
-    });
-
     this.authSrv.currLoginStatus$.subscribe(status => this.isLogged = status);
 
     this.store.select(selectProfile)
@@ -121,14 +111,7 @@ export class MainHeaderComponent implements OnInit, AfterViewInit {
     }
   }
 
-  createAuthModal() {
-    return this.modal.create<AuthComponent, any>({
-      nzContent: AuthComponent,
-      nzClosable: false,
-      nzWrapClassName: 'auth-form',
-      nzViewContainerRef: this.viewContainerRef,
-      nzFooter: null,
-      nzData: '',
-    });
+  doLogin() {
+    this.authSrv.promptLogin(true);
   }
 }

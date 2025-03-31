@@ -1,0 +1,198 @@
+<div class="w-full max-w-2xl">
+  <div class="bg-white rounded-lg shadow-md overflow-hidden">
+    <!-- Card Header -->
+    <div class="p-6 border-b">
+      <h2 class="text-2xl font-bold">Register</h2>
+      <p class="text-sm text-gray-500">
+        Create a new account to use our services
+      </p>
+    </div>
+
+    <!-- Card Content -->
+    <div class="p-6">
+      <form [formGroup]="registerForm" (ngSubmit)="onSubmit()" class="space-y-4">
+        <!-- Form Error Message -->
+        <div *ngIf="formError" class="p-3 bg-red-50 border border-red-200 text-red-600 rounded-md text-sm">
+          {{ formError }}
+        </div>
+
+        <!-- Form Success Message -->
+        <div *ngIf="formSuccess" class="p-3 bg-green-50 border border-green-200 text-green-600 rounded-md text-sm">
+          {{ formSuccess }}
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div class="space-y-2">
+            <label for="fullname" class="block text-sm font-medium">Full Name</label>
+            <input id="fullname" type="text" formControlName="fullname" placeholder="John Doe"
+              class="w-full px-3 py-2 border rounded-md focus:outline-none focus:border-primary focus:ring-2 focus:ring-green-200 md:placeholder:text-base placeholder:text-xs text-xs md:text-base"
+              [ngClass]="{
+                'border-red-500': (submitted || f['fullname'].touched) && f['fullname'].errors,
+                'border-green-500': f['fullname'].valid && f['fullname'].touched
+              }" (input)="onInputChange()" />
+            <div *ngIf="(submitted || f['fullname'].touched) && f['fullname'].errors" class="text-red-500 text-xs mt-1">
+              <span *ngIf="f['fullname'].errors['required']">Full name is required</span>
+              <span *ngIf="f['fullname'].errors['minlength']">Full name must be at least 2 characters</span>
+              <span *ngIf="f['fullname'].errors['pattern']">Full name can only contain letters and spaces</span>
+            </div>
+          </div>
+
+          <div class="space-y-2">
+            <label for="phone" class="block text-sm font-medium">Phone Number</label>
+            <input id="phone" type="tel" formControlName="phone" placeholder="0912345678"
+              class="w-full px-3 py-2 border rounded-md focus:outline-none focus:border-primary focus:ring-2 focus:ring-green-200 md:placeholder:text-base placeholder:text-xs text-xs md:text-base"
+              [ngClass]="{
+                'border-red-500': (submitted || f['phone'].touched) && f['phone'].errors,
+                'border-green-500': f['phone'].valid && f['phone'].touched
+              }" (input)="onInputChange()" />
+            <div *ngIf="(submitted || f['phone'].touched) && f['phone'].errors" class="text-red-500 text-xs mt-1">
+              <span *ngIf="f['phone'].errors['required']">Phone number is required</span>
+              <span *ngIf="f['phone'].errors['pattern']">Invalid phone number (e.g., 0912345678 or +84912345678)</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="space-y-2">
+          <label for="email" class="block text-sm font-medium">Email</label>
+          <input id="email" type="email" formControlName="email" placeholder="name@example.com"
+            class="w-full px-3 py-2 border rounded-md focus:outline-none focus:border-primary focus:ring-2 focus:ring-green-200 md:placeholder:text-base placeholder:text-xs text-xs md:text-base"
+            [ngClass]="{
+              'border-red-500': (submitted || f['email'].touched) && f['email'].errors,
+              'border-green-500': f['email'].valid && f['email'].touched
+            }" (input)="onInputChange()" />
+          <div *ngIf="(submitted || f['email'].touched) && f['email'].errors" class="text-red-500 text-xs mt-1">
+            <span *ngIf="f['email'].errors['required']">Email is required</span>
+            <span *ngIf="f['email'].errors['email'] || f['email'].errors['pattern']">Invalid email</span>
+          </div>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div class="space-y-2">
+            <label for="password" class="block text-sm font-medium">Password</label>
+            <input id="password" type="password" formControlName="password"
+              class="w-full px-3 py-2 border rounded-md focus:outline-none focus:border-primary focus:ring-2 focus:ring-green-200 md:placeholder:text-base placeholder:text-xs text-xs md:text-base"
+              [ngClass]="{
+                'border-red-500': (submitted || f['password'].touched) && f['password'].errors,
+                'border-green-500': f['password'].valid && f['password'].touched
+              }" (input)="onInputChange()" />
+            <div *ngIf="(submitted || f['password'].touched) && f['password'].errors" class="text-red-500 text-xs mt-1">
+              <span *ngIf="f['password'].errors['required']">Password is required</span>
+              <span *ngIf="f['password'].errors['minlength']">Password must be at least 8 characters</span>
+              <span *ngIf="f['password'].errors['pattern']">Password must contain at least 1 uppercase, 1 lowercase, and
+                1 number</span>
+            </div>
+
+            <!-- Password strength meter -->
+            <div *ngIf="f['password'].value && f['password'].touched" class="mt-2">
+              <div class="flex justify-between items-center mb-1">
+                <span class="text-xs">Password Strength:</span>
+                <span class="text-xs font-medium" [ngClass]="{
+                  'text-red-500': getPasswordStrength() <= 2,
+                  'text-yellow-500': getPasswordStrength() === 3,
+                  'text-blue-500': getPasswordStrength() === 4,
+                  'text-green-500': getPasswordStrength() >= 5
+                }">{{ getPasswordStrengthText() }}</span>
+              </div>
+              <div class="h-1 w-full bg-gray-200 rounded-full overflow-hidden">
+                <div [ngClass]="getPasswordStrengthClass()" class="h-full transition-all duration-300"
+                  [style.width.%]="getPasswordStrength() * 20">
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="space-y-2">
+            <label for="confirmPassword" class="block text-sm font-medium">Confirm Password</label>
+            <input id="confirmPassword" type="password" formControlName="confirmPassword"
+              class="w-full px-3 py-2 border rounded-md focus:outline-none focus:border-primary focus:ring-2 focus:ring-green-200 md:placeholder:text-base placeholder:text-xs text-xs md:text-base"
+              [ngClass]="{
+                'border-red-500': (submitted || f['confirmPassword'].touched) && (f['confirmPassword'].errors || registerForm.hasError('passwordMismatch')),
+                'border-green-500': !f['confirmPassword'].errors && !registerForm.hasError('passwordMismatch') && f['confirmPassword'].touched
+              }" (input)="onInputChange()" />
+            <div
+              *ngIf="(submitted || f['confirmPassword'].touched) && (f['confirmPassword'].errors || registerForm.hasError('passwordMismatch'))"
+              class="text-red-500 text-xs mt-1">
+              <span *ngIf="f['confirmPassword'].errors?.['required']">Confirm password is required</span>
+              <span
+                *ngIf="registerForm.hasError('passwordMismatch') && !f['confirmPassword'].errors?.['required']">Passwords
+                do not match</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="space-y-2">
+          <label for="address" class="block text-sm font-medium">Address</label>
+          <textarea id="address" formControlName="address" placeholder="Enter your address"
+            class="w-full px-3 py-2 border rounded-md focus:outline-none focus:border-primary focus:ring-2 focus:ring-green-200 md:placeholder:text-base placeholder:text-xs text-xs md:text-base min-h-[80px]"
+            [ngClass]="{
+              'border-red-500': (submitted || f['address'].touched) && f['address'].errors,
+              'border-green-500': f['address'].valid && f['address'].touched
+            }" (input)="onInputChange()"></textarea>
+          <div *ngIf="(submitted || f['address'].touched) && f['address'].errors" class="text-red-500 text-xs mt-1">
+            <span *ngIf="f['address'].errors['required']">Address is required</span>
+            <span *ngIf="f['address'].errors['minlength']">Address must be at least 5 characters</span>
+          </div>
+        </div>
+
+        <div class="space-y-2">
+          <label class="block text-sm font-medium">Gender</label>
+          <div class="flex space-x-4">
+            <div class="flex items-center space-x-2">
+              <input type="radio" id="male" formControlName="gender" value="male"
+                class="focus:ring-[#00b14f] h-4 w-4 text-[#00b14f] border-gray-300" />
+              <label for="male" class="text-sm cursor-pointer">Male</label>
+            </div>
+            <div class="flex items-center space-x-2">
+              <input type="radio" id="female" formControlName="gender" value="female"
+                class="focus:ring-[#00b14f] h-4 w-4 text-[#00b14f] border-gray-300" />
+              <label for="female" class="text-sm cursor-pointer">Female</label>
+            </div>
+          </div>
+        </div>
+
+        <!-- Terms and Conditions -->
+        <div class="space-y-2">
+          <div class="flex items-start space-x-2">
+            <input type="checkbox" id="terms" formControlName="terms"
+              class="mt-1 focus:ring-[#00b14f] h-4 w-4 text-[#00b14f] border-gray-300 rounded" [ngClass]="{
+                'border-red-500': (submitted || f['terms'].touched) && f['terms'].errors
+              }" />
+            <label for="terms" class="text-sm">
+              I agree to the <a href="#" class="text-[#00b14f] hover:underline">Terms of Service</a> and <a href="#"
+                class="text-[#00b14f] hover:underline">Privacy Policy</a>
+            </label>
+          </div>
+          <div *ngIf="(submitted || f['terms'].touched) && f['terms'].errors" class="text-red-500 text-xs ml-6">
+            <span *ngIf="f['terms'].errors['required']">You must agree to the terms to proceed</span>
+          </div>
+        </div>
+
+        <button type="submit"
+          class="w-full py-2 px-4 bg-[#00b14f] hover:bg-[#009a43] text-white rounded-md transition-colors"
+          [disabled]="isLoading">
+          <span *ngIf="isLoading" class="flex items-center justify-center">
+            <svg class="animate-spin -ml-1 mr-2 h-4 w-4 text-white" xmlns="http://www.w3.org/2000/svg" fill="none"
+              viewBox="0 0 24 24">
+              <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+              <path class="opacity-75" fill="currentColor"
+                d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z">
+              </path>
+            </svg>
+            Processing...
+          </span>
+          <span *ngIf="!isLoading">Register</span>
+        </button>
+      </form>
+    </div>
+
+    <!-- Card Footer -->
+    <div class="p-6 border-t text-center">
+      <p class="text-sm text-gray-500">
+        Already have an account?
+        <button (click)="switchToLogin.emit()" class="text-[#00b14f] hover:underline">
+          Login
+        </button>
+      </p>
+    </div>
+  </div>
+</div>

@@ -1,7 +1,8 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Injectable } from '@angular/core';
+import { inject, Injectable } from '@angular/core';
+import { Auth, GoogleAuthProvider, signInWithPopup } from '@angular/fire/auth';
 import { Router } from '@angular/router';
-import { BehaviorSubject, Observable } from 'rxjs';
+import { BehaviorSubject, from, Observable, switchMap } from 'rxjs';
 import { SystemConstant } from '../constants/system.constant';
 import { URLConstant } from '../constants/url.constant';
 import { ILoginDTO, SignupDTO } from '../models/auth/auth.model';
@@ -11,7 +12,7 @@ import { IToken } from '../models/common/response-data.model';
   providedIn: 'root'
 })
 export class AuthService {
-
+  auth = inject(Auth);
   private baseURL: string = URLConstant.API.ENDPOINT;
   private requireUserLogin = new BehaviorSubject<boolean>(false);
   requireLogin$ = this.requireUserLogin.asObservable();
@@ -21,7 +22,7 @@ export class AuthService {
 
   constructor(
     private http: HttpClient,
-    private router: Router
+    private router: Router,
   ) {
     if (!this.isLogged()) {
       sessionStorage.clear();
@@ -84,4 +85,16 @@ export class AuthService {
     });
     return this.http.post<IToken>(this.baseURL + URLConstant.API.AUTH.REFRESH, { headers: header });
   }
+
+  loginWithGoogle(): Observable<IToken> {
+    return from(signInWithPopup(this.auth, new GoogleAuthProvider())).pipe(
+      switchMap(async (result) => {
+        const token = result.user ? await result.user.getIdToken() : null;
+        if (!token) throw new Error('Failed to retrieve token from Google Sign-In.');
+        return this.http.post<IToken>(this.baseURL + '/auth/customer/google-login', { token });
+      }),
+      switchMap((obs) => obs)
+    );
+  }
 }
+

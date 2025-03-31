@@ -2,6 +2,7 @@ import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 
 import { RouterModule } from '@angular/router';
+import { AuthComponent } from 'src/app/shared/component-shared/auth/auth.component';
 import { BottomNavbarComponent } from '../layout-components/bottom-navbar/bottom-navbar.component';
 import { MainFooterComponent } from '../layout-components/main-footer/main-footer.component';
 import { MainHeaderComponent } from '../layout-components/main-header/main-header.component';
@@ -11,7 +12,8 @@ const plugins = [
   MainHeaderComponent,
   MainFooterComponent,
   BottomNavbarComponent,
-  MobileHeaderComponent
+  MobileHeaderComponent,
+  AuthComponent
 ];
 @NgModule({
   declarations: [

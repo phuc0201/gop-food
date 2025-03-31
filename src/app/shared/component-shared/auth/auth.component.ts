@@ -1,22 +1,24 @@
 import { CommonModule } from '@angular/common';
 import { HttpResponse, HttpStatusCode } from '@angular/common/http';
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
-import { Store } from '@ngrx/store';
 import { NzButtonModule } from 'ng-zorro-antd/button';
-import { NzModalModule, NzModalRef } from 'ng-zorro-antd/modal';
+import { NzModalModule } from 'ng-zorro-antd/modal';
 import { NzRadioModule } from 'ng-zorro-antd/radio';
 import { ToastrService } from 'ngx-toastr';
-import { ILoginDTO, SignupDTO } from 'src/app/core/models/auth/auth.model';
+import { SignupDTO } from 'src/app/core/models/auth/auth.model';
 import { AuthService } from 'src/app/core/services/auth.service';
-import { getProfile } from 'src/app/core/store/profile/profile.actions';
+import { LoginComponent } from './components/login/login.component';
+import { RegisterComponent } from './components/register/register.component';
 const plugins = [
   CommonModule,
   NzModalModule,
   NzButtonModule,
   NzRadioModule,
   FormsModule,
-  ReactiveFormsModule
+  ReactiveFormsModule,
+  LoginComponent,
+  RegisterComponent
 ];
 @Component({
   selector: 'app-auth',
@@ -26,15 +28,9 @@ const plugins = [
   imports: plugins
 })
 export class AuthComponent implements OnInit {
-  #modal = inject(NzModalRef);
+  currentForm: 'login' | 'register' = 'login';
   passwordVisible: boolean = false;
-  isLoginForm: boolean = true;
   isSignupFormSubmited: boolean = false;
-  loginFormData: ILoginDTO = {
-    email: '',
-    password: ''
-  };
-
   signUpForm: FormGroup = new FormGroup({
     full_name: new FormControl(''),
     phone: new FormControl(''),
@@ -42,29 +38,27 @@ export class AuthComponent implements OnInit {
     email: new FormControl(''),
     password: new FormControl(''),
     gender: new FormControl(true),
-  });;
+  });
 
-  handleLogin(): void {
-    this.authSrv.doLogin(this.loginFormData).subscribe({
-      next: (auth) => {
-        if (auth.accessToken != '') {
-          this.authSrv.setToken(auth);
-          this.authSrv.changeLoginStatus(true);
-          this.store.dispatch(getProfile());
-          this.authSrv.promptLogin(false);
-          this.toastrSrv.success('Login successfully', 'Success', {
-            timeOut: 3000,
-          });
+  constructor(
+    private authSrv: AuthService,
+    private fb: FormBuilder,
+    private toastrSrv: ToastrService
+  ) { }
 
-          this.#modal.close();
-        }
-      },
-      error: () => {
-        this.toastrSrv.error('Login failed', 'Error', {
-          timeOut: 3000,
-        });
-      }
+  ngOnInit(): void {
+    this.signUpForm = this.fb.group({
+      phone: ['', [Validators.required, Validators.pattern('^[0-9]{10}$')]],
+      email: ['', [Validators.required, Validators.email]],
+      password: ['', [Validators.required, Validators.pattern('^(?=.*[A-Za-z])(?=.*\\d)[A-Za-z\\d]{8,20}$')]],
+      full_name: ['', Validators.required],
+      address: ['', Validators.required],
+      gender: [true, Validators.required]
     });
+  }
+
+  switchForm(form: 'login' | 'register') {
+    this.currentForm = form;
   }
 
   handleSigup(): void {
@@ -84,8 +78,6 @@ export class AuthComponent implements OnInit {
             this.toastrSrv.success('Signup successfully', 'Success', {
               timeOut: 3000,
             });
-
-            this.isLoginForm = true;
           }
           else {
             this.toastrSrv.error('Signup failed', 'Error', {
@@ -103,24 +95,5 @@ export class AuthComponent implements OnInit {
 
   handleCancel(): void {
     this.authSrv.promptLogin(false);
-    this.isLoginForm = true;
   }
-
-  ngOnInit(): void {
-    this.signUpForm = this.fb.group({
-      phone: ['', [Validators.required, Validators.pattern('^[0-9]{10}$')]],
-      email: ['', [Validators.required, Validators.email]],
-      password: ['', [Validators.required, Validators.pattern('^(?=.*[A-Za-z])(?=.*\\d)[A-Za-z\\d]{8,20}$')]],
-      full_name: ['', Validators.required],
-      address: ['', Validators.required],
-      gender: [true, Validators.required]
-    });
-  }
-
-  constructor(
-    private store: Store,
-    private authSrv: AuthService,
-    private fb: FormBuilder,
-    private toastrSrv: ToastrService
-  ) { }
 }
