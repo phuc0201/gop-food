@@ -13,40 +13,64 @@
 
       <div class="flex-1 campaign-drawer-body w-full overflow-y-scroll p-4">
         <div class="flex flex-col gap-2">
-          <!-- <ng-container *ngIf="isLoading">
-            <ng-container *ngFor="let item of [1,2,3,4]">
-              <div class="mb-10">
-                <nz-skeleton [nzActive]="true" [nzAvatar]="true" [nzParagraph]="{ rows: 4 }"></nz-skeleton>
-              </div>
-            </ng-container>
-          </ng-container> -->
-
           <ng-container *ngFor="let item of (campaigns$ | async)">
-            <div
-              class="promo-card-wrapper py-3 pl-3 pr-5 border bg-white h-24 rounded-lg overflow-hidden flex items-center justify-between">
-              <div class="h-full flex flex-1 gap-3">
-                <div class="h-full aspect-square bg-gray-200 rounded-lg">
-                  <img [src]="item.image" onerror="this.src='assets/img/promo/promotion.jpg'"
-                    class="object-cover rounded-lg">
-                </div>
-                <div class="max-w-[85%] flex flex-col justify-between">
-                  <h3 class="font-bold text-gray-700 line-clamp-1 max-w-xs">
-                    {{item.name}}
-                  </h3>
-                  <span *ngIf="item.conditions.minBasketAmount > 0" class="text-gray-500 font-medium text-xs">
-                    Min basket amount {{item.conditions.minBasketAmount.toLocaleString('vi-VN', {style: 'currency',
-                    currency: 'VND'})}}
-                  </span>
-                  <span class="text-gray-700 font-medium text-xs">
-                    {{formatDate(item.conditions.end_time)}}
-                  </span>
-                </div>
-              </div>
-              <div> </div>
-            </div>
+            <ng-container *ngIf="item.discount.type == 'DELIVERY'" [ngTemplateOutlet]="freeShipCampaign"
+              [ngTemplateOutletContext]="{ campaign: item }">
+            </ng-container>
+            <ng-container *ngIf="item.discount.type !== 'DELIVERY'" [ngTemplateOutlet]="orderCampaign"
+              [ngTemplateOutletContext]="{ campaign: item }">
+            </ng-container>
           </ng-container>
         </div>
       </div>
     </div>
   </ng-container>
 </nz-drawer>
+
+<ng-template #freeShipCampaign let-campaign="campaign">
+  <div class="mb-2">
+    <div class="relative flex w-full max-w-full rounded-sm shadow-lg overflow-hidden">
+      <div class="absolute top-1/2 -translate-y-1/2 -left-[7px] grid gap-[2px]">
+        <div *ngFor="let item of [1,2,3,4,5,6]" class="w-[10px] h-[10px] rounded-full bg-white"></div>
+      </div>
+
+      <div class="min-h-full w-[86px] bg-[#26aa99] flex items-center justify-center">
+        <img src="https://down-vn.img.susercontent.com/file/sg-11134004-22120-4cskiffs0olvc3.webp" alt="" class="w-11">
+      </div>
+      <div class="flex-1 p-4">
+        <span class="text-xs break-words line-clamp-2 font-light">{{ campaign.name }}</span>
+        <span class="text-xs break-words line-clamp-2 font-light">Min spend: {{
+          campaign.conditions.minBasketAmount.toLocaleString('vi-VN', {style: 'currency', currency:
+          'VND'}) }}</span>
+        <span class="text-xs text-gray-500 font-light">Expiring: {{formatDate(campaign.conditions.end_time)}}</span>
+      </div>
+    </div>
+  </div>
+</ng-template>
+
+<ng-template #orderCampaign let-campaign="campaign">
+  <div class="mb-2">
+    <div class="relative flex justify-between w-full max-w-full rounded-sm shadow-lg overflow-hidden">
+      <div class="absolute top-1/2 -translate-y-1/2 -left-[7px] grid gap-[2px]">
+        <div *ngFor="let item of [1,2,3,4,5,6]" class="w-[10px] h-[10px] rounded-full bg-white"></div>
+      </div>
+
+      <div class="min-h-full w-[86px] bg-[#ee4d2d] flex flex-col items-center justify-center gap-3">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"
+          class="size-12 text-white">
+          <path stroke-linecap="round" stroke-linejoin="round"
+            d="M15.75 10.5V6a3.75 3.75 0 1 0-7.5 0v4.5m11.356-1.993 1.263 12c.07.665-.45 1.243-1.119 1.243H4.25a1.125 1.125 0 0 1-1.12-1.243l1.264-12A1.125 1.125 0 0 1 5.513 7.5h12.974c.576 0 1.059.435 1.119 1.007ZM8.625 10.5a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Zm7.5 0a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Z" />
+        </svg>
+        <span *ngIf="campaign.discount.type=='PERCENTAGE'" class="text-white text-[10px]">Max: {{ campaign.discount.cap
+          }}</span>
+      </div>
+      <div class="flex-1 p-4">
+        <span class="text-xs break-words line-clamp-2 font-light">{{ campaign.name }}</span>
+        <span class="text-xs break-words line-clamp-2 font-light">Min spend: {{
+          campaign.conditions.minBasketAmount.toLocaleString('vi-VN', {style: 'currency', currency:
+          'VND'}) }}</span>
+        <span class="text-xs text-gray-500 font-light">Expiring: {{formatDate(campaign.conditions.end_time)}}</span>
+      </div>
+    </div>
+  </div>
+</ng-template>
