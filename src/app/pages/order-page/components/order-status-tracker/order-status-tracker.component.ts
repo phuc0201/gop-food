@@ -1,6 +1,7 @@
 import { Component, OnDestroy, OnInit, Type, ViewContainerRef } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { NzModalService } from 'ng-zorro-antd/modal';
+import { ToastrService } from 'ngx-toastr';
 import { filter } from 'rxjs';
 import { BillStatus, IconMarker, OrderStatus, OrderStatusTrackerType, PaymentMethod, RoleType } from 'src/app/core/models/common/enums/index.enum';
 import { LocationMarker } from 'src/app/core/models/geolocation/location.model';
@@ -16,7 +17,6 @@ import { CreateReviewComponent } from 'src/app/shared/component-shared/create-re
   styleUrls: ['./order-status-tracker.component.scss']
 })
 export class OrderStatusTrackerComponent implements OnInit, OnDestroy {
-  // @ViewChild(CreateReviewComponent) reviewCmp!: CreateReviewComponent;
   basket = new Basket();
   order = new OrderDetails();
   locationMarkers: LocationMarker[] = [];
@@ -45,7 +45,14 @@ export class OrderStatusTrackerComponent implements OnInit, OnDestroy {
     private router: Router,
     private paymentService: PaymentService,
     private socketSrv: SocketService,
-  ) { }
+    private toastrSrv: ToastrService,
+  ) {
+    this.route.queryParams.subscribe(params => {
+      if (params['vnp_ResponseCode']) {
+        this.handlePaymentReturn(params);
+      }
+    });
+  }
 
   ngOnInit(): void {
     const id = this.route.snapshot.paramMap.get('id') as string;
@@ -74,6 +81,20 @@ export class OrderStatusTrackerComponent implements OnInit, OnDestroy {
         next: (res) => {
           window.location.href = res;
         }
+      });
+  }
+
+  handlePaymentReturn(params: any) {
+    this.paymentService.handlePaymentReturn(params)
+      .subscribe({
+        next: (result) => {
+          if (result.error === false && result.billId !== '') {
+            this.toastrSrv.success('Payment processed successfully', 'Success', { timeOut: 3000 });
+          }
+          else {
+            this.toastrSrv.error('Payment failed. Please try again.', 'Error', { timeOut: 3000 });
+          }
+        },
       });
   }
 

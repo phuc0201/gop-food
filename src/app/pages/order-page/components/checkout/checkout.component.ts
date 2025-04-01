@@ -3,6 +3,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { NzDrawerPlacement, NzDrawerRef, NzDrawerService } from 'ng-zorro-antd/drawer';
 import { NzModalService } from 'ng-zorro-antd/modal';
+import { ToastrService } from 'ngx-toastr';
 import { Subscription } from 'rxjs';
 import { PaymentMethodData } from 'src/app/core/mock-data/payment-method.data';
 import { BillStatus, PaymentMethod } from 'src/app/core/models/common/enums/index.enum';
@@ -29,6 +30,8 @@ import { PaymentNotificationComponent } from '../payment-notification/payment-no
   styleUrls: ['./checkout.component.scss']
 })
 export class CheckoutComponent implements OnInit, OnDestroy {
+  copiedField: string | null = null;
+  showTooltip: { [key: string]: boolean; } = {};
   basket = new Basket();
   quote = new Quote();
   paymentMethod = PaymentMethodData;
@@ -41,6 +44,15 @@ export class CheckoutComponent implements OnInit, OnDestroy {
   phone: string = '';
   placementDrawer: NzDrawerPlacement = 'right';
   basketSubscription: Subscription = new Subscription();
+
+  bankDetails = {
+    bankName: "NCB",
+    cardNumber: "9704 1985 2619 1432 198",
+    cardHolder: "NGUYEN VAN A",
+    issueDate: "07/15",
+    otpPassword: "123456",
+  };
+
   constructor(
     private orderSrv: OrderService,
     private modal: NzModalService,
@@ -53,6 +65,7 @@ export class CheckoutComponent implements OnInit, OnDestroy {
     private profileService: ProfileService,
     private paymentSrv: PaymentService,
     private route: ActivatedRoute,
+    private toastrSrv: ToastrService,
   ) {
     this.route.queryParams.subscribe(params => {
       if (params['vnp_ResponseCode']) {
@@ -71,6 +84,22 @@ export class CheckoutComponent implements OnInit, OnDestroy {
 
   ngOnDestroy(): void {
     this.basketSubscription.unsubscribe();
+  }
+
+  async copyToClipboard(text: string, field: string): Promise<void> {
+    try {
+      await navigator.clipboard.writeText(text.replace(/\s/g, ""));
+      this.copiedField = field;
+      setTimeout(() => {
+        this.copiedField = null;
+      }, 2000);
+    } catch (err) {
+      console.error("Failed to copy text: ", err);
+    }
+  }
+
+  toggleTooltip(field: string): void {
+    this.showTooltip[field] = !this.showTooltip[field];
   }
 
   @HostListener('window:resize', ['event'])
@@ -144,11 +173,7 @@ export class CheckoutComponent implements OnInit, OnDestroy {
     modalRef.afterClose.subscribe((result: SelectedAddress) => {
       const observe = this.geoSrv.currLocation.subscribe({
         next: location => {
-          this.addressSelected = location;
-          this.basket.cart.delivery_location.address = location.address;
-          this.basket.cart.delivery_location.coordinates = [...location.coordinates].reverse();
-          this.orderSrv.updateCart(this.basket);
-          this.createQuote();
+          this.updateLocation(location.address, location.coordinates);
         },
         complete: () => {
           observe.unsubscribe();
@@ -162,6 +187,7 @@ export class CheckoutComponent implements OnInit, OnDestroy {
     this.paymentMethodSelected = payment;
     this.basket.cart.payment_method = payment.value;
     this.orderSrv.updateCart(this.basket);
+    this.createQuote();
   }
 
   updateLocation(address: string, coordinates: [number, number]) {
@@ -190,31 +216,38 @@ export class CheckoutComponent implements OnInit, OnDestroy {
       .subscribe({
         next: (result) => {
           if (result.error === false && result.billId !== '') {
-            this.createPaymentResultNotification(BillStatus.PAID, result.billId, result.amount);
+            this.toastrSrv.success('Payment processed successfully', 'Success', { timeOut: 3000 });
+            this.router.navigate(['/order/tracking/' + result.billId]);
           }
           else {
-            this.createPaymentResultNotification(BillStatus.FAILED, result.billId, result.amount);
+            this.toastrSrv.error('Payment failed. Please try again.', 'Error', { timeOut: 3000 });
+            this.router.navigate(['/order/tracking/' + result.billId]);
           }
         },
       });
   }
 
   placeOrder() {
-    const order = this.orderSrv.createOrderDTO(this.basket);
-    order.phone = this.phone;
-    this.orderSrv.placeOrder(order).subscribe({
-      next: data => {
-        if (data._id !== undefined && data._id !== '') {
-          if (PaymentMethod.VNPAY === this.basket.cart.payment_method) {
-            this.processPayment(data._id);
+    if (this.phone && this.phone !== '' && this.phone.length == 10 && this.phone[0] == '0') {
+      const order = this.orderSrv.createOrderDTO(this.basket);
+      order.phone = this.phone;
+      this.orderSrv.placeOrder(order).subscribe({
+        next: data => {
+          if (data._id !== undefined && data._id !== '') {
+            if (PaymentMethod.VNPAY === this.basket.cart.payment_method) {
+              this.processPayment(data._id);
+            }
+            else {
+              this.router.navigate(['/order/tracking', data._id]);
+            }
           }
-          else {
-            this.router.navigate(['/order/tracking', data._id]);
-          }
+          else alert('The restaurant is closed');
         }
-        else alert('The restaurant is closed');
-      }
-    });
+      });
+    }
+    else {
+      this.toastrSrv.warning('Please enter your phone number', 'Warning', { timeOut: 3000 });
+    }
   }
 
   createQuote() {

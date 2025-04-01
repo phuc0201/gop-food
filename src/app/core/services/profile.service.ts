@@ -54,8 +54,7 @@ export class ProfileService {
           this.setProfileIntoSession(data);
         });
     }
-    return profile ? JSON.parse(profile) :
-      (crrProfile ? crrProfile : null);
+    return profile ? JSON.parse(profile) : crrProfile;
   }
 
   getProfile(): Observable<IProfile> {

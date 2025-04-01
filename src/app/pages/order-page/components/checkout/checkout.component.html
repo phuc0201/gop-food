@@ -94,6 +94,8 @@
             </div>
           </div>
 
+          <ng-container [ngTemplateOutlet]="bankCard"></ng-container>
+
           <div class="bg-white rounded-b-lg">
             <div class="shadow-header p-5">
               <h3 class="m-0 font-bold text-gray-700">
@@ -139,59 +141,105 @@
 
     </div>
   </div>
-
-
-  <ng-template #paymentMethodTemplate let-data>
-    <div (click)="selectPaymentMethod(data)" class="bg-white hover:bg-[#ffe8d6] rounded-lg h-11 flex px-4">
-      <div class="h-8 w-fit my-auto">
-        <img [src]="data.image" class="h-full object-cover select-none">
-      </div>
-      <span class="my-auto select-none text-sm font-medium text-gray-600 ml-4">{{ data.name }}</span>
-    </div>
-  </ng-template>
-
-
-  <ng-template #cartItemsTemplate>
-    <div class="p-5 flex flex-col gap-4">
-      <ng-container *ngFor="let item of basket.cart.items; let last = last; let index = index">
-        <div [ngClass]="last ? '' : 'shadow-header pb-5'">
-          <ng-container
-            *ngTemplateOutlet="foodItemCardTemplate; context: { foodItem: item, index: index }"></ng-container>
-        </div>
-      </ng-container>
-    </div>
-  </ng-template>
-
-  <ng-template #foodItemCardTemplate let-foodItem="foodItem" let-index="index">
-    <div class="flex gap-4">
-      <img [src]="foodItem.image" alt="" class="w-16 h-16 aspect-square object-cover rounded-lg">
-      <div class="flex-1 flex flex-col justify-between">
-        <div class="flex justify-between mb-3 items-start">
-          <div class="flex flex-col">
-            <div class="">
-              <span class="font-bold text-gray-700 uppercase">{{ foodItem.food_name }}</span>
-              <span class="font-normal text-gray-500 ml-1">x{{ foodItem.quantity }}</span>
-            </div>
-            <span class="text-gray-400">Giá gốc: {{ foodItem.price.toLocaleString("vi-VN", { style: "currency",
-              currency:
-              "VND" }) }}</span>
-            <span *ngFor="let modifier of foodItem.modifiers" class="text-gray-400">{{ modifier.name }} + {{
-              modifier.price.toLocaleString("vi-VN", { style: "currency", currency: "VND" }) }}</span>
-          </div>
-
-          <button (click)="removeFoodItem(foodItem.food_id)">
-            <i class="fa-solid fa-trash-can text-lg hover:text-red1"></i>
-          </button>
-        </div>
-
-        <div class="flex justify-between">
-          <button (click)="createFoodDetailsDrawer(foodItem, index)" class="font-bold text-[#2b77eb] text-sm">Chỉnh sửa
-            món</button>
-          <span class="font-bold">{{ getFoodItemPrice(foodItem).toLocaleString("vi-VN", { style: "currency", currency:
-            "VND"
-            }) }}</span>
-        </div>
-      </div>
-    </div>
-  </ng-template>
 </div>
+
+<ng-template #paymentMethodTemplate let-data>
+  <div (click)="selectPaymentMethod(data)" class="bg-white hover:bg-[#ffe8d6] rounded-lg h-11 flex px-4">
+    <div class="h-8 w-fit my-auto">
+      <img [src]="data.image" class="h-full object-cover select-none">
+    </div>
+    <span class="my-auto select-none text-sm font-medium text-gray-600 ml-4">{{ data.name }}</span>
+  </div>
+</ng-template>
+
+
+<ng-template #cartItemsTemplate>
+  <div class="p-5 flex flex-col gap-4">
+    <ng-container *ngFor="let item of basket.cart.items; let last = last; let index = index">
+      <div [ngClass]="last ? '' : 'shadow-header pb-5'">
+        <ng-container
+          *ngTemplateOutlet="foodItemCardTemplate; context: { foodItem: item, index: index }"></ng-container>
+      </div>
+    </ng-container>
+  </div>
+</ng-template>
+
+<ng-template #foodItemCardTemplate let-foodItem="foodItem" let-index="index">
+  <div class="flex gap-4">
+    <img [src]="foodItem.image" alt="" class="w-16 h-16 aspect-square object-cover rounded-lg">
+    <div class="flex-1 flex flex-col justify-between">
+      <div class="flex justify-between mb-3 items-start">
+        <div class="flex flex-col">
+          <div class="">
+            <span class="font-bold text-gray-700 uppercase">{{ foodItem.food_name }}</span>
+            <span class="font-normal text-gray-500 ml-1">x{{ foodItem.quantity }}</span>
+          </div>
+          <span class="text-gray-400">Giá gốc: {{ foodItem.price.toLocaleString("vi-VN", { style: "currency",
+            currency:
+            "VND" }) }}</span>
+          <span *ngFor="let modifier of foodItem.modifiers" class="text-gray-400">{{ modifier.name }} + {{
+            modifier.price.toLocaleString("vi-VN", { style: "currency", currency: "VND" }) }}</span>
+        </div>
+
+        <button (click)="removeFoodItem(foodItem.food_id)">
+          <i class="fa-solid fa-trash-can text-lg hover:text-red1"></i>
+        </button>
+      </div>
+
+      <div class="flex justify-between">
+        <button (click)="createFoodDetailsDrawer(foodItem, index)" class="font-bold text-[#2b77eb] text-sm">Chỉnh sửa
+          món</button>
+        <span class="font-bold">{{ getFoodItemPrice(foodItem).toLocaleString("vi-VN", { style: "currency", currency:
+          "VND"
+          }) }}</span>
+      </div>
+    </div>
+  </div>
+</ng-template>
+
+<ng-template #bankCard>
+  <div class="w-full bg-white mb-5 rounded-t-lg">
+    <div class="p-5 rounded-t-lg bg-white border-0 border-b">
+      <h3 class="m-0 font-bold text-gray-700">Trial bank card</h3>
+    </div>
+    <div class="p-5 grid gap-5 bg-gradient-to-br from-blue-600 to-purple-600 text-white rounded-md">
+      <span class="">{{ bankDetails.bankName }}</span>
+      <div class="flex items-center gap-3">
+        <span class="tracking-wider">{{ bankDetails.cardNumber }}</span>
+        <ng-container [ngTemplateOutlet]="buttonCopy"
+          [ngTemplateOutletContext]="{ fieldName: 'cardNumber', fieldData: bankDetails.cardNumber}">
+        </ng-container>
+      </div>
+      <div class="flex items-center gap-3">
+        <span>OTP: {{ bankDetails.otpPassword }}</span>
+        <ng-container [ngTemplateOutlet]="buttonCopy"
+          [ngTemplateOutletContext]="{ fieldName: 'otpPassword', fieldData: bankDetails.otpPassword}">
+        </ng-container>
+      </div>
+      <div class="flex justify-between items-center">
+        <span>{{ bankDetails.cardHolder }}</span>
+        <span>{{ bankDetails.issueDate }}</span>
+      </div>
+    </div>
+  </div>
+</ng-template>
+
+<ng-template #buttonCopy let-fieldName="fieldName" let-fieldData="fieldData">
+  <div class="relative">
+    <button class="h-6 w-6 ml-1 rounded-lg bg-white/10 hover:bg-white/20 text-white flex items-center justify-center"
+      (click)="copyToClipboard(fieldData, fieldName)" (mouseenter)="toggleTooltip(fieldName)"
+      (mouseleave)="toggleTooltip(fieldName)">
+      <svg *ngIf="copiedField !== fieldName" xmlns="http://www.w3.org/2000/svg" width="12" height="12"
+        viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+        stroke-linejoin="round" class="lucide lucide-copy">
+        <rect width="14" height="14" x="8" y="8" rx="2" ry="2" />
+        <path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2" />
+      </svg>
+      <svg *ngIf="copiedField === fieldName" xmlns="http://www.w3.org/2000/svg" width="12" height="12"
+        viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+        stroke-linejoin="round" class="lucide lucide-check">
+        <path d="M20 6 9 17l-5-5" />
+      </svg>
+    </button>
+  </div>
+</ng-template>
