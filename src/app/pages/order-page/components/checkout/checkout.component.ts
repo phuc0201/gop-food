@@ -122,7 +122,7 @@ export class CheckoutComponent implements OnInit, OnDestroy {
       nzClosable: false,
       nzPlacement: this.placementDrawer,
       nzWidth: '600px',
-      nzHeight: '100%',
+      nzHeight: '100svh',
       nzWrapClassName: 'food-detail-drawer',
       nzKeyboard: true,
       nzContent: FoodDetailsComponent,

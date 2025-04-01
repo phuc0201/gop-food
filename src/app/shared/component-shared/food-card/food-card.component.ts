@@ -82,7 +82,7 @@ export class FoodCardComponent implements OnInit, OnDestroy {
       nzClosable: false,
       nzPlacement: this.placementDrawer,
       nzWidth: '600px',
-      nzHeight: window.innerHeight + 'px',
+      nzHeight: '100svh',
       nzWrapClassName: 'food-detail-drawer',
       nzKeyboard: true,
       nzContent: FoodDetailsComponent,

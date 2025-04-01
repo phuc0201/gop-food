@@ -50,7 +50,7 @@ export class RestaurantMenuComponent implements OnInit, AfterViewInit {
     this.selectedCategory = 0;
     this.loadData();
 
-    const webbodyMobile = document.getElementById('webbody-mobile');
+    const webbodyMobile = document.getElementById('mobile-restaurant-content');
     if (webbodyMobile) {
       webbodyMobile.addEventListener('scroll', (i) => {
         const top = webbodyMobile.scrollTop;
@@ -122,7 +122,7 @@ export class RestaurantMenuComponent implements OnInit, AfterViewInit {
   }
 
   selectResCate(index: number): void {
-    const webbodyMobile = document.getElementById('webbody-mobile');
+    const webbodyMobile = document.getElementById('mobile-restaurant-content');
     this.isAutoScrolling = true;
 
     if (this.visibleCuisineDrawer && webbodyMobile) {
@@ -213,7 +213,7 @@ export class RestaurantMenuComponent implements OnInit, AfterViewInit {
 
     if (this.searching) {
       window.scrollTo(0, 0);
-      const webbodyMobile = document.getElementById('webbody-mobile');
+      const webbodyMobile = document.getElementById('mobile-restaurant-content');
       if (webbodyMobile) {
         const tabContentTop = this.tabContent.nativeElement.getBoundingClientRect().top;
 
