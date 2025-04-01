@@ -3,10 +3,14 @@ import { Component, OnInit } from '@angular/core';
 import { NavigationEnd, Router, RouterModule } from '@angular/router';
 import { NzBadgeModule } from 'ng-zorro-antd/badge';
 import { filter } from 'rxjs';
+import { Basket } from 'src/app/core/models/order/order.model';
+import { OrderService } from 'src/app/core/services/order.service';
+import { CartComponent } from 'src/app/shared/component-shared/cart/cart.component';
 const plugins = [
   CommonModule,
   RouterModule,
-  NzBadgeModule
+  NzBadgeModule,
+  CartComponent
 ];
 @Component({
   selector: 'app-bottom-navbar',
@@ -21,18 +25,27 @@ export class BottomNavbarComponent implements OnInit {
   foodCount: number = 0;
   isActive: boolean = true;
   activeBottomNavRoute = ['feed', 'user', 'order', 'wishlist'];
-
+  basket = new Basket();
+  openDrawer: boolean = false;
+  isActiveCardButton: boolean = false;
 
   constructor(
-    private router: Router
+    private router: Router,
+    private orderSrv: OrderService
   ) { }
 
   ngOnInit(): void {
+    this.isActiveCardButton = this.router.url.startsWith('/restaurant');
     this.handleBottomNavActive();
     this.router.events.pipe(
       filter(event => event instanceof NavigationEnd)
     ).subscribe((event: any) => {
       this.handleBottomNavActive();
+      this.isActiveCardButton = this.router.url.startsWith('/restaurant');
+    });
+
+    this.orderSrv.basket.subscribe(basket => {
+      this.basket = basket;
     });
   }
 

@@ -14,6 +14,6 @@
         <router-outlet></router-outlet>
       </ng-container>
     </div>
-    <app-bottom-navbar></app-bottom-navbar>
+    <app-bottom-navbar *ngIf="isMobile"></app-bottom-navbar>
   </div>
 </ng-container>

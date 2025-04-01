@@ -229,7 +229,7 @@ export class RestaurantMenuComponent implements OnInit, AfterViewInit {
         next: data => {
           this.menu = data.items;
           this.menuSearching = this.menu.filter(cate => cate.food_items.length > 0);
-          this.isLoading = false;
+          this.isLoading = data.loading;
         }
       });
   }
