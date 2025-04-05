@@ -13,11 +13,13 @@ import { NzModalService } from 'ng-zorro-antd/modal';
 import { NzPopoverModule } from 'ng-zorro-antd/popover';
 import { CategorySliderComponent } from 'src/app/shared/component-shared/category-slider/category-slider.component';
 import { FoodCardComponent } from 'src/app/shared/component-shared/food-card/food-card.component';
+import { HorizontalScrollSliderComponent } from 'src/app/shared/component-shared/horizontal-scroll-slider/horizontal-scroll-slider.component';
 import { ListBlogsComponent } from 'src/app/shared/component-shared/list-blogs/list-blogs.component';
 import { ListRestaurantComponent } from 'src/app/shared/component-shared/list-restaurant/list-restaurant.component';
 import { PageLoaderComponent } from 'src/app/shared/component-shared/loaders/page-loader/page-loader.component';
 import { MapComponent } from 'src/app/shared/component-shared/map/map.component';
 import { CuisinesSliderComponent } from "../../shared/component-shared/cuisines-slider/cuisines-slider.component";
+import { FloatingChatbotComponent } from './components/floating-chatbot/floating-chatbot.component';
 import { HomeSliderComponent } from './components/home-slider/home-slider.component';
 import { NearbyRestaurantsComponent } from './components/nearby-restaurants/nearby-restaurants.component';
 import { NewAndEventsComponent } from './components/new-and-events/new-and-events.component';
@@ -47,7 +49,8 @@ const plugins = [
   PageLoaderComponent,
   NzPopoverModule,
   RestaurantCardComponent,
-  ListBlogsComponent
+  ListBlogsComponent,
+  HorizontalScrollSliderComponent,
 ];
 
 @NgModule({
@@ -58,6 +61,7 @@ const plugins = [
     OurServicesComponent,
     OurMenuComponent,
     NearbyRestaurantsComponent,
+    FloatingChatbotComponent,
   ],
   imports: [
     CommonModule,

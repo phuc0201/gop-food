@@ -2,6 +2,7 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { initFlowbite } from 'flowbite';
 import { AuthService } from './core/services/auth.service';
+import { ChatbotService } from './core/services/chatbot.service';
 import { GeolocationService } from './core/services/geolocation.service';
 import { getProfile } from './core/store/profile/profile.actions';
 import { NotificationComponent } from './shared/component-shared/notification/notification.component';
@@ -17,6 +18,7 @@ export class AppComponent implements OnInit {
     private store: Store,
     private authSrv: AuthService,
     private geolocation: GeolocationService,
+    private chatbotSrv: ChatbotService
   ) {
     if (!localStorage.getItem('language')) {
       localStorage.setItem('language', 'en');
@@ -28,8 +30,8 @@ export class AppComponent implements OnInit {
     initFlowbite();
     if (this.authSrv.isLogged()) {
       this.store.dispatch(getProfile());
+      this.chatbotSrv.startBot().subscribe();
     }
-
     this.geolocation.loadLocation();
   }
 }

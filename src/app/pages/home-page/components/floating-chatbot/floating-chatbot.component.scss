@@ -1,0 +1,96 @@
+.bot-face-wrapper {
+  border-radius: 100% 100% 70px 70px;
+}
+
+.bot-face {
+  border-radius: 100% 100% 30px 30px;
+}
+
+.blink-animation {
+  animation: blink 4s infinite;
+}
+
+.bot-move {
+  animation: bot-move 2s infinite;
+}
+
+.bot-message {
+  animation: bot-message 0.5s ease-in-out;
+  transform-origin: right;
+}
+
+.load-row span {
+  display: inline-block;
+  width: 7px;
+  height: 7px;
+  background: #f76002;
+  border-radius: 50px;
+  animation: up-down6 0.5s ease-in infinite alternate;
+}
+
+.load-row span:nth-child(2) {
+  background: #e85b04c4;
+  animation-delay: 0.16s;
+}
+
+.load-row span:nth-child(3) {
+  background: #e85b0491;
+  animation-delay: 0.32s;
+}
+
+.load-row span:nth-child(4) {
+  background: #e85b0456;
+  animation-delay: 0.48s;
+}
+
+@keyframes up-down6 {
+  0% {
+    transform: translateY(-2px);
+  }
+
+  100% {
+    transform: translateY(2px);
+  }
+}
+
+@keyframes bot-message {
+  0%,
+  60% {
+    transform: scaleX(0);
+  }
+  70% {
+    transform: scaleX(1);
+    rotate: 0deg;
+  }
+  80% {
+    transform: scaleX(1);
+    rotate: 5deg;
+  }
+  100% {
+    transform: scaleX(1);
+    rotate: 0deg;
+  }
+}
+
+@keyframes bot-move {
+  0% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-5px);
+  }
+  100% {
+    transform: translateY(0);
+  }
+}
+
+@keyframes blink {
+  0%,
+  10%,
+  100% {
+    transform: scaleY(1);
+  }
+  5% {
+    transform: scaleY(0.1);
+  }
+}

@@ -7,6 +7,7 @@ import { ToastrService } from 'ngx-toastr';
 import { Observable } from 'rxjs';
 import { IToken } from 'src/app/core/models/common/response-data.model';
 import { AuthService } from 'src/app/core/services/auth.service';
+import { ChatbotService } from 'src/app/core/services/chatbot.service';
 import { getProfile } from 'src/app/core/store/profile/profile.actions';
 
 
@@ -34,7 +35,8 @@ export class LoginComponent implements OnInit {
     private fb: FormBuilder,
     private authService: AuthService,
     private toastrSrv: ToastrService,
-    private store: Store
+    private store: Store,
+    private chatbotSrv: ChatbotService
   ) { }
 
   ngOnInit(): void {
@@ -81,6 +83,7 @@ export class LoginComponent implements OnInit {
           this.authService.changeLoginStatus(true);
           this.store.dispatch(getProfile());
           this.authService.promptLogin(false);
+          this.chatbotSrv.startBot().subscribe();
           this.toastrSrv.success('Login successfully', 'Success', { timeOut: 3000 });
           this.#modal.close();
         }

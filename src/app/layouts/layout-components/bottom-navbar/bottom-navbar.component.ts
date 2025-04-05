@@ -32,11 +32,12 @@ export class BottomNavbarComponent implements OnInit {
   constructor(
     private router: Router,
     private orderSrv: OrderService
-  ) { }
+  ) {
+    this.handleBottomNavActive();
+  }
 
   ngOnInit(): void {
     this.isActiveCardButton = this.router.url.startsWith('/restaurant');
-    this.handleBottomNavActive();
     this.router.events.pipe(
       filter(event => event instanceof NavigationEnd)
     ).subscribe((event: any) => {

@@ -15,16 +15,17 @@ const plugins = [
 export class HorizontalScrollSliderComponent {
   @ViewChild('horizontalSlider') horizontalSlider!: ElementRef;
   @Input() isDisplayButton: boolean = false;
-
+  @Input() buttonControlSize: string = '2.5rem';
+  @Input() scrollStep: number = 2;
   scrollLeft(): void {
     const list = this.horizontalSlider.nativeElement;
-    const itemWidth = list.children[0].offsetWidth * 2;
-    list.scrollBy({ left: - itemWidth, behavior: 'smooth' });
+    const itemWidth = list.children[0].offsetWidth * this.scrollStep;
+    list.scrollBy({ left: -itemWidth, behavior: 'smooth' });
   }
 
   scrollRight(): void {
     const list = this.horizontalSlider.nativeElement;
-    const itemWidth = list.children[0].offsetWidth * 2;
+    const itemWidth = list.children[0].offsetWidth * this.scrollStep;
     list.scrollBy({ left: itemWidth, behavior: 'smooth' });
   }
 }
