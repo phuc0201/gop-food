@@ -26,7 +26,7 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
   restaurants: IPagedResults<RestaurantRecommended> = { data: [], totalPage: 0, currPage: 1 };
   isMobile: boolean = false;
   restaurantsSubscription: Subscription = new Subscription();
-  limit = 30;
+  limit = 32;
   isHiddenSystemService: boolean = true;
   currPage = 1;
   diningMode = DiningMode.DELIVERY;
