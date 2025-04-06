@@ -75,9 +75,9 @@
 
               <button *ngIf="menuSearching.length > 0" (click)="openCuisineDrawer()" [ngClass]="{'hidden' : searching}"
                 id="dropdown-cuisine"
-                class="text-black bg-gray-100 py-2 px-5 flex text-center items-center justify-between rounded-2xl flex-1 line-clamp-1"
+                class="text-black bg-gray-100 py-2 px-5 flex text-center items-center justify-between rounded-2xl flex-1 max-w-full"
                 type="button">
-                {{ menuSearching[selectedCategory].name }}
+                <span class="line-clamp-1">{{ menuSearching[selectedCategory].name }}</span>
                 <svg class="w-2.5 h-2.5 ms-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none"
                   viewBox="0 0 10 6">
                   <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -145,7 +145,7 @@
         <div class="sectionContainer">
           <ng-container *ngIf="menuSearching.length > 0">
             <section *ngFor="let item of menuSearching let i = index" [id]="'section' + (i + 1)"
-              class="md:py-0 md:px-0 px-4 py-5">
+              class="md:py-0 px-0 py-5">
               <h3 class="text-xl font-bold text-gray-900">
                 {{item.name}}
               </h3>
