@@ -78,6 +78,8 @@ export class NearbyRestaurantsComponent implements OnInit, AfterViewInit, OnDest
     L.tileLayer('https://{s}.google.com/vt/lyrs=m&x={x}&y={y}&z={z}', {
       subdomains: ['mt0', 'mt1', 'mt2', 'mt3'],
       attribution: '© Google',
+      detectRetina: true,
+      maxZoom: 18,
     }).addTo(this.map);
 
     const icon = L.icon({

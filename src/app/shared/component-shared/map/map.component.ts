@@ -93,6 +93,7 @@ export class MapComponent implements AfterViewInit, OnChanges {
       attribution: '© Google',
       maxZoom: 18,
       minZoom: 5,
+      detectRetina: true,
     }).addTo(this.map);
 
   }
