@@ -83,7 +83,6 @@ export class LoginComponent implements OnInit {
           this.authService.changeLoginStatus(true);
           this.store.dispatch(getProfile());
           this.authService.promptLogin(false);
-          this.chatbotSrv.startBot().subscribe();
           this.toastrSrv.success('Login successfully', 'Success', { timeOut: 3000 });
           this.#modal.close();
         }

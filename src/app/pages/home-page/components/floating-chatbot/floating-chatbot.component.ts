@@ -16,7 +16,7 @@ export class FloatingChatbotComponent {
 
   isOpenChatBox: boolean = false;
   newMessage: string = '';
-  messages: ChatbotResponse[] = [];
+  messages = this.ChatbotService.getChatHistory();
   customerAvt: string = '';
   isThinking: boolean = false;
   dummyData = {
@@ -24,43 +24,19 @@ export class FloatingChatbotComponent {
     message: "Ở Tạp hóa UTE có món xôi gà nấm mini, giá 45.000đ. Bạn có muốn thử không?",
     restaurants: [
       {
-        restaurant_id: "6640631fc9edf07952c1683e",
-        restaurant_avatar: "https://media.be.com.vn/bizops/image/9de765b8-f3b9-11ed-99ae-5e8316b9abf2/original",
+        _id: "6640631fc9edf07952c1683e",
+        avatar: "https://media.be.com.vn/bizops/image/9de765b8-f3b9-11ed-99ae-5e8316b9abf2/original",
         restaurant_name: "Tạp hóa UTE",
-        foodItems: [
-          {
-            id: "66e99b0e50708d7a9dfa12c8",
-            name: "Xôi gà nấm mini",
-            price: 45000,
-            image: "https://storage.googleapis.com/gop-system.appspot.com/66e99b0e50708d7a9dfa12c8"
-          }
-        ]
       },
       {
         restaurant_id: "6640631fc9edf07952c1683a",
-        restaurant_avatar: "https://media.be.com.vn/bizops/image/9de765b8-f3b9-11ed-99ae-5e8316b9abf2/original",
+        avatar: "https://media.be.com.vn/bizops/image/9de765b8-f3b9-11ed-99ae-5e8316b9abf2/original",
         restaurant_name: "Tạp hóa UTE",
-        foodItems: [
-          {
-            id: "66e99b0e50708d7a9dfa12c8",
-            name: "Xôi gà nấm mini",
-            price: 45000,
-            image: "https://storage.googleapis.com/gop-system.appspot.com/66e99b0e50708d7a9dfa12c8"
-          }
-        ]
       },
       {
-        restaurant_id: "6640631fc9edf07952c1683c",
-        restaurant_avatar: "https://media.be.com.vn/bizops/image/9de765b8-f3b9-11ed-99ae-5e8316b9abf2/original",
+        _id: "6640631fc9edf07952c1683c",
+        avatar: "https://media.be.com.vn/bizops/image/9de765b8-f3b9-11ed-99ae-5e8316b9abf2/original",
         restaurant_name: "Tạp hóa UTE",
-        foodItems: [
-          {
-            id: "66e99b0e50708d7a9dfa12c8",
-            name: "Xôi gà nấm mini",
-            price: 45000,
-            image: "https://storage.googleapis.com/gop-system.appspot.com/66e99b0e50708d7a9dfa12c8"
-          }
-        ]
       }
     ]
   };
@@ -84,21 +60,23 @@ export class FloatingChatbotComponent {
   toggleChatbot() {
     this.isOpenChatBox = !this.isOpenChatBox;
     if (this.isOpenChatBox) {
-      if (this.messages.length <= 1) {
-        this.messages = [];
-        if (!this.authService.isLogged()) {
-          this.messages.push({
-            message: 'Đăng nhập đi rồi em hổ trợ cho',
-            sender: 'bot',
-          });
+      this.ChatbotService.getChatHistory().subscribe(chatHistory => {
+        if (chatHistory.length < 1) {
+          let updatedMessages = new ChatbotResponse();
+          if (!this.authService.isLogged()) {
+            updatedMessages = {
+              message: 'Đăng nhập đi rồi em hổ trợ cho',
+              sender: 'bot',
+            };
+          } else {
+            updatedMessages = {
+              message: 'Hôm nay bạn muốn ăn gì?',
+              sender: 'bot',
+            };
+          }
+          this.ChatbotService.addMessageToHistory(updatedMessages);
         }
-        else {
-          this.messages.push({
-            message: 'Hôm nay bạn muốn ăn gì?',
-            sender: 'bot',
-          });
-        }
-      }
+      });
 
       this.scrollToBottom();
     }
@@ -109,21 +87,22 @@ export class FloatingChatbotComponent {
     this.scrollToBottom();
 
     if (!this.authService.isLogged()) {
-      this.messages.push({
+      this.ChatbotService.addMessageToHistory({
         message: this.newMessage,
         sender: 'user',
       });
-      this.messages.push({
+
+      this.ChatbotService.addMessageToHistory({
         message: 'Đăng nhập đi rồi em hổ trợ cho',
         sender: 'bot',
       });
+
       this.isThinking = false;
       this.newMessage = '';
       return;
     }
-
-    if (this.newMessage.trim() !== '') {
-      this.messages.push({
+    else if (this.newMessage.trim() !== '') {
+      this.ChatbotService.addMessageToHistory({
         message: this.newMessage,
         sender: 'user',
       });
@@ -132,7 +111,7 @@ export class FloatingChatbotComponent {
         next: (res) => {
           if (res.message !== '') {
             this.isThinking = false;
-            this.messages.push({
+            this.ChatbotService.addMessageToHistory({
               message: res.message,
               sender: 'bot',
               restaurants: res.restaurants,

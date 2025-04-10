@@ -30,7 +30,6 @@ export class AppComponent implements OnInit {
     initFlowbite();
     if (this.authSrv.isLogged()) {
       this.store.dispatch(getProfile());
-      this.chatbotSrv.startBot().subscribe();
     }
     this.geolocation.loadLocation();
   }

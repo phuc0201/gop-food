@@ -35,10 +35,10 @@
     </button>
   </div>
 
-  <div #chatBoxBody class="chatbox-body max-w-full flex-1 overflow-y-auto overflow-x-hidden">
+  <div #chatBoxBody class="chatbox-body max-w-full flex-1 overflow-y-auto overflow-x-hidden bg-[#f9fafb]">
     <div class="max-w-full">
       <ng-container>
-        <ng-container *ngFor="let item of messages">
+        <ng-container *ngFor="let item of (messages | async)">
           <div *ngIf="item.sender=='bot'" class="p-3 flex gap-2 w-full">
             <div class="min-w-10 min-h-10 w-10 h-10 rounded-full bg-transparent">
               <img src="assets/img/icons/bot.png" alt="" class="object-cover w-full h-full rounded-full">
@@ -66,7 +66,7 @@
           <div class="min-w-10 min-h-10 w-10 h-10 rounded-full bg-transparent">
             <img src="assets/img/icons/bot.png" alt="" class="object-cover w-full h-full rounded-full">
           </div>
-          <div class="h-fit max-w-full bg-gray-200 p-3 rounded-lg">
+          <div class="h-fit max-w-full bg-gray-200 p-3 rounded-full">
             <div class="load-row flex items-center gap-1 justify-center">
               <span></span>
               <span></span>
@@ -93,31 +93,22 @@
   </div>
 </div>
 <ng-template #restaurantListTemplate let-restaurants="restaurants">
-  <div *ngIf="restaurants" class="max-w-full">
-    <app-horizontal-scroll-slider *ngIf="restaurants.length > 0" [isDisplayButton]="restaurants.length > 1"
-      [buttonControlSize]="'1.5rem'" [scrollStep]="1">
-      <a [routerLink]="'/restaurant/' + convertToSlug(item.restaurant_name, item.restaurant_id)"
-        *ngFor="let item of restaurants" class="" [ngClass]="restaurants.length > 1 ? 'min-w-48 w-48' : 'min-w-full'">
-        <div class="flex flex-col w-full rounded-lg overflow-hidden">
-          <div class="w-full" [ngClass]="restaurants.length > 1 ? 'h-32' : 'h-40'">
-            <img [src]="item.restaurant_avatar" alt="" class="w-full h-full object-cover rounded-lg">
-          </div>
-          <div class="">
-            <div class="line-clamp-1 max-w-full py-1">{{ item.restaurant_name }}</div>
-
-            <div class="grid gap-2">
-              <div *ngFor="let food of item.foodItems" class="flex items-center gap-2">
-                <img [src]="food.image" alt="" class="min-w-10 max-w-10 h-10 rounded-full object-cover">
-                <div class="grid gap-1">
-                  <div class="max-w-full line-clamp-1 text-xs">{{ food.name }}</div>
-                  <div class="text-xs">{{ food.price.toLocaleString('vi-VN', { style: 'currency', currency: 'VND' }) }}
-                  </div>
-                </div>
-              </div>
+  <div *ngIf="restaurants">
+    <div *ngIf="restaurants.length > 0" class="max-w-full bg-white p-3 px-2 rounded-lg shadow-lg">
+      <app-horizontal-scroll-slider *ngIf="restaurants.length > 0" [isDisplayButton]="restaurants.length > 1"
+        [buttonControlSize]="'1.5rem'" [scrollStep]="1">
+        <a [routerLink]="'/restaurant/' + convertToSlug(item.restaurant_name, item._id)"
+          *ngFor="let item of restaurants" class="" [ngClass]="restaurants.length > 1 ? 'min-w-48 w-48' : 'min-w-full'">
+          <div class="flex flex-col w-full rounded-lg overflow-hidden">
+            <div class="w-full" [ngClass]="restaurants.length > 1 ? 'h-32' : 'h-40'">
+              <img [src]="item.avatar" alt="" class="w-full h-full object-cover rounded-lg">
+            </div>
+            <div class="flex justify-between items-cente mt-2">
+              <div class="line-clamp-1 max-w-full py-1 font-medium">{{ item.restaurant_name }}</div>
             </div>
           </div>
-        </div>
-      </a>
-    </app-horizontal-scroll-slider>
+        </a>
+      </app-horizontal-scroll-slider>
+    </div>
   </div>
 </ng-template>
