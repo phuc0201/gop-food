@@ -19,27 +19,8 @@ export class FloatingChatbotComponent {
   messages = this.ChatbotService.getChatHistory();
   customerAvt: string = '';
   isThinking: boolean = false;
-  dummyData = {
-    sender: 'bot',
-    message: "Ở Tạp hóa UTE có món xôi gà nấm mini, giá 45.000đ. Bạn có muốn thử không?",
-    restaurants: [
-      {
-        _id: "6640631fc9edf07952c1683e",
-        avatar: "https://media.be.com.vn/bizops/image/9de765b8-f3b9-11ed-99ae-5e8316b9abf2/original",
-        restaurant_name: "Tạp hóa UTE",
-      },
-      {
-        restaurant_id: "6640631fc9edf07952c1683a",
-        avatar: "https://media.be.com.vn/bizops/image/9de765b8-f3b9-11ed-99ae-5e8316b9abf2/original",
-        restaurant_name: "Tạp hóa UTE",
-      },
-      {
-        _id: "6640631fc9edf07952c1683c",
-        avatar: "https://media.be.com.vn/bizops/image/9de765b8-f3b9-11ed-99ae-5e8316b9abf2/original",
-        restaurant_name: "Tạp hóa UTE",
-      }
-    ]
-  };
+  isGuest: boolean = true;
+
   constructor(
     private store: Store,
     private authService: AuthService,
@@ -55,6 +36,8 @@ export class FloatingChatbotComponent {
           }
         }
       });
+
+    this.isGuest = !this.authService.isLogged();
   }
 
   toggleChatbot() {
@@ -63,7 +46,7 @@ export class FloatingChatbotComponent {
       this.ChatbotService.getChatHistory().subscribe(chatHistory => {
         if (chatHistory.length < 1) {
           let updatedMessages = new ChatbotResponse();
-          if (!this.authService.isLogged()) {
+          if (this.isGuest) {
             updatedMessages = {
               message: 'Đăng nhập đi rồi em hổ trợ cho',
               sender: 'bot',
@@ -86,17 +69,7 @@ export class FloatingChatbotComponent {
     this.isThinking = true;
     this.scrollToBottom();
 
-    if (!this.authService.isLogged()) {
-      this.ChatbotService.addMessageToHistory({
-        message: this.newMessage,
-        sender: 'user',
-      });
-
-      this.ChatbotService.addMessageToHistory({
-        message: 'Đăng nhập đi rồi em hổ trợ cho',
-        sender: 'bot',
-      });
-
+    if (this.isGuest) {
       this.isThinking = false;
       this.newMessage = '';
       return;
@@ -144,5 +117,12 @@ export class FloatingChatbotComponent {
       strict: true,
       locale: 'vi'
     }) + '-' + id;
+  }
+
+  doLogin() {
+    this.authService.promptLogin();
+    setTimeout(() => {
+      this.isOpenChatBox = false;
+    }, 300);
   }
 }

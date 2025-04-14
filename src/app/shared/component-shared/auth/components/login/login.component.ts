@@ -7,7 +7,6 @@ import { ToastrService } from 'ngx-toastr';
 import { Observable } from 'rxjs';
 import { IToken } from 'src/app/core/models/common/response-data.model';
 import { AuthService } from 'src/app/core/services/auth.service';
-import { ChatbotService } from 'src/app/core/services/chatbot.service';
 import { getProfile } from 'src/app/core/store/profile/profile.actions';
 
 
@@ -36,7 +35,6 @@ export class LoginComponent implements OnInit {
     private authService: AuthService,
     private toastrSrv: ToastrService,
     private store: Store,
-    private chatbotSrv: ChatbotService
   ) { }
 
   ngOnInit(): void {

@@ -130,7 +130,6 @@ export class MainLayoutComponent implements OnInit, AfterViewInit, OnDestroy {
     this.authSrv.requireLogin$.subscribe({
       next: (res) => {
         if (res == true) {
-
           this.createAuthModal();
         }
       }

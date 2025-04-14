@@ -23,75 +23,91 @@
   </div>
 </div>
 
-<div [hidden]="!isOpenChatBox"
-  class="chatbox fixed right-0 md:right-10 bottom-0 md:bottom-16 md:top-auto md:left-auto top-0 left-0 z-[500] bg-white shadow-lg md:rounded-lg md:w-96 md:h-[500px] overflow-hidden flex flex-col justify-between">
-  <div class="chatbox-header h-10 p-3 bg-primary text-white flex justify-between">
-    <div class="chatbox-title font-bold">GoPee</div>
-    <button (click)="toggleChatbot()">
-      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"
-        class="size-5">
-        <path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12" />
-      </svg>
-    </button>
-  </div>
+<div [hidden]="!isOpenChatBox">
+  <div (click)="toggleChatbot()" class="fixed cursor-pointer top-0 left-0 right-0 bottom-0 z-[1001]"></div>
+  <div
+    class="chatbox fixed right-0 md:right-10 bottom-0 md:bottom-16 md:top-auto md:left-auto top-0 left-0 z-[1002] bg-white shadow-lg md:rounded-lg md:w-96 md:h-[500px] overflow-hidden flex flex-col justify-between">
+    <div class="chatbox-header h-10 p-3 bg-primary text-white flex justify-between">
+      <div class="chatbox-title font-bold">GoPee</div>
+      <button (click)="toggleChatbot()">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"
+          class="size-5">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12" />
+        </svg>
+      </button>
+    </div>
 
-  <div #chatBoxBody class="chatbox-body max-w-full flex-1 overflow-y-auto overflow-x-hidden bg-[#f9fafb]">
-    <div class="max-w-full">
-      <ng-container>
-        <ng-container *ngFor="let item of (messages | async)">
-          <div *ngIf="item.sender=='bot'" class="p-3 flex gap-2 w-full">
+    <div #chatBoxBody class="chatbox-body max-w-full flex-1 overflow-y-auto overflow-x-hidden bg-[#f9fafb]">
+      <div class="max-w-full">
+        <ng-container>
+          <ng-container *ngFor="let item of (messages | async)">
+            <div *ngIf="item.sender=='bot'" class="p-3 flex gap-2 w-full">
+              <div class="min-w-10 min-h-10 w-10 h-10 rounded-full bg-transparent">
+                <img src="assets/img/icons/bot.png" alt="" class="object-cover w-full h-full rounded-full">
+              </div>
+              <div class="chatbox-message-wrapper max-w-[75%] flex gap-1 flex-col">
+                <div class="chatbox-message-content max-w-full bg-gray-200 p-2 rounded-lg">
+                  {{ item.message }}
+                </div>
+
+                <div *ngIf="isGuest">
+                  <button (click)="doLogin()"
+                    class="bg-primary text-white rounded-full px-4 p-2 flex items-center gap-2">
+                    <div>Login</div>
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                      stroke="currentColor" class="size-5">
+                      <path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5 21 12m0 0-7.5 7.5M21 12H3" />
+                    </svg>
+                  </button>
+                </div>
+
+                <ng-container [ngTemplateOutlet]="restaurantListTemplate"
+                  [ngTemplateOutletContext]="{restaurants: item.restaurants}">
+                </ng-container>
+              </div>
+            </div>
+            <div *ngIf="item.sender == 'user'" class="user-message p-3 flex justify-end items-center gap-2 w-full">
+              <div class="chatbox-message-content max-w-[75%] bg-gray-200 p-2 rounded-lg break-words">
+                {{ item.message }}
+              </div>
+              <div class="min-w-10 min-h-10 w-10 h-10 rounded-full bg-gray-300">
+                <img [src]="customerAvt" onerror="this.src='assets/img/avatars/user.png'" alt=""
+                  class="object-cover w-full h-full rounded-full">
+              </div>
+            </div>
+          </ng-container>
+          <div *ngIf="isThinking" class="p-3 flex gap-2 items-center">
             <div class="min-w-10 min-h-10 w-10 h-10 rounded-full bg-transparent">
               <img src="assets/img/icons/bot.png" alt="" class="object-cover w-full h-full rounded-full">
             </div>
-            <div class="chatbox-message-wrapper max-w-[75%] flex gap-1 flex-col">
-              <div class="chatbox-message-content max-w-full bg-gray-200 p-2 rounded-lg">
-                {{ item.message }}
+            <div class="h-fit max-w-full bg-gray-200 p-3 rounded-full">
+              <div class="load-row flex items-center gap-1 justify-center">
+                <span></span>
+                <span></span>
+                <span></span>
+                <span></span>
               </div>
-              <ng-container [ngTemplateOutlet]="restaurantListTemplate"
-                [ngTemplateOutletContext]="{restaurants: item.restaurants}">
-              </ng-container>
-            </div>
-          </div>
-          <div *ngIf="item.sender == 'user'" class="user-message p-3 flex justify-end items-center gap-2 w-full">
-            <div class="chatbox-message-content max-w-[75%] bg-gray-200 p-2 rounded-lg break-words">
-              {{ item.message }}
-            </div>
-            <div class="min-w-10 min-h-10 w-10 h-10 rounded-full bg-gray-300">
-              <img [src]="customerAvt" onerror="this.src='assets/img/avatars/user.png'" alt=""
-                class="object-cover w-full h-full rounded-full">
             </div>
           </div>
         </ng-container>
-        <div *ngIf="isThinking" class="p-3 flex gap-2 items-center">
-          <div class="min-w-10 min-h-10 w-10 h-10 rounded-full bg-transparent">
-            <img src="assets/img/icons/bot.png" alt="" class="object-cover w-full h-full rounded-full">
-          </div>
-          <div class="h-fit max-w-full bg-gray-200 p-3 rounded-full">
-            <div class="load-row flex items-center gap-1 justify-center">
-              <span></span>
-              <span></span>
-              <span></span>
-              <span></span>
-            </div>
-          </div>
-        </div>
-      </ng-container>
+      </div>
+    </div>
+
+    <div class="chatbox-input h-16 p-3 flex items-center justify-between gap-2">
+      <input #chatInput (keydown.enter)="sendMessage()" [(ngModel)]="newMessage" type="text"
+        placeholder="Type your message..."
+        class="rounded-lg text-sm focus:border-0 border-none focus:ring-0 bg-slate-200 flex-1" />
+      <button (click)="sendMessage()" class="">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"
+          class="size-6" [ngClass]="{'text-primary': newMessage!==''}">
+          <path stroke-linecap="round" stroke-linejoin="round"
+            d="M6 12 3.269 3.125A59.769 59.769 0 0 1 21.485 12 59.768 59.768 0 0 1 3.27 20.875L5.999 12Zm0 0h7.5" />
+        </svg>
+      </button>
     </div>
   </div>
-
-  <div class="chatbox-input h-16 p-3 flex items-center justify-between gap-2">
-    <input #chatInput (keydown.enter)="sendMessage()" [(ngModel)]="newMessage" type="text"
-      placeholder="Type your message..."
-      class="rounded-lg text-sm focus:border-0 border-none focus:ring-0 bg-slate-200 flex-1" />
-    <button (click)="sendMessage()" class="">
-      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"
-        class="size-6" [ngClass]="{'text-primary': newMessage!==''}">
-        <path stroke-linecap="round" stroke-linejoin="round"
-          d="M6 12 3.269 3.125A59.769 59.769 0 0 1 21.485 12 59.768 59.768 0 0 1 3.27 20.875L5.999 12Zm0 0h7.5" />
-      </svg>
-    </button>
-  </div>
 </div>
+
 <ng-template #restaurantListTemplate let-restaurants="restaurants">
   <div *ngIf="restaurants">
     <div *ngIf="restaurants.length > 0" class="max-w-full bg-white p-3 px-2 rounded-lg shadow-lg">
