@@ -129,6 +129,8 @@ export class RestaurantService {
   }
 
   getRestaurantsNearby(coordinates: [number, number], distance: number = 10000): Observable<RestaurantRecommended[]> {
+    console.log('ui vl');
+
     let params = new HttpParams()
       .set('coordinates', `${coordinates[1]},${coordinates[0]}`)
       .set('distance', distance.toString());

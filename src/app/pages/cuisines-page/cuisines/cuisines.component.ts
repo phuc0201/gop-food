@@ -27,7 +27,7 @@ export class CuisinesComponent implements OnInit {
   maxPrice: number = 100;
   filter!: ICuisineFilter;
   currPage: number = 1;
-  limit: number = 20;
+  limit: number = 12;
   currCuisineSlug: string = '';
 
   constructor(
